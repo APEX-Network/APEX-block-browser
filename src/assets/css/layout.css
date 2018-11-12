@@ -1,0 +1,96 @@
+img {
+  max-width: 100%;
+}
+.main {
+  width: 1100px;
+  margin: 0 auto;
+}
+.min-height {
+  min-height: calc( 100vh - 330px);
+  margin: 50px 0 60px;
+}
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+.clearboth:after {
+  content: ".";
+  clear: both;
+  display: block;
+  overflow: hidden;
+  font-size: 0;
+  height: 0;
+}
+.clearboth {
+  zoom: 1;
+}
+body {
+  padding-top: 60px;
+}
+.uchain-box {
+  width: 100%;
+  background: #fff;
+  box-shadow: 1px 1px 2px 2px #e2e2e2;
+}
+.uchain-box .uchain-title {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  background: #00c1ff;
+  padding: 0 30px;
+  box-sizing: border-box;
+}
+.uchain-box .uchain-title p {
+  color: #fff;
+  font-size: 18px;
+  font-family: "Semibold";
+}
+.data-table {
+  width: 100%;
+  padding: 20px 30px 0;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+.data-table .table-ul {
+  width: 100%;
+  max-width: 100%;
+  border-top: #ebebeb 1px solid;
+}
+.data-table .table-ul > li {
+  border-bottom: #ebebeb 1px solid;
+}
+.data-table .table-ul > li.row {
+  margin: 0;
+}
+.data-table .table-ul > li > span {
+  line-height: 50px;
+  height: 50px;
+  box-sizing: border-box;
+  padding: 0 8px 0 20px;
+  vertical-align: middle;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.data-table .table-ul > li > span a {
+  color: #00c1ff;
+  font-family: "SemiBold";
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.data-table .table-ul > li:first-of-type span {
+  color: #333333;
+  font-family: "Semibold";
+}
+.transactions-table .table-ul > li span:first-of-type {
+  padding-left: 36px;
+  background: url("../../assets/images/shared/icon-fix.png") no-repeat;
+  background-position: 7px -233px;
+}
+.transactions-table .table-ul > li:first-of-type span {
+  color: #666;
+  font-family: "Regular";
+}
