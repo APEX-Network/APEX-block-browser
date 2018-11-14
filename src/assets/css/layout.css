@@ -27,70 +27,112 @@ img {
   zoom: 1;
 }
 body {
-  padding-top: 60px;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  background: url(../images/shared/moon.png) 105% 40% no-repeat, url(../images/shared/bg.png) right center no-repeat;
+  background-size: 150px auto, cover;
 }
-.uchain-box {
-  width: 100%;
-  background: #fff;
-  box-shadow: 1px 1px 2px 2px #e2e2e2;
+body .logo-left {
+  z-index: 999;
+  position: absolute;
+  top: -86px;
+  left: -95px;
+  width: 400px;
+  height: 400px;
+  background: url(../images/shared/logo-left.png) center no-repeat;
 }
-.uchain-box .uchain-title {
+#app {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  width: 1200px;
+  height: 100%;
+}
+#app .main-box {
+  position: absolute;
+  top: 51.5%;
+  left: 52%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 1170px;
+  height: calc( 100vh - 130px);
+  box-sizing: border-box;
+  padding: 40px 45px;
+  background: url(../images/shared/icon-01.png) left top no-repeat, url(../images/shared/icon-02.png) right top no-repeat, url(../images/shared/icon-03.png) left bottom no-repeat, url(../images/shared/icon-04.png) right bottom no-repeat, url(../images/shared/yunshi.png) 28% 50% no-repeat;
+}
+.apex-modul {
+  width: 49%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+.apex-modul .apex-title {
   width: 100%;
   height: 40px;
   line-height: 40px;
-  background: #00c1ff;
+  font-size: 16px;
   padding: 0 30px;
   box-sizing: border-box;
+  border-bottom: #000 1px solid;
 }
-.uchain-box .uchain-title p {
-  color: #fff;
-  font-size: 18px;
-  font-family: "Semibold";
-}
-.data-table {
+.apex-modul .apex-list {
   width: 100%;
-  padding: 20px 30px 0;
+  height: calc(100% - 60px);
+  padding: 0  10px;
   box-sizing: border-box;
   overflow-y: auto;
 }
-.data-table .table-ul {
+.apex-modul .apex-list li {
+  width: calc(100% - 40px);
+  margin: 0 auto;
+  padding: 12px 0;
+  border-bottom: #000 1px solid;
+}
+.apex-modul .apex-list li .top p {
+  display: inline-block;
+  padding: 0 10px 0 5px;
+  margin-right: 10px;
+  line-height: 23px;
+  background: rgba(242, 101, 34, 0.6);
+}
+.apex-modul .apex-list li .bottom {
+  overflow: hidden;
+}
+.apex-modul .apex-list li .bottom a {
+  float: left;
+  line-height: 24px;
+  border-bottom: 1px solid #f26522;
+  display: inline-block;
+}
+.apex-modul .apex-list li .bottom span {
+  float: right;
+}
+.apex-modul.transactions .apex-list li .bottom {
+  padding-left: 30px;
   width: 100%;
-  max-width: 100%;
-  border-top: #ebebeb 1px solid;
-}
-.data-table .table-ul > li {
-  border-bottom: #ebebeb 1px solid;
-}
-.data-table .table-ul > li.row {
-  margin: 0;
-}
-.data-table .table-ul > li > span {
-  line-height: 50px;
-  height: 50px;
   box-sizing: border-box;
-  padding: 0 8px 0 20px;
-  vertical-align: middle;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-.data-table .table-ul > li > span a {
-  color: #00c1ff;
-  font-family: "SemiBold";
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-.data-table .table-ul > li:first-of-type span {
-  color: #333333;
-  font-family: "Semibold";
-}
-.transactions-table .table-ul > li span:first-of-type {
-  padding-left: 36px;
-  background: url("../../assets/images/shared/icon-fix.png") no-repeat;
-  background-position: 7px -233px;
-}
-.transactions-table .table-ul > li:first-of-type span {
-  color: #666;
   font-family: "Regular";
+  background: url(../images/shared/icon-fix.png) left 4px no-repeat;
+}
+.apex-modul.transactions .apex-list li .bottom a {
+  width: 70%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+@media screen and (max-width: 1366px) {
+  body .logo-left {
+    width: 300px;
+    height: 300px;
+  }
+  #app .main-box {
+    left: 54%;
+    height: calc( 100vh - 90px);
+  }
 }

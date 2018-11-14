@@ -1,20 +1,22 @@
 <template>
   <div id="app">
-    <publicnav></publicnav>
+    <div class="main-box">
+      <!-- <publicnav></publicnav> -->
       <router-view></router-view>
-    <publicfooter></publicfooter>
+      <!-- <publicfooter></publicfooter> -->
+    </div>
   </div>
 </template>
 
 <script>
-import publicnav from "@/components/publicnav/index.vue";
-import publicfooter from "@/components/publicfooter/index.vue";
+// import publicnav from "@/components/publicnav/index.vue";
+// import publicfooter from "@/components/publicfooter/index.vue";
 
 export default {
   name: "App",
   components: {
-    publicnav,
-    publicfooter
+    // publicnav,
+    // publicfooter
   }
 };
 </script>

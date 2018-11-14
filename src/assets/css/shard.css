@@ -37,7 +37,7 @@ select {
 a,
 a:hover,
 a:active {
-  color: #666;
+  color: #fff;
   text-decoration: none;
   display: block;
 }
@@ -50,8 +50,9 @@ a:active {
 }
 body,
 html {
-  font-family: 'Regular', 'Microsoft YaHei', 'Open Sans', Arial, Helvetica, Sans-serif, Verdana, Tahoma;
+  font-family: 'Semibold', 'Microsoft YaHei', 'Open Sans', Arial, Helvetica, Sans-serif, Verdana, Tahoma;
   box-sizing: border-box;
+  color: #fff;
   width: 100%;
 }
 ul {
