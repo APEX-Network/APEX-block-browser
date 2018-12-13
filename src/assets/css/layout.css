@@ -1,6 +1,18 @@
 img {
   max-width: 100%;
 }
+input::-webkit-input-placeholder {
+  color: #b3b3b3;
+}
+input:-moz-placeholder {
+  color: #b3b3b3;
+}
+input::-moz-placeholder {
+  color: #b3b3b3;
+}
+input:-ms-input-placeholder {
+  color: #b3b3b3;
+}
 .main {
   width: 1100px;
   margin: 0 auto;
@@ -32,6 +44,7 @@ body {
   box-sizing: border-box;
   background: url(../images/shared/moon.png) 105% 40% no-repeat, url(../images/shared/bg.png) right center no-repeat;
   background-size: 150px auto, cover;
+  background-color: #000;
 }
 body .logo-left {
   z-index: 999;
@@ -43,23 +56,16 @@ body .logo-left {
   background: url(../images/shared/logo-left.png) center no-repeat;
 }
 #app {
-  position: absolute;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  -moz-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  width: 1200px;
   height: 100%;
 }
 #app .main-box {
   position: absolute;
-  top: 51.5%;
+  top: 90px;
   left: 52%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, 0);
+  -moz-transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
   width: 1170px;
   height: calc( 100vh - 130px);
   box-sizing: border-box;
@@ -67,6 +73,7 @@ body .logo-left {
   background: url(../images/shared/icon-01.png) left top no-repeat, url(../images/shared/icon-02.png) right top no-repeat, url(../images/shared/icon-03.png) left bottom no-repeat, url(../images/shared/icon-04.png) right bottom no-repeat, url(../images/shared/yunshi.png) 28% 50% no-repeat;
 }
 .apex-modul {
+  position: relative;
   width: 49%;
   height: 100%;
   background: rgba(255, 255, 255, 0.1);
@@ -81,10 +88,23 @@ body .logo-left {
   box-sizing: border-box;
   border-bottom: #000 1px solid;
 }
+.apex-modul .apex-title span {
+  display: inline-block;
+  float: right;
+  font-size: 14px;
+  line-height: 12px;
+  height: 24px;
+  padding: 5px 10px;
+  margin-top: 8px;
+  box-sizing: border-box;
+  color: #f26522;
+  cursor: pointer;
+  border: 2px solid rgba(242, 101, 34, 0.6);
+}
 .apex-modul .apex-list {
   width: 100%;
   height: calc(100% - 60px);
-  padding: 0  10px;
+  padding: 0 10px;
   box-sizing: border-box;
   overflow-y: auto;
 }
@@ -115,16 +135,45 @@ body .logo-left {
 }
 .apex-modul.transactions .apex-list li .bottom {
   padding-left: 30px;
-  width: 100%;
   box-sizing: border-box;
   font-family: "Regular";
   background: url(../images/shared/icon-fix.png) left 4px no-repeat;
 }
 .apex-modul.transactions .apex-list li .bottom a {
-  width: 70%;
+  max-width: 300px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.apex-modul.overview ul {
+  width: 100%;
+  height: calc(100% - 60px);
+  padding: 0 50px;
+  box-sizing: border-box;
+}
+.apex-modul.overview ul li {
+  width: 50%;
+  float: left;
+  padding: 52px 0 10px 30px;
+}
+.apex-modul.overview ul li p {
+  position: relative;
+  font-size: 16px;
+}
+.apex-modul.overview ul li p:nth-child(2) {
+  font-size: 26px;
+  padding-top: 6px;
+}
+.apex-modul.overview ul li p:first-of-type:before {
+  position: absolute;
+  top: 8px;
+  left: -15px;
+  width: 8px;
+  height: 8px;
+  display: block;
+  content: '';
+  background: #f26522;
+  border-radius: 5px;
 }
 @media screen and (max-width: 1366px) {
   body .logo-left {
@@ -133,6 +182,12 @@ body .logo-left {
   }
   #app .main-box {
     left: 54%;
-    height: calc( 100vh - 90px);
+    height: calc( 100vh - 120px);
+  }
+  .apex-modul.overview ul li {
+    padding: 20px 0 10px 30px;
+  }
+  .apex-modul.overview ul li p:nth-child(2) {
+    padding-top: 0px;
   }
 }

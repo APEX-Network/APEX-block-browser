@@ -20,7 +20,6 @@ div {
   border: 0;
 }
 body {
-  background: #edf2f5;
   color: #666;
   font-size: 14px;
 }
@@ -134,4 +133,7 @@ button {
   font-style: normal;
   font-weight: 500;
   src: local('Lato Medium'), local('Lato-Medium'), url('../fonts/lato-medium.ttf') format('ttf');
+}
+::-webkit-scrollbar {
+  display: none;
 }
