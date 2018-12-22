@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import home from '@/views/home/index'
 import wallet from '@/views/wallet/index'
+import blocks from '@/views/blocks/index'
+import transactions from '@/views/transactions/index'
 import producer from '@/views/producer/index'
 import Blocks from '@/components/home/list/Blocks'
 import Transactions from '@/components/home/list/Transactions'
@@ -16,14 +18,14 @@ export default new Router({
       path: '/',
       name: 'default',
       component: home,
-      // redirect: '/home',
-      // children: [
-      //   {
-      //     path: "/home",
-      //     name: "Home",
-      //     component: home,
-      //   }
-      // ]
+      redirect: '/home',
+      children: [
+        {
+          path: "/home",
+          name: "Home",
+          component: home,
+        }
+      ]
     },
     {
       path: '/home',
@@ -59,6 +61,16 @@ export default new Router({
       path: '/wallet',
       name: 'wallet',
       component: wallet,
+    },
+    {
+      path: '/blocks',
+      name: 'blocks',
+      component: blocks,
+    },
+    {
+      path: '/transactions',
+      name: 'transactions',
+      component: transactions,
     },
     {
       path: '/producer',

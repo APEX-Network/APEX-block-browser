@@ -1,18 +1,21 @@
 <template>
   <div class="hello">
-    <p>producer</p>
+      <p class="apex-title">Producer</p>
+    <back-ground />
   </div>
 </template>
 
 <script>
-import publicnav from "@/components/publicnav/index.vue";
-import publicfooter from "@/components/publicfooter/index.vue";
+import PublicNav from "@/components/publicnav/index.vue";
+import PublicFooter from "@/components/publicfooter/index.vue";
+import BackGround from "@/components/public/BackGround.vue";
 
 export default {
   name: "producer",
   components: {
-    publicnav,
-    publicfooter
+    PublicNav,
+    PublicFooter,
+    BackGround
   },
   data() {
     return {};
