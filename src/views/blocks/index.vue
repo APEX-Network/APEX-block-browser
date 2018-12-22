@@ -1,8 +1,7 @@
 <template>
-  <div class="home clearboth">
-    <div class="bottom-modul clearboth">
-      <div class="block apex-modul block-modul">
-        <p class="apex-title">Blocks</p>
+  <div class="Blocks">
+        <p class="blocks-title">Blocks</p>
+        <apex-back-ground />
         <div class="data-table">
           <ul class="table-ul">
             <li class="row">
@@ -15,7 +14,7 @@
             <li v-for="(item,index) in dataLIst" :key="index" class="row">
               <span class="col">{{item.height}}</span>
               <span class="col col-lg-6">
-                <router-link to="/home/blocks/details">{{item.hashCode}}</router-link>
+                <router-link to="/home/details/BlocksDetails">{{item.hashCode}}</router-link>
               </span>
               <span class="col">{{item.age}}</span>
               <span class="col">{{item.txn}}</span>
@@ -24,20 +23,52 @@
           </ul>
           <Pagination />
         </div>
-      </div>
-    </div>
   </div>
 </template>
 <script>
 import Pagination from "@/components/public/Pagination.vue";
+import ApexBackGround from "@/components/public/ApexBackGround.vue"
 export default {
   name: "blocks",
   components: {
-    Pagination
+    Pagination,
+    ApexBackGround
   },
   data() {
     return {
       dataLIst: [
+        {
+          height: "6353170",
+          hashCode:
+            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
+          age: 18,
+          txn: 20,
+          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
+        },
+        {
+          height: "6353170",
+          hashCode:
+            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
+          age: 18,
+          txn: 20,
+          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
+        },
+        {
+          height: "6353170",
+          hashCode:
+            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
+          age: 18,
+          txn: 20,
+          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
+        },
+        {
+          height: "6353170",
+          hashCode:
+            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
+          age: 18,
+          txn: 20,
+          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
+        },
         {
           height: "6353170",
           hashCode:
@@ -108,6 +139,20 @@ export default {
 };
 </script>
 <style scoped lang="less">
+.blocks {
+  width: 100%;
+  height: 100%;
+}
+.blocks-title {
+  width: 100%;
+  height: 35px;
+  line-height: 35px;
+  font-size: 14px;
+  padding: 0px 45px 0px;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+} 
 .home {
   width: 100%;
   height: 100%;
@@ -125,21 +170,22 @@ export default {
 // 列表公用样式
 .data-table {
     width: 100%;
-    padding: 20px 30px 0;
+    padding: 0px 30px 0px;
     box-sizing: border-box;
     overflow-y: auto;
     .table-ul {
         width: 100%;
         max-width: 100%;
-        border-top: #333333 1px solid;
+        border-top: #0000 1px solid;
         &>li {
             &.row{
                 margin: 0;
-                color: #ebebeb;
+                color: #333333;
+                height: 35px;
             }
             border-bottom: #333333 1px solid;
             &>span {
-                line-height: 40px;
+                line-height: 35px;
                 height: 40px;
                 box-sizing: border-box;
                 padding: 0 8px 0 20px;
@@ -158,7 +204,7 @@ export default {
             }
             &:first-of-type {
                 span {
-                    color: #333333;
+                    color: #ebebeb;
                     font-family: "Semibold";
                 }
             }

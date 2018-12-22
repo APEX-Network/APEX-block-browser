@@ -10,7 +10,7 @@
             <li v-for="(value, key ,index ) in details" :key="index"  class="row">
               <span class="col">{{key}} :</span>
               <span class="col col-lg-8" v-if="key === 'Parent Hash'">
-                <router-link to="/home/blocks/details">{{value}}</router-link>
+                <router-link to="/home/details/BlockDetails">{{value}}</router-link>
               </span>
               <span class="col col-lg-8" v-else>{{value}}</span>
             </li>

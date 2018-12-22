@@ -7,9 +7,9 @@ import transactions from '@/views/transactions/index'
 import producer from '@/views/producer/index'
 import Blocks from '@/components/home/list/Blocks'
 import Transactions from '@/components/home/list/Transactions'
-import BlocksDetails from '@/components/home/detail/BlocksDetails'
-import TransactionsDetails from '@/components/home/detail/TransactionsDetails'
-import AccountDetails from '@/components/home/detail/AccountDetails'
+import BlocksDetails from '@/components/home/details/BlocksDetails'
+import TransactionsDetails from '@/components/home/details/TransactionsDetails'
+import AccountDetails from '@/components/home/details/AccountDetails'
 Vue.use(Router)
 
 export default new Router({
@@ -43,17 +43,17 @@ export default new Router({
       component: Transactions,
     },
     {
-      path: "/home/blocks/details",
+      path: "/home/details/BlocksDetails",
       name: "BlocksDetails",
       component: BlocksDetails,
     },
     {
-      path: "/home/transactions/details",
+      path: "/home/details/TransactionsDetails",
       name: "TransactionsDetails",
       component: TransactionsDetails,
     },
     {
-      path: "/home/transactions/account_detail",
+      path: "/home/details/AccountDetails",
       name: "AccountDetails",
       component: AccountDetails,
     },

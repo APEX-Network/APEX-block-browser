@@ -43,7 +43,6 @@ Vue.use(vuescroll, {
 
 
 Vue.prototype.$echarts = echarts
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
