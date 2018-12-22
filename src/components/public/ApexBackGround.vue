@@ -1,5 +1,5 @@
 <template>
-<div class="background">
+<div class="apex-background">
   <div class="home clearboth">
     <div class="bottom-modul clearboth">
       <div class="block apex-modul block-modul">
@@ -11,11 +11,11 @@
 <script>
 
 export default {
-  name: "BackGround"
+  name: "ApexBackGround"
 };
 </script>
 <style scoped lang="less">
-.background {
+.apex-background {
   position: absolute;
   top: 20px;
   left: 52%;

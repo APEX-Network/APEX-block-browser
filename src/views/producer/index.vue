@@ -1,21 +1,20 @@
 <template>
   <div class="hello">
-      <p class="apex-title">Producer</p>
-    <back-ground />
+    <apex-background />
   </div>
 </template>
 
 <script>
 import PublicNav from "@/components/publicnav/index.vue";
 import PublicFooter from "@/components/publicfooter/index.vue";
-import BackGround from "@/components/public/BackGround.vue";
+import ApexBackGround from "@/components/public/ApexBackGround.vue";
 
 export default {
   name: "producer",
   components: {
     PublicNav,
     PublicFooter,
-    BackGround
+    ApexBackGround
   },
   data() {
     return {};
