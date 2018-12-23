@@ -1,6 +1,6 @@
 <template>
   <div class="Blocks">
-        <p class="blocks-title">Blocks</p>
+        <apex-title :title="title"/>
         <apex-back-ground />
         <div class="data-table">
           <ul class="table-ul">
@@ -28,14 +28,18 @@
 <script>
 import Pagination from "@/components/public/Pagination.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue"
+import ApexTitle from "@/components/public/ApexTitle.vue";
+
 export default {
   name: "blocks",
   components: {
     Pagination,
-    ApexBackGround
+    ApexBackGround,
+    ApexTitle
   },
   data() {
     return {
+      title: "Blocks",
       dataLIst: [
         {
           height: "6353170",
@@ -143,16 +147,16 @@ export default {
   width: 100%;
   height: 100%;
 }
-.blocks-title {
-  width: 100%;
-  height: 35px;
-  line-height: 35px;
-  font-size: 14px;
-  padding: 0px 45px 0px;
-  box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-} 
+// .blocks-title {
+//   width: 100%;
+//   height: 35px;
+//   line-height: 35px;
+//   font-size: 14px;
+//   padding: 0px 45px 0px;
+//   box-sizing: border-box;
+//   background: rgba(255, 255, 255, 0.1);
+//   border-radius: 4px;
+// } 
 .home {
   width: 100%;
   height: 100%;
@@ -170,7 +174,7 @@ export default {
 // 列表公用样式
 .data-table {
     width: 100%;
-    padding: 0px 30px 0px;
+    padding: 0px 12px 0px;
     box-sizing: border-box;
     overflow-y: auto;
     .table-ul {
@@ -186,7 +190,7 @@ export default {
             border-bottom: #333333 1px solid;
             &>span {
                 line-height: 35px;
-                height: 40px;
+                height: 35px;
                 box-sizing: border-box;
                 padding: 0 8px 0 20px;
                 vertical-align: middle;

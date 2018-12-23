@@ -1,6 +1,6 @@
 <template>
   <div class="producer">
-    <p class="producer-title">Producer</p>
+    <apex-title :title="title"/>
     <apex-back-ground />
     <div class="data-table">
           <ul class="table-ul">
@@ -25,20 +25,23 @@
 <script>
 import PublicNav from "@/components/publicnav/index.vue";
 import PublicFooter from "@/components/publicfooter/index.vue";
+import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
 
 
 export default {
-  name: "producer",
+  name: "Producer",
   components: {
     PublicNav,
     PublicFooter,
+    ApexTitle,
     ApexBackGround,
     Pagination
   },
   data() {
     return {
+      title: "Producer",
       producer: [
         {
           Rank: "1",
@@ -108,19 +111,19 @@ export default {
   width: 100%;
   height: 100%;
 }
-.producer-title {
-  width: 100%;
-  height: 35px;
-  line-height: 35px;
-  font-size: 14px;
-  padding: 0px 45px 0px;
-  box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
+// .producer-title {
+//   width: 100%;
+//   height: 35px;
+//   line-height: 35px;
+//   font-size: 14px;
+//   padding: 0px 45px 0px;
+//   box-sizing: border-box;
+//   background: rgba(255, 255, 255, 0.1);
+//   border-radius: 4px;
+// }
 .data-table {
     width: 100%;
-    padding: 0px 30px 0px;
+    padding: 0px 12px 0px;
     box-sizing: border-box;
     overflow-y: auto;
     .table-ul {

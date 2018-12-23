@@ -1,8 +1,8 @@
 <template>
   <div class="transactions">
-    <div class="transactions apex-modul fr">
-      <p class="apex-title">Transactions</p>
-      <ul class="apex-list transactions-list">
+    <apex-title :title="title"/>
+    <apex-back-ground />
+    <!-- <ul class="apex-list transactions-list">
         <li v-for="(item,index) in transactions" :key="index">
           <div class="bottom">
             <a href="javascript:;">{{item.code}}</a>
@@ -10,25 +10,27 @@
           </div>
         </li>
         <Pagination/>
-      </ul>
-    </div>
+      </ul> -->
   </div>
 </template>
 
 <script>
-import PublicNav from "@/components/publicnav/index.vue";
-import PublicFooter from "@/components/publicfooter/index.vue";
+import ApexTitle from "@/components/public/ApexTitle.vue";
+import ApexBackGround from "@/components/public/ApexBackGround.vue"
 import Pagination from "@/components/public/Pagination.vue";
+
+
 
 export default {
   name: "Transactions",
   components: {
-    PublicNav,
-    PublicFooter,
-    Pagination
+    Pagination,
+    ApexTitle,
+    ApexBackGround
   },
   data() {
     return {
+      title: "Transactions",
       transactions: [
         {
           code:
