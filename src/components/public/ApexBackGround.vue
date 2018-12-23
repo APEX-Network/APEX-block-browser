@@ -24,7 +24,7 @@ export default {
   height: calc( 100vh - 234px);
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  padding: 1px 45px;
+  padding: 2px 45px;
 }
 .home {
   width: 100%;
