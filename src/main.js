@@ -14,7 +14,10 @@ import './assets/css/layout.css'
 import VueClipboard from 'vue-clipboard2'
 import vuescroll from 'vuescroll';
 import 'vuescroll/dist/vuescroll.css';
+import axios from 'axios'
+import api from './utils/api/index'
 
+Vue.use(api)
 Vue.use(VueClipboard)
 Vue.use(Vuex)
 Vue.config.productionTip = false

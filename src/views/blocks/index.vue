@@ -14,7 +14,7 @@
             <li v-for="(item,index) in dataLIst" :key="index" class="row">
               <span class="col">{{item.height}}</span>
               <span class="col col-lg-6">
-                <router-link to="/home/details/BlocksDetails">{{item.hashCode}}</router-link>
+                <router-link to="/blocks/BlocksDetails">{{item.hashCode}}</router-link>
               </span>
               <span class="col">{{item.age}}</span>
               <span class="col">{{item.txn}}</span>

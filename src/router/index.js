@@ -29,33 +29,8 @@ export default new Router({
     },
     {
       path: '/home',
-      name: 'ome',
+      name: 'home',
       component: home,
-    },
-    {
-      path: "/home/blocks",
-      name: "Blocks",
-      component: Blocks,
-    },
-    {
-      path: "/home/transactions",
-      name: "Transactions",
-      component: Transactions,
-    },
-    {
-      path: "/home/details/BlocksDetails",
-      name: "BlocksDetails",
-      component: BlocksDetails,
-    },
-    {
-      path: "/home/details/TransactionsDetails",
-      name: "TransactionsDetails",
-      component: TransactionsDetails,
-    },
-    {
-      path: "/home/details/AccountDetails",
-      name: "AccountDetails",
-      component: AccountDetails,
     },
     {
       path: '/wallet',
@@ -66,6 +41,13 @@ export default new Router({
       path: '/blocks',
       name: 'blocks',
       component: blocks,
+      children: [
+        {
+          path: "/BlocksDetails",
+          name: "BlocksDetails",
+          component: BlocksDetails,
+        }
+      ]
     },
     {
       path: '/transactions',
@@ -76,6 +58,26 @@ export default new Router({
       path: '/producer',
       name: 'producer',
       component: producer,
-    }
+    },
+    {
+      path: "/home/blocks",
+      name: "Blocks",
+      component: Blocks,
+    },
+    // {
+    //   path: "/home/transactions",
+    //   name: "Transactions",
+    //   component: Transactions,
+    // },
+    {
+      path: "/home/details/TransactionsDetails",
+      name: "TransactionsDetails",
+      component: TransactionsDetails,
+    },
+    {
+      path: "/home/details/AccountDetails",
+      name: "AccountDetails",
+      component: AccountDetails,
+    },
   ]
 })
