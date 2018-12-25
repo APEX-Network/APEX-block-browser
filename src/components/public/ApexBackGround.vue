@@ -15,26 +15,5 @@ export default {
 };
 </script>
 <style scoped lang="less">
-.apex-background {
-  position: absolute;
-  left: 50%;
-  -webkit-transform: translate(-50%, 0);
-  transform: translate(-50%, 0);
-  width: 1170px;
-  height: calc( 100vh - 234px);
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 2px 45px;
-}
-.home {
-  width: 100%;
-  height: 100%;
-  .bottom-modul,
-  .top-modul {
-    height: 100%;
-  }
-  .back-ground {
-    width: 100%;
-  }
-}
+@import "./../../assets/css/layout";
 </style>

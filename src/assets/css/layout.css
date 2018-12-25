@@ -70,7 +70,7 @@ body .logo-left {
   height: calc( 100vh - 130px);
   box-sizing: border-box;
   padding: 40px 45px;
-  background: url(../images/shared/icon-01.png) left top no-repeat, url(../images/shared/icon-02.png) right top no-repeat, url(../images/shared/icon-03.png) left bottom no-repeat, url(../images/shared/icon-04.png) right bottom no-repeat, url(../images/shared/yunshi.png) 28% 50% no-repeat;
+  background: url(../images/shared/icon-01.png) left top no-repeat, url(../images/shared/icon-02.png) right top no-repeat, url(../images/shared/icon-03.png) left bottom no-repeat, url(../images/shared/icon-04.png) right bottom no-repeat;
 }
 .apex-modul {
   position: relative;

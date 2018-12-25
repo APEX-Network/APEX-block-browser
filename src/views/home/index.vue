@@ -256,6 +256,7 @@ export default {
 .home {
   width: 100%;
   height: 100%;
+  background: url(./../../assets/images/shared/yunshi.png) 10% 20% no-repeat;
   .bottom-modul,
   .top-modul {
     height: 49%;
