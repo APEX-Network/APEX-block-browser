@@ -1,3 +1,4 @@
+"use strict";
 import axios from './api'
 
 export const query = params => {

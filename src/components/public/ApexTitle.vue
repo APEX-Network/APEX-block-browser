@@ -19,8 +19,8 @@ export default {
 <style scoped lang="less">
 .apex-title {
   width: 100%;
-  height: 35px;
-  line-height: 35px;
+  height: 40px;
+  line-height: 40px;
   font-size: 14px;
   text-indent: 30px;
   box-sizing: border-box;

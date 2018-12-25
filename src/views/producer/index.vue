@@ -12,7 +12,7 @@
             <li v-for="(item,index) in producer" :key="index" class="row">
               <span class="col">{{item.Rank}}</span>
               <span class="col col-lg-6">
-                <router-link to="/home/blocks/details">{{item.Miner}}</router-link>
+                <router-link to="/producer/ProducerInfo">{{item.Miner}}</router-link>
               </span>
               <span class="col">{{item.Blocks}}</span>
             </li>
@@ -88,16 +88,6 @@ export default {
           Rank: "10",
           Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
           Blocks: "123,450"
-        },
-        {
-          Rank: "11",
-          Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
-          Blocks: "123,449"
-        },
-        {
-          Rank: "12",
-          Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
-          Blocks: "123,448"
         }
       ]
     };
@@ -107,61 +97,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
+@import "./../../assets/css/layout";
 .producer {
   width: 100%;
   height: 100%;
-}
-// .producer-title {
-//   width: 100%;
-//   height: 35px;
-//   line-height: 35px;
-//   font-size: 14px;
-//   padding: 0px 45px 0px;
-//   box-sizing: border-box;
-//   background: rgba(255, 255, 255, 0.1);
-//   border-radius: 4px;
-// }
-.data-table {
-    width: 100%;
-    padding: 0px 12px 0px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    .table-ul {
-        width: 100%;
-        max-width: 100%;
-        border-top: #0000 1px solid;
-        &>li {
-            &.row{
-                margin: 0;
-                color: #333333;
-                height: 35px;
-            }
-            border-bottom: #333333 1px solid;
-            &>span {
-                line-height: 35px;
-                height: 40px;
-                box-sizing: border-box;
-                padding: 0 8px 0 20px;
-                vertical-align: middle;
-                color: #ebebeb;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
-                a {
-                    color: #ebebeb;
-                    font-family: "SemiBold";
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    white-space: nowrap;
-                }
-            }
-            &:first-of-type {
-                span {
-                    color: #ebebeb;
-                    font-family: "Semibold";
-                }
-            }
-        }
-    }
 }
 </style>

@@ -12,12 +12,14 @@
               <span class="col">Miner</span>
             </li>
             <li v-for="(item,index) in dataLIst" :key="index" class="row">
-              <span class="col">{{item.height}}</span>
+              <span class="col height">
+                <router-link to="/blocks/BlocksInfo">{{item.height}}</router-link>                
+              </span>
               <span class="col col-lg-6">
-                <router-link to="/blocks/BlocksDetails">{{item.hashCode}}</router-link>
+                <router-link to="/blocks/BlocksInfo">{{item.hashCode}}</router-link>
               </span>
               <span class="col">{{item.age}}</span>
-              <span class="col">{{item.txn}}</span>
+              <span class="col txn">{{item.txn}}</span>
               <span class="col">{{item.miner}}</span>
             </li>
           </ul>
@@ -29,6 +31,7 @@
 import Pagination from "@/components/public/Pagination.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue"
 import ApexTitle from "@/components/public/ApexTitle.vue";
+
 
 export default {
   name: "blocks",
@@ -120,22 +123,6 @@ export default {
           age: 18,
           txn: 20,
           miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
-        },
-        {
-          height: "6353170",
-          hashCode:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          age: 18,
-          txn: 20,
-          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
-        },
-        {
-          height: "6353170",
-          hashCode:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          age: 18,
-          txn: 20,
-          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
         }
       ]
     };
@@ -143,76 +130,20 @@ export default {
 };
 </script>
 <style scoped lang="less">
-.blocks {
+@import "./../../assets/css/layout";
+.Blocks {
   width: 100%;
   height: 100%;
-}
-// .blocks-title {
-//   width: 100%;
-//   height: 35px;
-//   line-height: 35px;
-//   font-size: 14px;
-//   padding: 0px 45px 0px;
-//   box-sizing: border-box;
-//   background: rgba(255, 255, 255, 0.1);
-//   border-radius: 4px;
-// } 
-.home {
-  width: 100%;
-  height: 100%;
-  .bottom-modul,
-  .top-modul {
-    height: 100%;
-  }
-  .top-modul {
-    margin-bottom: 2%;
-  }
-  .block-modul {
-    width: 100%;
-  }
-}
-// 列表公用样式
-.data-table {
-    width: 100%;
-    padding: 0px 12px 0px;
-    box-sizing: border-box;
-    overflow-y: auto;
+  .data-table {
     .table-ul {
-        width: 100%;
-        max-width: 100%;
-        border-top: #0000 1px solid;
-        &>li {
-            &.row{
-                margin: 0;
-                color: #333333;
-                height: 35px;
-            }
-            border-bottom: #333333 1px solid;
-            &>span {
-                line-height: 35px;
-                height: 35px;
-                box-sizing: border-box;
-                padding: 0 8px 0 20px;
-                vertical-align: middle;
-                color: #ebebeb;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
-                a {
-                    color: #ebebeb;
-                    font-family: "SemiBold";
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    white-space: nowrap;
-                }
-            }
-            &:first-of-type {
-                span {
-                    color: #ebebeb;
-                    font-family: "Semibold";
-                }
-            }
+      .row {
+        .height,
+        {
+          color: #f26522
         }
+      }
     }
+  }
 }
+
 </style>

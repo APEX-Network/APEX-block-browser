@@ -7,7 +7,9 @@
     </div>
     <div class="bottom-modul clearboth">
       <div class="block apex-modul fl">
-        <p class="apex-title">Blocks <span>ALL</span></p>
+        <p class="apex-title">Transfers <span>
+            <router-link to="/transactions">ALL</router-link>
+          </span></p>
         <ul class="apex-list">
           <vue-scroll :ops="ops">
             <li
@@ -20,7 +22,7 @@
                   <span>{{item.size}} Bytes</span>
                 </div>
                 <div class="bottom">
-                  <a href="javascript:;">{{item.hash}}</a>
+                <router-link to="/transactions/TransactionsInfo">{{item.hash}}</router-link>
                   <span>{{item.age}}</span>
                 </div>
               </div>
@@ -29,7 +31,9 @@
         </ul>
       </div>
       <div class="transactions apex-modul fr">
-        <p class="apex-title">Transactions<span>ALL</span></p>
+        <p class="apex-title">Transactions<span>
+            <router-link to="/transactions">ALL</router-link>
+          </span></p>
         <ul class="apex-list">
           <vue-scroll :ops="ops">
             <li
@@ -37,7 +41,7 @@
               :key="index"
             >
               <div class="bottom">
-                <a href="javascript:;">{{item.code}}</a>
+                <router-link to="/transactions/TransactionsInfo">{{item.code}}</router-link>
                 <span>{{item.time}}</span>
               </div>
             </li>

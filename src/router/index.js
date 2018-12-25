@@ -5,11 +5,13 @@ import wallet from '@/views/wallet/index'
 import blocks from '@/views/blocks/index'
 import transactions from '@/views/transactions/index'
 import producer from '@/views/producer/index'
-import Blocks from '@/components/home/list/Blocks'
-import Transactions from '@/components/home/list/Transactions'
-import BlocksDetails from '@/components/home/details/BlocksDetails'
-import TransactionsDetails from '@/components/home/details/TransactionsDetails'
-import AccountDetails from '@/components/home/details/AccountDetails'
+import BlocksList from '@/components/home/list/BlocksList'
+import Transactions from '@/components/home/list/TransactionsList'
+import BlocksInfo from '@/components/home/details/BlocksInfo'
+import TransactionsInfo from '@/components/home/details/TransactionsInfo'
+import AccountInfo from '@/components/home/details/AccountInfo'
+import ProducerInfo from '@/components/home/details/ProducerInfo'
+
 Vue.use(Router)
 
 export default new Router({
@@ -41,13 +43,12 @@ export default new Router({
       path: '/blocks',
       name: 'blocks',
       component: blocks,
-      children: [
-        {
-          path: "/BlocksDetails",
-          name: "BlocksDetails",
-          component: BlocksDetails,
-        }
-      ]
+    },
+    {
+      path: "/BlocksInfo",
+      alias: '/blocks/BlocksInfo',
+      name: "BlocksInfo",
+      component: BlocksInfo,
     },
     {
       path: '/transactions',
@@ -55,29 +56,27 @@ export default new Router({
       component: transactions,
     },
     {
+      path: "/TransactionsInfo",
+      alias: '/transactions/TransactionsInfo',
+      name: "TransactionsInfo",
+      component: TransactionsInfo,
+    },
+    {
+      path: "/TransactionsInfo/AccountInfo",
+      alias: '/transactions/TransactionsInfo/AccountInfo',
+      name: "AccountInfo",
+      component: AccountInfo,
+    },
+    {
       path: '/producer',
       name: 'producer',
       component: producer,
     },
     {
-      path: "/home/blocks",
-      name: "Blocks",
-      component: Blocks,
-    },
-    // {
-    //   path: "/home/transactions",
-    //   name: "Transactions",
-    //   component: Transactions,
-    // },
-    {
-      path: "/home/details/TransactionsDetails",
-      name: "TransactionsDetails",
-      component: TransactionsDetails,
-    },
-    {
-      path: "/home/details/AccountDetails",
-      name: "AccountDetails",
-      component: AccountDetails,
-    },
+      path: "/ProducerInfo",
+      alias: '/producer/ProducerInfo',
+      name: "ProducerInfo",
+      component: ProducerInfo,
+    }
   ]
 })

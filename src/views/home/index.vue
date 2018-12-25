@@ -31,20 +31,22 @@
     </div>
     <div class="bottom-modul clearboth">
       <div class="block apex-modul fl">
-        <p class="apex-title">Blocks <span>ALL</span></p>
+        <p class="apex-title">Blocks
+          <span>
+            <router-link to="/blocks">ALL</router-link>
+          </span>
+        </p>
         <ul class="apex-list">
           <vue-scroll :ops="ops">
-            <li
-              v-for="(item,index) in blocks"
-              :key="index"
-            >
+            <li v-for="(item,index) in blocks" :key="index">
               <div>
                 <div class="top">
                   <p>Block {{item.height}}</p>
                   <span>{{item.size}} Bytes</span>
                 </div>
                 <div class="bottom">
-                  <a href="javascript:;">{{item.hash}}</a>
+                  <!-- <a href="javascript:;">{{item.hash}}</a> -->
+                  <router-link to="/blocks/BlocksInfo">{{item.hash}}</router-link>
                   <span>{{item.age}}</span>
                 </div>
               </div>
@@ -53,15 +55,16 @@
         </ul>
       </div>
       <div class="transactions apex-modul fr">
-        <p class="apex-title">Transactions<span>ALL</span></p>
+        <p class="apex-title">Transactions
+          <span>
+            <router-link to="/transactions">ALL</router-link>
+          </span>
+        </p>
         <ul class="apex-list">
           <vue-scroll :ops="ops">
-            <li
-              v-for="(item,index) in transactions"
-              :key="index"
-            >
+            <li v-for="(item,index) in transactions" :key="index">
               <div class="bottom">
-                <a href="javascript:;">{{item.code}}</a>
+                <router-link to="/transactions/TransactionsInfo">{{item.code}}</router-link>
                 <span>{{item.time}}</span>
               </div>
             </li>
@@ -80,48 +83,6 @@ export default {
     return {
       ops: {},
       blocks: [
-        {
-          height: 6353170,
-          age: "13 secs ago",
-          size: 61,
-          hash:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        },
-        {
-          height: 6353170,
-          age: "13 secs ago",
-          size: 61,
-          hash:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        },
-        {
-          height: 6353170,
-          age: "13 secs ago",
-          size: 61,
-          hash:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        },
-        {
-          height: 6353170,
-          age: "13 secs ago",
-          size: 61,
-          hash:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        },
-        {
-          height: 6353170,
-          age: "13 secs ago",
-          size: 61,
-          hash:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        },
-        {
-          height: 6353170,
-          age: "13 secs ago",
-          size: 61,
-          hash:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        },
         {
           height: 6353170,
           age: "13 secs ago",
@@ -194,7 +155,7 @@ export default {
   },
   created: function() {},
   mounted() {
-     // 基于准备好的dom，初始化echarts实例
+    // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById("echartContainer"));
     // 绘制图表
     myChart.setOption({
@@ -208,7 +169,7 @@ export default {
       },
       xAxis: {
         type: "category",
-        boundaryGap :false,
+        boundaryGap: false,
         data: [
           "10:08:00",
           "10:08:10",
@@ -225,7 +186,7 @@ export default {
           lineStyle: {
             color: "#999"
           }
-        },
+        }
       },
       yAxis: {
         type: "value",
@@ -237,23 +198,23 @@ export default {
         },
         splitLine: {
           show: false
-        }      
+        }
       },
       tooltip: {
         show: true,
         trigger: "axis",
-        padding :  [8, 10],
-        backgroundColor :'rgba(161,161,161,0.1)',
+        padding: [8, 10],
+        backgroundColor: "rgba(161,161,161,0.1)",
         axisPointer: {
-          type: "line",
+          type: "line"
         },
-        textStyle:{
-          color: '#ffffff',
-          fontSize: '14px',
+        textStyle: {
+          color: "#ffffff",
+          fontSize: "14px"
         },
-        formatter: function (params, ticket, callback) {
-          return 'TPS '+ params[0].value;
-      }
+        formatter: function(params, ticket, callback) {
+          return "TPS " + params[0].value;
+        }
       },
       series: [
         {
@@ -262,13 +223,13 @@ export default {
           type: "line",
           smooth: true,
           showSymbol: false,
-          symbol: 'circle',     //设定为实心点
+          symbol: "circle", //设定为实心点
           symbolSize: 6,
-          itemStyle:{
-            color: 'rgba(242, 101, 34, .8)',
+          itemStyle: {
+            color: "rgba(242, 101, 34, .8)"
           },
-          lineStyle:{
-            color: '#f26522'
+          lineStyle: {
+            color: "#f26522"
           },
           areaStyle: {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -280,7 +241,6 @@ export default {
                 offset: 1,
                 color: "rgb(255,255,255,0)"
               }
-             
             ])
           }
         }
@@ -292,6 +252,7 @@ export default {
 };
 </script>
 <style scoped lang="less">
+@import "./../../assets/css/layout";
 .home {
   width: 100%;
   height: 100%;
@@ -302,23 +263,23 @@ export default {
   .top-modul {
     margin-bottom: 2%;
   }
-  .tps{
-    .chart-box{
+  .tps {
+    .chart-box {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      .chart{
-        height:300px;
+      .chart {
+        height: 300px;
       }
     }
   }
 }
 @media screen and(max-width:1366px) {
-  .home{
-    .tps{
-      .chart-box{
-        .chart{
+  .home {
+    .tps {
+      .chart-box {
+        .chart {
           height: 190px;
         }
       }

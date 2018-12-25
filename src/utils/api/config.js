@@ -1,3 +1,4 @@
+"use strict";
 export default {
     method: 'post',
     baseURL: 'http://139.219.1.183:8089/',

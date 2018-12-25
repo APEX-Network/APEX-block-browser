@@ -1,3 +1,4 @@
+"use strict";
 import apiList from './interface'
 
 const install = Vue => {
