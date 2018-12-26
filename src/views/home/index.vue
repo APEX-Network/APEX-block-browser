@@ -45,7 +45,6 @@
                   <span>{{item.size}} Bytes</span>
                 </div>
                 <div class="bottom">
-                  <!-- <a href="javascript:;">{{item.hash}}</a> -->
                   <router-link to="/blocks/BlocksInfo">{{item.hash}}</router-link>
                   <span>{{item.age}}</span>
                 </div>
@@ -76,9 +75,11 @@
 </template>
 <script>
 import echarts from "echarts";
+
 export default {
   name: "home",
-  components: {},
+  components: {
+  },
   data() {
     return {
       ops: {},
@@ -161,10 +162,10 @@ export default {
     myChart.setOption({
       color: ["#1AC8FF"],
       grid: {
-        left: 10,
-        right: 30,
-        top: 40,
-        bottom: 10,
+        left: 0,
+        right: 0,
+        top: 45,
+        bottom: 0,
         containLabel: true
       },
       xAxis: {
@@ -181,6 +182,7 @@ export default {
           "10:09:10",
           "10:09:20"
         ],
+        show: false,
         axisLine: {
           show: true,
           lineStyle: {
@@ -190,8 +192,9 @@ export default {
       },
       yAxis: {
         type: "value",
+        show: false,
         axisLine: {
-          show: true,
+          show: false,
           lineStyle: {
             color: "#999"
           }
@@ -256,7 +259,7 @@ export default {
 .home {
   width: 100%;
   height: 100%;
-  background: url(./../../assets/images/shared/yunshi.png) 10% 20% no-repeat;
+  background: url(./../../assets/images/shared/yunshi.png) 15% 20% no-repeat;
   .bottom-modul,
   .top-modul {
     height: 49%;

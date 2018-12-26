@@ -3,26 +3,44 @@
     <div class="top-modul clearboth">
       <div class="overview apex-modul wallet-modul">
         <p class="apex-title">Wallet</p>
+        <div>
+          <div left>
+            <div class="address">Address</div>
+            <div>
+            <select class="dropDown">
+              <option>2ff3976160c3d7af160c3d7af160c3d7aff160c3d7af</option>
+              <option>2ff3976160c3d7af160c3d7af160c3d7aff160c3d7af</option>
+              <option>2ff3976160c3d7af160c3d7af160c3d7aff160c3d7af</option>
+              <option>2ff3976160c3d7af160c3d7af160c3d7af</option>
+            </select>
+            <router-link to="/wallet/NewWallet"><div class="newWallet">NEW WALLET</div></router-link>
+            <router-link to="/wallet/OpenWallet"><div class="openWallet">OPEN WALLET</div></router-link>
+            </div>
+          </div>
+            <div class="right">
+              <div class="cpx">CPX: 145.0125</div>
+              <div class="deleteWallet">DELETEWALLET</div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="bottom-modul clearboth">
       <div class="block apex-modul fl">
-        <p class="apex-title">Transfers <span>
+        <p class="apex-title">Transfers
+          <span>
             <router-link to="/transactions">ALL</router-link>
-          </span></p>
+          </span>
+        </p>
         <ul class="apex-list">
           <vue-scroll :ops="ops">
-            <li
-              v-for="(item,index) in blocks"
-              :key="index"
-            >
+            <li v-for="(item,index) in blocks" :key="index">
               <div>
                 <div class="top">
                   <p>Block {{item.height}}</p>
                   <span>{{item.size}} Bytes</span>
                 </div>
                 <div class="bottom">
-                <router-link to="/transactions/TransactionsInfo">{{item.hash}}</router-link>
+                  <router-link to="/transactions/TransactionsInfo">{{item.hash}}</router-link>
                   <span>{{item.age}}</span>
                 </div>
               </div>
@@ -31,15 +49,14 @@
         </ul>
       </div>
       <div class="transactions apex-modul fr">
-        <p class="apex-title">Transactions<span>
+        <p class="apex-title">Transactions
+          <span>
             <router-link to="/transactions">ALL</router-link>
-          </span></p>
+          </span>
+        </p>
         <ul class="apex-list">
           <vue-scroll :ops="ops">
-            <li
-              v-for="(item,index) in transactions"
-              :key="index"
-            >
+            <li v-for="(item,index) in transactions" :key="index">
               <div class="bottom">
                 <router-link to="/transactions/TransactionsInfo">{{item.code}}</router-link>
                 <span>{{item.time}}</span>
@@ -190,6 +207,58 @@ export default {
   }
   .wallet-modul {
     width: 100%;
+  }
+  .dropDown {
+    width: 30%;
+    height: 10%;
+    margin: 5% 0 0 8%;
+    background-color: rgba(255, 255, 255, 0);
+    border: 1px solid #f26522;
+    color: #ffffff;
+  }
+  .left {
+    height: 800px;
+    width: 600px;
+    background-color: #f26522;
+    float: left;
+    display: none;
+  }
+  .right {
+    float: left;
+  }
+  .newWallet {
+    width: 130px;
+    height: 31px;
+    margin: 5% 0 0 8%;
+    border: 1px solid #f26522;
+    color: #f26522;
+    line-height: 31px;
+    text-align: center;
+    clear: both;
+    position: absolute;
+  }
+  .openWallet {
+    width: 130px;
+    height: 31px;
+    margin: 5% 0 0 26%;
+    border: 1px solid #f26522;
+    color: #f26522;
+    line-height: 31px;
+    text-align: center;
+  }
+  .cpx {
+  }
+  .deleteWallet {
+    width: 110px;
+    height: 31px;
+    margin: -1% 0 0 87%;
+    border: 1px solid #f26522;
+    color: #ffffff;
+    background-color: #f26522;
+    line-height: 31px;
+    text-align: center;
+    clear: both;
+    position: absolute;
   }
 }
 </style>

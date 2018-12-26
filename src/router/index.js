@@ -5,12 +5,14 @@ import wallet from '@/views/wallet/index'
 import blocks from '@/views/blocks/index'
 import transactions from '@/views/transactions/index'
 import producer from '@/views/producer/index'
-import BlocksList from '@/components/home/list/BlocksList'
-import Transactions from '@/components/home/list/TransactionsList'
+// import BlocksList from '@/components/home/list/BlocksList'
+// import Transactions from '@/components/home/list/TransactionsList'
 import BlocksInfo from '@/components/home/details/BlocksInfo'
 import TransactionsInfo from '@/components/home/details/TransactionsInfo'
 import AccountInfo from '@/components/home/details/AccountInfo'
 import ProducerInfo from '@/components/home/details/ProducerInfo'
+import NewWallet from '@/components/home/wallet/NewWallet'
+import OpenWallet from '@/components/home/wallet/OpenWallet'
 
 Vue.use(Router)
 
@@ -38,6 +40,18 @@ export default new Router({
       path: '/wallet',
       name: 'wallet',
       component: wallet,
+    },
+    {
+      path: '/NewWallet',
+      alias: '/wallet/NewWallet',
+      name: 'NewWallet',
+      component: NewWallet,
+    },
+    {
+      path: '/OpenWallet',
+      alias: '/wallet/OpenWallet',
+      name: 'OpenWallet',
+      component: OpenWallet,
     },
     {
       path: '/blocks',

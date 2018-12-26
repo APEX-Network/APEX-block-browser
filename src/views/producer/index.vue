@@ -101,6 +101,6 @@ export default {
 .producer {
   width: 100%;
   height: 100%;
-  background: url(./../../assets/images/shared/yunshi.png) 70% 80% no-repeat;
+  background: url(./../../assets/images/shared/yunshi.png) 75% 95% no-repeat;
 }
 </style>

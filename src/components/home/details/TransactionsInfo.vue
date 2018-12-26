@@ -65,6 +65,6 @@ export default {
 .TransactionsInfo {
   width: 100%;
   height: 100%;
-  background: url(./../../../assets/images/shared/yunshi.png) 55% 65% no-repeat;
+  background: url(./../../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
 }
 </style>
