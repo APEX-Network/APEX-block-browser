@@ -263,9 +263,12 @@ export default {
   .bottom-modul,
   .top-modul {
     height: 49%;
-  }
-  .top-modul {
     margin-bottom: 2%;
+    .apex-modul {
+      .apex-title {
+       height: 43px;
+      }
+    }
   }
   .tps {
     .chart-box {

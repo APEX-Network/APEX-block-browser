@@ -6,11 +6,10 @@
       <ul class="table-ul">
         <li v-for="(value, key ,index ) in blocksInfo" :key="index" class="row">
           <span class="col">{{key}} :</span>
-          <span class="col col-lg-8" v-if="key === 'Parent Hash' && key !== 'Mined By'">
+          <span class="col col-lg-8" v-if="key === 'Parent Hash'">
             <router-link to="/blocks/BlocksInfo">{{value}}</router-link>
-            <!-- bug多一条数据 -->
           </span>
-          <span class="col col-lg-8" v-if="key === 'Mined By'">
+          <span class="col col-lg-8" v-else-if="key === 'Mined By'">
             <router-link to="/producer/ProducerInfo">{{value}}</router-link>
           </span>
           <span class="col col-lg-8" v-else>{{value}}</span>

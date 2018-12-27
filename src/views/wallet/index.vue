@@ -3,30 +3,31 @@
     <div class="top-modul clearboth">
       <div class="overview apex-modul wallet-modul">
         <p class="apex-title">Wallet</p>
-        <div>
-          <div left>
-            <div class="address">Address</div>
-            <div>
-            <select class="dropDown">
-              <option>2ff3976160c3d7af160c3d7af160c3d7aff160c3d7af</option>
-              <option>2ff3976160c3d7af160c3d7af160c3d7aff160c3d7af</option>
-              <option>2ff3976160c3d7af160c3d7af160c3d7aff160c3d7af</option>
-              <option>2ff3976160c3d7af160c3d7af160c3d7af</option>
-            </select>
-            <router-link to="/wallet/NewWallet"><div class="newWallet">NEW WALLET</div></router-link>
-            <router-link to="/wallet/OpenWallet"><div class="openWallet">OPEN WALLET</div></router-link>
-            </div>
+        <div class="flex-container1">
+          <div class="flex-item1">Address</div>
+          <div class="flex-item2"></div>
+          <div class="flex-item3">CPX: 145.0125</div>
+        </div>
+        <div class="flex-container2">
+          <div class="flex-item1">
+            <router-link to="/wallet/NewWallet">NEW WALLET</router-link>
           </div>
-            <div class="right">
-              <div class="cpx">CPX: 145.0125</div>
-              <div class="deleteWallet">DELETEWALLET</div>
+          <div class="flex-item2">
+            <router-link to="/wallet/OpenWallet">OPEN WALLET</router-link>
           </div>
+          <div class="flex-item3">
+            <router-link to="/wallet/Transfer">TRANSFER</router-link>
+          </div>
+        </div>`
+        <div class="flex-container3">
+          <div class="flex-item1">CLOSE WALLET</div>
         </div>
       </div>
     </div>
     <div class="bottom-modul clearboth">
       <div class="block apex-modul fl">
-        <p class="apex-title">Transfers
+        <p class="apex-title">
+          Transfers
           <span>
             <router-link to="/transactions">ALL</router-link>
           </span>
@@ -49,7 +50,8 @@
         </ul>
       </div>
       <div class="transactions apex-modul fr">
-        <p class="apex-title">Transactions
+        <p class="apex-title">
+          Transactions
           <span>
             <router-link to="/transactions">ALL</router-link>
           </span>
@@ -162,6 +164,21 @@ export default {
         },
         {
           code:
+            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
+          time: "1 minute ago"
+        },
+        {
+          code:
+            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
+          time: "1 minute ago"
+        },
+        {
+          code:
+            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
+          time: "1 minute ago"
+        },
+        {
+          code:
             "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
           time: "1 minute ago"
         },
@@ -201,64 +218,110 @@ export default {
   .bottom-modul,
   .top-modul {
     height: 49%;
-  }
-  .top-modul {
     margin-bottom: 2%;
+  }
+  .bottom-modul {
+    .apex-modul {
+      .apex-title {
+        span {
+          a {
+              color: #f26522;
+          }
+        }
+      }
+    }
   }
   .wallet-modul {
     width: 100%;
+    .apex-title {
+      height: 43px;
+    }
   }
-  .dropDown {
-    width: 30%;
-    height: 10%;
-    margin: 5% 0 0 8%;
-    background-color: rgba(255, 255, 255, 0);
-    border: 1px solid #f26522;
-    color: #ffffff;
+  .flex-container1 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 30%;
+    .flex-item1 {
+      width: 120px;
+      height: 0px;
+      font-size: 18px;
+      margin: 50px 0 0 30px;
+    }
+    .flex-item2 {
+      width: 300px;
+      height: 33px;
+      margin: 50px 0px 0px 0px;
+      line-height: 33px;
+      text-align: center;
+      border: 1px solid #f26522;
+    }
+    .flex-item3 {
+      width: 220px;
+      height: 35px;
+      margin: 50px 0 0 95px;
+      line-height: 35px;
+      text-align: center;
+      font-size: 22px;
+    }
   }
-  .left {
-    height: 800px;
-    width: 600px;
-    background-color: #f26522;
-    float: left;
-    display: none;
+  .flex-container2 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 30%;
+    .flex-item1 {
+      width: 135px;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      border: 1px solid #f26522;
+      margin: 40px 10px 0px 150px;
+      a {
+        color: #f26522;
+      }
+    }
+    .flex-item2 {
+      width: 135px;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      border: 1px solid #f26522;
+      margin: 40px 0px 0px 19px;
+      a {
+        color: #f26522;
+      }
+    }
+    .flex-item3 {
+      width: 120px;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      border: 1px solid #f26522;
+      margin: 40px 20px 0px 136px;
+      a {
+        color: #f26522;
+      }
+    }
   }
-  .right {
-    float: left;
-  }
-  .newWallet {
-    width: 130px;
-    height: 31px;
-    margin: 5% 0 0 8%;
-    border: 1px solid #f26522;
-    color: #f26522;
-    line-height: 31px;
-    text-align: center;
-    clear: both;
-    position: absolute;
-  }
-  .openWallet {
-    width: 130px;
-    height: 31px;
-    margin: 5% 0 0 26%;
-    border: 1px solid #f26522;
-    color: #f26522;
-    line-height: 31px;
-    text-align: center;
-  }
-  .cpx {
-  }
-  .deleteWallet {
-    width: 110px;
-    height: 31px;
-    margin: -1% 0 0 87%;
-    border: 1px solid #f26522;
-    color: #ffffff;
-    background-color: #f26522;
-    line-height: 31px;
-    text-align: center;
-    clear: both;
-    position: absolute;
+  .flex-container3 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 30%;
+    .flex-item1 {
+      width: 110px;
+      height: 30px;
+      margin-left: 940px;
+      margin-top: 4px;
+      color: #f26522;
+      line-height: 30px;
+      text-align: center;
+      border: 1px solid #f26522;
+    }
   }
 }
 </style>

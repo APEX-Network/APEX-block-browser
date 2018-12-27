@@ -13,6 +13,7 @@ import AccountInfo from '@/components/home/details/AccountInfo'
 import ProducerInfo from '@/components/home/details/ProducerInfo'
 import NewWallet from '@/components/home/wallet/NewWallet'
 import OpenWallet from '@/components/home/wallet/OpenWallet'
+import Transfer from '@/components/home/wallet/Transfer'
 
 Vue.use(Router)
 
@@ -52,6 +53,12 @@ export default new Router({
       alias: '/wallet/OpenWallet',
       name: 'OpenWallet',
       component: OpenWallet,
+    },
+    {
+      path: '/Transfer',
+      alias: '/wallet/Transfer',
+      name: 'Transfer',
+      component: Transfer,
     },
     {
       path: '/blocks',

@@ -23,7 +23,7 @@ export default {
 .uchain-pagination {
   width: 100%;
   height: 50px;
-  padding: 10px 20px;
+  padding: 10px 35px;
   box-sizing: border-box;
   text-align: right;
   font-size: 12px;
@@ -43,8 +43,11 @@ export default {
       padding: 9px;
       background: url("../../assets/images/shared/page.png") no-repeat center
         2px;
+      color: #f26522;
+
       &:hover {
         background-position: center -34px;
+        color: #f26522;
       }
     }
     &.next {
@@ -54,7 +57,7 @@ export default {
     &.last {
       transition: all 0.3s;
       &:hover {
-        color: #00c1ff;
+        color: #f26522;
       }
     }
   }

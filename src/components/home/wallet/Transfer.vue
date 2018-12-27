@@ -1,5 +1,5 @@
 <template>
-  <div class="openWallet">
+  <div class="transfer">
     <apex-title :title="title"/>
     <apex-back-ground/>
     <div class="flex-container">
@@ -37,11 +37,11 @@ import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
 
 export default {
-  name: "OpenWallet",
+  name: "Transfer",
   props: [""],
   data() {
     return {
-      title: "Open Wallet"
+      title: "Transfer"
     };
   },
 
@@ -63,7 +63,7 @@ export default {
 </script>
 <style lang='less' scoped>
 @import "./../../../assets/css/layout";
-.openWallet {
+.transfer {
   width: 100%;
   height: 100%;
   background: url(./../../../assets/images/shared/yunshi.png) 25% 35% no-repeat;
@@ -118,6 +118,7 @@ export default {
         display: inline;
         position: absolute;
         margin-left: 4%;
+        margin-top: 0.5%;
       }
       div:nth-child(5) {
         color: #f26522;
