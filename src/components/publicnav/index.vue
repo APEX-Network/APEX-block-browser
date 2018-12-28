@@ -22,8 +22,8 @@
         </li>
       </ul>
     </div>
-
-
+    <!-- <div class="nav about" @click="showAbout()"><img src="../../assets/images/about.png"/></div> -->
+    <!-- <div class="aboutus"><img src="../../assets/images/aboutus.png"/></div> -->
   </div>
 </template>
 <script>
@@ -78,6 +78,9 @@ export default {
         localStorage.setItem("locale", "ZH");
         this.$i18n.locale = localStorage.getItem("locale");
       }
+    },
+    showAbout() {
+      console.log('clicked');
     }
   }
 };
@@ -90,6 +93,13 @@ export default {
   left: 0;
   width: 100%;
   height: 90px;
+  .about {
+    z-index: 10000;
+    width: 30px;
+    height: 30px;
+    left: 110px;
+    top: 520px;
+  }
   .main {
     position: relative;
   }
@@ -216,6 +226,12 @@ export default {
     }
   }
 }
+// .aboutus {
+//   z-index: 10000;
+//   display: flex;
+//   position: relative;
+//   padding: 680px 0px 0px 63px;
+// }
 @media screen and(max-width:1366px) {
   .nav{
      .nav-bar{

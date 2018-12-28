@@ -13,6 +13,10 @@ import AccountInfo from '@/components/home/details/AccountInfo'
 import ProducerInfo from '@/components/home/details/ProducerInfo'
 import NewWallet from '@/components/home/wallet/NewWallet'
 import OpenWallet from '@/components/home/wallet/OpenWallet'
+import PrivateKey from '@/components/home/wallet/PrivateKey'
+import KeyStore from '@/components/home/wallet/KeyStore'
+import CreatedKeystore from '@/components/home/wallet/CreatedKeystore'
+import DownloadKey from '@/components/home/wallet/DownloadKey'
 import Transfer from '@/components/home/wallet/Transfer'
 
 Vue.use(Router)
@@ -49,10 +53,34 @@ export default new Router({
       component: NewWallet,
     },
     {
+      path: '/CreatedKeystore',
+      alias: '/wallet/NewWallet/CreatedKeystore',
+      name: 'CreatedKeystore',
+      component: CreatedKeystore,
+    },
+    {
+      path: '/DownloadKey',
+      alias: '/wallet/NewWallet/CreatedKeystore/DownloadKey',
+      name: 'DownloadKey',
+      component: DownloadKey,
+    },
+    {
       path: '/OpenWallet',
       alias: '/wallet/OpenWallet',
       name: 'OpenWallet',
       component: OpenWallet,
+    },
+    {
+      path: '/OpenWallet/PrivateKey',
+      alias: '/wallet/OpenWallet/PrivateKey',
+      name: 'PrivateKey',
+      component: PrivateKey,
+    },
+    {
+      path: '/OpenWallet/KeyStore',
+      alias: '/wallet/OpenWallet/KeyStore',
+      name: 'KeyStore',
+      component: KeyStore,
     },
     {
       path: '/Transfer',

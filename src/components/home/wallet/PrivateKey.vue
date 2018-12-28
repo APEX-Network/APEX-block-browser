@@ -1,16 +1,20 @@
 <template>
-  <div class="openWallet">
+  <div class="privateKey">
     <apex-title :title="title"/>
     <apex-back-ground/>
     <div class="flex-container">
       <div class="text">
-        <p>How would like to access your wallet?</p>
+        <p>Import wallet address by private key.</p>
       </div>
-      <div class="privateKey">
-        <router-link to="/wallet/OpenWallet/PrivateKey">PRIVATE KEY</router-link>
+      <div class="enterpwd">
+        <input type="text" placeholder="Paste or type private key">
+        <div class="repatpwd">
+          <input type="text" placeholder="repect passport">
+          <img src="./../../../assets/images/eye.png">
+        </div>
       </div>
-      <div class="keyStore">
-        <router-link to="/wallet/OpenWallet/KeyStore">KEYSTOER</router-link>
+      <div class="create">
+        <router-link to="/wallet">UNLOCK</router-link>
       </div>
     </div>
   </div>
@@ -21,7 +25,7 @@ import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
 
 export default {
-  name: "OpenWallet",
+  name: "PrivateKey",
   props: [""],
   data() {
     return {
@@ -47,7 +51,7 @@ export default {
 </script>
 <style lang='less' scoped>
 @import "./../../../assets/css/layout";
-.openWallet {
+.privateKey {
   width: 100%;
   height: 100%;
   background: url(./../../../assets/images/shared/yunshi.png) 25% 35% no-repeat;
@@ -59,39 +63,43 @@ export default {
     flex-direction: column;
     .text {
       margin-top: 80px;
-      p:nth-child(1) {
-        color: rgba(255, 255, 255, 0.8);
-      }
-      p:nth-child(2) {
+      margin-right: 50px;
+      p {
         color: rgba(255, 255, 255, 0.7);
-        text-indent: 40px;
-        padding-top: 2px;
-      }
-      p:nth-child(3) {
-        padding-top: 2px;
-      }
-      p:nth-child(4) {
-        padding-top: 2px;
-        text-indent: 80px;
       }
     }
-    .privateKey {
-      color: #f26522;
-      border: 1px solid #f26522;
-      margin-top: 100px;
-      text-align: center;
-      height: 30px;
-      width: 160px;
-      line-height: 30px;
-      z-index: 1;
-      a {
-        color: #f26522;
+    .enterpwd {
+      margin-top: 80px;
+      margin-left: 35px;
+      input {
+        margin-left: 0px;
+        background: rgba(255, 255, 255, 0.001);
+        border: 1px solid #f26522;
+        width: 370px;
+        height: 30px;
+        position: absolute;
+      }
+      .repatpwd {
+        margin: 45px 100px 0 0;
+        input {
+          margin-left: 0px;
+          margin-top: 25px;
+          width: 370px;
+          height: 30px;
+        }
+        img {
+          z-index: 1000;
+          margin-left: 340px;
+          margin-top: 33px;
+          position: relative;
+        }
       }
     }
-    .keyStore {
+    .create {
       color: #f26522;
       border: 1px solid #f26522;
-      margin-top: 30px;
+      margin-top: 60px;
+      margin-right: 25px;
       text-align: center;
       height: 30px;
       width: 160px;

@@ -16,19 +16,34 @@
       </div>
 
       <div class="amount">
-        <div>Amount(Available:1.00000004)</div>
+        <span>Amount(Available:1.00000004)</span>
         <input type="text" placeholder="Transfer Amount">
-        <div>All</div>
+        <div>
+          <router-link to>All</router-link>
+        </div>
         <div>CPX</div>
         <div>Please enter the correct transfer amount</div>
       </div>
       <div class="password">
         <div>Password</div>
         <input type="text">
+        <img src="./../../../assets/images/eye.png">
         <div>Password Incorrect</div>
       </div>
-      <div class="send">SEND</div>
+      <div class="send" @click="showDialog()">
+        <router-link to>SEND</router-link>
+      </div>
     </div>
+    <!-- <keep-alive> -->
+      <body class="dialog" ref="dialog">
+        <div class="confirm" ref="confirm">
+          <div>Successful transfer</div>
+          <div @click="confirm()">
+            <router-link to="/wallet">CONFIRM</router-link>
+          </div>
+        </div>
+      </body>
+    <!-- </keep-alive> -->
   </div>
 </template>
 
@@ -56,7 +71,14 @@ export default {
 
   mounted() {},
 
-  methods: {},
+  methods: {
+    showDialog() {
+      this.$refs.dialog.style.display = "flex";
+    },
+    confirm() {
+      this.$refs.dialog.style.display = "none";
+    }
+  },
 
   watch: {}
 };
@@ -68,17 +90,17 @@ export default {
   height: 100%;
   background: url(./../../../assets/images/shared/yunshi.png) 25% 35% no-repeat;
   .flex-container {
+    position: absolute;
     display: flex;
     height: auto;
     width: 33.333%;
-    margin-left: 33.333%;
+    margin-left: 30%;
     flex-direction: column;
     .from {
       margin: 5% 0 0 0%;
       div:nth-child(1) {
         color: rgba(255, 255, 255, 0.5);
         margin: 0px 0px 15px 0px;
-
       }
       input {
         background: rgba(255, 255, 255, 0.001);
@@ -100,39 +122,58 @@ export default {
       div:nth-child(3) {
         margin-top: 8px;
         color: #f26522;
+        margin-left: 10px;
       }
     }
     .amount {
-      margin: 5% 0 0 -13%;
+      margin: 5% 0 0 11.5%;
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
         width: 200px;
       }
-      div:nth-child(3) {
+      div:nth-child(2) {
         margin-left: 5%;
         display: inline;
-        color: #f26522;
       }
-      div:nth-child(4) {
+      div:nth-child(3) {
         display: inline;
         position: absolute;
         margin-left: 4%;
-        margin-top: 0.5%;
+        margin-top: 1.4%;
+        z-index: 1;
+        a {
+          color: #f26522;
+        }
+      }
+      div:nth-child(4) {
+        display: inline;
+        margin-left: 20%;
       }
       div:nth-child(5) {
         color: #f26522;
+        margin-top: 8px;
+        margin-left: 10px;
       }
     }
     .password {
-      margin: 5% 0 0 0%;
+      margin: 2% 0 0 0.1%;
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
         width: 300px;
       }
-      div:nth-child(3) {
+      img {
+        z-index: 1;
+        margin-left: 275px;
+        margin-top: -23px;
+        position: relative;
+        display: block;
+      }
+      div:nth-child(4) {
         color: #f26522;
+        margin-top: 15px;
+        margin-left: 10px;
       }
     }
     .send {
@@ -142,9 +183,52 @@ export default {
       width: 180px;
       height: 30px;
       margin-right: 18%;
-      margin-top: 40px;
+      margin-top: 30px;
       text-align: center;
       line-height: 30px;
+      border-radius: 4px;
+      z-index: 2;
+      a {
+        color: #ffffff;
+      }
+    }
+  }
+  .dialog {
+    display: none;
+    position: relative;
+    width: 100%;
+    height: 102%;
+    margin-top: -38px;
+    background: rgba(255, 255, 255, 0.05);
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    .confirm {
+      margin: auto;
+      width: 310px;
+      height: 180px;
+      margin-left: 390px;
+      background: #ffffff;
+      div:nth-child(1) {
+        color: #f26522;
+        font-size: 15px;
+        margin-left: 80px;
+        margin-top: 30px;
+      }
+      div:nth-child(2) {
+        z-index: 1;
+        text-align: center;
+        width: 100px;
+        height: 30px;
+        margin-left: 100px;
+        margin-top: 50px;
+        line-height: 30px;
+        border-radius: 4px;
+        background: #f26522;
+        a {
+          color: #ffffff;
+        }
+      }
     }
   }
 }

@@ -18,7 +18,7 @@
           <div class="flex-item3">
             <router-link to="/wallet/Transfer">TRANSFER</router-link>
           </div>
-        </div>`
+        </div>
         <div class="flex-container3">
           <div class="flex-item1">CLOSE WALLET</div>
         </div>
@@ -316,7 +316,7 @@ export default {
       width: 110px;
       height: 30px;
       margin-left: 940px;
-      margin-top: 4px;
+      margin-top: 20px;
       color: #f26522;
       line-height: 30px;
       text-align: center;

@@ -1,16 +1,28 @@
 <template>
-  <div class="openWallet">
+  <div class="downloadKey">
     <apex-title :title="title"/>
     <apex-back-ground/>
     <div class="flex-container">
       <div class="text">
-        <p>How would like to access your wallet?</p>
+        <p class="p1">
+        <span>Do not lose it!</span>
+        <span>It cannot be recovered if you lose it.</span>
+        </p>
+        <p class="p2">
+        <span>Do not share it!</span>
+        <span>Your funds will be stolen if you use this file on a malicious phishing site.</span>
+        </p>
+        <p class="p3">
+        <span>Make a backup!</span>
+        <span>Secure it like the millions of dollars it may one day be worth.</span>
+        </p>
+        <div>Save Your Keystore File</div>
       </div>
-      <div class="privateKey">
-        <router-link to="/wallet/OpenWallet/PrivateKey">PRIVATE KEY</router-link>
-      </div>
-      <div class="keyStore">
-        <router-link to="/wallet/OpenWallet/KeyStore">KEYSTOER</router-link>
+      <!-- <div class="create1">
+        <router-link to="/wallet/NewWallet/CreatedKeystore">DOWNLOAD ENCRYPTED KEY</router-link>
+      </div> -->
+      <div class="create2">
+        <router-link to="/wallet">CONTINUE</router-link>
       </div>
     </div>
   </div>
@@ -21,11 +33,11 @@ import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
 
 export default {
-  name: "OpenWallet",
+  name: "DownloadKey",
   props: [""],
   data() {
     return {
-      title: "OpenWallet"
+      title: "NewWallet"
     };
   },
 
@@ -47,7 +59,7 @@ export default {
 </script>
 <style lang='less' scoped>
 @import "./../../../assets/css/layout";
-.openWallet {
+.downloadKey {
   width: 100%;
   height: 100%;
   background: url(./../../../assets/images/shared/yunshi.png) 25% 35% no-repeat;
@@ -59,42 +71,49 @@ export default {
     flex-direction: column;
     .text {
       margin-top: 80px;
-      p:nth-child(1) {
-        color: rgba(255, 255, 255, 0.8);
+      p {
+        span:nth-child(1){
+          font-size: 20px;
+        }
+        span:nth-child(2){
+          font-size: 15px;
+          color: rgba(255, 255, 255, 0.7);
+        }
       }
-      p:nth-child(2) {
-        color: rgba(255, 255, 255, 0.7);
-        text-indent: 40px;
-        padding-top: 2px;
+      .p1 {
+        margin-left: 150px;
       }
-      p:nth-child(3) {
-        padding-top: 2px;
+      .p2 {
+        margin-left: 30px;
       }
-      p:nth-child(4) {
-        padding-top: 2px;
-        text-indent: 80px;
+      .p3 {
+        margin-left: 50px;
+      }
+      div {
+        font-size: 20px;
+        margin: 30px 0px 0px 215px;
       }
     }
-    .privateKey {
+    .create1 {
       color: #f26522;
       border: 1px solid #f26522;
-      margin-top: 100px;
+      margin-top: 50px;
       text-align: center;
       height: 30px;
-      width: 160px;
+      width: 220px;
       line-height: 30px;
       z-index: 1;
       a {
         color: #f26522;
       }
     }
-    .keyStore {
+    .create2 {
       color: #f26522;
       border: 1px solid #f26522;
       margin-top: 30px;
       text-align: center;
       height: 30px;
-      width: 160px;
+      width: 220px;
       line-height: 30px;
       z-index: 1;
       a {

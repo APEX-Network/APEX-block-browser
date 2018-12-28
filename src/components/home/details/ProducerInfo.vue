@@ -7,7 +7,7 @@
         <li v-for="(value, key ,index ) in producerInfo" :key="index" class="row">
           <span class="col">{{key}} :</span>
           <span class="col col-lg-8" v-if="key === 'Website'">
-            <router-link to="/home/blocks/details">{{value}}</router-link>
+            <router-link to="/home">{{value}}</router-link>
           </span>
           <span class="col col-lg-8" v-else>{{value}}</span>
         </li>
