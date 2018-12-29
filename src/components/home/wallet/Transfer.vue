@@ -34,16 +34,14 @@
         <router-link to>SEND</router-link>
       </div>
     </div>
-    <!-- <keep-alive> -->
-      <body class="dialog" ref="dialog">
+      <div class="dialog" ref="dialog">
         <div class="confirm" ref="confirm">
           <div>Successful transfer</div>
           <div @click="confirm()">
             <router-link to="/wallet">CONFIRM</router-link>
           </div>
         </div>
-      </body>
-    <!-- </keep-alive> -->
+      </div>
   </div>
 </template>
 

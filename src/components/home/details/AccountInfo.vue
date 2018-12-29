@@ -22,7 +22,9 @@
         <ul class="table-ul">
           <li v-for="(list,index) in transactions" :key="index" class="row">
             <span class="col col-lg-10">
-              <router-link to="/transactions/TransactionsInfo">{{list.code}}</router-link>
+              <div class="bottom">
+                <router-link to="/transactions/TransactionsInfo">{{list.code}}</router-link>
+              </div>
             </span>
             <span class="col">{{list.time }}</span>
           </li>
@@ -45,6 +47,7 @@ export default {
     ApexTitle,
     ApexBackGround
   },
+  mounted() {},
   data() {
     return {
       title: "AccountInfo Information",
@@ -80,27 +83,29 @@ export default {
           time: "1 minute ago"
         }
       ],
-      details:
-        {
-          'Address' : 'AP8AP8iUQsnpbT73LkpBS8oNzSRGJAvBoVE',
-          "Balance" : '5.36123375 UCN'
-        }
+      details: {
+        Address: "AP8AP8iUQsnpbT73LkpBS8oNzSRGJAvBoVE",
+        Balance: "5.36123375 UCN"
+      }
     };
   },
-  methods:{
-    Copy(index){
-      let getCopyText = this.details.Address;  
-      this.doCopy(getCopyText)
+  methods: {
+    Copy(index) {
+      let getCopyText = this.details.Address;
+      this.doCopy(getCopyText);
     },
     doCopy(val) {
-        this.$copyText(val).then(function (e) {
+      this.$copyText(val).then(
+        function(e) {
           // alert('Copied')
           // console.log(e)
-        }, function (e) {
+        },
+        function(e) {
           // alert('Can not copy')
           // console.log(e)
-        })
-      }
+        }
+      );
+    }
   }
 };
 </script>
@@ -112,10 +117,59 @@ export default {
   width: 100%;
   height: 100%;
   background: url(./../../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
-  .uchain-box{
+  .uchain-box {
     padding-top: 95px;
+    .data-table {
+      width: 100%;
+      padding: 0px 12px 0px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      .table-ul {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 20px;
+        border-top: #0000 1px solid;
+        & > li {
+          &.row {
+            margin: 0;
+            color: #ebebeb;
+            height: 40px;
+          }
+          border-bottom: #333333 1px solid;
+          & > span {
+            line-height: 35px;
+            height: 35px;
+            box-sizing: border-box;
+            padding: 0 8px 0 0px;
+            vertical-align: middle;
+            color: #ebebeb;
+            overflow: hidden;
+            white-space: nowrap;
+            .bottom {
+              margin-left: 20px;
+              padding-left: 40px;
+              box-sizing: border-box;
+              font-family: "Regular";
+              background: url(./../../../assets/images/shared/icon-fix.png) left
+                5px no-repeat;
+              a {
+                max-width: 300px;
+                overflow: hidden;
+                white-space: nowrap;
+                color: #f26522;
+                margin-top: 5px;
+              }
+            }
+          }
+          &:first-of-type {
+            span {
+              color: #ebebeb;
+              font-family: "Semibold";
+            }
+          }
+        }
+      }
+    }
+  }
 }
-}
-
-
 </style>
