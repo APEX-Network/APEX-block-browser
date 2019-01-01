@@ -282,6 +282,9 @@ export default {
       a {
         color: #f26522;
       }
+      a:hover {
+        box-shadow: 2px 2px 8px 2px #f26522;
+      }
     }
     .flex-item2 {
       width: 135px;

@@ -4,7 +4,7 @@
     <apex-back-ground/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
-        <li v-for="(value, key ,index ) in details" :key="index" class="row">
+        <li v-for="(value, key ,index ) in accountInfo" :key="index" class="row">
           <span class="col">{{key}} :</span>
           <span class="col col-lg-8" v-if="key === 'Address'" ref="address">
             {{value}}
@@ -47,10 +47,31 @@ export default {
     ApexTitle,
     ApexBackGround
   },
-  mounted() {},
+  mounted() {
+    let params = new URLSearchParams()
+    // let headers = {'Content-type': 'application/x-www-form-urlencoded'}
+    params.append('start',0)
+    params.append('pageSize',3)
+    // params.append("address","]APNfopaMjbzhqnCuY6H19J8uEDHx5jAvmDL")
+    console.log(params)
+    this.axios.post('/api/v1.0/blocks/blockList',params)
+     .then(response => {
+       console.log(params)
+       console.log(response.data)
+     })
+          .catch(function(err){
+            if(err.response) {
+              console.log(err.response)
+                //控制台打印错误返回的内容
+            }
+          })
+    // this.axios.get('/api/v1.0/blocks/blockHash/ae18df88057267c214b43cf58e313d6babfc16e7ba2aee5f88c6dd10247403b6')
+    // this.axios.get('/api/v1.0/state/blockStateInfo')
+},
   data() {
     return {
       title: "AccountInfo Information",
+      accountInfo: null,
       transactions: [
         {
           code:
@@ -82,11 +103,7 @@ export default {
             "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd65",
           time: "1 minute ago"
         }
-      ],
-      details: {
-        Address: "AP8AP8iUQsnpbT73LkpBS8oNzSRGJAvBoVE",
-        Balance: "5.36123375 UCN"
-      }
+      ]
     };
   },
   methods: {
