@@ -104,6 +104,10 @@ export default {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
         width: 300px;
+        color: aliceblue;
+      }
+      input:hover {
+          box-shadow: 2px 2px 8px 2px #f26522;
       }
     }
     .to {
@@ -112,6 +116,10 @@ export default {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
         width: 300px;
+        color: aliceblue;
+      }
+      input:hover {
+          box-shadow: 2px 2px 8px 2px #f26522;
       }
       div:nth-child(1) {
         color: rgba(255, 255, 255, 0.5);
@@ -129,6 +137,10 @@ export default {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
         width: 200px;
+        color: aliceblue;
+      }
+      input:hover {
+          box-shadow: 2px 2px 8px 2px #f26522;
       }
       div:nth-child(2) {
         margin-left: 5%;
@@ -160,6 +172,10 @@ export default {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
         width: 300px;
+        color: aliceblue;
+      }
+      input:hover {
+          box-shadow: 2px 2px 8px 2px #f26522;
       }
       img {
         z-index: 1;
@@ -188,6 +204,10 @@ export default {
       z-index: 2;
       a {
         color: #ffffff;
+        border-radius: 4px;
+      }
+      a:hover {
+        box-shadow: 2px 2px 8px 2px #f26522;
       }
     }
   }
@@ -197,7 +217,7 @@ export default {
     width: 100%;
     height: 102%;
     margin-top: -38px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.1);
     justify-content: center;
     align-items: center;
     z-index: 1;
@@ -226,6 +246,10 @@ export default {
         a {
           color: #ffffff;
         }
+        a:hover {
+        box-shadow: 2px 2px 8px 2px #f26522;
+        border-radius: 4px;
+      }
       }
     }
   }

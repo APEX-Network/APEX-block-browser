@@ -28,60 +28,76 @@ export default {
   components: {
     Pagination
   },
+  mounted() {
+     this.$axios.post('/api/v1.0/transactions/transactionList'
+     ,{ 
+       start: '0', pageSize: '10',
+     })
+     .then(response => {
+       console.log(response.data)
+       this.transactions = response.data.txHash
+     })
+          .catch(function(err){
+            if(err.response) {
+              console.log(err.response)
+            }
+          })
+    },
   data() {
     return {
-      transactions: [
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd35",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd45",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd55",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd65",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd55",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd65",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd55",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd65",
-          time: "1 minute ago"
-        }
-      ]
+      transactions: []
+      // transactions: [
+      //   {
+      //     code:
+      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
+      //     time: "1 minute ago"
+      //   },
+      //   {
+      //     code:
+      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
+      //     time: "1 minute ago"
+      //   },
+      //   {
+      //     code:
+      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd35",
+      //     time: "1 minute ago"
+      //   },
+      //   {
+      //     code:
+      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd45",
+      //     time: "1 minute ago"
+      //   },
+      //   {
+      //     code:
+      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd55",
+      //     time: "1 minute ago"
+      //   },
+      //   {
+      //     code:
+      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd65",
+      //     time: "1 minute ago"
+      //   },
+      //   {
+      //     code:
+      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd55",
+      //     time: "1 minute ago"
+      //   },
+      //   {
+      //     code:
+      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd65",
+      //     time: "1 minute ago"
+      //   },
+      //   {
+      //     code:
+      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd55",
+      //     time: "1 minute ago"
+      //   },
+      //   {
+      //     code:
+      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd65",
+      //     time: "1 minute ago"
+      //   }
+      // ]
     };
   }
 };

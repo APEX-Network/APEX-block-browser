@@ -103,6 +103,10 @@ export default {
         width: 250px;
         height: 30px;
         position: absolute;
+        color: aliceblue;
+      }
+      input:hover {
+        box-shadow: 2px 2px 8px 2px #f26522;
       }
       img {
         z-index: 1000;
@@ -134,6 +138,10 @@ export default {
         input {
           margin-left: 20px;
           width: 251px;
+          color: antiquewhite;
+        }
+        input:hover {
+          box-shadow: 2px 2px 8px 2px #f26522;
         }
         img {
           z-index: 1000;
@@ -154,6 +162,9 @@ export default {
       z-index: 1;
       a {
         color: #f26522;
+      }
+      a:hover {
+        box-shadow: 2px 2px 8px 2px #f26522;
       }
     }
   }

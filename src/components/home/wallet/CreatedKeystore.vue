@@ -106,6 +106,9 @@ export default {
       a {
         color: #f26522;
       }
+      a:hover {
+        box-shadow: 2px 2px 8px 2px #f26522;
+      }
     }
     .create2 {
       color: #f26522;
@@ -118,6 +121,9 @@ export default {
       z-index: 1;
       a {
         color: #f26522;
+      }
+      a:hover {
+        box-shadow: 2px 2px 8px 2px #f26522;
       }
     }
   }

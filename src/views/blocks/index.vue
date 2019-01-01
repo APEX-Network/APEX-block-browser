@@ -16,11 +16,11 @@
                 <router-link to="/blocks/BlocksInfo">{{item.height}}</router-link>                
               </span>
               <span class="col col-lg-6">
-                <router-link to="/blocks/BlocksInfo">{{item.hashCode}}</router-link>
+                <router-link to="/blocks/BlocksInfo">{{item.blockHash}}</router-link>
               </span>
               <span class="col">{{item.age}}</span>
-              <span class="col txn">{{item.txn}}</span>
-              <span class="col">{{item.miner}}</span>
+              <span class="col txn">{{item.txNum}}</span>
+              <span class="col">{{item.producer}}</span>
             </li>
           </ul>
           <Pagination />
@@ -40,92 +40,32 @@ export default {
     ApexBackGround,
     ApexTitle
   },
+  mounted() {
+    this.getAllBlocks();
+  },
   data() {
     return {
       title: "Blocks",
-      dataLIst: [
-        {
-          height: "6353170",
-          hashCode:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          age: 18,
-          txn: 20,
-          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
-        },
-        {
-          height: "6353170",
-          hashCode:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          age: 18,
-          txn: 20,
-          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
-        },
-        {
-          height: "6353170",
-          hashCode:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          age: 18,
-          txn: 20,
-          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
-        },
-        {
-          height: "6353170",
-          hashCode:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          age: 18,
-          txn: 20,
-          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
-        },
-        {
-          height: "6353170",
-          hashCode:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          age: 18,
-          txn: 20,
-          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
-        },
-        {
-          height: "6353170",
-          hashCode:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          age: 18,
-          txn: 20,
-          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
-        },
-        {
-          height: "6353170",
-          hashCode:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          age: 18,
-          txn: 20,
-          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
-        },
-        {
-          height: "6353170",
-          hashCode:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          age: 18,
-          txn: 20,
-          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
-        },
-        {
-          height: "6353170",
-          hashCode:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          age: 18,
-          txn: 20,
-          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
-        },
-        {
-          height: "6353170",
-          hashCode:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          age: 18,
-          txn: 20,
-          miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7"
-        }
-      ]
+      dataLIst: []
     };
+  },
+  methods: {
+    getAllBlocks() {
+      this.$axios
+        .post("/api/v1.0/blocks/blockList", {
+          start: "0",
+          pageSize: "10"
+        })
+        .then(response => {
+          console.log(response.data);
+          this.dataLIst = response.data.data;
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+    }
   }
 };
 </script>

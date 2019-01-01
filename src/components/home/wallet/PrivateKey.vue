@@ -78,6 +78,10 @@ export default {
         width: 370px;
         height: 30px;
         position: absolute;
+        color: aliceblue;
+      }
+      input:hover {
+          box-shadow: 2px 2px 8px 2px #f26522;
       }
       .repatpwd {
         margin: 45px 100px 0 0;
@@ -86,6 +90,10 @@ export default {
           margin-top: 25px;
           width: 370px;
           height: 30px;
+          color: aliceblue;
+        }
+        input:hover {
+          box-shadow: 2px 2px 8px 2px #f26522;
         }
         img {
           z-index: 1000;
@@ -107,6 +115,9 @@ export default {
       z-index: 1;
       a {
         color: #f26522;
+      }
+      a:hover {
+        box-shadow: 2px 2px 8px 2px #f26522;
       }
     }
   }

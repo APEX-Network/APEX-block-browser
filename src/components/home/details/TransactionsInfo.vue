@@ -5,7 +5,7 @@
     <div class="data-table transactions-details">
       <ul class="table-ul">
         <li
-          v-for="(value, key ,index ) in produceerInfo"
+          v-for="(value, key ,index ) in transactionsInfo"
           :key="index"
           :class="['row', {'li-inputdata': key === 'Input Data' }]"
         >
@@ -43,12 +43,11 @@ export default {
     ApexBackGround
   },
   mounted () {
-     this.axios.get('/api/v1.0/transactions/2b59cb1a1ffaef43392d27f0ab2dac8fb8cee2082629f9145f427d2c128ee766')
+     this.$axios.get('/api/v1.0/transactions/2b59cb1a1ffaef43392d27f0ab2dac8fb8cee2082629f9145f427d2c128ee766')
+    // this.$axios.get('/api/v1.0/transactions/fd72b26e1610be7d7f685e5a05568bf945a4ebf1d2219989965a5c446a0747fe')
     .then(response => {
         console.log(response.data)
-        this.produceerInfo = response.data.data
-        // this.txHashs = response.data.data.txHashs
-        // console.log(this.txHashs)
+        this.transactionsInfo = response.data.data
     })
     .catch(function (response){
 	    console.log(response);//发生错误时执行的代码
@@ -57,8 +56,8 @@ export default {
   data() {
     return {
       title: "Transactions Information",
-      produceerInfo: null
-      // produceerInfo: {
+      transactionsInfo: null
+      // transactionsInfo: {
       //     'TxHash': '0x6e1e6ce40242e82ddsfsdfsdfsafasfsadsdfsdfsdfsadfsdaffsdfsdfsfasd',
       //     'TxReceipt Status': 'Success',
       //     'Block Height': "6353170(1 block confirmation)",

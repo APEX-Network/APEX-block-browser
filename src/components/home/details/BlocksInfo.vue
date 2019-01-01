@@ -33,7 +33,7 @@ export default {
     ApexBackGround
   },
   mounted () {
-     this.axios.get('/api/v1.0/blockOrTx/ae18df88057267c214b43cf58e313d6babfc16e7ba2aee5f88c6dd10247403b6')
+     this.$axios.get('/api/v1.0/blockOrTx/ae18df88057267c214b43cf58e313d6babfc16e7ba2aee5f88c6dd10247403b6')
     .then(response => {
         console.log(response.data)
         this.blocksInfo = response.data.data
@@ -66,11 +66,6 @@ export default {
     };
   },
   methods: {
-    tx() {
-      for(let i = 0; i < response.data.data.txHashs.length; i++) {
-        console.log(i)
-      }
-    }
   }
 };
 </script>
