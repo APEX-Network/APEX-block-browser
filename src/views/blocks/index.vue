@@ -1,6 +1,6 @@
 <template>
   <div class="Blocks">
-    <apex-title :title="title" />
+    <apex-title :title="title"/>
     <apex-back-ground/>
     <div class="data-table">
       <ul class="table-ul">
@@ -16,9 +16,9 @@
             <router-link to="/blocks/BlocksInfo">{{item.height}}</router-link>
           </span>
           <span class="col col-lg-6">
-            <router-link to="/blocks/BlocksInfo">{{item.blockHash}}</router-link>
+            <router-link to="/blocks/BlocksInfo" @click.native="sendUrl">{{item.blockHash}}</router-link>
           </span>
-          <span class="col" ></span>
+          <span class="col"></span>
           <span class="col txn">{{item.txNum}}</span>
           <span class="col">{{item.producer}}</span>
         </li>
@@ -62,9 +62,9 @@ export default {
           for (let i = 0; i < res.length; i++) {
             this.timeStamp = res[i].timeStamp;
             let result = +new Date();
-            let ti = (result - this.timeStamp)/1000;
+            let ti = (result - this.timeStamp) / 1000;
             this.time = ti.toFixed(1);
-            let x = this.time - Math.floor(this.time)
+            let x = this.time - Math.floor(this.time);
             console.log(x);
           }
         })
@@ -73,6 +73,13 @@ export default {
             console.log(err.response);
           }
         });
+    },
+    sendUrl() {
+      let res = this.dataList;
+      for (let i = 0; i < res.length; i++) {
+        let result = res[i].blockHash;
+        console.log("sendUrl:" + result);
+      }
     }
   }
 };

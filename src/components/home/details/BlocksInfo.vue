@@ -59,7 +59,8 @@ export default {
     };
   },
   mounted() {
-    this.getBlocksInfo()
+    this.getBlocksInfo();
+    this.acceptUrl();
   },
   methods: {
     getBlocksInfo() {
@@ -76,6 +77,9 @@ export default {
         .catch(function(response) {
           console.log(response); //发生错误时执行的代码
         });
+    },
+    acceptUrl() {
+      console.log(111);
     }
   }
 };
