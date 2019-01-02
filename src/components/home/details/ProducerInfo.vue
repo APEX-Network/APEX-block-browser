@@ -1,7 +1,7 @@
 <template>
   <div class="ProducerInfo">
     <apex-title :title="title"/>
-    <apex-back-ground />
+    <apex-back-ground/>
     <div class="data-table">
       <ul class="table-ul">
         <li v-for="(value, key ,index ) in producerInfo" :key="index" class="row">
@@ -18,10 +18,8 @@
 
 <script>
 import ApexTitle from "@/components/public/ApexTitle.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue"
+import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
-
-
 
 export default {
   name: "ProducerInfo",
@@ -34,13 +32,19 @@ export default {
     return {
       title: "Producer Information",
       producerInfo: {
-        'Miner' : '0x6e1e6ce40242e82d',
-        'Area':'Shanghai China',
-        'Current Rank': '1',
-        'Website': 'htt://apex.com',
-        'Description' : 'No',
+        Miner: "0x6e1e6ce40242e82d",
+        Area: "Shanghai China",
+        "Current Rank": "1",
+        Website: "htt://apex.com",
+        Description: "No"
       }
     };
+  },
+  mounted() {
+    this.getProducerInfo();
+  },
+  methods: {
+    getProduceInfo() {}
   }
 };
 </script>

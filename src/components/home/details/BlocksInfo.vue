@@ -12,7 +12,12 @@
           <span class="col col-lg-8" v-else-if="key === 'producerSig'">
             <router-link to="/producer/ProducerInfo">{{value}}</router-link>
           </span>
-          <span class="col col-lg-8" v-for="(txHashs,index) in txHashs" :key="index" v-else-if="key === 'txHashs'">{{txHashs}}</span>
+          <span
+            class="col col-lg-8"
+            v-for="(txHashs,index) in txHashs"
+            :key="index"
+            v-else-if="key === 'txHashs'"
+          >{{txHashs}}</span>
           <span class="col col-lg-8" v-else>{{value}}</span>
         </li>
       </ul>
@@ -31,18 +36,6 @@ export default {
     Pagination,
     ApexTitle,
     ApexBackGround
-  },
-  mounted () {
-     this.$axios.get('/api/v1.0/blockOrTx/ae18df88057267c214b43cf58e313d6babfc16e7ba2aee5f88c6dd10247403b6')
-    .then(response => {
-        console.log(response.data)
-        this.blocksInfo = response.data.data
-        this.txHashs = response.data.data.txHashs
-        console.log(this.txHashs)
-    })
-    .catch(function (response){
-	    console.log(response);//发生错误时执行的代码
-  })
   },
   data() {
     return {
@@ -65,7 +58,25 @@ export default {
       // }
     };
   },
+  mounted() {
+    this.getBlocksInfo()
+  },
   methods: {
+    getBlocksInfo() {
+      this.$axios
+        .get(
+          "/api/v1.0/blocks/blockHash/064da596bd165ceab70d70d685c65d436b921dc0488755e8dbc82b278c4b1c71"
+        )
+        .then(response => {
+          console.log(response.data);
+          this.blocksInfo = response.data.data;
+          this.txHashs = response.data.data.txHashs;
+          console.log(this.txHashs);
+        })
+        .catch(function(response) {
+          console.log(response); //发生错误时执行的代码
+        });
+    }
   }
 };
 </script>

@@ -1,3 +1,4 @@
+
 <template>
   <div class="TransactionsInfo">
     <apex-title :title="title"/>
@@ -42,17 +43,6 @@ export default {
     ApexTitle,
     ApexBackGround
   },
-  mounted () {
-     this.$axios.get('/api/v1.0/transactions/2b59cb1a1ffaef43392d27f0ab2dac8fb8cee2082629f9145f427d2c128ee766')
-    // this.$axios.get('/api/v1.0/transactions/fd72b26e1610be7d7f685e5a05568bf945a4ebf1d2219989965a5c446a0747fe')
-    .then(response => {
-        console.log(response.data)
-        this.transactionsInfo = response.data.data
-    })
-    .catch(function (response){
-	    console.log(response);//发生错误时执行的代码
-  })
-  },
   data() {
     return {
       title: "Transactions Information",
@@ -67,6 +57,24 @@ export default {
       //     'Value' : '0x6e1e6 CPX',
       // }
     };
+  },
+  mounted() {
+    this.getTransactionsInfo();
+  },
+  methods: {
+    getTransactionsInfo() {
+      this.$axios
+        .get(
+          "/api/v1.0/transactions/10d027881bb9f22f9138d50dc3dc0a3b2f96adfed3afe064a657e9d7aa9f3309"
+        )
+        .then(response => {
+          console.log(response);
+          this.transactionsInfo = response.data.data;
+        })
+        .catch(function(response) {
+          console.log(response);
+        });
+    }
   }
 };
 </script>

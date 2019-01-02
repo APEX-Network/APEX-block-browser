@@ -47,66 +47,15 @@ export default {
     ApexTitle,
     ApexBackGround
   },
-//   mounted() {
-//     // let params = new URLSearchParams()
-//     // let headers = {'Content-type': 'application/x-www-form-urlencoded'}
-//     // params.append('start',0)
-//     // params.append('pageSize',3)
-//     // params.append("address","APNfopaMjbzhqnCuY6H19J8uEDHx5jAvmDL")
-//     // console.log(params)
-//     // this.$axios.post('/api/v1.0/accounts/account',{ address: 'AP3BQP7LvRknVwKR7aZHqcWHF684gPM8hBj'})
-//      this.$axios.post('/api/v1.0/transactions/transactionList'
-//      ,{ 
-//        start: '0', pageSize: '10',
-//      })
-//      .then(response => {
-//       //  console.log(params)
-//        console.log(response.data)
-//      })
-//           .catch(function(err){
-//             if(err.response) {
-//               console.log(err.response)
-//                 //控制台打印错误返回的内容
-//             }
-//           })
-// },
   data() {
     return {
       title: "AccountInfo Information",
       accountInfo: null,
-      transactions: [
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd35",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd45",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd55",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd65",
-          time: "1 minute ago"
-        }
-      ]
+      transactions: []
     };
+  },
+  mounted() {
+    this.getAccountInfo();
   },
   methods: {
     Copy(index) {
@@ -124,6 +73,20 @@ export default {
           // console.log(e)
         }
       );
+    },
+    getAccountInfo() {
+      this.$axios
+        .post("/api/v1.0/accounts/account", {
+          address: "AP3BQP7LvRknVwKR7aZHqcWHF684gPM8hBj"
+        })
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
     }
   }
 };

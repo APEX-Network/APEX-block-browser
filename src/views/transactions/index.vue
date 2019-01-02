@@ -4,15 +4,14 @@
     <apex-back-ground/>
     <div class="data-table transactions-table">
       <ul class="table-ul">
-          <li v-for="(list,index) in transactions" :key="index" class="row">
-            <span class="col col-lg-10">
+        <li v-for="(list,index) in transactions" :key="index" class="row">
+          <span class="col col-lg-10">
             <div class="bottom">
-              <router-link to="/transactions/TransactionsInfo">{{list.code}}</router-link>
+              <router-link to="/transactions/TransactionsInfo">{{list.txHash}}</router-link>
             </div>
-
-            </span>
-            <span class="col">{{list.time }}</span>
-          </li>
+          </span>
+          <span class="col">{{list.refBlockTime }}</span>
+        </li>
       </ul>
       <Pagination/>
     </div>
@@ -31,68 +30,32 @@ export default {
     ApexTitle,
     ApexBackGround
   },
+  mounted() {
+    this.getAllTransactions();
+  },
   data() {
     return {
-      ops: {},
       title: "Transactions",
-      transactions: [
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
-          time: "1 minute ago"
-        },
-        {
-          code:
-            "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd55",
-          time: "1 minute ago"
-        }
-      ]
+      transactions: []
     };
+  },
+  methods: {
+    getAllTransactions() {
+      this.$axios
+        .post("/api/v1.0/transactions/transactionList", {
+          start: "0",
+          pageSize: "2"
+        })
+        .then(response => {
+          console.log(response.data);
+          this.transactions = response.data.data;
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+    }
   }
 };
 </script>
@@ -109,48 +72,49 @@ export default {
     box-sizing: border-box;
     overflow-y: auto;
     .table-ul {
-        width: 100%;
-        max-width: 100%;
-        border-top: #0000 1px solid;
-        &>li {
-            &.row{
-                margin: 0;
-                color: #ebebeb;
-                height: 40px;
-            }
-            border-bottom: #333333 1px solid;
-            &>span {
-                line-height: 35px;
-                height: 35px;
-                box-sizing: border-box;
-                padding: 0 8px 0 0px;
-                vertical-align: middle;
-                color: #ebebeb;
-                overflow: hidden;
-                white-space: nowrap;
-                .bottom {
-                    margin-left: 20px;
-                    padding-left: 40px;
-                    box-sizing: border-box;
-                    font-family: "Regular";
-                    background: url(./../../assets/images/shared/icon-fix.png) left 5px no-repeat;
-                    a {
-                        max-width: 300px;
-                        overflow: hidden;
-                        white-space: nowrap;
-                        color: #f26522;
-                        margin-top: 5px;
-                    }
-                }
-            }
-            &:first-of-type {
-                span {
-                    color: #ebebeb;
-                    font-family: "Semibold";
-                }
-            }
+      width: 100%;
+      max-width: 100%;
+      border-top: #0000 1px solid;
+      & > li {
+        &.row {
+          margin: 0;
+          color: #ebebeb;
+          height: 40px;
         }
+        border-bottom: #333333 1px solid;
+        & > span {
+          line-height: 35px;
+          height: 35px;
+          box-sizing: border-box;
+          padding: 0 8px 0 0px;
+          vertical-align: middle;
+          color: #ebebeb;
+          overflow: hidden;
+          white-space: nowrap;
+          .bottom {
+            margin-left: 20px;
+            padding-left: 40px;
+            box-sizing: border-box;
+            font-family: "Regular";
+            background: url(./../../assets/images/shared/icon-fix.png) left 5px
+              no-repeat;
+            a {
+              max-width: 300px;
+              overflow: hidden;
+              white-space: nowrap;
+              color: #f26522;
+              margin-top: 5px;
+            }
+          }
+        }
+        &:first-of-type {
+          span {
+            color: #ebebeb;
+            font-family: "Semibold";
+          }
+        }
+      }
     }
-}
+  }
 }
 </style>

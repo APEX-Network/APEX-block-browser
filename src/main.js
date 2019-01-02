@@ -23,27 +23,27 @@ Vue.use(VueClipboard)
 Vue.use(Vuex)
 Vue.config.productionTip = false
 Vue.use(vuescroll, {
-  ops: {
+    ops: {
     mode: "native",
-        bar: {
-          /** 当不做任何操作时滚动条自动消失的时间 */
-          showDelay: 500,
-          /** 是否只在滚动的时候现实滚动条 */
-          onlyShowBarOnScroll: true,
-          /** 是否保持显示*/
-          keepShow: false,
-          /** 背景色*/
-          background: "#c1c1c1",
-          /**  透明度  */
-          opacity: 1,
-          /** 当你鼠标移动到滚动条的时候滚动条的样式， 返回一个style对象， 和现在的对象融合*/
-          hoverStyle: false,
-          /** 是否保持rail显示即使内容高度不足的情况下。 */
-          keepShow: false
-        }
-  },  
-  // name: 'myScroll' // 在这里自定义组件名字，默认是vueScroll
-});
+    bar: {
+    /** 当不做任何操作时滚动条自动消失的时间 */
+    showDelay: 500,
+    /** 是否只在滚动的时候现实滚动条 */
+    onlyShowBarOnScroll: true,
+    /** 是否保持显示*/
+    keepShow: false,
+    /** 背景色*/
+    background: "#c1c1c1",
+    /**  透明度  */
+    opacity: 1,
+    /** 当你鼠标移动到滚动条的时候滚动条的样式， 返回一个style对象， 和现在的对象融合*/
+    hoverStyle: false,
+    /** 是否保持rail显示即使内容高度不足的情况下。 */
+    keepShow: false
+  }
+},  
+// name: 'myScroll' // 在这里自定义组件名字，默认是vueScroll
+})
 
 
 Vue.prototype.$echarts = echarts

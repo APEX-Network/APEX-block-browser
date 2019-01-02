@@ -1,37 +1,36 @@
 <template>
   <div class="Blocks">
-        <apex-title :title="title"/>
-        <apex-back-ground />
-        <div class="data-table">
-          <ul class="table-ul">
-            <li class="row">
-              <span class="col">Height</span>
-              <span class="col col-lg-6">Hash Code</span>
-              <span class="col">Age</span>
-              <span class="col">Txn</span>
-              <span class="col">Miner</span>
-            </li>
-            <li v-for="(item,index) in dataLIst" :key="index" class="row">
-              <span class="col height">
-                <router-link to="/blocks/BlocksInfo">{{item.height}}</router-link>                
-              </span>
-              <span class="col col-lg-6">
-                <router-link to="/blocks/BlocksInfo">{{item.blockHash}}</router-link>
-              </span>
-              <span class="col">{{item.age}}</span>
-              <span class="col txn">{{item.txNum}}</span>
-              <span class="col">{{item.producer}}</span>
-            </li>
-          </ul>
-          <Pagination />
-        </div>
+    <apex-title :title="title" />
+    <apex-back-ground/>
+    <div class="data-table">
+      <ul class="table-ul">
+        <li class="row">
+          <span class="col">Height</span>
+          <span class="col col-lg-6">Hash Code</span>
+          <span class="col">Age</span>
+          <span class="col">Txn</span>
+          <span class="col">Miner</span>
+        </li>
+        <li v-for="(item,index) in dataList" :key="index" class="row">
+          <span class="col height">
+            <router-link to="/blocks/BlocksInfo">{{item.height}}</router-link>
+          </span>
+          <span class="col col-lg-6">
+            <router-link to="/blocks/BlocksInfo">{{item.blockHash}}</router-link>
+          </span>
+          <span class="col" ></span>
+          <span class="col txn">{{item.txNum}}</span>
+          <span class="col">{{item.producer}}</span>
+        </li>
+      </ul>
+      <Pagination/>
+    </div>
   </div>
 </template>
 <script>
 import Pagination from "@/components/public/Pagination.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue"
+import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import ApexTitle from "@/components/public/ApexTitle.vue";
-
 
 export default {
   name: "blocks",
@@ -46,7 +45,8 @@ export default {
   data() {
     return {
       title: "Blocks",
-      dataLIst: []
+      dataList: null,
+      time: []
     };
   },
   methods: {
@@ -57,8 +57,16 @@ export default {
           pageSize: "10"
         })
         .then(response => {
-          console.log(response.data);
-          this.dataLIst = response.data.data;
+          this.dataList = response.data.data;
+          let res = response.data.data;
+          for (let i = 0; i < res.length; i++) {
+            this.timeStamp = res[i].timeStamp;
+            let result = +new Date();
+            let ti = (result - this.timeStamp)/1000;
+            this.time = ti.toFixed(1);
+            let x = this.time - Math.floor(this.time)
+            console.log(x);
+          }
         })
         .catch(function(err) {
           if (err.response) {
@@ -78,13 +86,11 @@ export default {
   .data-table {
     .table-ul {
       .row {
-        .height,
-        {
-          color: #f26522
+        .height {
+          color: #f26522;
         }
       }
     }
   }
 }
-
 </style>

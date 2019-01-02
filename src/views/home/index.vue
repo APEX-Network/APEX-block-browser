@@ -194,7 +194,7 @@ export default {
       this.$axios
         .post("/api/v1.0/transactions/transactionList", {
           start: "0",
-          pageSize: "10"
+          pageSize: "3"
         })
         .then(response => {
           console.log(response.data);
@@ -210,7 +210,7 @@ export default {
       this.$axios
         .post("/api/v1.0/blocks/blockList", {
           start: "0",
-          pageSize: "10"
+          pageSize: "3"
         })
         .then(response => {
           console.log(response.data);
