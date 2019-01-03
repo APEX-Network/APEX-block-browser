@@ -31,6 +31,7 @@
 import Pagination from "@/components/public/Pagination.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import ApexTitle from "@/components/public/ApexTitle.vue";
+import eventBus from "../../utils/eventBus"
 
 export default {
   name: "blocks",
@@ -46,7 +47,8 @@ export default {
     return {
       title: "Blocks",
       dataList: null,
-      time: []
+      time: [],
+      sendurl: null
     };
   },
   methods: {
@@ -74,12 +76,10 @@ export default {
           }
         });
     },
-    sendUrl() {
-      let res = this.dataList;
-      for (let i = 0; i < res.length; i++) {
-        let result = res[i].blockHash;
-        console.log("sendUrl:" + result);
-      }
+    sendUrl(e) {
+      this.sendurl = e.target.text;
+      // console.log(this.sendurl);
+      eventBus.$emit('sendUrl', this.sendurl);
     }
   }
 };

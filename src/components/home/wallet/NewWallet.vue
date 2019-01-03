@@ -11,7 +11,7 @@
       </div>
       <div class="enterpwd">
         <span>Enter Password</span>
-        <input type="text">
+        <input>
         <img src="./../../../assets/images/eye.png">
         <div class="repatpwd">
           <span>Repeat Password</span>
@@ -58,7 +58,8 @@ export default {
 
   mounted() {},
 
-  methods: {},
+  methods: {
+  },
 
   watch: {}
 };

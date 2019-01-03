@@ -3,10 +3,11 @@
     <apex-title :title="title"/>
     <apex-back-ground/>
     <div class="data-table">
-      <ul class="table-ul">
-        <li v-for="(value, key ,index ) in blocksInfo" :key="index" class="row">
+      <ul class="table-ul" v-if='isShow'>
+        <!-- <li v-for="(value, key ,index ) in blocksInfo" :key="index" class="row"> -->
+          <li v-for="(value, key ,index ) in blocksInfo" :key="index" class="row">
           <span class="col">{{key}} :</span>
-          <span class="col col-lg-8" v-if="key === 'producer'">
+          <!-- <span class="col col-lg-8" v-if="key === 'producer'">
             <router-link to="/producer">{{value}}</router-link>
           </span>
           <span class="col col-lg-8" v-else-if="key === 'producerSig'">
@@ -14,11 +15,11 @@
           </span>
           <span
             class="col col-lg-8"
-            v-for="(txHashs,index) in txHashs"
+            v-for="(block,index) in blockHash"
             :key="index"
-            v-else-if="key === 'txHashs'"
-          >{{txHashs}}</span>
-          <span class="col col-lg-8" v-else>{{value}}</span>
+            v-else-if="key === 'blockHash'"
+          >{{block}}</span>
+          <span class="col col-lg-8" v-else>{{value}}</span> -->
         </li>
       </ul>
     </div>
@@ -29,6 +30,7 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
+import eventBus from "../../../utils/eventBus";
 
 export default {
   name: "BlocksInfo",
@@ -37,49 +39,38 @@ export default {
     ApexTitle,
     ApexBackGround
   },
+  created() {
+    this.getBlocksInfo();
+  },
   data() {
     return {
       title: "Blocks Information",
-      blocksInfo: null,
-      // loading: true,
-      txHashs: null
-      // blocksInfo: {
-      //   'Height': "6353170",
-      //     'Age': 18,
-      //     'Txn': 20,
-      //     'TimeStamp':'55 mins ago (Sep-18-2018 07:33:22 AM +UTC)',
-      //     'Transactions': '61 transactions  in this block',
-      //     'Hash': '0x3591fcb0ae47862ffdef0e00a42786d03629ffbae12390ae7c0e1e5468c0d65e',
-      //     'Parent Hash' : '0x25c9bb623bfe86a15127b95365256533042a84a993e5db1e315f50a03290e44b',
-      //     'Mined By': '0xea674fdde714fd979de3edf0f56aa9716b898ec8  in 3 secs',
-      //     'Size' :'17996 bytes',
-      //     'Gas Used' :'7,992,394',
-      //     'Nonce' : '0x6e1e6ce40242e82d'
-      // }
+      blocksInfo: '',
+      blockHash: '',
+      isShow:false
     };
   },
   mounted() {
-    this.getBlocksInfo();
-    this.acceptUrl();
   },
   methods: {
     getBlocksInfo() {
-      this.$axios
-        .get(
-          "/api/v1.0/blocks/blockHash/064da596bd165ceab70d70d685c65d436b921dc0488755e8dbc82b278c4b1c71"
-        )
-        .then(response => {
-          console.log(response.data);
-          this.blocksInfo = response.data.data;
-          this.txHashs = response.data.data.txHashs;
-          console.log(this.txHashs);
-        })
-        .catch(function(response) {
-          console.log(response); //发生错误时执行的代码
-        });
-    },
-    acceptUrl() {
-      console.log(111);
+      eventBus.$on("sendUrl", (val) => {
+        this.blockHash = val;
+        console.log('blockHash',this.blockHash);
+        if (val && !isShow) {
+          this.$axios
+            .get("/api/v1.0/blocks/blockHash/" + val)
+            .then(response => {
+              let result = response.data.data;
+              this.blocksInfo = result;
+              this.isShow = true;
+              console.log(this.blocksInfo);
+            })
+            .catch(function(response) {
+              console.log(response);
+            });
+        }
+      });
     }
   }
 };
