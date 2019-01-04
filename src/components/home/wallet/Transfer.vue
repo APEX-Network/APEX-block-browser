@@ -82,11 +82,9 @@ export default {
 };
 </script>
 <style lang='less' scoped>
-@import "./../../../assets/css/layout";
 .transfer {
   width: 100%;
   height: 100%;
-  background: url(./../../../assets/images/shared/yunshi.png) 25% 35% no-repeat;
   .flex-container {
     position: absolute;
     display: flex;

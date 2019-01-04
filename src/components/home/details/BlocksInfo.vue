@@ -3,11 +3,11 @@
     <apex-title :title="title"/>
     <apex-back-ground/>
     <div class="data-table">
-      <ul class="table-ul" v-if='isShow'>
-        <!-- <li v-for="(value, key ,index ) in blocksInfo" :key="index" class="row"> -->
+      <ul class="table-ul">
+        <li v-for="(value, key ,index ) in blocksInfo" :key="index" class="row">
           <li v-for="(value, key ,index ) in blocksInfo" :key="index" class="row">
           <span class="col">{{key}} :</span>
-          <!-- <span class="col col-lg-8" v-if="key === 'producer'">
+          <span class="col col-lg-8" v-if="key === 'producer'">
             <router-link to="/producer">{{value}}</router-link>
           </span>
           <span class="col col-lg-8" v-else-if="key === 'producerSig'">
@@ -19,7 +19,7 @@
             :key="index"
             v-else-if="key === 'blockHash'"
           >{{block}}</span>
-          <span class="col col-lg-8" v-else>{{value}}</span> -->
+          <span class="col col-lg-8" v-else>{{value}}</span>
         </li>
       </ul>
     </div>
@@ -46,8 +46,7 @@ export default {
     return {
       title: "Blocks Information",
       blocksInfo: '',
-      blockHash: '',
-      isShow:false
+      blockHash: ''
     };
   },
   mounted() {
@@ -57,13 +56,12 @@ export default {
       eventBus.$on("sendUrl", (val) => {
         this.blockHash = val;
         console.log('blockHash',this.blockHash);
-        if (val && !isShow) {
+        if (val) {
           this.$axios
             .get("/api/v1.0/blocks/blockHash/" + val)
             .then(response => {
               let result = response.data.data;
               this.blocksInfo = result;
-              this.isShow = true;
               console.log(this.blocksInfo);
             })
             .catch(function(response) {

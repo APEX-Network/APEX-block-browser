@@ -1,107 +1,73 @@
 <template>
-  <div class="min-height">
-    <div class="main">
-      <div class="uchain-box">
-        <div class="uchain-title">
-          <p>Transactions</p>
-        </div>
-        <div class="data-table transactions-table">
-           <ul class="table-ul">
-            <li v-for="(list,index) in transactions" :key="index" class="row">
-              <span class="col col-lg-10">
-                <router-link to='/home/transactions/details'>{{list.code}}</router-link>
-              </span>
-              <span class="col">{{list.time }}</span>
-            </li>
-          </ul>
-          <Pagination />
-        </div>
-      </div>
+    <div class="transactions apex-modul fr">
+      <p class="apex-title">
+        Transactions
+        <span>
+          <router-link to="/transactions">ALL</router-link>
+        </span>
+      </p>
+      <ul class="apex-list">
+        <vue-scroll :ops="ops">
+          <li v-for="(item,index) in transactions" :key="index">
+            <div class="bottom">
+              <router-link to="/transactions/TransactionsInfo">{{item.txHash}}</router-link>
+              <span>{{item.refBlockTime}}</span>
+            </div>
+          </li>
+        </vue-scroll>
+      </ul>
     </div>
-  </div>
 </template>
 
 <script>
 import Pagination from "@/components/public/Pagination.vue";
 export default {
-  name: "transactions",
+  name: "transactionsList",
   components: {
     Pagination
   },
-  mounted() {
-     this.$axios.post('/api/v1.0/transactions/transactionList'
-     ,{ 
-       start: '0', pageSize: '10',
-     })
-     .then(response => {
-       console.log(response.data)
-       this.transactions = response.data.txHash
-     })
-          .catch(function(err){
-            if(err.response) {
-              console.log(err.response)
-            }
-          })
-    },
   data() {
     return {
+      ops: {},
       transactions: []
-      // transactions: [
-      //   {
-      //     code:
-      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd15",
-      //     time: "1 minute ago"
-      //   },
-      //   {
-      //     code:
-      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25",
-      //     time: "1 minute ago"
-      //   },
-      //   {
-      //     code:
-      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd35",
-      //     time: "1 minute ago"
-      //   },
-      //   {
-      //     code:
-      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd45",
-      //     time: "1 minute ago"
-      //   },
-      //   {
-      //     code:
-      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd55",
-      //     time: "1 minute ago"
-      //   },
-      //   {
-      //     code:
-      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd65",
-      //     time: "1 minute ago"
-      //   },
-      //   {
-      //     code:
-      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd55",
-      //     time: "1 minute ago"
-      //   },
-      //   {
-      //     code:
-      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd65",
-      //     time: "1 minute ago"
-      //   },
-      //   {
-      //     code:
-      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd55",
-      //     time: "1 minute ago"
-      //   },
-      //   {
-      //     code:
-      //       "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd65",
-      //     time: "1 minute ago"
-      //   }
-      // ]
     };
+  },
+  mounted() {
+    this.getTransactionsList();
+  },
+  methods: {
+    getTransactionsList() {
+      this.$axios
+        .post("/api/v1.0/transactions/transactionList", {
+          start: "0",
+          pageSize: "3"
+        })
+        .then(response => {
+          console.log(response.data);
+          this.transactions = response.data.data;
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+    }
   }
 };
 </script>
 
 <style scoped lang="less">
+.apex-modul {
+  .apex-title {
+    height: 43px;
+    span {
+      a {
+        color: #f26522;
+      }
+    }
+    span:hover {
+      box-shadow: 2px 2px 8px 2px #f26522;
+    }
+  }
+}
 </style>
