@@ -12,10 +12,10 @@
 </template>
 <script>
 
-import LiveTps from "@/components/home/LiveTps"
-import OverView from "@/components/home/OverView"
-import BlocksList from "@/components/home/list/BlocksList"
-import TransactionsList from "@/components/home/list/TransactionsList"
+import LiveTps from "@/views/home/LiveTps"
+import OverView from "@/views/home/OverView"
+import BlocksList from "@/components/list/BlocksList"
+import TransactionsList from "@/components/list/TransactionsList"
 
 export default {
   name: "home",

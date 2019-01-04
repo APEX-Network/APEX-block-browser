@@ -11,7 +11,7 @@
           :class="['row', {'li-inputdata': key === 'Input Data' }]"
         >
           <span class="col">{{key}} :</span>
-          <span class="col col-lg-8" v-if="(key === 'rrom') || (key === 'to') ">
+          <span class="col col-lg-8" v-if="(key === 'from') || (key === 'to') ">
             <router-link to="/transactions/TransactionsInfo/AccountInfo">{{value}}</router-link>
           </span>
           <span class="col col-lg-8" v-else-if="key === 'nonce'">
@@ -51,6 +51,7 @@ export default {
       //     'TxHash': '0x6e1e6ce40242e82ddsfsdfsdfsafasfsadsdfsdfsdfsadfsdaffsdfsdfsfasd',
       //     'TxReceipt Status': 'Success',
       //     'Block Height': "6353170(1 block confirmation)",
+      //     (新加字段)'Block Hash': '0x6e1e6ce40242e82ddsfsdfsdfsafasfsadsdfsdfsdfsadfsdaffsdfsdfsfasd',
       //     'TimeStamp':'55 mins ago (Sep-18-2018 07:33:22 AM +UTC)',
       //     'From': '0x3591fcb0ae47862ffd',
       //     'To' : '0x25c9bb623bfe86a1512',
@@ -69,7 +70,8 @@ export default {
         )
         .then(response => {
           console.log(response);
-          this.transactionsInfo = response.data.data;
+          let res = response.data.data;
+          this.transactionsInfo = res;
         })
         .catch(function(response) {
           console.log(response);
@@ -81,10 +83,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-@import "./../../../assets/css/layout";
+@import "./../../assets/css/layout";
 .TransactionsInfo {
   width: 100%;
   height: 100%;
-  background: url(./../../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
+  background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
 }
 </style>

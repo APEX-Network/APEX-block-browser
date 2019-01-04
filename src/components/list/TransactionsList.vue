@@ -40,7 +40,7 @@ export default {
       this.$axios
         .post("/api/v1.0/transactions/transactionList", {
           start: "0",
-          pageSize: "3"
+          pageSize: "2"
         })
         .then(response => {
           console.log(response.data);

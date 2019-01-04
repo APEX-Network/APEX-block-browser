@@ -10,9 +10,9 @@
   </div>
 </template>
 <script>
-import WalletPage from "@/components/home/wallet/walletPage"
-import TransfersList from "@/components/home/list/TransfersList"
-import TransactionsList from "@/components/home/list/TransactionsList"
+import WalletPage from "@/views/wallet/wallet/walletPage"
+import TransfersList from "@/components/list/TransfersList"
+import TransactionsList from "@/components/list/TransactionsList"
 
 export default {
   name: "wallet",

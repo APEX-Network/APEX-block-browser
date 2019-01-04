@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       title: "AccountInfo Information",
-      accountInfo: null,
+      accountInfo: [],
       transactions: []
     };
   },
@@ -94,11 +94,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-@import "./../../../assets/css/layout";
+@import "./../../assets/css/layout";
 .AccountInfo {
   width: 100%;
   height: 100%;
-  background: url(./../../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
+  background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
   .uchain-box {
     padding-top: 95px;
     .data-table {
@@ -132,7 +132,7 @@ export default {
               padding-left: 40px;
               box-sizing: border-box;
               font-family: "Regular";
-              background: url(./../../../assets/images/shared/icon-fix.png) left
+              background: url(./../../assets/images/shared/icon-fix.png) left
                 5px no-repeat;
               a {
                 max-width: 300px;

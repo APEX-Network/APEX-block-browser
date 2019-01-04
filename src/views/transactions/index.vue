@@ -48,7 +48,8 @@ export default {
         })
         .then(response => {
           console.log(response.data);
-          this.transactions = response.data.data;
+          let res = response.data.data;
+          this.transactions = res;
         })
         .catch(function(err) {
           if (err.response) {

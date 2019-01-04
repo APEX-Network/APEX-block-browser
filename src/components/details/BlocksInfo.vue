@@ -30,7 +30,7 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
-import eventBus from "../../../utils/eventBus";
+import eventBus from "../../utils/eventBus";
 
 export default {
   name: "BlocksInfo",
@@ -76,11 +76,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-@import "./../../../assets/css/layout";
+@import "./../../assets/css/layout";
 
 .BlocksInfo {
   width: 100%;
   height: 100%;
-  background: url(./../../../assets/images/shared/yunshi.png) 40% 45% no-repeat;
+  background: url(./../../assets/images/shared/yunshi.png) 40% 45% no-repeat;
 }
 </style>

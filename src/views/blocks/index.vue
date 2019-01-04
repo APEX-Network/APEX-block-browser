@@ -6,7 +6,7 @@
       <ul class="table-ul">
         <li class="row">
           <span class="col">Height</span>
-          <span class="col col-lg-6">Hash Code</span>
+          <span class="col col-lg-6">Hash</span>
           <span class="col">Age</span>
           <span class="col">Txn</span>
           <span class="col">Miner</span>
@@ -59,15 +59,16 @@ export default {
           pageSize: "10"
         })
         .then(response => {
-          this.dataList = response.data.data;
           let res = response.data.data;
+          this.dataList = res;
+          console.log(this.dataList)
           for (let i = 0; i < res.length; i++) {
             this.timeStamp = res[i].timeStamp;
             let result = +new Date();
             let ti = (result - this.timeStamp) / 1000;
             this.time = ti.toFixed(1);
             let x = this.time - Math.floor(this.time);
-            console.log(x);
+            // console.log(x);
           }
         })
         .catch(function(err) {
