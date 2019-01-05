@@ -46,7 +46,8 @@ export default {
   data() {
     return {
       title: "Transactions Information",
-      transactionsInfo: null
+      transactionsInfo: null,
+      txHash: null
       // transactionsInfo: {
       //     'TxHash': '0x6e1e6ce40242e82ddsfsdfsdfsafasfsadsdfsdfsdfsadfsdaffsdfsdfsfasd',
       //     'TxReceipt Status': 'Success',
@@ -59,23 +60,29 @@ export default {
       // }
     };
   },
+  created() {
+    this.getClickValue();
+  },
   mounted() {
     this.getTransactionsInfo();
   },
   methods: {
+    getClickValue() {
+      this.txHash = sessionStorage.getItem("clickValue");
+    },
     getTransactionsInfo() {
-      this.$axios
-        .get(
-          "/api/v1.0/transactions/10d027881bb9f22f9138d50dc3dc0a3b2f96adfed3afe064a657e9d7aa9f3309"
-        )
-        .then(response => {
-          console.log(response);
-          let res = response.data.data;
-          this.transactionsInfo = res;
-        })
-        .catch(function(response) {
-          console.log(response);
-        });
+      if (this.txHash) {
+        this.$axios
+          .get("/api/v1.0/transactions/" + this.txHash)
+          .then(response => {
+            console.log(response);
+            let res = response.data.data;
+            this.transactionsInfo = res;
+          })
+          .catch(function(response) {
+            console.log(response);
+          });
+      }
     }
   }
 };

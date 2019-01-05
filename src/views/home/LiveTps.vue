@@ -19,7 +19,7 @@ export default {
   },
   created: function() {},
   mounted() {
-      this.drawCharts() 
+      this.drawCharts(); 
   },
   methods: {
       drawCharts() {

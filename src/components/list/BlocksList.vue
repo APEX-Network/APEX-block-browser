@@ -15,7 +15,7 @@
               <!-- <span>{{item.size}} Bytes</span> -->
             </div>
             <div class="bottom">
-              <router-link to="/blocks/BlocksInfo">{{item.blockHash}}</router-link>
+              <router-link to="/blocks/BlocksInfo" @click.native="setClickValue">{{item.blockHash}}</router-link>
               <span>{{item.timeStamp}}</span>
             </div>
           </div>
@@ -54,6 +54,9 @@ export default {
             console.log(err.response);
           }
         });
+    },
+    setClickValue(e) {
+      sessionStorage.setItem('clickValue', e.target.innerHTML);
     }
   }
 };

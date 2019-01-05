@@ -16,7 +16,7 @@
             <router-link to="/blocks/BlocksInfo">{{item.height}}</router-link>
           </span>
           <span class="col col-lg-6">
-            <router-link to="/blocks/BlocksInfo" @click.native="sendUrl">{{item.blockHash}}</router-link>
+            <router-link to="/blocks/BlocksInfo" @click.native="setClickValue">{{item.blockHash}}</router-link>
           </span>
           <span class="col"></span>
           <span class="col txn">{{item.txNum}}</span>
@@ -31,7 +31,7 @@
 import Pagination from "@/components/public/Pagination.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import ApexTitle from "@/components/public/ApexTitle.vue";
-import eventBus from "../../utils/eventBus"
+// import eventBus from "../../utils/eventBus"
 
 export default {
   name: "blocks",
@@ -47,8 +47,7 @@ export default {
     return {
       title: "Blocks",
       dataList: null,
-      time: [],
-      sendurl: null
+      time: []
     };
   },
   methods: {
@@ -61,7 +60,7 @@ export default {
         .then(response => {
           let res = response.data.data;
           this.dataList = res;
-          console.log(this.dataList)
+          // console.log(this.dataList)
           for (let i = 0; i < res.length; i++) {
             this.timeStamp = res[i].timeStamp;
             let result = +new Date();
@@ -77,10 +76,8 @@ export default {
           }
         });
     },
-    sendUrl(e) {
-      this.sendurl = e.target.text;
-      // console.log(this.sendurl);
-      eventBus.$emit('sendUrl', this.sendurl);
+    setClickValue(e) {
+      sessionStorage.setItem('clickValue', e.target.innerHTML);
     }
   }
 };

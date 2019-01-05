@@ -5,7 +5,6 @@
     <div class="data-table">
       <ul class="table-ul">
         <li v-for="(value, key ,index ) in blocksInfo" :key="index" class="row">
-          <li v-for="(value, key ,index ) in blocksInfo" :key="index" class="row">
           <span class="col">{{key}} :</span>
           <span class="col col-lg-8" v-if="key === 'producer'">
             <router-link to="/producer">{{value}}</router-link>
@@ -13,12 +12,6 @@
           <span class="col col-lg-8" v-else-if="key === 'producerSig'">
             <router-link to="/producer/ProducerInfo">{{value}}</router-link>
           </span>
-          <span
-            class="col col-lg-8"
-            v-for="(block,index) in blockHash"
-            :key="index"
-            v-else-if="key === 'blockHash'"
-          >{{block}}</span>
           <span class="col col-lg-8" v-else>{{value}}</span>
         </li>
       </ul>
@@ -30,7 +23,9 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
-import eventBus from "../../utils/eventBus";
+// import eventBus from "../../utils/eventBus";
+// 页面传值可以通过四种方法1.sessionStorage/localStorage;2.引入eventBus;
+// 3.路由传值；4.vuex进行状态管理；
 
 export default {
   name: "BlocksInfo",
@@ -40,35 +35,34 @@ export default {
     ApexBackGround
   },
   created() {
-    this.getBlocksInfo();
+    this.getClickValue();
   },
   data() {
     return {
       title: "Blocks Information",
-      blocksInfo: '',
-      blockHash: ''
+      blocksInfo: null,
+      blockHash: null
     };
   },
   mounted() {
+    this.getBlocksInfo();
   },
   methods: {
+    getClickValue() {
+      this.blockHash = sessionStorage.getItem("clickValue");
+    },
     getBlocksInfo() {
-      eventBus.$on("sendUrl", (val) => {
-        this.blockHash = val;
-        console.log('blockHash',this.blockHash);
-        if (val) {
-          this.$axios
-            .get("/api/v1.0/blocks/blockHash/" + val)
-            .then(response => {
-              let result = response.data.data;
-              this.blocksInfo = result;
-              console.log(this.blocksInfo);
-            })
-            .catch(function(response) {
-              console.log(response);
-            });
-        }
-      });
+      if (this.blockHash) {
+        this.$axios
+          .get("/api/v1.0/blocks/blockHash/" + this.blockHash)
+          .then(response => {
+            let result = response.data.data;
+            this.blocksInfo = result;
+          })
+          .catch(function(response) {
+            console.log(response);
+          });
+      }
     }
   }
 };

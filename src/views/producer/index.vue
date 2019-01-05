@@ -12,7 +12,7 @@
             <li v-for="(item,index) in producer" :key="index" class="row">
               <span class="col">{{item.Rank}}</span>
               <span class="col col-lg-6">
-                <router-link to="/producer/ProducerInfo">{{item.Miner}}</router-link>
+                <router-link to="/producer/ProducerInfo" @click.native.self="getMiner">{{item.Miner}}</router-link>
               </span>
               <span class="col">{{item.Blocks}}</span>
             </li>
@@ -41,60 +41,60 @@ export default {
   },
   created() {},
   mounted() {
-    this.getProducerList();
+    // this.getProducerList();
   },
   data() {
     return {
       title: "Producer",
-      producer: []
-      // producer: [
-      //   {
-      //     Rank: "1",
-      //     Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
-      //     Blocks: "123,458"
-      //   },
-      //   {
-      //     Rank: "2",
-      //     Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
-      //     Blocks: "123,457"
-      //   },
-      //  {
-      //     Rank: "3",
-      //     Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
-      //     Blocks: "123,456"
-      //   },
-      //   {
-      //     Rank: "4",
-      //     Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
-      //     Blocks: "123,455"
-      //   },
-      //   {
-      //     Rank: "5",
-      //     Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
-      //     Blocks: "123,454"
-      //   },{
-      //     Rank: "6",
-      //     Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
-      //     Blocks: "123,453"
-      //   },{
-      //     Rank: "7",
-      //     Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
-      //     Blocks: "123,456"
-      //   },{
-      //     Rank: "8",
-      //     Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
-      //     Blocks: "123,452"
-      //   },
-      //   {
-      //     Rank: "9",
-      //     Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
-      //     Blocks: "123,451"
-      //   },{
-      //     Rank: "10",
-      //     Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
-      //     Blocks: "123,450"
-      //   }
-      // ]
+      // producer: []
+      producer: [
+        {
+          Rank: "1",
+          Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
+          Blocks: "123,458"
+        },
+        {
+          Rank: "2",
+          Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
+          Blocks: "123,457"
+        },
+       {
+          Rank: "3",
+          Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
+          Blocks: "123,456"
+        },
+        {
+          Rank: "4",
+          Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
+          Blocks: "123,455"
+        },
+        {
+          Rank: "5",
+          Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
+          Blocks: "123,454"
+        },{
+          Rank: "6",
+          Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
+          Blocks: "123,453"
+        },{
+          Rank: "7",
+          Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
+          Blocks: "123,456"
+        },{
+          Rank: "8",
+          Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
+          Blocks: "123,452"
+        },
+        {
+          Rank: "9",
+          Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
+          Blocks: "123,451"
+        },{
+          Rank: "10",
+          Miner: "APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7APAau3Dx7",
+          Blocks: "123,450"
+        }
+      ]
     };
   },
   methods: {
@@ -106,7 +106,7 @@ export default {
         })
         .then(response => {
           let res = response.data.data;
-          this.producer = res;
+          // this.producer = res;
           console.log(this.producer)
           for (let i = 0; i < res.length; i++) {
             this.timeStamp = res[i].timeStamp;
@@ -123,6 +123,10 @@ export default {
           }
         });
     },
+    getMiner(e) {
+      let clickTarget = e.target.text;
+      console.log(clickTarget);
+    }
   }
 };
 </script>

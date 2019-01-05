@@ -41,7 +41,7 @@ export default {
     };
   },
   mounted() {
-    this.getProducerInfo();
+    // this.getProducerInfo();
   },
   methods: {
     getProduceInfo() {}

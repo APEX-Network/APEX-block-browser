@@ -7,7 +7,7 @@
         <li v-for="(list,index) in transactions" :key="index" class="row">
           <span class="col col-lg-10">
             <div class="bottom">
-              <router-link to="/transactions/TransactionsInfo">{{list.txHash}}</router-link>
+              <router-link to="/transactions/TransactionsInfo" @click.native="setClickValue">{{list.txHash}}</router-link>
             </div>
           </span>
           <span class="col">{{list.refBlockTime }}</span>
@@ -56,6 +56,9 @@ export default {
             console.log(err.response);
           }
         });
+    },
+    setClickValue(e) {
+      sessionStorage.setItem('clickValue', e.target.innerHTML);
     }
   }
 };

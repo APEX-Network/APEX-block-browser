@@ -10,7 +10,7 @@
         <vue-scroll :ops="ops">
           <li v-for="(item,index) in transactions" :key="index">
             <div class="bottom">
-              <router-link to="/transactions/TransactionsInfo">{{item.txHash}}</router-link>
+              <router-link to="/transactions/TransactionsInfo" @click.native="setClickValue">{{item.txHash}}</router-link>
               <span>{{item.refBlockTime}}</span>
             </div>
           </li>
@@ -36,6 +36,10 @@ export default {
     this.getTransactionsList();
   },
   methods: {
+    setClickValue(e) {
+      sessionStorage.setItem('clickValue', e.target.innerHTML);
+      console.log(e.target.innerHTML);
+    },
     getTransactionsList() {
       this.$axios
         .post("/api/v1.0/transactions/transactionList", {
