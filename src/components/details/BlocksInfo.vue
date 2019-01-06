@@ -52,17 +52,17 @@ export default {
       this.blockHash = sessionStorage.getItem("clickValue");
     },
     getBlocksInfo() {
-      if (this.blockHash) {
-        this.$axios
-          .get("/api/v1.0/blocks/blockHash/" + this.blockHash)
-          .then(response => {
-            let result = response.data.data;
-            this.blocksInfo = result;
-          })
-          .catch(function(response) {
-            console.log(response);
-          });
-      }
+          if (this.blockHash) {
+          this.$axios
+            .get("/api/v1.0/blocks/blockHash/" + this.blockHash)
+            .then(response => {
+              let result = response.data.data;
+              this.blocksInfo = result;
+            })
+            .catch(function(response) {
+              console.log(response);
+            });
+          }
     }
   }
 };

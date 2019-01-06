@@ -13,12 +13,13 @@
         </li>
         <li v-for="(item,index) in dataList" :key="index" class="row">
           <span class="col height">
-            <router-link to="/blocks/BlocksInfo">{{item.height}}</router-link>
+            <!-- <router-link to="/blocks/BlocksInfo" @click.native="setClickValue">{{item.height}}</router-link> -->
+            {{item.height}}
           </span>
           <span class="col col-lg-6">
             <router-link to="/blocks/BlocksInfo" @click.native="setClickValue">{{item.blockHash}}</router-link>
           </span>
-          <span class="col"></span>
+          <span class="col">{{item.timeStamp}}</span>
           <span class="col txn">{{item.txNum}}</span>
           <span class="col">{{item.producer}}</span>
         </li>
@@ -31,7 +32,6 @@
 import Pagination from "@/components/public/Pagination.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import ApexTitle from "@/components/public/ApexTitle.vue";
-// import eventBus from "../../utils/eventBus"
 
 export default {
   name: "blocks",
@@ -47,7 +47,7 @@ export default {
     return {
       title: "Blocks",
       dataList: null,
-      time: []
+      secondTime: null
     };
   },
   methods: {
@@ -60,14 +60,14 @@ export default {
         .then(response => {
           let res = response.data.data;
           this.dataList = res;
-          // console.log(this.dataList)
           for (let i = 0; i < res.length; i++) {
             this.timeStamp = res[i].timeStamp;
             let result = +new Date();
             let ti = (result - this.timeStamp) / 1000;
-            this.time = ti.toFixed(1);
-            let x = this.time - Math.floor(this.time);
-            // console.log(x);
+            let time = ti.toFixed(1);
+            let x = time - Math.floor(time);
+            console.log(x);
+            this.secondTime = x;
           }
         })
         .catch(function(err) {

@@ -68,7 +68,9 @@ export default {
   },
   methods: {
     getClickValue() {
-      this.txHash = sessionStorage.getItem("clickValue");
+      this.txHash = this.$route.params.clickValue;
+      // this.txHash = this.$route.query.clickValue;
+      console.log("路由传参" + this.txHash);
     },
     getTransactionsInfo() {
       if (this.txHash) {
@@ -84,6 +86,9 @@ export default {
           });
       }
     }
+  },
+  watch: {
+    $route: "getClickValue"
   }
 };
 </script>

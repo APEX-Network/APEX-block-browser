@@ -29,7 +29,8 @@ export default {
   data() {
     return {
       ops: {},
-      transactions: []
+      transactions: [],
+      clickValue: null
     };
   },
   mounted() {
@@ -37,8 +38,23 @@ export default {
   },
   methods: {
     setClickValue(e) {
-      sessionStorage.setItem('clickValue', e.target.innerHTML);
-      console.log(e.target.innerHTML);
+      this.clickValue = e.target.innerHTML;
+      this.$router.push({
+            name: 'TransactionsInfo',
+            params: { 
+                clickValue: this.clickValue
+            }
+        })
+        /**
+         * 通过query传值,通过path匹配路由，参数会显示在url后面。
+         * 通过params传值,通过name匹配路由,参数不会显示在url后面。
+         */
+        // this.$router.push({
+        //     path: '/TransactionsInfo',
+        //     query: { 
+        //         clickValue: this.clickValue
+        //     }
+        // })
     },
     getTransactionsList() {
       this.$axios
