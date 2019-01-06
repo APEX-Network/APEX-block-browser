@@ -65,11 +65,9 @@ export default {
     doCopy(val) {
       this.$copyText(val).then(
         function(e) {
-          // alert('Copied')
           // console.log(e)
         },
         function(e) {
-          // alert('Can not copy')
           // console.log(e)
         }
       );
