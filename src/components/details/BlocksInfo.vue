@@ -3,16 +3,59 @@
     <apex-title :title="title"/>
     <apex-back-ground/>
     <div class="data-table">
-      <ul class="table-ul">
-        <li v-for="(value, key ,index ) in blocksInfo" :key="index" class="row">
-          <span class="col">{{key}} :</span>
-          <span class="col col-lg-8" v-if="key === 'producer'">
-            <router-link to="/producer">{{value}}</router-link>
+        <ul class="table-ul">
+          <li :class="['row']">
+          <span class="col">
+            Height:
+            <span class="bHeight">
+              {{height}}
+            </span>
           </span>
-          <span class="col col-lg-8" v-else-if="key === 'producerSig'">
-            <router-link to="/producer/ProducerInfo">{{value}}</router-link>
+        </li>
+        <li :class="['row']">
+          <span class="col">
+            TimeStamp:
+            <span class="timeStamp">{{timeStamp}}</span>
           </span>
-          <span class="col col-lg-8" v-else>{{value}}</span>
+        </li>
+        <li :class="['row']">
+          <span class="col">
+            Transactions:
+            <span class="transactions">{{transactions}}</span>
+          </span>
+        </li>
+        <li :class="['row']">
+          <span class="col">
+            Hash:
+            <span class="hash">{{blockHash}}</span>
+          </span>
+        </li>
+        <li :class="['row']">
+          <span class="col">
+            Parent Hash:
+            <span class="parentHash">
+              <router-link
+                to="/blocks/BlocksInfo"
+                @click.native="setClickValue"
+              >{{parentHash}}</router-link>
+            </span>
+          </span>
+        </li>
+        <li :class="['row']">
+          <span class="col">
+            Mined By:
+            <span class="mindedBy">
+              <router-link to="/producer/ProducerInfo"
+                @click.native="setClickValue"
+              >{{minedBy}}</router-link>
+            </span>
+          </span>
+        </li>
+        <li :class="['row']">
+          <span class="col">
+            Nonce:
+            <span class="nonce">{{nonce}}</span>
+          </span>
         </li>
       </ul>
     </div>
@@ -40,8 +83,13 @@ export default {
   data() {
     return {
       title: "Blocks Information",
-      blocksInfo: null,
-      blockHash: null
+      height: null,
+      timeStamp: null,
+      transactions: null,
+      blockHash: null,
+      parentHash: null,
+      minedBy: null,
+      nonce: null
     };
   },
   mounted() {
@@ -56,7 +104,15 @@ export default {
           this.$axios
             .get("/api/v1.0/blocks/blockHash/" + this.blockHash)
             .then(response => {
-              this.blocksInfo = response.data.data;   
+              let res = response.data.data;
+              this.height = res.height;
+              this.timeStamp = res.timeStamp;
+              this.transactions = res.id;
+              // this.blockHash = res.blockHash;
+              this.parentHash = res.prevBlock;
+              this.minedBy = res.producer;
+              this.nonce = res.txNum;
+              console.log(res);   
             })
             .catch(function(response) {
               console.log(response);
@@ -75,5 +131,38 @@ export default {
   width: 100%;
   height: 100%;
   background: url(./../../assets/images/shared/yunshi.png) 40% 45% no-repeat;
+  .data-table {
+    .table-ul {
+      li {
+        span {
+          .bHeight {
+            margin-right: 59.5%;
+          }
+          .timeStamp {
+            margin-right: 54.6%;
+          }
+          .transactions {
+            margin-right: 47%;
+          }
+          .hash {
+            margin-right: 15.6%;
+          }
+          .parentHash {
+            margin-right: 17.5%;
+          }
+          .mindedBy {
+            margin-right: 15.5%;
+          }
+          .nonce {
+            margin-right: 63.5%;
+          }
+          span {
+            margin-right: 10%;
+            float: right;
+          }
+        }
+      }
+    }
+  }
 }
 </style>

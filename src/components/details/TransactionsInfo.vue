@@ -5,77 +5,58 @@
     <apex-back-ground/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
-        <!-- <li
-          v-for="(value, key ,index ) in transactionsInfo"
-          :key="index"
-          :class="['row', {'li-inputdata': key === 'Input Data' }]"
-        >
-          <span class="col">{{key}} :</span>
-          <span class="col col-lg-8" v-if="(key === 'From') || (key === 'To') ">
-            <router-link
-              to="/transactions/TransactionsInfo/AccountInfo"
-              @click.native="setClickValue"
-            >{{value}}</router-link>
-          </span>
-          <span class="col col-lg-8" v-else-if="key === 'nonce'">
-            <router-link to="/blocks/BlocksInfo">{{value}}</router-link>
-          </span>
-          <span
-            v-else-if="key === 'Input Data'"
-            :class="['col col-lg-8', {'span-inputdata': key === 'Input Data' }]"
-          >
-            <i></i>
-            {{value}}
-          </span>
-          <span class="col col-lg-8" v-else>{{value}}</span>
-        </li>
-        </ul>-->
-        <li :class="['row', {'li-inputdata': key === 'Input Data' }]">
+        <li :class="['row']">
           <span class="col">
             TxHash:
             <span>{{txHash}}</span>
           </span>
         </li>
-        <li :class="['row', {'li-inputdata': key === 'Input Data' }]">
+        <li :class="['row']">
           <span class="col">
             TxReceipt Status:
-            <span class="success">Success</span>
+            <span class="success">{{txReceiptStatus}}</span>
           </span>
         </li>
-        <li :class="['row', {'li-inputdata': key === 'Input Data' }]">
+        <li :class="['row']">
           <span class="col">
             Block Height:
-            <span>{{txHash}}</span>
+            <span class="bHeight">
+              <router-link to="/blocks/BlocksInfo">{{blockHeight}}</router-link>
+            </span>
           </span>
         </li>
-        <li :class="['row', {'li-inputdata': key === 'Input Data' }]">
-          <span class="col">
-            Block Hash:
-            <span>{{txHash}}</span>
-          </span>
-        </li>
-        <li :class="['row', {'li-inputdata': key === 'Input Data' }]">
+        <li :class="['row']">
           <span class="col">
             TimeStamp:
-            <span>{{txHash}}</span>
+            <span class="timeStamp">{{timeStamp}}</span>
           </span>
         </li>
-        <li :class="['row', {'li-inputdata': key === 'Input Data' }]">
+        <li :class="['row']">
           <span class="col">
             From:
-            <span>{{txHash}}</span>
+            <span class="from">
+              <router-link
+                to="/transactions/TransactionsInfo/AccountInfo"
+                @click.native="setClickValue"
+              >{{from}}</router-link>
+            </span>
           </span>
         </li>
-        <li :class="['row', {'li-inputdata': key === 'Input Data' }]">
+        <li :class="['row']">
           <span class="col">
             To:
-            <span>{{txHash}}</span>
+            <span class="to">
+              <router-link
+                to="/transactions/TransactionsInfo/AccountInfo"
+                @click.native="setClickValue"
+              >{{to}}</router-link>
+            </span>
           </span>
         </li>
-        <li :class="['row', {'li-inputdata': key === 'Input Data' }]">
+        <li :class="['row']">
           <span class="col">
             Value:
-            <span>{{txHash}}</span>
+            <span class="value">{{amount}}</span>
           </span>
         </li>
       </ul>
@@ -98,20 +79,14 @@ export default {
   data() {
     return {
       title: "Transactions Information",
-      transactionsInfo: null,
+      clickValue: null,
       txHash: null,
-      clickValue: null
-      // transactionsInfo: {
-      //   TxHash:
-      //     "0x6e1e6ce40242e82ddsfsdfsdfsafasfsadsdfsdfsdfsadfsdaffsdfsdfsfasd",
-      //   "TxReceipt Status": "Success",
-      //   "Block Height": "6353170(1 block confirmation)",
-      //   // 'Block Hash': '0x6e1e6ce40242e82ddsfsdfsdfsafasfsadsdfsdfsdfsadfsdaffsdfsdfsfasd',
-      //   TimeStamp: "55 mins ago (Sep-18-2018 07:33:22 AM +UTC)",
-      //   From: "UCgDinSCgoU5DaA6PfwQKzm5kXEVtkQjbKR",
-      //   To: "UCZS7ZNZK3a8zYkzcJVc3bd17JhJ2SFJu7a",
-      //   Value: "0x6e1e6 CPX"
-      // }
+      blockHeight: null,
+      timeStamp: null,
+      txReceiptStatus: null,
+      from: null,
+      to: null,
+      amount: null
     };
   },
   created() {
@@ -122,9 +97,10 @@ export default {
   },
   methods: {
     getClickValue() {
-      this.txHash = this.$route.params.clickValue;
+      // this.txHash = this.$route.params.clickValue;
       // this.txHash = this.$route.query.clickValue;
-      console.log("路由传参" + this.txHash);
+      // console.log("路由传参" + this.txHash);
+     this.txHash = sessionStorage.getItem("clickValue");
     },
     setClickValue(e) {
       this.clickValue = e.target.innerHTML;
@@ -141,7 +117,13 @@ export default {
           .get("/api/v1.0/transactions/" + this.txHash)
           .then(response => {
             console.log(response);
-            this.transactionsInfo = response.data.data;
+            let res = response.data.data;
+            this.txReceiptStatus = res.confirmed;
+            this.blockHeight = res.data;
+            this.timeStamp = res.refBlockTime;
+            this.from = res.from;
+            this.to = res.to;
+            this.amount = res.amount;
           })
           .catch(function(response) {
             console.log(response);
@@ -167,9 +149,29 @@ export default {
       li {
         span {
           .success {
-              margin-right:52.5%;
-              float: right;
-            }
+            margin-right: 54.5%;
+            float: right;
+          }
+          .bHeight {
+            margin-right: 26%;
+            float: right;
+          }
+          .timeStamp {
+            margin-right: 47.5%;
+            float: right;
+          }
+          .from {
+            margin-right: 38%;
+            float: right;
+          }
+          .to {
+            margin-right: 39.9%;
+            float: right;
+          }
+          .value {
+            margin-right: 45%;
+            float: right;
+          }
           span {
             margin-right: 10%;
             float: right;
