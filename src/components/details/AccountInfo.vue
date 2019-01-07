@@ -6,8 +6,8 @@
       <ul class="table-ul">
         <li v-for="(value, key ,index ) in accountInfo" :key="index" class="row">
           <span class="col">{{key}} :</span>
-          <span class="col col-lg-8" v-if="key === 'Address'" ref="address">
-            {{value}}
+          <span class="col col-lg-8" v-if="key === 'balances.value'" ref="address">
+            {{balance}}
             <i @click="Copy(index)"></i>
           </span>
           <span class="col col-lg-8" v-else>{{value}}</span>
@@ -47,11 +47,16 @@ export default {
     ApexTitle,
     ApexBackGround
   },
+  created() {
+    this.getClickValue();
+  },
   data() {
     return {
       title: "AccountInfo Information",
       accountInfo: [],
-      transactions: []
+      transactions: [],
+      address: null,
+      balance: null
     };
   },
   mounted() {
@@ -72,19 +77,27 @@ export default {
         }
       );
     },
+    getClickValue() {
+      this.address = this.$route.params.clickValue;
+      console.log("路由传参" + this.address);
+    },
     getAccountInfo() {
-      this.$axios
-        .post("/api/v1.0/accounts/account", {
-          address: "AP3BQP7LvRknVwKR7aZHqcWHF684gPM8hBj"
-        })
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
+      if (this.address) {
+        this.$axios
+          .post("/api/v1.0/accounts/account", {
+            address: this.address
+          })
+          .then(response => {
+            console.log(response.data.data.result);
+            let res = response.data.data.result;
+            this.accountInfo = res;           
+          })
+          .catch(function(err) {
+            if (err.response) {
+              console.log(err.response);
+            }
+          });
+      }
     }
   }
 };

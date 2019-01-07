@@ -49,8 +49,7 @@ export default {
         })
         .then(response => {
           console.log(response.data);
-          let res = response.data.data;
-          this.transactions = res;
+          this.transactions = response.data.data;
         })
         .catch(function(err) {
           if (err.response) {
@@ -59,7 +58,6 @@ export default {
         });
     },
     setClickValue(e) {
-      // sessionStorage.setItem('clickValue', e.target.innerHTML);
       this.clickValue = e.target.innerHTML;
       this.$router.push({
             name: 'TransactionsInfo',
@@ -67,6 +65,12 @@ export default {
                 clickValue: this.clickValue
             }
         })
+        // this.$router.push({
+        //     path: '/TransactionsInfo',
+        //     query: { 
+        //         clickValue: this.clickValue
+        //     }
+        // })
     }
   }
 };

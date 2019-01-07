@@ -41,7 +41,7 @@ export default {
   },
   created() {},
   mounted() {
-    // this.getProducerList();
+    this.getProducerList();
   },
   data() {
     return {
@@ -105,9 +105,8 @@ export default {
           pageSize: "10"
         })
         .then(response => {
-          let res = response.data.data;
-          // this.producer = res;
-          console.log(this.producer)
+          // this.producer = response.data.data;
+          // console.log(this.producer)
           for (let i = 0; i < res.length; i++) {
             this.timeStamp = res[i].timeStamp;
             let result = +new Date();

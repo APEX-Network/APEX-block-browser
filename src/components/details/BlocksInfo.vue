@@ -56,8 +56,7 @@ export default {
           this.$axios
             .get("/api/v1.0/blocks/blockHash/" + this.blockHash)
             .then(response => {
-              let result = response.data.data;
-              this.blocksInfo = result;
+              this.blocksInfo = response.data.data;   
             })
             .catch(function(response) {
               console.log(response);
