@@ -78,8 +78,9 @@ export default {
       );
     },
     getClickValue() {
-      this.address = this.$route.params.clickValue;
-      console.log("路由传参" + this.address);
+      // this.address = this.$route.params.clickValue;
+      // console.log("路由传参" + this.address);
+      this.address = sessionStorage.getItem("clickValue");
     },
     getAccountInfo() {
       if (this.address) {

@@ -4,57 +4,57 @@
     <apex-back-ground/>
     <div class="data-table">
         <ul class="table-ul">
-          <li :class="['row']">
+          <li class="row">
           <span class="col">
             Height:
-            <span class="bHeight">
+            <span class="clol col-lg-8">
               {{height}}
             </span>
           </span>
         </li>
-        <li :class="['row']">
+        <li class="row">
           <span class="col">
             TimeStamp:
-            <span class="timeStamp">{{timeStamp}}</span>
+            <span class="clol col-lg-8">{{timeStamp}}</span>
           </span>
         </li>
-        <li :class="['row']">
+        <li class="row">
           <span class="col">
             Transactions:
-            <span class="transactions">{{transactions}}</span>
+            <span class="clol col-lg-8">{{transactions}}</span>
           </span>
         </li>
-        <li :class="['row']">
+        <li class="row">
           <span class="col">
             Hash:
-            <span class="hash">{{blockHash}}</span>
+            <span class="clol col-lg-8">{{blockHash}}</span>
           </span>
         </li>
-        <li :class="['row']">
+        <li class="row">
           <span class="col">
             Parent Hash:
-            <span class="parentHash">
+            <span class="clol col-lg-8">
               <router-link
                 to="/blocks/BlocksInfo"
-                @click.native="setClickValue"
+                @click.native="getParentBlock"
               >{{parentHash}}</router-link>
             </span>
           </span>
         </li>
-        <li :class="['row']">
+        <li class="row">
           <span class="col">
             Mined By:
-            <span class="mindedBy">
+            <span class="clol col-lg-8">
               <router-link to="/producer/ProducerInfo"
                 @click.native="setClickValue"
               >{{minedBy}}</router-link>
             </span>
           </span>
         </li>
-        <li :class="['row']">
+        <li class="row">
           <span class="col">
             Nonce:
-            <span class="nonce">{{nonce}}</span>
+            <span class="clol col-lg-8">{{nonce}}</span>
           </span>
         </li>
       </ul>
@@ -108,7 +108,6 @@ export default {
               this.height = res.height;
               this.timeStamp = res.timeStamp;
               this.transactions = res.id;
-              // this.blockHash = res.blockHash;
               this.parentHash = res.prevBlock;
               this.minedBy = res.producer;
               this.nonce = res.txNum;
@@ -118,8 +117,29 @@ export default {
               console.log(response);
             });
           }
+    },
+    getParentBlock(e) {
+      let preHash = e.target.innerHTML;
+      if (preHash) {
+        this.$axios
+            .get("/api/v1.0/blocks/blockHash/" + preHash)
+            .then(response => {
+              let res = response.data.data;
+              this.height = res.height;
+              this.timeStamp = res.timeStamp;
+              this.transactions = res.id;
+              this.blockHash = res.blockHash;
+              this.parentHash = res.prevBlock;
+              this.minedBy = res.producer;
+              this.nonce = res.txNum;
+              console.log(res);   
+            })
+            .catch(function(response) {
+              console.log(response);
+            });
+          }
+      }
     }
-  }
 };
 </script>
 
@@ -135,27 +155,6 @@ export default {
     .table-ul {
       li {
         span {
-          .bHeight {
-            margin-right: 59.5%;
-          }
-          .timeStamp {
-            margin-right: 54.6%;
-          }
-          .transactions {
-            margin-right: 47%;
-          }
-          .hash {
-            margin-right: 15.6%;
-          }
-          .parentHash {
-            margin-right: 17.5%;
-          }
-          .mindedBy {
-            margin-right: 15.5%;
-          }
-          .nonce {
-            margin-right: 63.5%;
-          }
           span {
             margin-right: 10%;
             float: right;

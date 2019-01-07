@@ -58,13 +58,14 @@ export default {
         });
     },
     setClickValue(e) {
-      this.clickValue = e.target.innerHTML;
-      this.$router.push({
-            name: 'TransactionsInfo',
-            params: { 
-                clickValue: this.clickValue
-            }
-        })
+      sessionStorage.setItem('clickValue', e.target.innerHTML);
+      // this.clickValue = e.target.innerHTML;
+      // this.$router.push({
+      //       name: 'TransactionsInfo',
+      //       params: { 
+      //           clickValue: this.clickValue
+      //       }
+      //   })
         // this.$router.push({
         //     path: '/TransactionsInfo',
         //     query: { 

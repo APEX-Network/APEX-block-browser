@@ -5,36 +5,36 @@
     <apex-back-ground/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
-        <li :class="['row']">
+        <li class="row">
           <span class="col">
             TxHash:
-            <span>{{txHash}}</span>
+            <span class="clo col-lg-8">{{txHash}}</span>
           </span>
         </li>
-        <li :class="['row']">
+        <li class="row">
           <span class="col">
             TxReceipt Status:
-            <span class="success">{{txReceiptStatus}}</span>
+            <span class="clol col-lg-8">{{txReceiptStatus}}</span>
           </span>
         </li>
-        <li :class="['row']">
+        <li class="row">
           <span class="col">
             Block Height:
-            <span class="bHeight">
+            <span class="clol col-lg-8">
               <router-link to="/blocks/BlocksInfo">{{blockHeight}}</router-link>
             </span>
           </span>
         </li>
-        <li :class="['row']">
+        <li class="row">
           <span class="col">
             TimeStamp:
-            <span class="timeStamp">{{timeStamp}}</span>
+            <span class="clol col-lg-8">{{timeStamp}}</span>
           </span>
         </li>
-        <li :class="['row']">
+        <li class="row">
           <span class="col">
             From:
-            <span class="from">
+            <span class="clol col-lg-8">
               <router-link
                 to="/transactions/TransactionsInfo/AccountInfo"
                 @click.native="setClickValue"
@@ -42,10 +42,10 @@
             </span>
           </span>
         </li>
-        <li :class="['row']">
+        <li class="row">
           <span class="col">
             To:
-            <span class="to">
+            <span class="clol col-lg-8">
               <router-link
                 to="/transactions/TransactionsInfo/AccountInfo"
                 @click.native="setClickValue"
@@ -53,10 +53,10 @@
             </span>
           </span>
         </li>
-        <li :class="['row']">
+        <li class="row">
           <span class="col">
             Value:
-            <span class="value">{{amount}}</span>
+            <span class="clol col-lg-8">{{amount}}</span>
           </span>
         </li>
       </ul>
@@ -100,16 +100,18 @@ export default {
       // this.txHash = this.$route.params.clickValue;
       // this.txHash = this.$route.query.clickValue;
       // console.log("路由传参" + this.txHash);
-     this.txHash = sessionStorage.getItem("clickValue");
+      this.txHash = sessionStorage.getItem("clickValue");
     },
     setClickValue(e) {
-      this.clickValue = e.target.innerHTML;
-      this.$router.push({
-        name: "AccountInfo",
-        params: {
-          clickValue: this.clickValue
-        }
-      });
+      // this.clickValue = e.target.innerHTML;
+      // this.$router.push({
+      //   name: "AccountInfo",
+      //   params: {
+      //     clickValue: this.clickValue
+      //   }
+      // });
+      sessionStorage.setItem('clickValue', e.target.innerHTML);
+
     },
     getTransactionsInfo() {
       if (this.txHash) {
@@ -148,36 +150,8 @@ export default {
     .table-ul {
       li {
         span {
-          .success {
-            margin-right: 54.5%;
-            float: right;
-          }
-          .bHeight {
-            margin-right: 26%;
-            float: right;
-          }
-          .timeStamp {
-            margin-right: 47.5%;
-            float: right;
-          }
-          .from {
-            margin-right: 38%;
-            float: right;
-          }
-          .to {
-            margin-right: 39.9%;
-            float: right;
-          }
-          .value {
-            margin-right: 45%;
-            float: right;
-          }
           span {
-            margin-right: 10%;
             float: right;
-            a {
-              margin-left: 33%;
-            }
           }
         }
       }
