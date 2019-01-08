@@ -1,5 +1,4 @@
 .DS_Store
-debug.log
 node_modules/
 npm-debug.log*
 yarn-debug.log*
@@ -10,6 +9,7 @@ dist/
 # Editor directories and files
 .idea
 .vscode
+.log
 typings.json
 typings/
 *.suo
