@@ -66,9 +66,6 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
-// import eventBus from "../../utils/eventBus";
-// 页面传值可以通过四种方法1.sessionStorage/localStorage;2.引入eventBus;
-// 3.路由传值；4.vuex进行状态管理；
 
 export default {
   name: "BlocksInfo",
@@ -119,10 +116,10 @@ export default {
           }
     },
     getParentBlock(e) {
-      let preHash = e.target.innerHTML;
-      if (preHash) {
+      let parentHash = e.target.innerHTML;
+      if (parentHash) {
         this.$axios
-            .get("/api/v1.0/blocks/blockHash/" + preHash)
+            .get("/api/v1.0/blocks/blockHash/" + parentHash)
             .then(response => {
               let res = response.data.data;
               this.height = res.height;
@@ -132,7 +129,6 @@ export default {
               this.parentHash = res.prevBlock;
               this.minedBy = res.producer;
               this.nonce = res.txNum;
-              console.log(res);   
             })
             .catch(function(response) {
               console.log(response);

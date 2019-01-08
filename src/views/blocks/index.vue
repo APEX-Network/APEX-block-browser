@@ -24,7 +24,15 @@
           <span class="col">{{item.producer}}</span>
         </li>
       </ul>
-      <Pagination/>
+      <div class="uchain-pagination">
+        <div class="pagination-content">
+          <span class="first">First</span>
+          <span class="prev" @click="getPreviousBlocks"></span>
+          <span class="list-number">1-10</span>
+          <span class="next" @click="getNextBlocks"></span>
+          <span class="last">Last</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -41,17 +49,19 @@ export default {
     ApexTitle
   },
   mounted() {
-    this.getAllBlocks();
+    this.getFirstBlocks();
   },
   data() {
     return {
       title: "Blocks",
       dataList: null,
-      secondTime: null
+      secondTime: null,
+      start: 1
     };
   },
   methods: {
-    getAllBlocks() {
+    getFirstBlocks() {
+      console.log(this.start);
       this.$axios
         .post("/api/v1.0/blocks/blockList", {
           start: "0",
@@ -60,6 +70,7 @@ export default {
         .then(response => {
           let res = response.data.data;
           this.dataList = res;
+          console.log(dataList);
           for (let i = 0; i < res.length; i++) {
             this.timeStamp = res[i].timeStamp;
             let result = +new Date();
@@ -77,7 +88,77 @@ export default {
         });
     },
     setClickValue(e) {
-      sessionStorage.setItem('clickValue', e.target.innerHTML);
+      sessionStorage.setItem("clickValue", e.target.innerHTML);
+    },
+    getNextBlocks() {
+      console.log("next");
+      this.nextPage = this.start++;
+      this.$axios
+        .post("/api/v1.0/blocks/blockList", {
+          start: this.nextPage,
+          pageSize: "10"
+        })
+        .then(response => {
+          let res = response.data.data;
+          this.dataList = res;
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+      if (this.nextPage >= 10) {
+        this.$axios
+        .post("/api/v1.0/blocks/blockList", {
+          start: "10",
+          pageSize: "10"
+        })
+        .then(response => {
+          let res = response.data.data;
+          this.dataList = null;
+          this.dataList = res;
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+      }
+    },
+    getPreviousBlocks() {
+      console.log("previous");
+      this.previousPage = this.start--;
+      this.$axios
+        .post("/api/v1.0/blocks/blockList", {
+          start: this.previousPage,
+          pageSize: "10"
+        })
+        .then(response => {
+          let res = response.data.data;
+          this.dataList = res;
+          console.log(dataList);
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+      if (this.previousPage <= 0) {
+        this.$axios
+        .post("/api/v1.0/blocks/blockList", {
+          start: "0",
+          pageSize: "10"
+        })
+        .then(response => {
+          let res = response.data.data;
+          this.dataList = res;
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+      }
     }
   }
 };
@@ -93,6 +174,48 @@ export default {
       .row {
         .height {
           color: #f26522;
+        }
+      }
+    }
+    .uchain-pagination {
+      width: 100%;
+      height: 50px;
+      padding: 10px 35px;
+      box-sizing: border-box;
+      text-align: right;
+      font-size: 12px;
+      color: #333333;
+      span {
+        display: inline-block;
+        padding: 9px 0;
+        margin: 0 4px;
+        cursor: pointer;
+        font-family: "Semibold";
+        vertical-align: middle;
+        &.list-number {
+          cursor: initial;
+        }
+        &.prev,
+        &.next {
+          padding: 9px;
+          background: url("../../assets/images/shared/page.png") no-repeat
+            center 2px;
+          color: #f26522;
+
+          &:hover {
+            background-position: center -34px;
+            color: #f26522;
+          }
+        }
+        &.next {
+          transform: rotate(-180deg);
+        }
+        &.first,
+        &.last {
+          transition: all 0.3s;
+          &:hover {
+            color: #f26522;
+          }
         }
       }
     }

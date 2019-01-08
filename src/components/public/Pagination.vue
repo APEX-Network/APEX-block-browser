@@ -1,25 +1,36 @@
 <template>
-    <div class="uchain-pagination">
-        <div class="pagination-content">
-            <span class="first">First</span>
-            <span class="prev"></span>
-            <span class="list-number">1-10</span>
-            <span class="next"></span>
-            <span class="last">Last</span>
-        </div>
+  <div class="uchain-pagination">
+    <div class="pagination-content">
+      <span class="first">First</span>
+      <span class="prev" @click="getPreviousBlocks"></span>
+      <span class="list-number">1-10</span>
+      <span class="next" @click="getNextBlocks"></span>
+      <span class="last">Last</span>
     </div>
+  </div>
 </template>
 <script>
 export default {
   name: "pagination",
   data() {
-    return{
-      
+    return {
+      start: 0
+    };
+  },
+  methods: {
+    getNextBlocks() {
+      console.log("next");
+      sessionStorage.setItem("nextBlocks", this.start++);
+    },
+    getPreviousBlocks() {
+      console.log("previous");
+      sessionStorage.setItem("nextBlocks", this.start--);
     }
   }
 };
 </script>
 <style lang="less" scoped>
+@import "./../../assets/css/layout";
 .uchain-pagination {
   width: 100%;
   height: 50px;

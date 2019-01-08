@@ -91,25 +91,15 @@ export default {
   },
   created() {
     this.getClickValue();
+    this.getTransactionsInfo();
   },
   mounted() {
-    this.getTransactionsInfo();
   },
   methods: {
     getClickValue() {
-      // this.txHash = this.$route.params.clickValue;
-      // this.txHash = this.$route.query.clickValue;
-      // console.log("路由传参" + this.txHash);
       this.txHash = sessionStorage.getItem("clickValue");
     },
     setClickValue(e) {
-      // this.clickValue = e.target.innerHTML;
-      // this.$router.push({
-      //   name: "AccountInfo",
-      //   params: {
-      //     clickValue: this.clickValue
-      //   }
-      // });
       sessionStorage.setItem('clickValue', e.target.innerHTML);
 
     },
@@ -118,7 +108,6 @@ export default {
         this.$axios
           .get("/api/v1.0/transactions/" + this.txHash)
           .then(response => {
-            console.log(response);
             let res = response.data.data;
             this.txReceiptStatus = res.confirmed;
             this.blockHeight = res.data;
@@ -132,9 +121,6 @@ export default {
           });
       }
     }
-  },
-  watch: {
-    $route: "getClickValue"
   }
 };
 </script>
