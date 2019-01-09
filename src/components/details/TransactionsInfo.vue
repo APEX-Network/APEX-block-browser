@@ -21,7 +21,7 @@
           <span class="col">
             Block Height:
             <span class="clol col-lg-8">
-              <router-link to="/blocks/BlocksInfo">{{blockHeight}}</router-link>
+              <router-link to="/blocks/BlocksInfo" @click.native="setClickValue">{{blockHeight}}</router-link>
             </span>
           </span>
         </li>
@@ -100,8 +100,11 @@ export default {
       this.txHash = sessionStorage.getItem("clickValue");
     },
     setClickValue(e) {
-      sessionStorage.setItem('clickValue', e.target.innerHTML);
-
+      let clickValue = {
+        type: "height",
+        value: e.target.innerHTML
+      };
+      sessionStorage.setItem("clickValue", JSON.stringify(clickValue));
     },
     getTransactionsInfo() {
       if (this.txHash) {
@@ -110,7 +113,7 @@ export default {
           .then(response => {
             let res = response.data.data;
             this.txReceiptStatus = res.confirmed;
-            this.blockHeight = res.data;
+            this.blockHeight = res.refBlockHeight;
             this.timeStamp = res.refBlockTime;
             this.from = res.from;
             this.to = res.to;

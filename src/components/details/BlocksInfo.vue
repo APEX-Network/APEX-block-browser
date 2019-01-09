@@ -3,13 +3,11 @@
     <apex-title :title="title"/>
     <apex-back-ground/>
     <div class="data-table">
-        <ul class="table-ul">
-          <li class="row">
+      <ul class="table-ul">
+        <li class="row">
           <span class="col">
             Height:
-            <span class="clol col-lg-8">
-              {{height}}
-            </span>
+            <span class="clol col-lg-8">{{height}}</span>
           </span>
         </li>
         <li class="row">
@@ -34,10 +32,7 @@
           <span class="col">
             Parent Hash:
             <span class="clol col-lg-8">
-              <router-link
-                to="/blocks/BlocksInfo"
-                @click.native="getParentBlock"
-              >{{parentHash}}</router-link>
+              <router-link to="/blocks/BlocksInfo" @click.native="getParentBlock">{{parentHash}}</router-link>
             </span>
           </span>
         </li>
@@ -45,9 +40,7 @@
           <span class="col">
             Mined By:
             <span class="clol col-lg-8">
-              <router-link to="/producer/ProducerInfo"
-                @click.native="setClickValue"
-              >{{minedBy}}</router-link>
+              <router-link to="/producer/ProducerInfo" @click.native="setClickValue">{{minedBy}}</router-link>
             </span>
           </span>
         </li>
@@ -86,7 +79,9 @@ export default {
       blockHash: null,
       parentHash: null,
       minedBy: null,
-      nonce: null
+      nonce: null,
+      clickValue: null,
+      result: null
     };
   },
   mounted() {
@@ -94,48 +89,75 @@ export default {
   },
   methods: {
     getClickValue() {
-      this.blockHash = sessionStorage.getItem("clickValue");
+      this.clickValue = sessionStorage.getItem("clickValue");
+      this.result = JSON.parse(this.clickValue);
+    },
+    setClickValue(e) {
+      sessionStorage.setItem("clickValue", e.target.innerHTML);
     },
     getBlocksInfo() {
-          if (this.blockHash) {
+      let type = this.result.type;
+      let url = this.result.value;
+      switch (type) {
+        case "hash":
           this.$axios
-            .get("/api/v1.0/blocks/blockHash/" + this.blockHash)
+            .get("/api/v1.0/blocks/blockHash/" + url)
             .then(response => {
               let res = response.data.data;
               this.height = res.height;
+              this.blockHash = res.blockHash;
               this.timeStamp = res.timeStamp;
               this.transactions = res.id;
               this.parentHash = res.prevBlock;
               this.minedBy = res.producer;
               this.nonce = res.txNum;
-              console.log(res);   
+              // console.log(res);
             })
             .catch(function(response) {
               console.log(response);
             });
-          }
+          break;
+        case "height":
+          this.$axios
+            .get("/api/v1.0/blocks/blockHeight/" + url)
+            .then(response => {
+              let res = response.data.data;
+              this.height = res.height;
+              this.blockHash = res.blockHash;
+              this.timeStamp = res.timeStamp;
+              this.transactions = res.id;
+              this.parentHash = res.prevBlock;
+              this.minedBy = res.producer;
+              this.nonce = res.txNum;
+              // console.log(res);
+            })
+            .catch(function(response) {
+              console.log(response);
+            });
+          break;
+      }
     },
     getParentBlock(e) {
       let parentHash = e.target.innerHTML;
       if (parentHash) {
         this.$axios
-            .get("/api/v1.0/blocks/blockHash/" + parentHash)
-            .then(response => {
-              let res = response.data.data;
-              this.height = res.height;
-              this.timeStamp = res.timeStamp;
-              this.transactions = res.id;
-              this.blockHash = res.blockHash;
-              this.parentHash = res.prevBlock;
-              this.minedBy = res.producer;
-              this.nonce = res.txNum;
-            })
-            .catch(function(response) {
-              console.log(response);
-            });
-          }
+          .get("/api/v1.0/blocks/blockHash/" + parentHash)
+          .then(response => {
+            let res = response.data.data;
+            this.height = res.height;
+            this.timeStamp = res.timeStamp;
+            this.transactions = res.id;
+            this.blockHash = res.blockHash;
+            this.parentHash = res.prevBlock;
+            this.minedBy = res.producer;
+            this.nonce = res.txNum;
+          })
+          .catch(function(response) {
+            console.log(response);
+          });
       }
     }
+  }
 };
 </script>
 

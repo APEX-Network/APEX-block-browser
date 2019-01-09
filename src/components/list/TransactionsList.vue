@@ -49,10 +49,6 @@ export default {
       //           clickValue: this.clickValue
       //       }
       //   })
-      /**
-       * 通过query传值,通过path匹配路由，参数会显示在url后面。
-       * 通过params传值,通过name匹配路由,参数不会显示在url后面。
-       */
       // this.$router.push({
       //     path: '/TransactionsInfo',
       //     query: {

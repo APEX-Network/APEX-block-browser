@@ -70,16 +70,7 @@ export default {
         .then(response => {
           let res = response.data.data;
           this.dataList = res;
-          console.log(dataList);
-          for (let i = 0; i < res.length; i++) {
-            this.timeStamp = res[i].timeStamp;
-            let result = +new Date();
-            let ti = (result - this.timeStamp) / 1000;
-            let time = ti.toFixed(1);
-            let x = time - Math.floor(time);
-            console.log(x);
-            this.secondTime = x;
-          }
+          // console.log(res);
         })
         .catch(function(err) {
           if (err.response) {
@@ -88,7 +79,11 @@ export default {
         });
     },
     setClickValue(e) {
-      sessionStorage.setItem("clickValue", e.target.innerHTML);
+      let clickValue = {
+        type: "hash",
+        value: e.target.innerHTML
+      };
+      sessionStorage.setItem("clickValue", JSON.stringify(clickValue));
     },
     getNextBlocks() {
       console.log("next");
@@ -109,20 +104,20 @@ export default {
         });
       if (this.nextPage >= 10) {
         this.$axios
-        .post("/api/v1.0/blocks/blockList", {
-          start: "10",
-          pageSize: "10"
-        })
-        .then(response => {
-          let res = response.data.data;
-          this.dataList = null;
-          this.dataList = res;
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
+          .post("/api/v1.0/blocks/blockList", {
+            start: "10",
+            pageSize: "10"
+          })
+          .then(response => {
+            let res = response.data.data;
+            this.dataList = null;
+            this.dataList = res;
+          })
+          .catch(function(err) {
+            if (err.response) {
+              console.log(err.response);
+            }
+          });
       }
     },
     getPreviousBlocks() {
@@ -145,19 +140,19 @@ export default {
         });
       if (this.previousPage <= 0) {
         this.$axios
-        .post("/api/v1.0/blocks/blockList", {
-          start: "0",
-          pageSize: "10"
-        })
-        .then(response => {
-          let res = response.data.data;
-          this.dataList = res;
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
+          .post("/api/v1.0/blocks/blockList", {
+            start: "0",
+            pageSize: "10"
+          })
+          .then(response => {
+            let res = response.data.data;
+            this.dataList = res;
+          })
+          .catch(function(err) {
+            if (err.response) {
+              console.log(err.response);
+            }
+          });
       }
     }
   }

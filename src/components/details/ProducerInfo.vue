@@ -31,20 +31,45 @@ export default {
   data() {
     return {
       title: "Producer Information",
+      minerBy: null,
       producerInfo: {
-        Miner: "0x6e1e6ce40242e82d",
-        Area: "Shanghai China",
-        "Current Rank": "1",
-        Website: "htt://apex.com",
-        Description: "No"
+        Miner: null,
+        Area: null,
+        CurrentRank: null,
+        Website: null,
+        Description: null
       }
     };
   },
+  created() {
+    this.getClickValue();
+  },
   mounted() {
-    // this.getProducerInfo();
+    this.getProduceInfo();
   },
   methods: {
-    getProduceInfo() {}
+    getClickValue() {
+      this.minerBy = sessionStorage.getItem("clickValue");
+      // console.log(this.minerBy);
+    },
+    getProduceInfo() {
+      if (this.minerBy) {
+        this.$axios
+          .get("/api/v1.0/minerInfo/" + this.minerBy)
+          .then(response => {
+            let res = response.data.data;
+            this.producerInfo.Miner = res.address;
+            this.producerInfo.Area = res.zone;
+            this.producerInfo.CurrentRank = res.rank;
+            this.producerInfo.Website = res.nodeUrl;
+            this.producerInfo.Description = res.describe;
+            // console.log(res);
+          })
+          .catch(function(response) {
+            console.log(response);
+          });
+      }
+    }
   }
 };
 </script>

@@ -81,6 +81,7 @@ export default {
       // this.address = this.$route.params.clickValue;
       // console.log("路由传参" + this.address);
       this.address = sessionStorage.getItem("clickValue");
+      console.log(this.address);
     },
     getAccountInfo() {
       if (this.address) {
@@ -89,9 +90,9 @@ export default {
             address: this.address
           })
           .then(response => {
-            console.log(response.data.data.result);
             let res = response.data.data.result;
-            this.accountInfo = res;           
+            this.accountInfo = res;
+            console.log(res);        
           })
           .catch(function(err) {
             if (err.response) {
