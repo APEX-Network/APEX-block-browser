@@ -6,7 +6,7 @@
       <div class="from">
         <div>From:</div>
         <div>Wallet</div>
-        <input type="text" placeholder="ABsdfsadfdsfjksdlafhasdhffdasfsdf">
+        <input type="text" placeholder="APsdfsadfdsfjksdlafhasdhffdasfsdf">
       </div>
 
       <div class="to">
@@ -16,13 +16,18 @@
       </div>
 
       <div class="amount">
-        <span>Amount(Available:1.00000004)</span>
+        <span>Amount    (Available:1.00000004)</span>
         <input type="text" placeholder="Transfer Amount">
         <div>
           <router-link to>All</router-link>
         </div>
         <div>CPX</div>
         <div>Please enter the correct transfer amount</div>
+      </div>
+      <div class="gasPrice">
+        <input type="text" placeholder="Please enter the gas price">
+        <div>Mp</div>
+        <div>Please enter the correct gas price</div>
       </div>
       <div class="password">
         <div>Password</div>
@@ -34,14 +39,14 @@
         <router-link to>SEND</router-link>
       </div>
     </div>
-      <div class="dialog" ref="dialog">
-        <div class="confirm" ref="confirm">
-          <div>Successful transfer</div>
-          <div @click="confirm()">
-            <router-link to="/wallet">CONFIRM</router-link>
-          </div>
+    <div class="dialog" ref="dialog">
+      <div class="confirm" ref="confirm">
+        <div>Successful transfer</div>
+        <div @click="confirm()">
+          <router-link to="/wallet">CONFIRM</router-link>
         </div>
       </div>
+    </div>
   </div>
 </template>
 
@@ -105,7 +110,7 @@ export default {
         color: aliceblue;
       }
       input:hover {
-          box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #f26522;
       }
     }
     .to {
@@ -117,7 +122,7 @@ export default {
         color: aliceblue;
       }
       input:hover {
-          box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #f26522;
       }
       div:nth-child(1) {
         color: rgba(255, 255, 255, 0.5);
@@ -127,6 +132,8 @@ export default {
         margin-top: 8px;
         color: #f26522;
         margin-left: 10px;
+        visibility: hidden;
+        // visibility:visible;
       }
     }
     .amount {
@@ -138,7 +145,7 @@ export default {
         color: aliceblue;
       }
       input:hover {
-          box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #f26522;
       }
       div:nth-child(2) {
         margin-left: 5%;
@@ -162,10 +169,46 @@ export default {
         color: #f26522;
         margin-top: 8px;
         margin-left: 10px;
+        visibility: hidden;
+        // visibility:visible;
+      }
+    }
+    .gasPrice {
+      margin: 5% 0 0 -16.5%;
+      input {
+        background: rgba(255, 255, 255, 0.001);
+        border: 1px solid #f26522;
+        width: 200px;
+        color: aliceblue;
+      }
+      input:hover {
+        box-shadow: 2px 2px 8px 2px #f26522;
+      }
+      div:nth-child(2) {
+        // margin-left: 5%;
+        padding-left: 10px;
+        display: inline-block;
+      }
+      div:nth-child(3) {
+        display: inline;
+        position: absolute;
+        margin-left: 4%;
+        margin-top: 1.4%;
+        z-index: 1;
+        a {
+          color: #f26522;
+        }
+      }
+      div:nth-child(3) {
+        color: #f26522;
+        margin-top: 8px;
+        margin-left: 10px;
+        visibility: hidden;
+        // visibility:visible;
       }
     }
     .password {
-      margin: 2% 0 0 0.1%;
+      margin: 10% 0 0 0.1%;
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
@@ -173,7 +216,7 @@ export default {
         color: aliceblue;
       }
       input:hover {
-          box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #f26522;
       }
       img {
         z-index: 1;
@@ -186,6 +229,8 @@ export default {
         color: #f26522;
         margin-top: 15px;
         margin-left: 10px;
+        visibility: hidden;
+        // visibility:visible;
       }
     }
     .send {
@@ -245,9 +290,9 @@ export default {
           color: #ffffff;
         }
         a:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
-        border-radius: 4px;
-      }
+          box-shadow: 2px 2px 8px 2px #f26522;
+          border-radius: 4px;
+        }
       }
     }
   }

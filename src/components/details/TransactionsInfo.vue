@@ -59,6 +59,30 @@
             <span class="clol col-lg-8">{{amount}}</span>
           </span>
         </li>
+        <li class="row" v-if="gasLimit !== null">
+          <span class="col">
+            Gas Limit:
+            <span class="clol col-lg-8">{{gasLimit}}</span>
+          </span>
+        </li>
+        <li class="row">
+          <span class="col">
+            Gas Price:
+            <span class="clol col-lg-8">{{gasPrice}}</span>
+          </span>
+        </li>
+        <li class="row" v-if="gasUsed !== null">
+          <span class="col">
+            Gas Used:
+            <span class="clol col-lg-8">{{gasUsed}}</span>
+          </span>
+        </li>
+        <li class="row" v-if="fee !== null">
+          <span class="col">
+            Transaction Fee:
+            <span class="clol col-lg-8">{{fee}}</span>
+          </span>
+        </li>
       </ul>
     </div>
   </div>
@@ -86,7 +110,12 @@ export default {
       txReceiptStatus: null,
       from: null,
       to: null,
-      amount: null
+      amount: null,
+      gasLimit: null,
+      gasPrice: null,
+      gasUsed: null,
+      fee: null
+
     };
   },
   created() {
@@ -112,12 +141,17 @@ export default {
           .get("/api/v1.0/transactions/" + this.txHash)
           .then(response => {
             let res = response.data.data;
+            console.log(res);
             this.txReceiptStatus = res.confirmed;
             this.blockHeight = res.refBlockHeight;
             this.timeStamp = res.refBlockTime;
             this.from = res.from;
             this.to = res.to;
             this.amount = res.amount;
+            this.gasLimit = res.gasLimit;
+            this.gasPrice = res.gasPrice;
+            this.gasUsed = res.gasUsed;
+            this.fee = res.fee;
           })
           .catch(function(response) {
             console.log(response);

@@ -61,7 +61,6 @@ export default {
   },
   methods: {
     getFirstBlocks() {
-      console.log(this.start);
       this.$axios
         .post("/api/v1.0/blocks/blockList", {
           start: "0",

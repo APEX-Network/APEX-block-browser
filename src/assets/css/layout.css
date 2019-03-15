@@ -72,6 +72,28 @@ body .logo-left {
   padding: 40px 45px;
   background: url(../images/shared/icon-01.png) left top no-repeat, url(../images/shared/icon-02.png) right top no-repeat, url(../images/shared/icon-03.png) left bottom no-repeat, url(../images/shared/icon-04.png) right bottom no-repeat;
 }
+.apex-background {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+  width: 100%;
+  height: 84%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 2px 45px;
+}
+.home {
+  width: 100%;
+  height: 100%;
+}
+.home .bottom-modul,
+.home .top-modul {
+  height: 100%;
+}
+.home .back-ground {
+  width: 100%;
+}
 .apex-modul {
   position: relative;
   width: 49%;
@@ -81,12 +103,15 @@ body .logo-left {
 }
 .apex-modul .apex-title {
   width: 100%;
-  height: 37px;
-  line-height: 37px;
+  height: 40px;
+  line-height: 40px;
   font-size: 16px;
   padding: 0px 30px;
   box-sizing: border-box;
   border-bottom: #000 2px solid;
+}
+.apex-modul .apex-title p {
+  height: 20px;
 }
 .apex-modul .apex-title span {
   display: inline-block;
@@ -101,6 +126,9 @@ body .logo-left {
   cursor: pointer;
   border: 2px solid rgba(242, 101, 34, 0.6);
 }
+.apex-modul .apex-title span a {
+  color: #f26522;
+}
 .apex-modul .apex-list {
   width: 100%;
   height: calc(100% - 60px);
@@ -111,7 +139,7 @@ body .logo-left {
 .apex-modul .apex-list li {
   width: calc(100% - 40px);
   margin: 0 auto;
-  padding: 12px 0;
+  padding: 4px 0;
   border-bottom: #000 1px solid;
 }
 .apex-modul .apex-list li .top p {
@@ -154,7 +182,7 @@ body .logo-left {
 .apex-modul.overview ul li {
   width: 50%;
   float: left;
-  padding: 52px 0 10px 30px;
+  padding: 30px 0 10px 30px;
 }
 .apex-modul.overview ul li p {
   position: relative;
@@ -175,6 +203,53 @@ body .logo-left {
   background: #f26522;
   border-radius: 5px;
 }
+.data-table {
+  width: 100%;
+  padding: 0px 12px 0px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+.data-table .table-ul {
+  width: 100%;
+  max-width: 100%;
+  border-top: #0000 1px solid;
+}
+.data-table .table-ul > li {
+  border-bottom: #333333 1px solid;
+}
+.data-table .table-ul > li.row {
+  margin: 0;
+  color: #ebebeb;
+  height: 40px;
+}
+.data-table .table-ul > li > span {
+  line-height: 35px;
+  height: 35px;
+  box-sizing: border-box;
+  padding: 0 8px 0 20px;
+  vertical-align: middle;
+  color: #ebebeb;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.data-table .table-ul > li > span a {
+  color: #f26522;
+  font-family: "SemiBold";
+  overflow: hidden;
+  white-space: nowrap;
+}
+.data-table .table-ul > li:first-of-type span {
+  color: #ebebeb;
+  font-family: "Semibold";
+}
+.transactions-table .table-ul > li span:first-of-type {
+  padding-left: 36px;
+  background-position: 0px -33px;
+}
+.transactions-table .table-ul > li:first-of-type span {
+  color: #ebebeb;
+  font-family: "Regular";
+}
 @media screen and (max-width: 1366px) {
   body .logo-left {
     width: 300px;
@@ -185,7 +260,7 @@ body .logo-left {
     height: calc( 100vh - 120px);
   }
   .apex-modul.overview ul li {
-    padding: 20px 0 10px 30px;
+    padding: 30px 0 10px 30px;
   }
   .apex-modul.overview ul li p:nth-child(2) {
     padding-top: 0px;
