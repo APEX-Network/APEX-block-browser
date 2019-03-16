@@ -1,7 +1,7 @@
 <template>
   <div class="home clearboth">
     <div class="top-modul clearboth">
-      <wallet-page />
+      <wallet-page :address = "apAddress"/>
     </div>
     <div class="bottom-modul clearboth">
       <transfers-list />
@@ -10,9 +10,10 @@
   </div>
 </template>
 <script>
-import WalletPage from "@/views/wallet/wallet/walletPage"
-import TransfersList from "@/components/list/TransfersList"
-import TransactionsList from "@/components/list/TransactionsList"
+import WalletPage from "@/views/wallet/wallet/walletPage";
+import TransfersList from "@/components/list/TransfersList";
+import TransactionsList from "@/components/list/TransactionsList";
+import Bus from './../../utils/bus';
 
 export default {
   name: "wallet",
@@ -23,10 +24,19 @@ export default {
   },
   data() {
     return {
+      apAddress: null
     };
   },
-  created: function() {},
-  methods: {},
+  mounted() {
+    this.getlastAddress();
+  },
+  methods: {
+    getlastAddress() {
+      Bus.$on("apAddress", data => {
+        this.apAddress = data;
+      });
+    },
+  },
   computed: {}
 };
 </script>

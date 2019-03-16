@@ -11,11 +11,11 @@
       </div>
       <div class="enterpwd">
         <span>Enter Password</span>
-        <input>
+        <input ref="firstPwd" v-model="firstPwd">
         <img src="./../../../assets/images/eye.png">
         <div class="repatpwd">
           <span>Repeat Password</span>
-          <input type="text">
+          <input type="text" ref="secondPwd" v-model="secondPwd">
           <img src="./../../../assets/images/eye.png">
         </div>
         <div class="epd">Enter Password differ</div>
@@ -38,18 +38,18 @@
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "../../../utils/utils";
-import Crypto from "bitcoinjs-lib/src/crypto";
-import Base58check from "base58check";
 import ECPair from "bitcoinjs-lib/src/ecpair";
-import ecc from "tiny-secp256k1";
-import bitcoin from "bitcoinjs-lib";
+import Bus from './../../../utils/bus'
 
 export default {
   name: "NewWallet",
   props: [""],
   data() {
     return {
-      title: "NewWallet"
+      title: "NewWallet",
+      apAddress: null,
+      firstPwd: null,
+      secondPwd: null
     };
   },
 
@@ -66,68 +66,26 @@ export default {
 
   methods: {
     produceSign() {
-      let apex = "0548";
-      let message = "416c616e20547572696e67";
-      let privKey =
-        "48cd9eea1e9ab9bef56186ea7bc9496caf5187e65ee0d79e3bd239c3b1564946";
-      let privKeyToBuffer = Buffer.from(privKey, "hex");
-
-      let privKeyToWif = ECPair.fromPrivateKey(privKeyToBuffer).toWIF();
-      let privKeyToPub = ECPair.fromPrivateKey(privKeyToBuffer).publicKey;
-      //03d310db58713724b747f55e27f9ce97507e21900b602a9db3f201f70f03236612
-      //03d310db58713724b747f55e27f9ce97507e21900b602a9db3f201f70f03236612
-
-      let pubHash = Crypto.ripemd160(Crypto.sha256(privKeyToPub)).toString(
-        "hex"
-      );
-      //3dab439f4f42104e484a1d6f30be25a85e33f746
-      //3dab439f4f42104e484a1d6f30be25a85e33f746
+      this.first = this.$refs.firstPwd;
+      console.log(this.firstPwd);
+      this.second = this.$refs.secondPwd;
+      console.log(this.secondPwd);
+      if (this.first != this.second) {
+        console.log
+        ("两次密码输入不正确,请重新输入!");
+      }
       
-      let apexAddress = Base58check.encode(pubHash, apex);
-      //AP7aac9ufff1kwyeq6Eb34suDroeW16zRGY
-      //AP7aac9ufff1kwyeq6Eb34suDroeW16zRGY
-      
-
-      let test_signature = util.utilMethods.produceSign(message, privKey);
-
-      let test_from = Crypto.ripemd160(Crypto.sha256(test_signature)).toString(
-        "hex"
-      );
-      //6f198af9c949705f319a5f92db515c9d279b14c2
-
-      //Base58check encode
-      // let from = "e2a4b7c6582f4e837668504eb2f4eaa796e908e4";
-      let decodefrom = Base58check.encode(test_from, apex);
-      //304402207063ae83e7f62bbb171798131b4a0564b956930092b33b07b395615d9ec7e15c022058dfcc1e00a35e1572f366ffe34ba0fc47db1e7189759b9fb233c5b05ab388ea
-      let version = "00000001";//不变
-      let txType = "01"; //不变
-      let from = "APNctFxoeKJV9cXBzWarUmxmwoxxwfMXurX";
-      let toPubKeyHash = "APGMmPKLYdtTNhiEkDGU6De8gNCk3bTsME9";
-      let amount = util.utilMethods.toByteArray("1.000000000000000000").toString("hex");
-      // let amount_encode = Base58check.encode(amount);
-      
-      let nonce = "0000000000000002";
-      let data = "00"; //不变
-      let gasPrice = "020237";
-      let gasLimit = "020315";
-      let executeTime = "0000000000000000"; //不变
-      let signature =
-        "46304402206afddf1f5fa1bbe9f91b9b4a39006a9196a07ca1acf106f5c5a13a327196b47702202def3ffd84b293b324fe95cc67504816f3185690425d51d580cea1707daedd8a";
-      // let signature = a;
-      let b = util.utilMethods.serialized_transaction(
-        version,
-        txType,
-        from,
-        toPubKeyHash,
-        amount,
-        nonce,
-        data,
-        gasPrice,
-        gasLimit,
-        executeTime,
-        signature
-      );
-      //0000000101e2a4b7c6582f4e837668504eb2f4eaa796e908e49df7fc7ca2358cc2c0535e4d08532d9733e2bf58080de0b6b3a7640000000000000000000200020237020315000000000000000046304402206afddf1f5fa1bbe9f91b9b4a39006a9196a07ca1acf106f5c5a13a327196b47702202def3ffd84b293b324fe95cc67504816f3185690425d51d580cea1707daedd8a
+      let ap = "0548";
+      let signParams = {
+        message: "416c616e20547572696e67",
+        // privKey:
+          // "48cd9eea1e9ab9bef56186ea7bc9496caf5187e65ee0d79e3bd239c3b1564946"
+          // privKey: "f8b8af8ce3c7cca5e300d33939540c10d45ce001b8f252bfbc57ba0342904181"
+          privKey: ECPair.makeRandom().privateKey.toString("hex")
+      };      
+      let signature = util.utilMethods.Sign(signParams);
+      this.apAddress = util.utilMethods.produce_address(signParams.privKey, ap);
+      Bus.$emit('apAddress', this.apAddress);      
     }
   },
 

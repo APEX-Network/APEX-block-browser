@@ -126,7 +126,10 @@ export default {
   },
   methods: {
     getClickValue() {
-      this.txHash = sessionStorage.getItem("clickValue");
+      // this.txHash = sessionStorage.getItem("clickValue");
+      this.txHash = this.$route.params.clickValue;
+      console.log(this.txHash);
+      
     },
     setClickValue(e) {
       let clickValue = {

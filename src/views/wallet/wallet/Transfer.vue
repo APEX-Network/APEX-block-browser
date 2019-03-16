@@ -16,7 +16,7 @@
       </div>
 
       <div class="amount">
-        <span>Amount    (Available:1.00000004)</span>
+        <span>Amount (Available:1.00000004)</span>
         <input type="text" placeholder="Transfer Amount">
         <div>
           <router-link to>All</router-link>
@@ -35,7 +35,7 @@
         <img src="./../../../assets/images/eye.png">
         <div>Password Incorrect</div>
       </div>
-      <div class="send" @click="showDialog()">
+      <div class="send" @click="SendTransfer()">
         <router-link to>SEND</router-link>
       </div>
     </div>
@@ -53,13 +53,17 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
+import util from "../../../utils/utils";
+const BigInteger = require("bigi");
 
 export default {
   name: "Transfer",
   props: [""],
   data() {
     return {
-      title: "Transfer"
+      title: "Transfer",
+      serialized_transaction: null,
+      signature: null
     };
   },
 
@@ -75,11 +79,47 @@ export default {
   mounted() {},
 
   methods: {
-    showDialog() {
+    SendTransfer() {
       this.$refs.dialog.style.display = "flex";
+      let signParams = {
+        message: "416c616e20547572696e67",
+        // privKey:
+        // "48cd9eea1e9ab9bef56186ea7bc9496caf5187e65ee0d79e3bd239c3b1564946"
+        privKey:
+          "f8b8af8ce3c7cca5e300d33939540c10d45ce001b8f252bfbc57ba0342904181"
+      };
+      this.signature = util.utilMethods.Sign(signParams);
+      console.log(this.signature);
+
+      var b1 = BigInteger("1000000000000000000");
+      let x = b1.toByteArray();
+      console.log(b1.toByteArray());
+
+      let serializParams = {
+        version: "00000001", //不变
+        txType: "01", //不变
+        from: "APNctFxoeKJV9cXBzWarUmxmwoxxwfMXurX",
+        toPubKeyHash: "APGMmPKLYdtTNhiEkDGU6De8gNCk3bTsME9",
+        amount: "080de0b6b3a7640000",
+        nonce: "0000000000000002",
+        data: "00", //不变
+        gasPrice: "020237",
+        gasLimit: "020315",
+        executeTime: "0000000000000000", //不变
+        // signature:
+        //   "46304402206afddf1f5fa1bbe9f91b9b4a39006a9196a07ca1acf106f5c5a13a327196b47702202def3ffd84b293b324fe95cc67504816f3185690425d51d580cea1707daedd8a"
+        signature: this.signature
+      };
+      // let amount = util.utilMethods.toByteArray("1.000000000000000000").toString("hex");
+      // // let amount_encode = Base58check.encode(amount);
+      this.serialized_transaction = util.utilMethods.serialized_transaction(
+        serializParams
+      );
+      console.log(this.serialized_transaction);
+      //0000000101e2a4b7c6582f4e837668504eb2f4eaa796e908e49df7fc7ca2358cc2c0535e4d08532d9733e2bf58080de0b6b3a7640000000000000000000200020237020315000000000000000046304402206afddf1f5fa1bbe9f91b9b4a39006a9196a07ca1acf106f5c5a13a327196b47702202def3ffd84b293b324fe95cc67504816f3185690425d51d580cea1707daedd8a
     },
     confirm() {
-      this.$refs.dialog.style.display = "none";
+      // this.$refs.dialog.style.display = "none";
     }
   },
 

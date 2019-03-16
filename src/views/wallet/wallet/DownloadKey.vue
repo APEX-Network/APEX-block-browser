@@ -5,24 +5,24 @@
     <div class="flex-container">
       <div class="text">
         <p class="p1">
-        <span>Do not lose it!</span>
-        <span>It cannot be recovered if you lose it.</span>
+          <span>Do not lose it!</span>
+          <span>It cannot be recovered if you lose it.</span>
         </p>
         <p class="p2">
-        <span>Do not share it!</span>
-        <span>Your funds will be stolen if you use this file on a malicious phishing site.</span>
+          <span>Do not share it!</span>
+          <span>Your funds will be stolen if you use this file on a malicious phishing site.</span>
         </p>
         <p class="p3">
-        <span>Make a backup!</span>
-        <span>Secure it like the millions of dollars it may one day be worth.</span>
+          <span>Make a backup!</span>
+          <span>Secure it like the millions of dollars it may one day be worth.</span>
         </p>
         <div>Save Your Keystore File</div>
       </div>
       <!-- <div class="create1">
         <router-link to="/wallet/NewWallet/CreatedKeystore">DOWNLOAD ENCRYPTED KEY</router-link>
-      </div> -->
+      </div>-->
       <div class="create2">
-        <router-link to="/wallet">CONTINUE</router-link>
+        <router-link to="/wallet" @click.native="getAddress">CONTINUE</router-link>
       </div>
     </div>
   </div>
@@ -31,13 +31,16 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
+import Bus from './../../../utils/bus';
 
 export default {
   name: "DownloadKey",
   props: [""],
   data() {
     return {
-      title: "NewWallet"
+      title: "NewWallet",
+      address: null,
+      apAddress: null
     };
   },
 
@@ -50,9 +53,20 @@ export default {
 
   beforeMount() {},
 
-  mounted() {},
+  mounted() {
+    this.getlastAddress();
+  },
 
-  methods: {},
+  methods: {
+    getlastAddress() {
+      Bus.$on("apAddress", data => {
+        this.apAddress = data;
+      });
+    },
+    getAddress() {
+      Bus.$emit("apAddress", this.apAddress);
+    }
+  },
 
   watch: {}
 };
@@ -72,10 +86,10 @@ export default {
     .text {
       margin-top: 80px;
       p {
-        span:nth-child(1){
+        span:nth-child(1) {
           font-size: 20px;
         }
-        span:nth-child(2){
+        span:nth-child(2) {
           font-size: 15px;
           color: rgba(255, 255, 255, 0.7);
         }

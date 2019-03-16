@@ -15,7 +15,7 @@ import VueClipboard from 'vue-clipboard2'
 import vuescroll from 'vuescroll';
 import 'vuescroll/dist/vuescroll.css';
 import axios from 'axios'
-import SetClickValue from './utils/setClickValue'
+// import SetClickValue from './utils/setClickValue'
 import BitcoinJS from 'bitcoinjs-lib'
 import base58check from 'base58check'
 import base58 from 'base58'
@@ -24,7 +24,7 @@ Vue.prototype.$axios = axios;
 Vue.prototype.$BitcoinJS = BitcoinJS;
 Vue.prototype.$Base58check = base58check;
 Vue.prototype.$Base58 = base58;
-Vue.prototype.setClickValue = SetClickValue;
+// Vue.prototype.setClickValue = SetClickValue;
 Vue.use(VueClipboard)
 Vue.use(Vuex)
 Vue.config.productionTip = false

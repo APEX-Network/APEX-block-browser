@@ -3,12 +3,13 @@
     <p class="apex-title">Wallet</p>
     <div class="flex-container1">
       <div class="flex-item1">Address</div>
-      <input class="flex-item2">
+      <input class="flex-item2" v-model="address">
       <div class="flex-item3">CPX: 145.0125</div>
     </div>
     <div class="flex-container2">
       <div class="flex-item1">
-        <router-link to="/wallet/NewWallet">NEW WALLET</router-link>
+        <router-link to="/wallet/NewWallet" >NEW WALLET</router-link>
+        <!-- @click.native="modifyAddress('abc')" -->
       </div>
       <div class="flex-item2">
         <router-link to="/wallet/OpenWallet">OPEN WALLET</router-link>
@@ -24,22 +25,26 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "walletpage",
-  props: [""],
+  props: ["address"],
   data() {
     return {};
   },
 
   components: {},
 
-  computed: {},
-
   beforeMount() {},
 
   mounted() {},
 
-  methods: {},
+  // methods: {
+  //   ...mapActions(["modifyAddress"])
+  // },
+  // computed: {
+  //   ...mapGetters(["address"])
+  // },
 
   watch: {}
 };
@@ -64,7 +69,7 @@ export default {
     margin: 50px 0 0 30px;
   }
   .flex-item2 {
-    width: 300px;
+    width: 306px;
     height: 33px;
     margin: 50px 0px 0px 0px;
     line-height: 33px;
@@ -110,7 +115,7 @@ export default {
     line-height: 35px;
     text-align: center;
     border: 1px solid #f26522;
-    margin: 40px 0px 0px 19px;
+    margin: 40px 0px 0px 27px;
     a {
       color: #f26522;
     }
