@@ -20,13 +20,13 @@
       </div>
       <div class="create1">
         <router-link
-          to="/wallet/NewWallet/CreatedKeystore/DownloadKey"
+          to="/wallet/NewWallet/CreatedKeystore/SavePrivKey"
           @click.native="getAddress"
         >DOWNLOAD ENCRYPTED KEY</router-link>
       </div>
       <div class="create2">
         <router-link
-          to="/wallet/NewWallet/CreatedKeystore/DownloadKey"
+          to="/wallet/NewWallet/CreatedKeystore/SavePrivKey"
           @click.native="getAddress"
         >CONTINUE</router-link>
       </div>
@@ -37,7 +37,7 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import Bus from './../../../utils/bus';
+import Bus from "./../../../utils/bus";
 
 export default {
   name: "CreatedKeystore",
@@ -46,7 +46,8 @@ export default {
     return {
       title: "NewWallet",
       address: null,
-      apAddress: null
+      apAddress: null,
+      privKey: null
     };
   },
 
@@ -68,9 +69,13 @@ export default {
       Bus.$on("apAddress", data => {
         this.apAddress = data;
       });
+      Bus.$on("privKey", data => {
+        this.privKey = data;
+      });
     },
     getAddress() {
       Bus.$emit("apAddress", this.apAddress);
+      Bus.$emit("privKey", this.privKey);
     }
   },
 

@@ -21,7 +21,7 @@
           <span class="col">
             Block Height:
             <span class="clol col-lg-8">
-              <router-link to="/blocks/BlocksInfo" @click.native="setClickValue">{{blockHeight}}</router-link>
+              <router-link to="/blocks/BlocksInfo" @click.native="setHeightValue">{{blockHeight}}</router-link>
             </span>
           </span>
         </li>
@@ -37,7 +37,7 @@
             <span class="clol col-lg-8">
               <router-link
                 to="/transactions/TransactionsInfo/AccountInfo"
-                @click.native="setClickValue"
+                @click.native="setToValue"
               >{{from}}</router-link>
             </span>
           </span>
@@ -48,7 +48,7 @@
             <span class="clol col-lg-8">
               <router-link
                 to="/transactions/TransactionsInfo/AccountInfo"
-                @click.native="setClickValue"
+                @click.native="setToValue"
               >{{to}}</router-link>
             </span>
           </span>
@@ -92,6 +92,7 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
+import Bus from './../../utils/bus';
 
 export default {
   name: "TransactionsInfo",
@@ -103,6 +104,7 @@ export default {
   data() {
     return {
       title: "Transactions Information",
+      transactions_url: "/api/v1.0/transactions/",
       clickValue: null,
       txHash: null,
       blockHeight: null,
@@ -114,37 +116,45 @@ export default {
       gasLimit: null,
       gasPrice: null,
       gasUsed: null,
-      fee: null
-
+      fee: null,
+      clickValue: {
+        type: "height",
+        value: null
+      },
+      Hash: null
     };
   },
   created() {
-    this.getClickValue();
-    this.getTransactionsInfo();
   },
   mounted() {
+    this.getClickValue();
+    setTimeout(() => {
+      this.getTransactionsInfo();
+    });
   },
   methods: {
     getClickValue() {
-      // this.txHash = sessionStorage.getItem("clickValue");
-      this.txHash = this.$route.params.clickValue;
-      console.log(this.txHash);
-      
+      Bus.$on("txHash", data => {
+        this.Hash = data;
+      });
     },
-    setClickValue(e) {
-      let clickValue = {
-        type: "height",
-        value: e.target.innerHTML
-      };
-      sessionStorage.setItem("clickValue", JSON.stringify(clickValue));
+    setHeightValue(e) {
+      this.clickValue.type = "height";
+      this.clickValue.value = e.target.innerHTML;
+      Bus.$emit('clickValue', JSON.stringify(this.clickValue));      
+    },
+    setToValue(e) {
+      this.clickValue.type = "to";
+      this.clickValue.value = e.target.innerHTML;
+      Bus.$emit('clickValue', JSON.stringify(this.clickValue));      
     },
     getTransactionsInfo() {
-      if (this.txHash) {
+      if (!!this.Hash) {
         this.$axios
-          .get("/api/v1.0/transactions/" + this.txHash)
+          .get(this.transactions_url + this.Hash)
           .then(response => {
             let res = response.data.data;
-            console.log(res);
+            this.txHash = res.txHash;
             this.txReceiptStatus = res.confirmed;
             this.blockHeight = res.refBlockHeight;
             this.timeStamp = res.refBlockTime;
@@ -156,11 +166,12 @@ export default {
             this.gasUsed = res.gasUsed;
             this.fee = res.fee;
           })
-          .catch(function(response) {
-            console.log(response);
-          });
+          .catch(function(response) {});
       }
     }
+  },
+  watch: {
+    // $route: "getClickValue"
   }
 };
 </script>

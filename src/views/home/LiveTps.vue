@@ -1,67 +1,98 @@
 <template>
-      <div class="tps apex-modul fr">
-        <p class="apex-title">Live TPS</p>
-        <div class="chart-box">
-          <div class="chart" id="echartContainer" style="width:100%;"></div>
-        </div>
-      </div>
+  <div class="tps apex-modul fr">
+    <p class="apex-title">Live TPS</p>
+    <div class="chart-box" id="echartContainer" style="width:100%;">
+      <!-- <div class="chart" id="echartContainer" style="width:100%;"></div> -->
+    </div>
+  </div>
 </template>
 <script>
 import echarts from "echarts";
+import util from "./../../utils/utils";
+import { setTimeout, clearInterval, setInterval } from "timers";
 
 export default {
   name: "livetps",
-  components: {   
-  },
+  components: {},
   data() {
     return {
+      blockTips_url: "/api/v1.0/state/blockTpsInfos",
+      params: { time: "2018-11-20", count: "100" },
+      data: [],
+      time: [],
+      tooltps: [],
+      myChart: null,
+      websock: null
     };
   },
-  created: function() {},
+  created() {
+    // this.initWebSocket();
+  },
   mounted() {
-      this.drawCharts(); 
+    this.myChart = echarts.init(document.getElementById("echartContainer"));
+    this.postBlockTips();
+    setInterval(() => {
+      this.postBlockTips();
+      setTimeout(() => {
+        this.drawCharts();
+      });
+    }, 10000);
   },
   methods: {
-      drawCharts() {
-      // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(document.getElementById("echartContainer"));
+    postBlockTips() {
+      this.$axios
+        .post(this.blockTips_url, this.params)
+        .then(response => {
+          let res = response.data.data;
+          let time = [];
+          let data = [];
+          let tooltps = [];
+          for (let i = 0; i < res.length; i++) {
+            time.push(util.utilMethods.tierNoYear(res[i].timeStamp));
+            data.push(res[i].tps);
+            tooltps.push(util.utilMethods.tierAllTime(res[i].timeStamp));
+          }
+          // this.alldata.push({ tps: data, timeStamp: time });
+          this.time = time;
+          this.tooltps = tooltps;
+          this.data = data;
+          this.drawCharts();
+        })
+        .catch(function(response) {
+          console.log(response);
+        });
+    },
+    drawCharts() {
       // 绘制图表
-      myChart.setOption({
+      this.myChart.setOption({
         color: ["#1AC8FF"],
         grid: {
           left: 0,
           right: 0,
-          top: 45,
-          bottom: 0,
+          top: 60,
+          bottom: 5,
           containLabel: true
         },
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: [
-            "10:08:00",
-            "10:08:10",
-            "10:08:20",
-            "10:08:30",
-            "10:08:40",
-            "10:08:50",
-            "10:09:00",
-            "10:09:10",
-            "10:09:20"
-          ],
-          show: false,
+          data: this.time,
+          show: true,
           axisLine: {
             show: true,
             lineStyle: {
               color: "#999"
             }
-          }
+          },
+          splitLine: { show: false },
+          axisTick: { show: false }
         },
         yAxis: {
           type: "value",
           show: false,
+          boundaryGap: false,
           axisLine: {
-            show: false,
+            show: true,
             lineStyle: {
               color: "#999"
             }
@@ -81,15 +112,19 @@ export default {
           textStyle: {
             color: "#ffffff",
             fontSize: "14px"
-          },
-          formatter: function(params, ticket, callback) {
-            return "TPS " + params[0].value;
           }
+          // formatter: function(data) {
+          //   let res;
+          //   data.forEach(v => {
+          //     res = v;
+          //   });
+          //   return "TPS " + res;
+          // }
         },
         series: [
           {
             name: "",
-            data: [100, 111, 102, 123, 105, 133, 155, 146, 129, 120],
+            data: this.data,
             type: "line",
             smooth: true,
             showSymbol: false,
@@ -118,6 +153,10 @@ export default {
       });
     }
   },
+  destroyed() {
+    // this.wesocketclose();
+
+  },
   computed: {}
 };
 </script>
@@ -139,18 +178,17 @@ export default {
       }
     }
   }
-  .tps {
     .chart-box {
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 100%;
-      .chart {
+      margin: 0;
+      // width: 100%;
+      // .chart {
         height: 300px;
-      }
+      // }
     }
   }
-}
 // @media screen and(max-width:1366px) {
 //   .home {
 //     .tps {

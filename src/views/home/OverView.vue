@@ -4,37 +4,61 @@
         <ul class="clearboth">
           <li>
             <p>Last Block</p>
-            <p>1935566</p>
+            <p>{{lastBlock}}</p>
           </li>
           <li>
             <p>Max TPS</p>
-            <p>463</p>
+            <p>{{overView_data.tps}}</p>
           </li>
           <li>
             <p>Daily TX</p>
-            <p>1544945</p>
+            <p>{{overView_data.dailyTxs}}</p>
           </li>
           <li>
             <p>Daily Active Account</p>
-            <p>46</p>
+            <p>{{overView_data.dailyActiveAccounts}}</p>
           </li>
         </ul>
       </div>
 </template>
 <script>
-
+import Bus from './../../utils/bus';
 export default {
   name: "overview",
   components: {   
   },
   data() {
     return {
+      overView_url: "/api/v1.0/state/blockStateInfo",
+      overView_data: {
+        lastBlock: null,
+        tps: null,
+        dailyTxs: null,
+        dailyActiveAccounts: null
+      },
+      lastBlock: 2019
     };
   },
   created: function() {},
   mounted() { 
+    this.getOverView();
   },
   methods: {
+    getOverView() {
+      this.$axios
+              .get(this.overView_url)
+              .then(response => {
+                let res = response.data.data;
+                this.overView_data.tps = res.tps;
+                this.overView_data.dailyTxs = res.dailyTxs;
+                this.overView_data.dailyActiveAccounts = res.dailyActiveAccounts;
+                console.log(res);
+                
+              })
+              .catch(function(response) {
+                console.log(response);
+              });
+    }
   },
   computed: {}
 };

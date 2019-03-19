@@ -6,7 +6,7 @@
     </div>
     <div class="bottom-modul clearboth">
       <blocks-list />
-      <transactions-list />
+      <transactions-list/>
     </div>
   </div>
 </template>
@@ -29,8 +29,10 @@ export default {
     return {
     };
   },
-  created: function() {},
-  methods: {},
+  mounted() {
+  },
+  methods: {
+  },
   computed: {}
 };
 </script>

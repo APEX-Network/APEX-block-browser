@@ -13,13 +13,13 @@
         </li>
         <li v-for="(item,index) in dataList" :key="index" class="row">
           <span class="col height">
-            <!-- <router-link to="/blocks/BlocksInfo" @click.native="setClickValue">{{item.height}}</router-link> -->
-            {{item.height}}
+            <router-link to="/blocks/BlocksInfo" @click.native="setHeightValue">{{item.height}}</router-link>
+            <!-- {{item.height}} -->
           </span>
           <span class="col col-lg-6">
-            <router-link to="/blocks/BlocksInfo" @click.native="setClickValue">{{item.blockHash}}</router-link>
+            <router-link to="/blocks/BlocksInfo" @click.native="setHashValue">{{item.blockHash}}</router-link>
           </span>
-          <span class="col">{{item.timeStamp}}</span>
+          <span class="col">{{item.timeStamp}}  secs ago</span>
           <span class="col txn">{{item.txNum}}</span>
           <span class="col">{{item.producer}}</span>
         </li>
@@ -40,6 +40,9 @@
 import Pagination from "@/components/public/Pagination.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import ApexTitle from "@/components/public/ApexTitle.vue";
+import Bus from './../../utils/bus';
+import util from './../../utils/utils';
+
 
 export default {
   name: "blocks",
@@ -56,44 +59,67 @@ export default {
       title: "Blocks",
       dataList: null,
       secondTime: null,
-      start: 1
+      start: 1,
+      allBlockUrl: "/api/v1.0/blocks/blockList",
+      params: {
+        start: "0",
+        pageSize: "10"
+      },
+      clickValue: {
+        type: "height",
+        value: null
+      }
     };
   },
   methods: {
     getFirstBlocks() {
-      this.$axios
-        .post("/api/v1.0/blocks/blockList", {
-          start: "0",
-          pageSize: "10"
-        })
+      if (!!this.params) {
+        this.$axios
+        .post(this.allBlockUrl, this.params)
         .then(response => {
+          // let res = response.data.data;
+          // this.dataList = res;
           let res = response.data.data;
+          let seconds;
+          for (let i = 0; i <  res.length; i++) {
+            const item = res[i];
+            seconds = util.utilMethods.getSec(item.timeStamp);
+            item.timeStamp = seconds;
+          }
           this.dataList = res;
-          // console.log(res);
         })
         .catch(function(err) {
           if (err.response) {
             console.log(err.response);
           }
         });
+      }
     },
-    setClickValue(e) {
-      let clickValue = {
-        type: "hash",
-        value: e.target.innerHTML
-      };
-      sessionStorage.setItem("clickValue", JSON.stringify(clickValue));
+    setHeightValue(e) {
+      this.clickValue.type = "height";
+      this.clickValue.value = e.target.innerHTML;
+      Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+    },
+    setHashValue(e) {
+      this.clickValue.type = "hash";
+      this.clickValue.value = e.target.innerHTML;
+      Bus.$emit("clickValue", JSON.stringify(this.clickValue));
     },
     getNextBlocks() {
-      console.log("next");
       this.nextPage = this.start++;
+      this.params.start = this.nextPage;
       this.$axios
-        .post("/api/v1.0/blocks/blockList", {
-          start: this.nextPage,
-          pageSize: "10"
-        })
+        .post(this.allBlockUrl, this.params)
         .then(response => {
+          // let res = response.data.data;
+          // this.dataList = res;
           let res = response.data.data;
+          let seconds;
+          for (let i = 0; i <  res.length; i++) {
+            const item = res[i];
+            seconds = util.utilMethods.getSeconds(item.timeStamp);
+            item.timeStamp = seconds;
+          }
           this.dataList = res;
         })
         .catch(function(err) {
@@ -102,16 +128,22 @@ export default {
           }
         });
       if (this.nextPage >= 10) {
+        this.params.start = "10";
         this.$axios
-          .post("/api/v1.0/blocks/blockList", {
-            start: "10",
-            pageSize: "10"
-          })
+          .post(this.allBlockUrl, this.params)
           .then(response => {
-            let res = response.data.data;
-            this.dataList = null;
-            this.dataList = res;
-          })
+          // let res = response.data.data;
+          // this.dataList = res;
+          this.dataList = null;
+          let res = response.data.data;
+          let seconds;
+          for (let i = 0; i <  res.length; i++) {
+            const item = res[i];
+            seconds = util.utilMethods.getSeconds(item.timeStamp);
+            item.timeStamp = seconds;
+          }
+          this.dataList = res;
+        })
           .catch(function(err) {
             if (err.response) {
               console.log(err.response);
@@ -122,15 +154,18 @@ export default {
     getPreviousBlocks() {
       console.log("previous");
       this.previousPage = this.start--;
+      this.params.start = this.previousPage;
       this.$axios
-        .post("/api/v1.0/blocks/blockList", {
-          start: this.previousPage,
-          pageSize: "10"
-        })
+        .post(this.allBlockUrl, this.params)
         .then(response => {
           let res = response.data.data;
+          let seconds;
+          for (let i = 0; i <  res.length; i++) {
+            const item = res[i];
+            seconds = util.utilMethods.getSeconds(item.timeStamp);
+            item.timeStamp = seconds;
+          }
           this.dataList = res;
-          console.log(dataList);
         })
         .catch(function(err) {
           if (err.response) {
@@ -139,14 +174,17 @@ export default {
         });
       if (this.previousPage <= 0) {
         this.$axios
-          .post("/api/v1.0/blocks/blockList", {
-            start: "0",
-            pageSize: "10"
-          })
-          .then(response => {
-            let res = response.data.data;
-            this.dataList = res;
-          })
+          .post(this.allBlockUrl, this.params)
+         .then(response => {
+          let res = response.data.data;
+          let seconds;
+          for (let i = 0; i <  res.length; i++) {
+            const item = res[i];
+            seconds = util.utilMethods.getSeconds(item.timeStamp);
+            item.timeStamp = seconds;
+          }
+          this.dataList = res;
+        })
           .catch(function(err) {
             if (err.response) {
               console.log(err.response);

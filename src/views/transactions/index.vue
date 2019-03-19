@@ -10,7 +10,7 @@
               <router-link to="/transactions/TransactionsInfo" @click.native="setClickValue">{{list.txHash}}</router-link>
             </div>
           </span>
-          <span class="col">{{list.refBlockTime }}</span>
+          <span class="col">{{list.refBlockTime }}  minute ago</span>
         </li>
       </ul>
       <Pagination/>
@@ -22,6 +22,8 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
+import Bus from './../../utils/bus'
+import util from './../../utils/utils';
 
 export default {
   name: "Transactions",
@@ -37,41 +39,35 @@ export default {
     return {
       title: "Transactions",
       transactions: [],
-      clickValue: null
+      clickValue: null,
+      transaction_list_url: "/api/v1.0/transactions/transactionList",
+      parmas: {
+          start: "0",
+          pageSize: "6"
+        }
     };
   },
   methods: {
     getAllTransactions() {
       this.$axios
-        .post("/api/v1.0/transactions/transactionList", {
-          start: "0",
-          pageSize: "2"
-        })
+        .post(this.transaction_list_url, this.parmas)
         .then(response => {
-          console.log(response.data);
-          this.transactions = response.data.data;
+          let res = response.data.data;
+          let minu;
+          for (let i = 0; i < res.length; i++) {
+            const item = res[i];
+            minu = util.utilMethods.getMin(item.refBlockTime);
+            item.refBlockTime = minu;
+          }
+          this.transactions = res;
         })
         .catch(function(err) {
           if (err.response) {
-            console.log(err.response);
           }
         });
     },
     setClickValue(e) {
-      // sessionStorage.setItem('clickValue', e.target.innerHTML);
-      this.clickValue = e.target.innerHTML;
-      this.$router.push({
-            name: 'TransactionsInfo',
-            params: { 
-                clickValue: this.clickValue
-            }
-        })
-        // this.$router.push({
-        //     path: '/TransactionsInfo',
-        //     query: { 
-        //         clickValue: this.clickValue
-        //     }
-        // })
+      Bus.$emit('txHash', e.target.innerHTML);      
     }
   }
 };

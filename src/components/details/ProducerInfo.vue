@@ -20,6 +20,7 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
+import Bus from './../../utils/bus'
 
 export default {
   name: "ProducerInfo",
@@ -31,6 +32,7 @@ export default {
   data() {
     return {
       title: "Producer Information",
+      minerBy_url: "/api/v1.0/minerInfo/",
       minerBy: null,
       producerInfo: {
         Miner: null,
@@ -41,21 +43,26 @@ export default {
       }
     };
   },
-  created() {
-    this.getClickValue();
-  },
+  created() {},
   mounted() {
-    this.getProduceInfo();
+    this.getClickValue();
+    setTimeout(() => {
+      this.getProduceInfo();
+    });
   },
   methods: {
     getClickValue() {
-      this.minerBy = sessionStorage.getItem("clickValue");
-      // console.log(this.minerBy);
+      Bus.$on("minerBy", data => {
+        this.minerBy = data;
+      });
+      Bus.$on("clickValue", data => {
+        this.minerBy = data;
+      });
     },
     getProduceInfo() {
-      if (this.minerBy) {
+      if (!!this.minerBy) {
         this.$axios
-          .get("/api/v1.0/minerInfo/" + this.minerBy)
+          .get(this.minerBy_url + this.minerBy)
           .then(response => {
             let res = response.data.data;
             this.producerInfo.Miner = res.address;
@@ -63,7 +70,6 @@ export default {
             this.producerInfo.CurrentRank = res.rank;
             this.producerInfo.Website = res.nodeUrl;
             this.producerInfo.Description = res.describe;
-            // console.log(res);
           })
           .catch(function(response) {
             console.log(response);

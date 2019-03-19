@@ -1,5 +1,5 @@
 <template>
-  <div class="downloadKey">
+  <div class="SavePrivKey">
     <apex-title :title="title"/>
     <apex-back-ground/>
     <div class="flex-container">
@@ -16,7 +16,11 @@
           <span>Make a backup!</span>
           <span>Secure it like the millions of dollars it may one day be worth.</span>
         </p>
-        <div>Save Your Keystore File</div>
+        <div>Save Your Private Key</div>
+        <p class="p3">
+          <span class="s1">Private Key</span>
+          <span class="s2"> {{privKey}}</span>
+        </p>
       </div>
       <!-- <div class="create1">
         <router-link to="/wallet/NewWallet/CreatedKeystore">DOWNLOAD ENCRYPTED KEY</router-link>
@@ -34,13 +38,14 @@ import ApexBackGround from "@/components/public/ApexBackGround";
 import Bus from './../../../utils/bus';
 
 export default {
-  name: "DownloadKey",
+  name: "SavePrivKey",
   props: [""],
   data() {
     return {
-      title: "NewWallet",
+      title: "SavePrivKey",
       address: null,
-      apAddress: null
+      apAddress: null,
+      privKey: null
     };
   },
 
@@ -62,6 +67,9 @@ export default {
       Bus.$on("apAddress", data => {
         this.apAddress = data;
       });
+       Bus.$on("privKey", data => {
+        this.privKey = data;
+      });
     },
     getAddress() {
       Bus.$emit("apAddress", this.apAddress);
@@ -73,7 +81,7 @@ export default {
 </script>
 <style lang='less' scoped>
 @import "./../../../assets/css/layout";
-.downloadKey {
+.SavePrivKey {
   width: 100%;
   height: 100%;
   background: url(./../../../assets/images/shared/yunshi.png) 25% 35% no-repeat;

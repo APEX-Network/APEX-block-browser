@@ -90,28 +90,23 @@ export default {
       };
       this.signature = util.utilMethods.Sign(signParams);
       console.log(this.signature);
-
-      var b1 = BigInteger("1000000000000000000");
-      let x = b1.toByteArray();
-      console.log(b1.toByteArray());
-
+      
       let serializParams = {
         version: "00000001", //不变
         txType: "01", //不变
         from: "APNctFxoeKJV9cXBzWarUmxmwoxxwfMXurX",
         toPubKeyHash: "APGMmPKLYdtTNhiEkDGU6De8gNCk3bTsME9",
-        amount: "080de0b6b3a7640000",
+        // amount: "080de0b6b3a7640000",
+        amount: 1.000000000000000000 * Math.pow(10,18),
         nonce: "0000000000000002",
         data: "00", //不变
-        gasPrice: "020237",
-        gasLimit: "020315",
+        gasPrice: 567 * Math.pow(10,-18),
+        gasLimit: 789,
         executeTime: "0000000000000000", //不变
         // signature:
         //   "46304402206afddf1f5fa1bbe9f91b9b4a39006a9196a07ca1acf106f5c5a13a327196b47702202def3ffd84b293b324fe95cc67504816f3185690425d51d580cea1707daedd8a"
         signature: this.signature
       };
-      // let amount = util.utilMethods.toByteArray("1.000000000000000000").toString("hex");
-      // // let amount_encode = Base58check.encode(amount);
       this.serialized_transaction = util.utilMethods.serialized_transaction(
         serializParams
       );

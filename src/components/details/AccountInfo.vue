@@ -39,6 +39,7 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
+import Bus from "./../../utils/bus";
 
 export default {
   name: "AccountInfo",
@@ -47,12 +48,11 @@ export default {
     ApexTitle,
     ApexBackGround
   },
-  created() {
-    this.getClickValue();
-  },
+  created() {},
   data() {
     return {
       title: "AccountInfo Information",
+      accountInfo_url: "/api/v1.0/accounts/account",
       accountInfo: [],
       transactions: [],
       address: null,
@@ -60,7 +60,10 @@ export default {
     };
   },
   mounted() {
-    this.getAccountInfo();
+    this.getClickValue();
+    setTimeout(() => {
+      this.getAccountInfo();
+    });
   },
   methods: {
     Copy(index) {
@@ -78,28 +81,72 @@ export default {
       );
     },
     getClickValue() {
-      // this.address = this.$route.params.clickValue;
-      // console.log("路由传参" + this.address);
-      this.address = sessionStorage.getItem("clickValue");
-      console.log(this.address);
+      Bus.$on("clickValue", data => {
+        this.address = JSON.parse(data);
+      });
     },
     getAccountInfo() {
-      if (this.address) {
-        this.$axios
-          .post("/api/v1.0/accounts/account", {
-            address: this.address
-          })
-          .then(response => {
-            let res = response.data.data.result;
-            this.accountInfo = res;
-            console.log(res);        
-          })
-          .catch(function(err) {
-            if (err.response) {
-              console.log(err.response);
+      if (!!this.address) {
+        let type = this.address.type;
+        let params = this.address.value;
+        switch (type) {
+          // case "height":
+          //   if (params) {
+          //     this.$axios
+          //       .post(this.accountInfo_url, {
+          //         address: params
+          //       })
+          //       .then(response => {
+          //         let res = response.data.data.result;
+          //         this.accountInfo = res;
+          //         console.log(res);
+          //       })
+          //       .catch(function(err) {
+          //         if (err.response) {
+          //           console.log(err.response);
+          //         }
+          //       });
+          //   }
+          //   break;
+          case "to":
+            if (params) {
+              this.$axios
+                .post(this.accountInfo_url, {
+                  address: params
+                })
+                .then(response => {
+                  let res = response.data.data.result;
+                  this.accountInfo = res;
+                  console.log(res);
+                })
+                .catch(function(err) {
+                  if (err.response) {
+                    console.log(err.response);
+                  }
+                });
             }
-          });
+            break;
+
+          default:
+            break;
+        }
       }
+      // if (this.address) {
+      //   this.$axios
+      //     .post("/api/v1.0/accounts/account", {
+      //       address: this.address
+      //     })
+      //     .then(response => {
+      //       let res = response.data.data.result;
+      //       this.accountInfo = res;
+      //       console.log(res);
+      //     })
+      //     .catch(function(err) {
+      //       if (err.response) {
+      //         console.log(err.response);
+      //       }
+      //     });
+      // }
     }
   }
 };

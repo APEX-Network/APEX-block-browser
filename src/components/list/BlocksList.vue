@@ -11,12 +11,12 @@
         <li v-for="(item,index) in blocksList" :key="index">
           <div>
             <div class="top">
-              <p>Block {{item.height}}</p>
+              <p>Block {{item.height}} Bytes</p>
               <!-- <span>{{item.size}} Bytes</span> -->
             </div>
             <div class="bottom">
               <router-link to="/blocks/BlocksInfo" @click.native="setClickValue">{{item.blockHash}}</router-link>
-              <span>{{item.timeStamp}}</span>
+              <span>{{item.timeStamp}} seconds ago</span>
             </div>
           </div>
         </li>
@@ -26,28 +26,45 @@
 </template>
 
 <script>
+import Bus from "./../../utils/bus";
+import util from "./../../utils/utils";
 export default {
   name: "blockslist",
   components: {},
   data() {
     return {
       ops: {},
-      blocksList: []
+      blocksList: [],
+      block_list_url: "/api/v1.0/blocks/blockList",
+      params: {
+        start: "0",
+        pageSize: "10"
+      },
+      clickValue: {
+        type: "hash",
+        value: null
+      }
     };
   },
   mounted() {
     this.getBlocksList();
+    setInterval(() => {
+      this.getBlocksList();
+    }, 10000);
   },
   methods: {
     getBlocksList() {
       this.$axios
-        .post("/api/v1.0/blocks/blockList", {
-          start: "0",
-          pageSize: "3"
-        })
+        .post(this.block_list_url, this.params)
         .then(response => {
-          console.log(response.data);
-          this.blocksList = response.data.data;
+          let res = response.data.data;
+          let seconds;
+          for (let i = 0; i < res.length; i++) {
+            const item = res[i];
+            seconds = util.utilMethods.getSec(item.timeStamp);
+            item.timeStamp = seconds;
+          }
+          this.blocksList = res;
         })
         .catch(function(err) {
           if (err.response) {
@@ -56,9 +73,11 @@ export default {
         });
     },
     setClickValue(e) {
-      sessionStorage.setItem('clickValue', e.target.innerHTML);
+      this.clickValue.value = e.target.innerHTML;
+      Bus.$emit("clickValue", JSON.stringify(this.clickValue));
     }
-  }
+  },
+  beforeDestroy() {}
 };
 </script>
 

@@ -59,6 +59,8 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
+import { setTimeout } from "timers";
+import Bus from "./../../utils/bus";
 
 export default {
   name: "BlocksInfo",
@@ -67,12 +69,13 @@ export default {
     ApexTitle,
     ApexBackGround
   },
-  created() {
-    this.getClickValue();
-  },
+  created() {},
   data() {
     return {
       title: "Blocks Information",
+      blockHash_url: "/api/v1.0/blocks/blockHash/",
+      blockHeight_url: "/api/v1.0/blocks/blockHeight/",
+      parentHash_url: "/api/v1.0/blocks/blockHash/",
       height: null,
       timeStamp: null,
       transactions: null,
@@ -80,68 +83,71 @@ export default {
       parentHash: null,
       minedBy: null,
       nonce: null,
-      clickValue: null,
       result: null
     };
   },
   mounted() {
-    this.getBlocksInfo();
+    this.getClickValue();
+    setTimeout(() => {
+      this.getBlocksInfo();
+    });
   },
   methods: {
     getClickValue() {
-      this.clickValue = sessionStorage.getItem("clickValue");
-      this.result = JSON.parse(this.clickValue);
+      Bus.$on("clickValue", data => {
+        this.result = JSON.parse(data);
+      });
     },
     setClickValue(e) {
-      sessionStorage.setItem("clickValue", e.target.innerHTML);
+      Bus.$emit("minerBy", e.target.innerHTML);
     },
     getBlocksInfo() {
-      let type = this.result.type;
-      let url = this.result.value;
-      switch (type) {
-        case "hash":
-          this.$axios
-            .get("/api/v1.0/blocks/blockHash/" + url)
-            .then(response => {
-              let res = response.data.data;
-              this.height = res.height;
-              this.blockHash = res.blockHash;
-              this.timeStamp = res.timeStamp;
-              this.transactions = res.id;
-              this.parentHash = res.prevBlock;
-              this.minedBy = res.producer;
-              this.nonce = res.txNum;
-              // console.log(res);
-            })
-            .catch(function(response) {
-              console.log(response);
-            });
-          break;
-        case "height":
-          this.$axios
-            .get("/api/v1.0/blocks/blockHeight/" + url)
-            .then(response => {
-              let res = response.data.data;
-              this.height = res.height;
-              this.blockHash = res.blockHash;
-              this.timeStamp = res.timeStamp;
-              this.transactions = res.id;
-              this.parentHash = res.prevBlock;
-              this.minedBy = res.producer;
-              this.nonce = res.txNum;
-              // console.log(res);
-            })
-            .catch(function(response) {
-              console.log(response);
-            });
-          break;
+      if (!!this.result) {
+        let type = this.result.type;
+        let params = this.result.value;
+        switch (type) {
+          case "hash":
+            this.$axios
+              .get(this.blockHash_url + params)
+              .then(response => {
+                let res = response.data.data;
+                this.height = res.height;
+                this.blockHash = res.blockHash;
+                this.timeStamp = res.timeStamp;
+                this.transactions = res.id;
+                this.parentHash = res.prevBlock;
+                this.minedBy = res.producer;
+                this.nonce = res.txNum;
+              })
+              .catch(function(response) {
+                console.log(response);
+              });
+            break;
+          case "height":
+            this.$axios
+              .get(this.blockHeight_url + params)
+              .then(response => {
+                let res = response.data.data;
+                this.height = res.height;
+                this.blockHash = res.blockHash;
+                this.timeStamp = res.timeStamp;
+                this.transactions = res.id;
+                this.parentHash = res.prevBlock;
+                this.minedBy = res.producer;
+                this.nonce = res.txNum;
+              })
+              .catch(function(response) {
+                console.log(response);
+              });
+            break;
+        }
       }
     },
     getParentBlock(e) {
       let parentHash = e.target.innerHTML;
       if (parentHash) {
         this.$axios
-          .get("/api/v1.0/blocks/blockHash/" + parentHash)
+          .get(this.parentHash_url + parentHash)
           .then(response => {
             let res = response.data.data;
             this.height = res.height;

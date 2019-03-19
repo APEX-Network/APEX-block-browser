@@ -14,7 +14,7 @@ import OpenWallet from '@/views/wallet/wallet/OpenWallet'
 import PrivateKey from '@/views/wallet/wallet/PrivateKey'
 import KeyStore from '@/views/wallet/wallet/KeyStore'
 import CreatedKeystore from '@/views/wallet/wallet/CreatedKeystore'
-import DownloadKey from '@/views/wallet/wallet/DownloadKey'
+import SavePrivKey from '@/views/wallet/wallet/SavePrivKey'
 import Transfer from '@/views/wallet/wallet/Transfer'
 
 Vue.use(Router)
@@ -57,10 +57,10 @@ export default new Router({
       component: CreatedKeystore,
     },
     {
-      path: '/DownloadKey',
-      alias: '/wallet/NewWallet/CreatedKeystore/DownloadKey',
-      name: 'DownloadKey',
-      component: DownloadKey,
+      path: '/SavePrivKey',
+      alias: '/wallet/NewWallet/CreatedKeystore/SavePrivKey',
+      name: 'SavePrivKey',
+      component: SavePrivKey,
     },
     {
       path: '/OpenWallet',

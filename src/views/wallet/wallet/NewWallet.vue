@@ -11,11 +11,11 @@
       </div>
       <div class="enterpwd">
         <span>Enter Password</span>
-        <input ref="firstPwd" v-model="firstPwd">
+        <input ref="firstPwd" v-model="firstPwd" @change="getPwd">
         <img src="./../../../assets/images/eye.png">
         <div class="repatpwd">
           <span>Repeat Password</span>
-          <input type="text" ref="secondPwd" v-model="secondPwd">
+          <input type="text" ref="secondPwd" v-model="secondPwd" @change="getPwd">
           <img src="./../../../assets/images/eye.png">
         </div>
         <div class="epd">Enter Password differ</div>
@@ -39,7 +39,7 @@ import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "../../../utils/utils";
 import ECPair from "bitcoinjs-lib/src/ecpair";
-import Bus from './../../../utils/bus'
+import Bus from "./../../../utils/bus";
 
 export default {
   name: "NewWallet",
@@ -49,7 +49,8 @@ export default {
       title: "NewWallet",
       apAddress: null,
       firstPwd: null,
-      secondPwd: null
+      secondPwd: null,
+      keyStore: null
     };
   },
 
@@ -65,27 +66,46 @@ export default {
   mounted() {},
 
   methods: {
+    getPwd() {
+      this.first = this.$refs.firstPwd.value;
+      console.log(this.first);
+      this.second = this.$refs.secondPwd.value;
+    },
     produceSign() {
-      this.first = this.$refs.firstPwd;
-      console.log(this.firstPwd);
-      this.second = this.$refs.secondPwd;
-      console.log(this.secondPwd);
-      if (this.first != this.second) {
-        console.log
-        ("两次密码输入不正确,请重新输入!");
-      }
-      
-      let ap = "0548";
-      let signParams = {
-        message: "416c616e20547572696e67",
-        // privKey:
+      if (this.firstPwd != null && this.secondPwd != null) {
+        if (this.first != this.second) {
+          alert("两次密码输入不正确,请重新输入!");
+          this.$router.push("/wallet/NewWallet");
+          return;
+        }
+        let ap = "0548";
+        let signParams = {
+          message: "416c616e20547572696e67",
+          // privKey:
           // "48cd9eea1e9ab9bef56186ea7bc9496caf5187e65ee0d79e3bd239c3b1564946"
           // privKey: "f8b8af8ce3c7cca5e300d33939540c10d45ce001b8f252bfbc57ba0342904181"
           privKey: ECPair.makeRandom().privateKey.toString("hex")
-      };      
-      let signature = util.utilMethods.Sign(signParams);
-      this.apAddress = util.utilMethods.produce_address(signParams.privKey, ap);
-      Bus.$emit('apAddress', this.apAddress);      
+        };
+        Bus.$emit("privKey", signParams.privKey);
+        let signature = util.utilMethods.Sign(signParams);
+        this.apAddress = util.utilMethods.produce_address(
+          signParams.privKey,
+          ap
+        );
+        Bus.$emit("apAddress", this.apAddress);
+        let keyStoreParams = {
+          data: signParams.privKey,
+          key: this.secondPwd,
+          iv: null
+        };
+        this.keyStore = util.utilMethods.produce_KeyStore(keyStoreParams);
+        console.log(this.keyStore);
+      }
+      if (this.firstPwd == null || this.secondPwd == null) {
+        alert("请输入密码!");
+        this.$router.push("/wallet/NewWallet");
+        return;
+      }
     }
   },
 
