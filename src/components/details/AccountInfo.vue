@@ -4,13 +4,16 @@
     <apex-back-ground/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
-        <li v-for="(value, key ,index ) in accountInfo" :key="index" class="row">
-          <span class="col">{{key}} :</span>
-          <span class="col col-lg-8" v-if="key === 'balances.value'" ref="address">
-            {{balance}}
+        <li class="row">
+          <span class="col">Address</span>
+          <span class="col col-lg-8" ref="address">
+            {{accountTransaction_param.address}}
             <i @click="Copy(index)"></i>
           </span>
-          <span class="col col-lg-8" v-else>{{value}}</span>
+        </li>
+        <li class="row">
+          <span class="col">Balance</span>
+          <span class="col col-lg-8">{{Balance}} CPX</span>
         </li>
       </ul>
     </div>
@@ -20,13 +23,16 @@
       </div>
       <div class="data-table transactions-table">
         <ul class="table-ul">
-          <li v-for="(list,index) in transactions" :key="index.id" class="row">
+          <li v-for="(list,index) in transactions" :key="index" class="row">
             <span class="col col-lg-10">
               <div class="bottom">
-                <router-link to="/transactions/TransactionsInfo">{{list.code}}</router-link>
+                <router-link
+                  to="/transactions/TransactionsInfo"
+                  @click.native="setRefBlockHash"
+                >{{list.txHash}}</router-link>
               </div>
             </span>
-            <span class="col">{{ list.time }}</span>
+            <span class="col">{{ list.refBlockTime }}</span>
           </li>
         </ul>
         <Pagination/>
@@ -40,6 +46,7 @@ import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
+import util from "./../../utils/utils";
 
 export default {
   name: "AccountInfo",
@@ -59,10 +66,10 @@ export default {
         pageSize: 3,
         address: null
       },
-      accountInfo: [],
+      accountInfo: null,
       transactions: [],
-      address: null,
-      balance: null
+      refBlockTime: null,
+      Balance: null
     };
   },
   mounted() {
@@ -70,6 +77,13 @@ export default {
     setTimeout(() => {
       this.getAccountInfo();
       this.getAccountTransactionInfo();
+    });
+    const timer = setInterval(() => {
+      this.getAccountInfo();
+      this.getAccountTransactionInfo();
+    }, 1500);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer);
     });
   },
   methods: {
@@ -99,10 +113,8 @@ export default {
           address: this.accountTransaction_param.address
         })
         .then(response => {
-          let res = response.data.data.result;
-          this.accountInfo = res;
-          // this.balance = res.balance;
-          console.log(res);
+          let res = response.data.data;
+          this.Balance = res.balance;
         })
         .catch(function(err) {
           if (err.response) {
@@ -114,14 +126,23 @@ export default {
       this.$axios
         .post(this.accountTransaction_url, this.accountTransaction_param)
         .then(response => {
-          console.log(res);
+          let res = response.data.data;
           this.transactions = res;
+          let time;
+          for (let i = 0; i < this.transactions.length; i++) {
+            let element = this.transactions[i];
+            time = util.utilMethods.getSec(element.refBlockTime);
+            element.refBlockTime = time;
+          }
         })
         .catch(function(err) {
           if (err.response) {
             console.log(err.response);
           }
         });
+    },
+    setRefBlockHash(e) {
+      Bus.$emit("txHash", e.target.innerHTML);
     }
   }
 };
@@ -135,7 +156,10 @@ export default {
   height: 100%;
   background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
   .uchain-box {
-    padding-top: 95px;
+    padding-top: 90px;
+    .apex-title {
+      padding-left: 30px;
+    }
     .data-table {
       width: 100%;
       padding: 0px 12px 0px;

@@ -1,21 +1,28 @@
 <template>
   <div class="home clearboth">
     <div class="top-modul clearboth">
-      <over-view />
-      <live-tps />
+      <keep-alive>
+        <over-view/>
+      </keep-alive>
+      <keep-alive>
+        <live-tps/>
+      </keep-alive>
     </div>
     <div class="bottom-modul clearboth">
-      <blocks-list />
-      <transactions-list/>
+      <keep-alive>
+        <blocks-list/>
+      </keep-alive>
+      <keep-alive>
+        <transactions-list/>
+      </keep-alive>
     </div>
   </div>
 </template>
 <script>
-
-import LiveTps from "@/views/home/LiveTps"
-import OverView from "@/views/home/OverView"
-import BlocksList from "@/components/list/BlocksList"
-import TransactionsList from "@/components/list/TransactionsList"
+import LiveTps from "@/views/home/LiveTps";
+import OverView from "@/views/home/OverView";
+import BlocksList from "@/components/list/BlocksList";
+import TransactionsList from "@/components/list/TransactionsList";
 
 export default {
   name: "home",
@@ -26,13 +33,10 @@ export default {
     TransactionsList
   },
   data() {
-    return {
-    };
+    return {};
   },
-  mounted() {
-  },
-  methods: {
-  },
+  mounted() {},
+  methods: {},
   computed: {}
 };
 </script>

@@ -74,9 +74,10 @@ export default {
   data() {
     return {
       title: "Blocks Information",
-      blockHash_url: "/api/v1.0/blocks/blockHash/",
-      blockHeight_url: "/api/v1.0/blocks/blockHeight/",
-      parentHash_url: "/api/v1.0/blocks/blockHash/",
+      url: {
+        blockHash_url: "/api/v1.0/blocks/blockHash/",
+        blockHeight_url: "/api/v1.0/blocks/blockHeight/"
+      },
       height: null,
       timeStamp: null,
       transactions: null,
@@ -91,6 +92,12 @@ export default {
     this.getClickValue();
     setTimeout(() => {
       this.getBlocksInfo();
+    });
+    const timer = setInterval(() => {
+      this.getParentBlock();
+    }, 1500);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer);
     });
   },
   methods: {
@@ -109,7 +116,7 @@ export default {
         switch (type) {
           case "hash":
             this.$axios
-              .get(this.blockHash_url + params)
+              .get(this.url.blockHash_url + params)
               .then(response => {
                 let res = response.data.data;
                 this.height = res.height;
@@ -126,7 +133,7 @@ export default {
             break;
           case "height":
             this.$axios
-              .get(this.blockHeight_url + params)
+              .get(this.url.blockHeight_url + params)
               .then(response => {
                 let res = response.data.data;
                 this.height = res.height;
@@ -145,10 +152,10 @@ export default {
       }
     },
     getParentBlock(e) {
-      let parentHash = e.target.innerHTML;
-      if (parentHash) {
+      // let parentHash = e.target.innerHTML;
+      if (!!this.parentHash) {
         this.$axios
-          .get(this.parentHash_url + parentHash)
+          .get(this.url.blockHash_url + this.parentHash)
           .then(response => {
             let res = response.data.data;
             this.height = res.height;

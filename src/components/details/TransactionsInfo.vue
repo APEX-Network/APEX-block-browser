@@ -93,6 +93,7 @@ import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
+import util from './../../utils/utils';
 
 export default {
   name: "TransactionsInfo",
@@ -153,7 +154,7 @@ export default {
           this.txHash = res.txHash;
           this.txReceiptStatus = res.confirmed;
           this.blockHeight = res.refBlockHeight;
-          this.timeStamp = res.refBlockTime;
+          this.timeStamp = util.utilMethods.tierAllTime(res.refBlockTime);
           this.from = res.from;
           this.to = res.to;
           this.amount = res.amount;
@@ -166,7 +167,6 @@ export default {
     }
 },
   watch: {
-    // $route: "getClickValue"
   }
 };
 </script>
