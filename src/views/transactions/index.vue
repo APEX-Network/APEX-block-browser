@@ -7,10 +7,13 @@
         <li v-for="(list,index) in transactions" :key="index" class="row">
           <span class="col col-lg-10">
             <div class="bottom">
-              <router-link to="/transactions/TransactionsInfo" @click.native="setClickValue">{{list.txHash}}</router-link>
+              <router-link
+                to="/transactions/TransactionsInfo"
+                @click.native="setClickValue"
+              >{{list.txHash}}</router-link>
             </div>
           </span>
-          <span class="col">{{list.refBlockTime }}  minute ago</span>
+          <span class="col">{{list.refBlockTime }}</span>
         </li>
       </ul>
       <Pagination/>
@@ -22,8 +25,8 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
-import Bus from './../../utils/bus'
-import util from './../../utils/utils';
+import Bus from "./../../utils/bus";
+import util from "./../../utils/utils";
 
 export default {
   name: "Transactions",
@@ -32,9 +35,6 @@ export default {
     ApexTitle,
     ApexBackGround
   },
-  mounted() {
-    this.getAllTransactions();
-  },
   data() {
     return {
       title: "Transactions",
@@ -42,10 +42,28 @@ export default {
       clickValue: null,
       transaction_list_url: "/api/v1.0/transactions/transactionList",
       parmas: {
-          start: "0",
-          pageSize: "6"
-        }
+        start: "0",
+        pageSize: "6"
+      }
     };
+  },
+  created() {
+    // this.getAllTransactions();
+    // const timer = setInterval(() => {
+    //   this.getAllTransactions();
+    // }, 1500);
+    // this.$once("hook:beforeDestroy", () => {
+    //   clearInterval(timer);
+    // });
+  },
+  mounted() {
+    this.getAllTransactions();
+    const timer = setInterval(() => {
+      this.getAllTransactions();
+    }, 1500);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer);
+    });
   },
   methods: {
     getAllTransactions() {
@@ -56,7 +74,7 @@ export default {
           let minu;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            minu = util.utilMethods.getMin(item.refBlockTime);
+            minu = util.utilMethods.getSec(item.refBlockTime);
             item.refBlockTime = minu;
           }
           this.transactions = res;
@@ -67,7 +85,7 @@ export default {
         });
     },
     setClickValue(e) {
-      Bus.$emit('txHash', e.target.innerHTML);      
+      Bus.$emit("txHash", e.target.innerHTML);
     }
   }
 };

@@ -92,7 +92,7 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
-import Bus from './../../utils/bus';
+import Bus from "./../../utils/bus";
 
 export default {
   name: "TransactionsInfo",
@@ -124,8 +124,7 @@ export default {
       Hash: null
     };
   },
-  created() {
-  },
+  created() {},
   mounted() {
     this.getClickValue();
     setTimeout(() => {
@@ -144,32 +143,28 @@ export default {
       Bus.$emit('clickValue', JSON.stringify(this.clickValue));      
     },
     setToValue(e) {
-      this.clickValue.type = "to";
-      this.clickValue.value = e.target.innerHTML;
-      Bus.$emit('clickValue', JSON.stringify(this.clickValue));      
+      Bus.$emit("accountValue", e.target.innerHTML);
     },
     getTransactionsInfo() {
-      if (!!this.Hash) {
-        this.$axios
-          .get(this.transactions_url + this.Hash)
-          .then(response => {
-            let res = response.data.data;
-            this.txHash = res.txHash;
-            this.txReceiptStatus = res.confirmed;
-            this.blockHeight = res.refBlockHeight;
-            this.timeStamp = res.refBlockTime;
-            this.from = res.from;
-            this.to = res.to;
-            this.amount = res.amount;
-            this.gasLimit = res.gasLimit;
-            this.gasPrice = res.gasPrice;
-            this.gasUsed = res.gasUsed;
-            this.fee = res.fee;
-          })
-          .catch(function(response) {});
-      }
+      this.$axios
+        .get(this.transactions_url + this.Hash)
+        .then(response => {
+          let res = response.data.data;
+          this.txHash = res.txHash;
+          this.txReceiptStatus = res.confirmed;
+          this.blockHeight = res.refBlockHeight;
+          this.timeStamp = res.refBlockTime;
+          this.from = res.from;
+          this.to = res.to;
+          this.amount = res.amount;
+          this.gasLimit = res.gasLimit;
+          this.gasPrice = res.gasPrice;
+          this.gasUsed = res.gasUsed;
+          this.fee = res.fee;
+        })
+        .catch(function(response) {});
     }
-  },
+},
   watch: {
     // $route: "getClickValue"
   }

@@ -61,6 +61,7 @@ import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
 import { setTimeout } from "timers";
 import Bus from "./../../utils/bus";
+import util from "./../../utils/utils";
 
 export default {
   name: "BlocksInfo",
@@ -113,7 +114,7 @@ export default {
                 let res = response.data.data;
                 this.height = res.height;
                 this.blockHash = res.blockHash;
-                this.timeStamp = res.timeStamp;
+                this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
                 this.transactions = res.id;
                 this.parentHash = res.prevBlock;
                 this.minedBy = res.producer;
@@ -130,7 +131,7 @@ export default {
                 let res = response.data.data;
                 this.height = res.height;
                 this.blockHash = res.blockHash;
-                this.timeStamp = res.timeStamp;
+                this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
                 this.transactions = res.id;
                 this.parentHash = res.prevBlock;
                 this.minedBy = res.producer;
@@ -151,7 +152,7 @@ export default {
           .then(response => {
             let res = response.data.data;
             this.height = res.height;
-            this.timeStamp = res.timeStamp;
+            this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
             this.transactions = res.id;
             this.blockHash = res.blockHash;
             this.parentHash = res.prevBlock;

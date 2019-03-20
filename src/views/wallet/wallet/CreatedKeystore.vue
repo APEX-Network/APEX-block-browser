@@ -18,11 +18,8 @@
         </p>
         <div>Save Your Keystore File</div>
       </div>
-      <div class="create1">
-        <router-link
-          to="/wallet/NewWallet/CreatedKeystore/SavePrivKey"
-          @click.native="getAddress"
-        >DOWNLOAD ENCRYPTED KEY</router-link>
+      <div class="create1" @click="downloadKeyStore"> 
+        DOWNLOAD ENCRYPTED KEY
       </div>
       <div class="create2">
         <router-link
@@ -76,6 +73,9 @@ export default {
     getAddress() {
       Bus.$emit("apAddress", this.apAddress);
       Bus.$emit("privKey", this.privKey);
+    },
+    downloadKeyStore() {
+      alert("请保管好你的KeyStore文件!!!")
     }
   },
 
@@ -128,6 +128,7 @@ export default {
       width: 220px;
       line-height: 30px;
       z-index: 1;
+      cursor: pointer;
       a {
         color: #f26522;
       }

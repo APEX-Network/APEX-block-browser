@@ -55,9 +55,10 @@ const utilMethods = {
         }
     },
     getSec(data) {
-        var datatime = '';
-        if (data != null || data != undefined) {
-            timestampToTime(data);
+        let data_result = new Date() - data
+        let datatime = '';
+        if (data_result != null || data_result != undefined) {
+            timestampToTime(data_result);
             function timestampToTime(timestamp) {
                 var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
                 var Y = date.getFullYear() + '-';
@@ -70,11 +71,14 @@ const utilMethods = {
                 }
                 var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
                 var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes()) + ':';
-                var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds());
+                var s = (date.getSeconds() < 10 ? (date.getSeconds()) : date.getSeconds());
                 datatime = s;
                 return s;
             }
-            return datatime;
+            if (datatime == 0) {
+                datatime = 0.5;
+            }
+            return datatime + " " + "seconds ago";
         }
     },
     getMin(data) {
@@ -146,8 +150,10 @@ const utilMethods = {
     },
     produce_KeyStore(keyStoreParams) {
         let data = keyStoreParams.data;
+        console.log(data);
+        
         let byteArraypwd = BigInteger(keyStoreParams.key).toByteArray();
-        let pwdToBuffer = Buffer.from( byteArraypwd, "hex");
+        let pwdToBuffer = Buffer.from(byteArraypwd, "hex");
         console.log(pwdToBuffer);
         let key = Bitcoin.crypto.sha256(Buffer.from(pwdToBuffer, "hex")).toString("hex");
         console.log(key);
@@ -158,6 +164,15 @@ const utilMethods = {
         let keyStore = Buffer.from(CryptoJS.AES.encrypt(data, key, iv).ciphertext.words, "hex").toString("hex");
         console.log(keyStore);
         //eb5d29320a95114463305109f6fc4ba7e6ffe2de
+        let x = Buffer.from(keyStore, "hex").toString("hex");
+        console.log(x);
+        
+
+        let deKeyStore = CryptoJS.AES.decrypt(x, key, iv);
+        console.log(Buffer.from(deKeyStore.words, "hex"));
+        
+        // console.log(Buffer.from(deKeyStore, "hex").toString("hex").toString("hex"));
+        
         return keyStore
     }
 }

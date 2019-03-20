@@ -6,7 +6,7 @@
       <ul class="table-ul">
         <li v-for="(value, key ,index ) in producerInfo" :key="index" class="row">
           <span class="col">{{key}} :</span>
-          <span class="col col-lg-8" v-if="key === 'Website'">
+          <span class="col col-lg-8" v-if="key === 'webSite'">
             <router-link to="/home">{{value}}</router-link>
           </span>
           <span class="col col-lg-8" v-else>{{value}}</span>
@@ -39,7 +39,8 @@ export default {
         Area: null,
         CurrentRank: null,
         Website: null,
-        Description: null
+        Description: null,
+        block: null
       }
     };
   },
@@ -53,10 +54,7 @@ export default {
   methods: {
     getClickValue() {
       Bus.$on("minerBy", data => {
-        this.minerBy = data;
-      });
-      Bus.$on("clickValue", data => {
-        this.minerBy = data;
+        this.minerBy = data;        
       });
     },
     getProduceInfo() {
@@ -67,8 +65,9 @@ export default {
             let res = response.data.data;
             this.producerInfo.Miner = res.address;
             this.producerInfo.Area = res.zone;
-            this.producerInfo.CurrentRank = res.rank;
-            this.producerInfo.Website = res.nodeUrl;
+            this.producerInfo.CurrentRank = res.votes;
+            this.producerInfo.block = res.blockCount;
+            this.producerInfo.Website = res.webSite;
             this.producerInfo.Description = res.describe;
           })
           .catch(function(response) {

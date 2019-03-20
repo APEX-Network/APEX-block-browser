@@ -8,7 +8,7 @@
           <span class="col">Height</span>
           <span class="col col-lg-6">Hash</span>
           <span class="col">Age</span>
-          <span class="col">Txn</span>
+          <!-- <span class="col">Txn</span> -->
           <span class="col">Miner</span>
         </li>
         <li v-for="(item,index) in dataList" :key="index" class="row">
@@ -19,8 +19,8 @@
           <span class="col col-lg-6">
             <router-link to="/blocks/BlocksInfo" @click.native="setHashValue">{{item.blockHash}}</router-link>
           </span>
-          <span class="col">{{item.timeStamp}}  secs ago</span>
-          <span class="col txn">{{item.txNum}}</span>
+          <span class="col">{{item.timeStamp}}</span>
+          <!-- <span class="col txn">{{item.txNum}}</span> -->
           <span class="col">{{item.producer}}</span>
         </li>
       </ul>
@@ -40,9 +40,8 @@
 import Pagination from "@/components/public/Pagination.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import ApexTitle from "@/components/public/ApexTitle.vue";
-import Bus from './../../utils/bus';
-import util from './../../utils/utils';
-
+import Bus from "./../../utils/bus";
+import util from "./../../utils/utils";
 
 export default {
   name: "blocks",
@@ -50,9 +49,6 @@ export default {
     Pagination,
     ApexBackGround,
     ApexTitle
-  },
-  mounted() {
-    this.getFirstBlocks();
   },
   data() {
     return {
@@ -71,28 +67,37 @@ export default {
       }
     };
   },
+   mounted() {
+    this.getFirstBlocks();
+    const timer = setInterval(() => {
+      this.getFirstBlocks();
+    }, 1500);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer);
+    });
+  },
   methods: {
     getFirstBlocks() {
       if (!!this.params) {
         this.$axios
-        .post(this.allBlockUrl, this.params)
-        .then(response => {
-          // let res = response.data.data;
-          // this.dataList = res;
-          let res = response.data.data;
-          let seconds;
-          for (let i = 0; i <  res.length; i++) {
-            const item = res[i];
-            seconds = util.utilMethods.getSec(item.timeStamp);
-            item.timeStamp = seconds;
-          }
-          this.dataList = res;
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
+          .post(this.allBlockUrl, this.params)
+          .then(response => {
+            // let res = response.data.data;
+            // this.dataList = res;
+            let res = response.data.data;
+            let seconds;
+            for (let i = 0; i < res.length; i++) {
+              const item = res[i];
+              seconds = util.utilMethods.getSec(item.timeStamp);
+              item.timeStamp = seconds;
+            }
+            this.dataList = res;
+          })
+          .catch(function(err) {
+            if (err.response) {
+              console.log(err.response);
+            }
+          });
       }
     },
     setHeightValue(e) {
@@ -115,9 +120,9 @@ export default {
           // this.dataList = res;
           let res = response.data.data;
           let seconds;
-          for (let i = 0; i <  res.length; i++) {
+          for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            seconds = util.utilMethods.getSeconds(item.timeStamp);
+            seconds = util.utilMethods.getSec(item.timeStamp);
             item.timeStamp = seconds;
           }
           this.dataList = res;
@@ -132,18 +137,18 @@ export default {
         this.$axios
           .post(this.allBlockUrl, this.params)
           .then(response => {
-          // let res = response.data.data;
-          // this.dataList = res;
-          this.dataList = null;
-          let res = response.data.data;
-          let seconds;
-          for (let i = 0; i <  res.length; i++) {
-            const item = res[i];
-            seconds = util.utilMethods.getSeconds(item.timeStamp);
-            item.timeStamp = seconds;
-          }
-          this.dataList = res;
-        })
+            // let res = response.data.data;
+            // this.dataList = res;
+            this.dataList = null;
+            let res = response.data.data;
+            let seconds;
+            for (let i = 0; i < res.length; i++) {
+              const item = res[i];
+              seconds = util.utilMethods.getSeconds(item.timeStamp);
+              item.timeStamp = seconds;
+            }
+            this.dataList = res;
+          })
           .catch(function(err) {
             if (err.response) {
               console.log(err.response);
@@ -160,7 +165,7 @@ export default {
         .then(response => {
           let res = response.data.data;
           let seconds;
-          for (let i = 0; i <  res.length; i++) {
+          for (let i = 0; i < res.length; i++) {
             const item = res[i];
             seconds = util.utilMethods.getSeconds(item.timeStamp);
             item.timeStamp = seconds;
@@ -175,16 +180,16 @@ export default {
       if (this.previousPage <= 0) {
         this.$axios
           .post(this.allBlockUrl, this.params)
-         .then(response => {
-          let res = response.data.data;
-          let seconds;
-          for (let i = 0; i <  res.length; i++) {
-            const item = res[i];
-            seconds = util.utilMethods.getSeconds(item.timeStamp);
-            item.timeStamp = seconds;
-          }
-          this.dataList = res;
-        })
+          .then(response => {
+            let res = response.data.data;
+            let seconds;
+            for (let i = 0; i < res.length; i++) {
+              const item = res[i];
+              seconds = util.utilMethods.getSeconds(item.timeStamp);
+              item.timeStamp = seconds;
+            }
+            this.dataList = res;
+          })
           .catch(function(err) {
             if (err.response) {
               console.log(err.response);

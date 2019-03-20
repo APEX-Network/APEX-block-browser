@@ -14,7 +14,7 @@
               to="/transactions/TransactionsInfo"
               @click.native="setClickValue"
             >{{item.txHash}}</router-link>
-            <span>{{item.refBlockTime}} seconds ago</span>
+            <span>{{item.refBlockTime}}</span>
           </div>
         </li>
       </vue-scroll>
@@ -24,8 +24,8 @@
 
 <script>
 import Pagination from "@/components/public/Pagination.vue";
-import Bus from './../../utils/bus';
-import util from './../../utils/utils';
+import Bus from "./../../utils/bus";
+import util from "./../../utils/utils";
 export default {
   name: "transactionsList",
   components: {
@@ -39,35 +39,41 @@ export default {
       transaction_list_url: "/api/v1.0/transactions/transactionList",
       params: {
         start: "0",
-        pageSize: "2"
+        pageSize: "10"
       }
     };
   },
   mounted() {
     this.getTransactionsList();
+    const timer = setInterval(() => {
+      this.getTransactionsList();
+    }, 1500);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer);
+    });
   },
   methods: {
     setClickValue(e) {
-       Bus.$emit('txHash', e.target.innerHTML);      
+      Bus.$emit("txHash", e.target.innerHTML);
     },
     getTransactionsList() {
       if (!!this.params) {
         this.$axios
-        .post(this.transaction_list_url, this.params)
-        .then(response => {
-          let res = response.data.data;
-          let seconds;
-          for (let i = 0; i < res.length; i++) {
-            const item = res[i];
-            seconds = util.utilMethods.getSec(item.refBlockTime);
-            item.refBlockTime = seconds;
-          }
-          this.transactions = res;
-        })
-        .catch(function(err) {
-          if (err.response) {
-          }
-        });
+          .post(this.transaction_list_url, this.params)
+          .then(response => {
+            let res = response.data.data;
+            let seconds;
+            for (let i = 0; i < res.length; i++) {
+              const item = res[i];
+              seconds = util.utilMethods.getSec(item.refBlockTime);
+              item.refBlockTime = seconds;
+            }
+            this.transactions = res;
+          })
+          .catch(function(err) {
+            if (err.response) {
+            }
+          });
       }
     }
   }

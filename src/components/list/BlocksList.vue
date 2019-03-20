@@ -8,7 +8,7 @@
     </p>
     <ul class="apex-list">
       <vue-scroll :ops="ops">
-        <li v-for="(item,index) in blocksList" :key="index">
+        <li v-for="(item,index) in blocksList" :key="index.id">
           <div>
             <div class="top">
               <p>Block {{item.height}} Bytes</p>
@@ -16,7 +16,7 @@
             </div>
             <div class="bottom">
               <router-link to="/blocks/BlocksInfo" @click.native="setClickValue">{{item.blockHash}}</router-link>
-              <span>{{item.timeStamp}} seconds ago</span>
+              <span>{{item.timeStamp}}</span>
             </div>
           </div>
         </li>
@@ -43,14 +43,18 @@ export default {
       clickValue: {
         type: "hash",
         value: null
-      }
+      },
+      lastBlock: null
     };
   },
   mounted() {
     this.getBlocksList();
-    setInterval(() => {
+    const timer = setInterval(() => {
       this.getBlocksList();
-    }, 10000);
+    }, 1500);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer);
+    });
   },
   methods: {
     getBlocksList() {
@@ -63,8 +67,10 @@ export default {
             const item = res[i];
             seconds = util.utilMethods.getSec(item.timeStamp);
             item.timeStamp = seconds;
+            this.lastBlock = res[0].height;
           }
           this.blocksList = res;
+          Bus.$emit("lastBlock", this.lastBlock);
         })
         .catch(function(err) {
           if (err.response) {
@@ -77,7 +83,6 @@ export default {
       Bus.$emit("clickValue", JSON.stringify(this.clickValue));
     }
   },
-  beforeDestroy() {}
 };
 </script>
 

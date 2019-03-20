@@ -21,22 +21,27 @@ export default {
       data: [],
       time: [],
       tooltps: [],
-      myChart: null,
-      websock: null
+      myChart: null
     };
   },
   created() {
     // this.initWebSocket();
+    // const timer = setInterval(() => {
+    //   this.postBlockTips();
+    // }, 1500);
+    // this.$once("hook:beforeDestroy", () => {
+    //   clearInterval(timer);
+    // });
   },
   mounted() {
     this.myChart = echarts.init(document.getElementById("echartContainer"));
     this.postBlockTips();
-    setInterval(() => {
+    const timer = setInterval(() => {
       this.postBlockTips();
-      setTimeout(() => {
-        this.drawCharts();
-      });
-    }, 10000);
+    }, 1500);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer);
+    });
   },
   methods: {
     postBlockTips() {
@@ -69,7 +74,7 @@ export default {
         grid: {
           left: 0,
           right: 0,
-          top: 60,
+          top: 0,
           bottom: 5,
           containLabel: true
         },
@@ -155,7 +160,6 @@ export default {
   },
   destroyed() {
     // this.wesocketclose();
-
   },
   computed: {}
 };
@@ -178,26 +182,24 @@ export default {
       }
     }
   }
-    .chart-box {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      margin: 0;
-      // width: 100%;
-      // .chart {
-        height: 300px;
-      // }
+  .chart-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    // width: 100%;
+    // .chart {
+    height: 300px;
+    // }
+  }
+}
+@media screen and(max-width:1366px) {
+  .home {
+    .tps {
+      .chart-box {
+          height: 300px;
+      }
     }
   }
-// @media screen and(max-width:1366px) {
-//   .home {
-//     .tps {
-//       .chart-box {
-//         .chart {
-//           height: 190px;
-//         }
-//       }
-//     }
-//   }
-// }
+}
 </style>

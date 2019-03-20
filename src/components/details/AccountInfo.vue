@@ -20,13 +20,13 @@
       </div>
       <div class="data-table transactions-table">
         <ul class="table-ul">
-          <li v-for="(list,index) in transactions" :key="index" class="row">
+          <li v-for="(list,index) in transactions" :key="index.id" class="row">
             <span class="col col-lg-10">
               <div class="bottom">
                 <router-link to="/transactions/TransactionsInfo">{{list.code}}</router-link>
               </div>
             </span>
-            <span class="col">{{list.time }}</span>
+            <span class="col">{{ list.time }}</span>
           </li>
         </ul>
         <Pagination/>
@@ -53,6 +53,12 @@ export default {
     return {
       title: "AccountInfo Information",
       accountInfo_url: "/api/v1.0/accounts/account",
+      accountTransaction_url: "/api/v1.0/transactions/account/transactionList",
+      accountTransaction_param: {
+        start: 0,
+        pageSize: 3,
+        address: null
+      },
       accountInfo: [],
       transactions: [],
       address: null,
@@ -63,6 +69,7 @@ export default {
     this.getClickValue();
     setTimeout(() => {
       this.getAccountInfo();
+      this.getAccountTransactionInfo();
     });
   },
   methods: {
@@ -81,72 +88,40 @@ export default {
       );
     },
     getClickValue() {
-      Bus.$on("clickValue", data => {
-        this.address = JSON.parse(data);
+      Bus.$on("accountValue", data => {
+        this.accountTransaction_param.address = data;
+        console.log(this.accountTransaction_param.address);
       });
     },
     getAccountInfo() {
-      if (!!this.address) {
-        let type = this.address.type;
-        let params = this.address.value;
-        switch (type) {
-          // case "height":
-          //   if (params) {
-          //     this.$axios
-          //       .post(this.accountInfo_url, {
-          //         address: params
-          //       })
-          //       .then(response => {
-          //         let res = response.data.data.result;
-          //         this.accountInfo = res;
-          //         console.log(res);
-          //       })
-          //       .catch(function(err) {
-          //         if (err.response) {
-          //           console.log(err.response);
-          //         }
-          //       });
-          //   }
-          //   break;
-          case "to":
-            if (params) {
-              this.$axios
-                .post(this.accountInfo_url, {
-                  address: params
-                })
-                .then(response => {
-                  let res = response.data.data.result;
-                  this.accountInfo = res;
-                  console.log(res);
-                })
-                .catch(function(err) {
-                  if (err.response) {
-                    console.log(err.response);
-                  }
-                });
-            }
-            break;
-
-          default:
-            break;
-        }
-      }
-      // if (this.address) {
-      //   this.$axios
-      //     .post("/api/v1.0/accounts/account", {
-      //       address: this.address
-      //     })
-      //     .then(response => {
-      //       let res = response.data.data.result;
-      //       this.accountInfo = res;
-      //       console.log(res);
-      //     })
-      //     .catch(function(err) {
-      //       if (err.response) {
-      //         console.log(err.response);
-      //       }
-      //     });
-      // }
+      this.$axios
+        .post(this.accountInfo_url, {
+          address: this.accountTransaction_param.address
+        })
+        .then(response => {
+          let res = response.data.data.result;
+          this.accountInfo = res;
+          // this.balance = res.balance;
+          console.log(res);
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+    },
+    getAccountTransactionInfo() {
+      this.$axios
+        .post(this.accountTransaction_url, this.accountTransaction_param)
+        .then(response => {
+          console.log(res);
+          this.transactions = res;
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
     }
   }
 };
