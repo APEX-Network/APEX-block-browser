@@ -7,14 +7,15 @@
         <p>Import wallet address by private key.</p>
       </div>
       <div class="enterpwd">
-        <input type="text" placeholder="Paste or type private key">
+        <input ref="privKey" type="text"  v-model="privKey" @change="getprivKey" placeholder="Paste or type private key">
         <div class="repatpwd">
           <input type="text" placeholder="repect passport">
+          <input ref="pwd" v-model="pwd" @change="getPwd" type="text" placeholder="repect passport">
           <img src="./../../../assets/images/eye.png">
         </div>
       </div>
       <div class="create">
-        <router-link to="/wallet">UNLOCK</router-link>
+        <router-link to="/wallet" @click.native="privKeyAddress">UNLOCK</router-link>
       </div>
     </div>
   </div>
@@ -23,13 +24,17 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
+import util from './../../../utils/utils';
+import Bus from './../../../utils/bus';
 
 export default {
   name: "PrivateKey",
   props: [""],
   data() {
     return {
-      title: "OpenWallet"
+      title: "OpenWallet",
+      privKey: null,
+      pwd: null
     };
   },
 
@@ -44,7 +49,23 @@ export default {
 
   mounted() {},
 
-  methods: {},
+  methods: {
+    getprivKey() {
+      this.privKey = this.$refs.privKey.value;
+      console.log("用户粘贴的私钥:" + this.privKey);
+    },
+    getPwd() {
+      this.pwd = this.$refs.pwd.value;
+      console.log(this.pwd);
+    },
+    privKeyAddress() {
+      let userPrivKey = this.privKey;
+      let key = this.pwd;
+      this.walletAddress = util.utilMethods.privKeyWallet(userPrivKey, key);      
+      Bus.$emit("apAddress", this.walletAddress);
+      console.log("通过用户粘贴的私钥生成的地址:" + this.walletAddress); 
+    }
+  },
 
   watch: {}
 };

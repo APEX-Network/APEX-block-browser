@@ -7,14 +7,14 @@
         <p>Import wallet address by keystore.</p>
       </div>
       <div class="enterpwd">
-        <input type="text" placeholder="Paste or type keystore">
+        <input ref="keyStore" v-model="keyStore" @change="getkeyStore" placeholder="Paste or type keystore">
         <div class="repatpwd">
-          <input type="text" placeholder="Enter the password corresponding to this keystore">
+          <input ref="pwd" v-model="pwd" @change="getPwd" placeholder="Enter the password corresponding to this keystore">
           <img src="./../../../assets/images/eye.png">
         </div>
       </div>
       <div class="create">
-        <router-link to="/wallet">CONTNUE</router-link>
+        <router-link to="/wallet" @click.native="keyStoreWallet">CONTNUE</router-link>
       </div>
     </div>
   </div>
@@ -23,13 +23,18 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
+import util from './../../../utils/utils';
+import Bus from './../../../utils/bus';
 
 export default {
   name: "KeyStore",
   props: [""],
   data() {
     return {
-      title: "OpenWallet"
+      title: "OpenWallet",
+      walletAddress: null,
+      keyStore: null,
+      pwd: null
     };
   },
 
@@ -44,7 +49,25 @@ export default {
 
   mounted() {},
 
-  methods: {},
+  methods: {
+    getkeyStore() {
+      this.keyStore = this.$refs.keyStore.value;
+      console.log(this.keyStore);
+    },
+    getPwd() {
+      this.pwd = this.$refs.pwd.value;
+      console.log(this.pwd);
+    },
+    keyStoreWallet() {
+      //获取用户导入的key文件
+      console.log("用户导入的keyStore文件:" + this.keyStore);
+      let downKeyStore = this.keyStore;
+      let key = this.pwd;
+      this.walletAddress = util.utilMethods.keyStoreWallet(downKeyStore, key);
+      Bus.$emit("apAddress", this.walletAddress);
+      console.log("通过用户导入的keyStore文件解密出正确的钱包地址====" + this.walletAddress);
+    }
+  },
 
   watch: {}
 };

@@ -43,18 +43,11 @@ export default {
       transaction_list_url: "/api/v1.0/transactions/transactionList",
       parmas: {
         start: "0",
-        pageSize: "6"
+        pageSize: "13"
       }
     };
   },
   created() {
-    // this.getAllTransactions();
-    // const timer = setInterval(() => {
-    //   this.getAllTransactions();
-    // }, 1500);
-    // this.$once("hook:beforeDestroy", () => {
-    //   clearInterval(timer);
-    // });
   },
   mounted() {
     this.getAllTransactions();

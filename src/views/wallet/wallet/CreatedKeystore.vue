@@ -18,9 +18,7 @@
         </p>
         <div>Save Your Keystore File</div>
       </div>
-      <div class="create1" @click="downloadKeyStore"> 
-        DOWNLOAD ENCRYPTED KEY
-      </div>
+      <div class="create1" @click="downloadKeyStore">DOWNLOAD ENCRYPTED KEY</div>
       <div class="create2">
         <router-link
           to="/wallet/NewWallet/CreatedKeystore/SavePrivKey"
@@ -35,6 +33,7 @@
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
 import Bus from "./../../../utils/bus";
+import util from "./../../../utils/utils";
 
 export default {
   name: "CreatedKeystore",
@@ -44,7 +43,8 @@ export default {
       title: "NewWallet",
       address: null,
       apAddress: null,
-      privKey: null
+      privKey: null,
+      keyStore: null
     };
   },
 
@@ -58,16 +58,20 @@ export default {
   beforeMount() {},
 
   mounted() {
-    this.getlastAddress();
+    this.getKeyStoreAndlastAddress();
+    // this.getKeyStore();
   },
 
   methods: {
-    getlastAddress() {
+    getKeyStoreAndlastAddress() {
       Bus.$on("apAddress", data => {
         this.apAddress = data;
       });
       Bus.$on("privKey", data => {
         this.privKey = data;
+      });
+      Bus.$on("keyStore", data => {
+        this.keyStore = data;
       });
     },
     getAddress() {
@@ -75,7 +79,7 @@ export default {
       Bus.$emit("privKey", this.privKey);
     },
     downloadKeyStore() {
-      alert("请保管好你的KeyStore文件!!!")
+      console.log("点击下载的keyStore文件:" + this.keyStore);
     }
   },
 

@@ -6,17 +6,19 @@
       <ul class="table-ul">
         <li class="row">
           <span class="col">Rank</span>
-          <span class="col col-lg-6">Minter</span>
-          <span class="col">Block</span>
+          <span class="col col-lg-6">Account</span>
+          <span class="col">Votes</span>
+          <span class="col">Blocks</span>
         </li>
         <li v-for="(item,index) in producer" :key="index" class="row">
-          <span class="col">{{item.votes}}</span>
+          <span class="col">{{Rank}}</span>
           <span class="col col-lg-6">
             <router-link
               to="/producer/ProducerInfo"
               @click.native.self="setClickValue"
             >{{item.address}}</router-link>
           </span>
+          <span class="col">{{item.votes}}</span>
           <span class="col">{{item.blockCount}}</span>
         </li>
       </ul>
@@ -47,11 +49,12 @@ export default {
     return {
       title: "Producer",
       producer: [],
+      Rank: 1,
       minerBy: null,
       minerBy_url: "/api/v1.0/minerInfo/minerList",
       params: {
         start: "0",
-        pageSize: "3"
+        pageSize: "12"
       }
     };
   },
@@ -70,6 +73,9 @@ export default {
         .post(this.minerBy_url, this.params)
         .then(response => {
           this.producer = response.data.data;
+          // for (let i = 0; i < this.producer.length; i++) {
+          //   this.Rank++;
+          // }
         })
         .catch(function(err) {
           if (err.response) {

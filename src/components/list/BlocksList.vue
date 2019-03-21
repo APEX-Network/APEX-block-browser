@@ -11,7 +11,7 @@
         <li v-for="(item,index) in blocksList" :key="index.id">
           <div>
             <div class="top">
-              <p>Block {{item.height}} Bytes</p>
+              <p>Block Height {{item.height}}</p>
               <!-- <span>{{item.size}} Bytes</span> -->
             </div>
             <div class="bottom">

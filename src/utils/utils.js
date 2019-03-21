@@ -112,6 +112,7 @@ const utilMethods = {
             "hex"
         );
         let pubAddress = Base58check.encode(pubHash, ap);
+        console.log("New出来的钱包:"+ pubAddress);
         return pubAddress
     },
     Sign(signParams) {
@@ -150,30 +151,49 @@ const utilMethods = {
     },
     produce_KeyStore(keyStoreParams) {
         let data = keyStoreParams.data;
-        console.log(data);
-        
-        let byteArraypwd = BigInteger(keyStoreParams.key).toByteArray();
-        let pwdToBuffer = Buffer.from(byteArraypwd, "hex");
-        console.log(pwdToBuffer);
-        let key = Bitcoin.crypto.sha256(Buffer.from(pwdToBuffer, "hex")).toString("hex");
-        console.log(key);
-        //bf7cbe09d71a1bcc373ab9a764917f730a6ed951ffa1a7399b7abd8f8fd73cb4
-        let iv = key.substring(0, 16);
-        console.log(iv);
-        //bf7cbe09d71a1bcc
-        let keyStore = Buffer.from(CryptoJS.AES.encrypt(data, key, iv).ciphertext.words, "hex").toString("hex");
-        console.log(keyStore);
-        //eb5d29320a95114463305109f6fc4ba7e6ffe2de
-        let x = Buffer.from(keyStore, "hex").toString("hex");
-        console.log(x);
-        
+        console.log("privKey=" + data);
+        let bigArraypwd = BigInteger(keyStoreParams.key).toByteArray();
+        let pwdToBuffer = Buffer.from(bigArraypwd, "hex");
+        let byteArraypwd = CryptoJS.enc.Utf8.parse(pwdToBuffer);
+        let key = CryptoJS.SHA256(byteArraypwd).toString();
+        console.log("key=" + key);
 
-        let deKeyStore = CryptoJS.AES.decrypt(x, key, iv);
-        console.log(Buffer.from(deKeyStore.words, "hex"));
-        
-        // console.log(Buffer.from(deKeyStore, "hex").toString("hex").toString("hex"));
-        
-        return keyStore
+        let iv = key.substring(0, 16);
+        console.log("iv=" + iv);
+
+        // Encrypt
+        let keyStore = CryptoJS.AES.encrypt(data, key, iv);
+        let downKeyStore = keyStore.toString();
+        return downKeyStore
+    },
+    keyStoreWallet(downKeyStore, key) {
+        let bigArraypwd = BigInteger(key).toByteArray();
+        let pwdToBuffer = Buffer.from(bigArraypwd, "hex");
+        let byteArraypwd = CryptoJS.enc.Utf8.parse(pwdToBuffer);
+        let keyStorekey = CryptoJS.SHA256(byteArraypwd).toString();
+        let iv = keyStorekey.substring(0, 16);
+        let DeckeyStore = CryptoJS.AES.decrypt(downKeyStore, keyStorekey, iv);
+        let privKey = DeckeyStore.toString(CryptoJS.enc.Utf8);
+        //  根据私钥生成地址
+        let privKeyToBuffer = Buffer.from(privKey, "hex");
+        let privKeyToPub = ECPair.fromPrivateKey(privKeyToBuffer).publicKey;
+        let pubHash = Crypto.ripemd160(Crypto.sha256(privKeyToPub)).toString(
+            "hex"
+        );
+        let ap = "0548";
+        let pubAddress = Base58check.encode(pubHash, ap);
+        return pubAddress
+    },
+    privKeyWallet(userPrivKey, key){
+        //  根据私钥生成地址
+        let privKeyToBuffer = Buffer.from(userPrivKey, "hex");
+        let privKeyToPub = ECPair.fromPrivateKey(privKeyToBuffer).publicKey;
+        let pubHash = Crypto.ripemd160(Crypto.sha256(privKeyToPub)).toString(
+            "hex"
+        );
+        let ap = "0548";
+        let pubAddress = Base58check.encode(pubHash, ap);
+        return pubAddress
     }
 }
 export default { utilMethods }

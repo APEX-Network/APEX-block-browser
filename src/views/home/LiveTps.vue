@@ -72,9 +72,9 @@ export default {
       this.myChart.setOption({
         color: ["#1AC8FF"],
         grid: {
-          left: 0,
+          left: -23,
           right: 0,
-          top: 140,
+          top: 100,
           bottom: 5,
           containLabel: true
         },
@@ -90,10 +90,13 @@ export default {
             }
           },
           splitLine: { show: false },
-          axisTick: { show: false }
+          axisTick: { show: false },
+          axisLabel: {
+            interval: 2
+          }
         },
         yAxis: {
-          type: "value",
+          // type: "value",
           show: false,
           boundaryGap: false,
           axisLine: {

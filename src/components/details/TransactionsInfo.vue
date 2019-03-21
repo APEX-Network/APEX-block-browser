@@ -8,27 +8,27 @@
         <li class="row">
           <span class="col">
             TxHash:
-            <span class="clo col-lg-8">{{txHash}}</span>
+            <span class="clo col-lg-8">{{transactionInfoData.txHash}}</span>
           </span>
         </li>
         <li class="row">
           <span class="col">
             TxReceipt Status:
-            <span class="clol col-lg-8">{{txReceiptStatus}}</span>
+            <span class="clol col-lg-8">{{transactionInfoData.txReceiptStatus}}</span>
           </span>
         </li>
         <li class="row">
           <span class="col">
             Block Height:
             <span class="clol col-lg-8">
-              <router-link to="/blocks/BlocksInfo" @click.native="setHeightValue">{{blockHeight}}</router-link>
+              <router-link to="/blocks/BlocksInfo" @click.native="setHeightValue">{{transactionInfoData.blockHeight}}</router-link>
             </span>
           </span>
         </li>
         <li class="row">
           <span class="col">
             TimeStamp:
-            <span class="clol col-lg-8">{{timeStamp}}</span>
+            <span class="clol col-lg-8">{{transactionInfoData.timeStamp}}</span>
           </span>
         </li>
         <li class="row">
@@ -38,7 +38,7 @@
               <router-link
                 to="/transactions/TransactionsInfo/AccountInfo"
                 @click.native="setToValue"
-              >{{from}}</router-link>
+              >{{transactionInfoData.from}}</router-link>
             </span>
           </span>
         </li>
@@ -49,38 +49,38 @@
               <router-link
                 to="/transactions/TransactionsInfo/AccountInfo"
                 @click.native="setToValue"
-              >{{to}}</router-link>
+              >{{transactionInfoData.to}}</router-link>
             </span>
           </span>
         </li>
         <li class="row">
           <span class="col">
             Value:
-            <span class="clol col-lg-8">{{amount}}</span>
+            <span class="clol col-lg-8">{{transactionInfoData.amount}}</span>
           </span>
         </li>
         <li class="row" v-if="gasLimit !== null">
           <span class="col">
             Gas Limit:
-            <span class="clol col-lg-8">{{gasLimit}}</span>
+            <span class="clol col-lg-8">{{transactionInfoData.gasLimit}}</span>
           </span>
         </li>
         <li class="row">
           <span class="col">
             Gas Price:
-            <span class="clol col-lg-8">{{gasPrice}}</span>
+            <span class="clol col-lg-8">{{transactionInfoData.gasPrice}}</span>
           </span>
         </li>
         <li class="row" v-if="gasUsed !== null">
           <span class="col">
             Gas Used:
-            <span class="clol col-lg-8">{{gasUsed}}</span>
+            <span class="clol col-lg-8">{{transactionInfoData.gasUsed}}</span>
           </span>
         </li>
         <li class="row" v-if="fee !== null">
           <span class="col">
             Transaction Fee:
-            <span class="clol col-lg-8">{{fee}}</span>
+            <span class="clol col-lg-8">{{transactionInfoData.fee}}</span>
           </span>
         </li>
       </ul>
@@ -93,7 +93,7 @@ import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
-import util from './../../utils/utils';
+import util from "./../../utils/utils";
 
 export default {
   name: "TransactionsInfo",
@@ -106,18 +106,19 @@ export default {
     return {
       title: "Transactions Information",
       transactions_url: "/api/v1.0/transactions/",
-      clickValue: null,
-      txHash: null,
-      blockHeight: null,
-      timeStamp: null,
-      txReceiptStatus: null,
-      from: null,
-      to: null,
-      amount: null,
-      gasLimit: null,
-      gasPrice: null,
-      gasUsed: null,
-      fee: null,
+      transactionInfoData: {
+        txHash: null,
+        blockHeight: null,
+        timeStamp: null,
+        txReceiptStatus: null,
+        from: null,
+        to: null,
+        amount: null,
+        gasLimit: null,
+        gasPrice: null,
+        gasUsed: null,
+        fee: null
+      },
       clickValue: {
         type: "height",
         value: null
@@ -141,7 +142,7 @@ export default {
     setHeightValue(e) {
       this.clickValue.type = "height";
       this.clickValue.value = e.target.innerHTML;
-      Bus.$emit('clickValue', JSON.stringify(this.clickValue));      
+      Bus.$emit("clickValue", JSON.stringify(this.clickValue));
     },
     setToValue(e) {
       Bus.$emit("accountValue", e.target.innerHTML);
@@ -151,23 +152,22 @@ export default {
         .get(this.transactions_url + this.Hash)
         .then(response => {
           let res = response.data.data;
-          this.txHash = res.txHash;
-          this.txReceiptStatus = res.confirmed;
-          this.blockHeight = res.refBlockHeight;
-          this.timeStamp = util.utilMethods.tierAllTime(res.refBlockTime);
-          this.from = res.from;
-          this.to = res.to;
-          this.amount = res.amount;
-          this.gasLimit = res.gasLimit;
-          this.gasPrice = res.gasPrice;
-          this.gasUsed = res.gasUsed;
-          this.fee = res.fee;
+          this.transactionInfoData.txHash = res.txHash;
+          this.transactionInfoData.txReceiptStatus = res.confirmed;
+          this.transactionInfoData.blockHeight = res.refBlockHeight;
+          this.transactionInfoData.timeStamp = util.utilMethods.tierAllTime(res.refBlockTime);
+          this.transactionInfoData.from = res.from;
+          this.transactionInfoData.to = res.to;
+          this.transactionInfoData.amount = res.amount;
+          this.transactionInfoData.gasLimit = res.gasLimit;
+          this.transactionInfoData.gasPrice = res.gasPrice;
+          this.transactionInfoData.gasUsed = res.gasUsed;
+          this.transactionInfoData.fee = res.fee;
         })
         .catch(function(response) {});
     }
-},
-  watch: {
-  }
+  },
+  watch: {}
 };
 </script>
 

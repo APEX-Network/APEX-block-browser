@@ -19,7 +19,7 @@
         <li class="row">
           <span class="col">
             Transactions:
-            <span class="clol col-lg-8">{{transactions}}</span>
+            <span class="clol col-lg-8">{{transactions}}  transactions in this block</span>
           </span>
         </li>
         <li class="row">
@@ -122,7 +122,7 @@ export default {
                 this.height = res.height;
                 this.blockHash = res.blockHash;
                 this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
-                this.transactions = res.id;
+                this.transactions = res.txNum;
                 this.parentHash = res.prevBlock;
                 this.minedBy = res.producer;
                 this.nonce = res.txNum;
@@ -139,7 +139,7 @@ export default {
                 this.height = res.height;
                 this.blockHash = res.blockHash;
                 this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
-                this.transactions = res.id;
+                this.transactions = res.txNum;
                 this.parentHash = res.prevBlock;
                 this.minedBy = res.producer;
                 this.nonce = res.txNum;
@@ -160,7 +160,7 @@ export default {
             let res = response.data.data;
             this.height = res.height;
             this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
-            this.transactions = res.id;
+            this.transactions = res.txNum;
             this.blockHash = res.blockHash;
             this.parentHash = res.prevBlock;
             this.minedBy = res.producer;

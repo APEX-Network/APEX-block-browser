@@ -99,7 +99,8 @@ export default {
           iv: null
         };
         this.keyStore = util.utilMethods.produce_KeyStore(keyStoreParams);
-        console.log(this.keyStore);
+        console.log("供下载的keyStore====" + this.keyStore);
+        Bus.$emit("keyStore", this.keyStore);
       }
       if (this.firstPwd == null || this.secondPwd == null) {
         alert("请输入密码!");

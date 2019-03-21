@@ -63,7 +63,7 @@ export default {
       accountTransaction_url: "/api/v1.0/transactions/account/transactionList",
       accountTransaction_param: {
         start: 0,
-        pageSize: 3,
+        pageSize: 7,
         address: null
       },
       accountInfo: null,
