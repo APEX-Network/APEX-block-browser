@@ -194,6 +194,16 @@ const utilMethods = {
         let ap = "0548";
         let pubAddress = Base58check.encode(pubHash, ap);
         return pubAddress
-    }
+    },
+    produceKeyPriv(downKeyStore, key) {
+        let bigArraypwd = BigInteger(key).toByteArray();
+        let pwdToBuffer = Buffer.from(bigArraypwd, "hex");
+        let byteArraypwd = CryptoJS.enc.Utf8.parse(pwdToBuffer);
+        let keyStorekey = CryptoJS.SHA256(byteArraypwd).toString();
+        let iv = keyStorekey.substring(0, 16);
+        let DeckeyStore = CryptoJS.AES.decrypt(downKeyStore, keyStorekey, iv);
+        let privKey = DeckeyStore.toString(CryptoJS.enc.Utf8);
+        return privKey
+    },
 }
 export default { utilMethods }

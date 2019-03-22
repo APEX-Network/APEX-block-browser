@@ -70,7 +70,8 @@ export default {
       amount: null,
       nonce: null,
       KStore: null,
-      pwd: null
+      pwd: null,
+      privKey: null
     };
   },
 
@@ -129,8 +130,7 @@ export default {
         message: "416c616e20547572696e67",
         // privKey:
         // "48cd9eea1e9ab9bef56186ea7bc9496caf5187e65ee0d79e3bd239c3b1564946"
-        privKey:
-          "f8b8af8ce3c7cca5e300d33939540c10d45ce001b8f252bfbc57ba0342904181"
+        privKey: this.privKey
       };
       this.signature = util.utilMethods.Sign(signParams);
       console.log(this.signature);
@@ -154,10 +154,13 @@ export default {
       this.serialized_transaction = util.utilMethods.serialized_transaction(
         serializParams
       );
-      // console.log(this.serialized_transaction);
+      console.log("序列化交易:" + this.serialized_transaction);
       //0000000101e2a4b7c6582f4e837668504eb2f4eaa796e908e49df7fc7ca2358cc2c0535e4d08532d9733e2bf58080de0b6b3a7640000000000000000000200020237020315000000000000000046304402206afddf1f5fa1bbe9f91b9b4a39006a9196a07ca1acf106f5c5a13a327196b47702202def3ffd84b293b324fe95cc67504816f3185690425d51d580cea1707daedd8a
     },
     checkAddress() {
+      this.privKey = util.utilMethods.produceKeyPriv(this.KStore, this.pwd);
+      console.log("根据KStore导出的私钥" + this.privKey);
+      
       this.walletAddress = util.utilMethods.keyStoreWallet(
         this.KStore,
         this.pwd
