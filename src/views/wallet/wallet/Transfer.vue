@@ -6,7 +6,7 @@
       <div class="from">
         <div>From:</div>
         <div>Wallet</div>
-        <input type="text" placeholder="APsdfsadfdsfjksdlafhasdhffdasfsdf">
+        <input v-model="apAddress">
       </div>
 
       <div class="to">
@@ -16,7 +16,7 @@
       </div>
 
       <div class="amount">
-        <span>Amount (Available:1.00000004)</span>
+        <span v-if="amount !== null">Amount (Available:{{amount}})</span>
         <input type="text" placeholder="Transfer Amount">
         <div>
           <router-link to>All</router-link>
@@ -25,13 +25,13 @@
         <div>Please enter the correct transfer amount</div>
       </div>
       <div class="gasPrice">
-        <input type="text" placeholder="Please enter the gas price">
+        <input type="text" placeholder="Please enter the  gas price">
         <div>Mp</div>
         <div>Please enter the correct gas price</div>
       </div>
       <div class="password">
         <div>Password</div>
-        <input type="text">
+        <input type="text" ref="firstPwd" v-model="pwd" @change="getPwd">
         <img src="./../../../assets/images/eye.png">
         <div>Password Incorrect</div>
       </div>
@@ -54,7 +54,7 @@
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "../../../utils/utils";
-const BigInteger = require("bigi");
+import Bus from "./../../../utils/bus";
 
 export default {
   name: "Transfer",
@@ -63,7 +63,14 @@ export default {
     return {
       title: "Transfer",
       serialized_transaction: null,
-      signature: null
+      accountInfo_url: "/api/v1.0/accounts/account",
+      signature: null,
+      apAddress: null,
+      walletAddress: null,
+      amount: null,
+      nonce: null,
+      KStore: null,
+      pwd: null
     };
   },
 
@@ -74,12 +81,49 @@ export default {
 
   computed: {},
 
-  beforeMount() {},
-
-  mounted() {},
+  mounted() {
+    this.getAddress();
+    setTimeout(() => {
+      this.getAccountInfo();
+    });
+  },
 
   methods: {
+    getAddress() {
+      Bus.$on("apAddress", data => {
+        this.apAddress = data;
+      });
+      this.KStore = JSON.parse(sessionStorage.getItem("KStore"));
+    },
+    getPwd() {
+      this.pwd = this.$refs.firstPwd.value;
+      console.log(this.pwd);
+    },
+    getAccountInfo() {
+      this.$axios
+        .post(this.accountInfo_url, {
+          address: "APCb4FchfFUrqPjYc2LLrUbKjw6pt7pdF56"
+        })
+        .then(response => {
+          let res = response.data.data;
+          let pointLength = res.balance.toString().split(".")[1].length;
+          console.log(pointLength);
+          if (pointLength > 8) {
+            this.amount = Number(res.balance).toFixed(8);
+          } else {
+            this.amount = Number(res.balance);
+          }
+          this.nonce = res.nextNonce;
+          console.log(this.amount + "===========" + this.nonce);
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+    },
     SendTransfer() {
+      this.checkAddress();
       this.$refs.dialog.style.display = "flex";
       let signParams = {
         message: "416c616e20547572696e67",
@@ -90,17 +134,17 @@ export default {
       };
       this.signature = util.utilMethods.Sign(signParams);
       console.log(this.signature);
-      
+
       let serializParams = {
         version: "00000001", //不变
         txType: "01", //不变
         from: "APNctFxoeKJV9cXBzWarUmxmwoxxwfMXurX",
         toPubKeyHash: "APGMmPKLYdtTNhiEkDGU6De8gNCk3bTsME9",
         // amount: "080de0b6b3a7640000",
-        amount: 1.000000000000000000 * Math.pow(10,18),
+        amount: 1.0 * Math.pow(10, 18),
         nonce: "0000000000000002",
         data: "00", //不变
-        gasPrice: 567 * Math.pow(10,-18),
+        gasPrice: 567 * Math.pow(10, -18),
         gasLimit: 789,
         executeTime: "0000000000000000", //不变
         // signature:
@@ -110,8 +154,22 @@ export default {
       this.serialized_transaction = util.utilMethods.serialized_transaction(
         serializParams
       );
-      console.log(this.serialized_transaction);
+      // console.log(this.serialized_transaction);
       //0000000101e2a4b7c6582f4e837668504eb2f4eaa796e908e49df7fc7ca2358cc2c0535e4d08532d9733e2bf58080de0b6b3a7640000000000000000000200020237020315000000000000000046304402206afddf1f5fa1bbe9f91b9b4a39006a9196a07ca1acf106f5c5a13a327196b47702202def3ffd84b293b324fe95cc67504816f3185690425d51d580cea1707daedd8a
+    },
+    checkAddress() {
+      this.walletAddress = util.utilMethods.keyStoreWallet(
+        this.KStore,
+        this.pwd
+      );
+      if (this.walletAddress == this.apAddress) {
+        alert("恭喜您输入密码正确,您可以给我转钱了");
+      }
+      if (this.walletAddress !== this.apAddress) {
+        alert("sorry!请输入正确的密码,才能给我转钱哦😯");
+      }
+      console.log(this.walletAddress);
+      //APGxgSgN3WQcXfLBiibZ1hSRaQVhtDrLCg3
     },
     confirm() {
       // this.$refs.dialog.style.display = "none";

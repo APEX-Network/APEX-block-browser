@@ -78,14 +78,15 @@ export default {
       Bus.$emit("privKey", this.privKey);
     },
     downloadKeyStore() {
-      let link = document.createElement('a');
+      let link = document.createElement("a");
       link.download = "keyStore.txt";
-      link.style.display = 'none';
+      link.style.display = "none";
       let blob = new Blob([this.keyStore]);
       link.href = URL.createObjectURL(blob);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      sessionStorage.setItem("KStore", JSON.stringify(this.keyStore));
     }
   },
 

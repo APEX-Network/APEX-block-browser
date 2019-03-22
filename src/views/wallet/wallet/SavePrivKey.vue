@@ -19,7 +19,7 @@
         <div>Save Your Private Key</div>
         <p class="p3">
           <span class="s1">Private Key</span>
-          <span class="s2"> {{privKey}}</span>
+          <span class="s2">{{privKey}}</span>
         </p>
       </div>
       <!-- <div class="create1">
@@ -35,7 +35,7 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import Bus from './../../../utils/bus';
+import Bus from "./../../../utils/bus";
 
 export default {
   name: "SavePrivKey",
@@ -67,7 +67,7 @@ export default {
       Bus.$on("apAddress", data => {
         this.apAddress = data;
       });
-       Bus.$on("privKey", data => {
+      Bus.$on("privKey", data => {
         this.privKey = data;
       });
     },

@@ -8,43 +8,50 @@
     </div>
     <div class="flex-container2">
       <div class="flex-item1">
-        <router-link to="/wallet/NewWallet" >NEW WALLET</router-link>
+        <router-link to="/wallet/NewWallet">NEW WALLET</router-link>
         <!-- @click.native="modifyAddress('abc')" -->
       </div>
       <div class="flex-item2">
         <router-link to="/wallet/OpenWallet">OPEN WALLET</router-link>
       </div>
       <div class="flex-item3">
-        <router-link to="/wallet/Transfer">TRANSFER</router-link>
+        <router-link to="/wallet/Transfer" @click.native="sendAddress">TRANSFER</router-link>
       </div>
     </div>
-    <div class="flex-container3">
+    <!-- <div class="flex-container3">
       <div class="flex-item1">CLOSE WALLET</div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import Bus from './../../../utils/bus';
 export default {
   name: "walletpage",
   props: ["address"],
   data() {
-    return {};
+    return {
+    };
   },
 
   components: {},
 
   beforeMount() {},
 
-  mounted() {},
+  mounted() {
+    
+  },
 
-  // methods: {
-  //   ...mapActions(["modifyAddress"])
-  // },
-  // computed: {
-  //   ...mapGetters(["address"])
-  // },
+  methods: {
+    // ...mapActions(["modifyAddress"])
+    sendAddress() {
+      Bus.$emit("apAddress", this.address);      
+    }
+  },
+  computed: {
+    // ...mapGetters(["address"])
+  },
 
   watch: {}
 };

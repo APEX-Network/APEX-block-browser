@@ -7,10 +7,15 @@
         <p>Import wallet address by private key.</p>
       </div>
       <div class="enterpwd">
-        <input ref="privKey" type="text"  v-model="privKey" @change="getprivKey" placeholder="Paste or type private key">
+        <input
+          ref="privKey"
+          type="text"
+          v-model="privKey"
+          @change="getprivKey"
+        >
         <div class="repatpwd">
-          <input type="text" placeholder="repect passport">
-          <input ref="pwd" v-model="pwd" @change="getPwd" type="text" placeholder="repect passport">
+          <input type="text" >
+          <input type="text" ref="firstPwd" v-model="firstPwd" @change="getPwd">
           <img src="./../../../assets/images/eye.png">
         </div>
       </div>
@@ -24,8 +29,8 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import util from './../../../utils/utils';
-import Bus from './../../../utils/bus';
+import util from "./../../../utils/utils";
+import Bus from "./../../../utils/bus";
 
 export default {
   name: "PrivateKey",
@@ -34,7 +39,8 @@ export default {
     return {
       title: "OpenWallet",
       privKey: null,
-      pwd: null
+      pwd: null,
+      keyStore: null
     };
   },
 
@@ -47,7 +53,11 @@ export default {
 
   beforeMount() {},
 
-  mounted() {},
+  mounted() {
+    Bus.$on("keyStore", data => {
+      this.keyStore = data;
+    });
+  },
 
   methods: {
     getprivKey() {
@@ -61,9 +71,9 @@ export default {
     privKeyAddress() {
       let userPrivKey = this.privKey;
       let key = this.pwd;
-      this.walletAddress = util.utilMethods.privKeyWallet(userPrivKey, key);      
+      this.walletAddress = util.utilMethods.privKeyWallet(userPrivKey, key);
       Bus.$emit("apAddress", this.walletAddress);
-      console.log("通过用户粘贴的私钥生成的地址:" + this.walletAddress); 
+      console.log("通过用户粘贴的私钥生成的地址:" + this.walletAddress);
     }
   },
 
@@ -102,7 +112,7 @@ export default {
         color: aliceblue;
       }
       input:hover {
-          box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #f26522;
       }
       .repatpwd {
         margin: 45px 100px 0 0;

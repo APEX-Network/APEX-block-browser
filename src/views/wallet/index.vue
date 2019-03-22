@@ -1,11 +1,11 @@
 <template>
   <div class="home clearboth">
     <div class="top-modul clearboth">
-      <wallet-page :address = "apAddress"/>
+        <wallet-page :address="apAddress"/>
     </div>
     <div class="bottom-modul clearboth">
-      <transfers-list />
-      <transactions-list />
+      <transfers-list/>
+        <transactions-list />
     </div>
   </div>
 </template>
@@ -13,7 +13,7 @@
 import WalletPage from "@/views/wallet/wallet/walletPage";
 import TransfersList from "@/components/list/TransfersList";
 import TransactionsList from "@/components/list/TransactionsList";
-import Bus from './../../utils/bus';
+import Bus from "./../../utils/bus";
 
 export default {
   name: "wallet",
@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      apAddress: null
+      apAddress: null,
     };
   },
   mounted() {
@@ -35,7 +35,7 @@ export default {
       Bus.$on("apAddress", data => {
         this.apAddress = data;
       });
-    },
+    }
   },
   computed: {}
 };
@@ -55,12 +55,12 @@ export default {
       .apex-title {
         span {
           a {
-              color: #f26522;
+            color: #f26522;
           }
         }
         span:hover {
-              box-shadow: 2px 2px 8px 2px #f26522;
-          }
+          box-shadow: 2px 2px 8px 2px #f26522;
+        }
       }
     }
   }
