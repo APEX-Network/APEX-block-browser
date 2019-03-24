@@ -19,6 +19,7 @@ import axios from 'axios'
 import BitcoinJS from 'bitcoinjs-lib'
 import base58check from 'base58check'
 import base58 from 'base58'
+
 // Vue.use(api)
 Vue.prototype.$axios = axios;
 Vue.prototype.$BitcoinJS = BitcoinJS;
@@ -60,5 +61,5 @@ new Vue({
   store,
   i18n,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
 })

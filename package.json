@@ -22,6 +22,7 @@
     "bitcoinjs-lib": "^4.0.3",
     "bs58": "^4.0.1",
     "crypto-js": "^3.1.9-1",
+    "dexie": "^2.0.4",
     "echarts": "^4.2.0-rc.2",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",

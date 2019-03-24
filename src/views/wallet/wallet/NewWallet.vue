@@ -40,7 +40,7 @@ import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "../../../utils/utils";
 import ECPair from "bitcoinjs-lib/src/ecpair";
 import Bus from "./../../../utils/bus";
-
+import db from './../../../utils/myDatabase';
 export default {
   name: "NewWallet",
   props: [""],
@@ -68,7 +68,6 @@ export default {
   methods: {
     getPwd() {
       this.first = this.$refs.firstPwd.value;
-      console.log(this.first);
       this.second = this.$refs.secondPwd.value;
     },
     produceSign() {
@@ -81,9 +80,6 @@ export default {
         let ap = "0548";
         let signParams = {
           message: "416c616e20547572696e67",
-          // privKey:
-          // "48cd9eea1e9ab9bef56186ea7bc9496caf5187e65ee0d79e3bd239c3b1564946"
-          // privKey: "f8b8af8ce3c7cca5e300d33939540c10d45ce001b8f252bfbc57ba0342904181"
           privKey: ECPair.makeRandom().privateKey.toString("hex")
         };
         Bus.$emit("privKey", signParams.privKey);
@@ -101,6 +97,10 @@ export default {
         this.keyStore = util.utilMethods.produce_KeyStore(keyStoreParams);
         console.log("供下载的keyStore====" + this.keyStore);
         Bus.$emit("keyStore", this.keyStore);
+        db.APKStore.put({
+          APAddress: this.apAddress,
+          KStore: this.keyStore
+        });
       }
       if (this.firstPwd == null || this.secondPwd == null) {
         alert("请输入密码!");

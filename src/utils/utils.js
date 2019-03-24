@@ -112,7 +112,7 @@ const utilMethods = {
             "hex"
         );
         let pubAddress = Base58check.encode(pubHash, ap);
-        console.log("New出来的钱包:"+ pubAddress);
+        // console.log("New出来的钱包:"+ pubAddress);
         return pubAddress
     },
     Sign(signParams) {
@@ -127,9 +127,8 @@ const utilMethods = {
     },
     serialized_transaction(serializParams) {
         if (!serializParams.version || !serializParams.txType || !serializParams.from || !serializParams.toPubKeyHash || !serializParams.amount || !serializParams.nonce || !serializParams.data || !serializParams.gasPrice || !serializParams.gasLimit || !serializParams.executeTime || !serializParams.signature) {
-            console.log("one of version, txType, from, toPubKeyHash, amount , nonce, data, gasPrice, , gasLimit, executeTime, signature and changeAddress is null, please give a valid param");
+            alert("one of version, txType, from, toPubKeyHash, amount , nonce, data, gasPrice, , gasLimit, executeTime, signature and changeAddress is null, please give a valid param");
         } else {
-            console.log("param is valid, start serialized transaction");
             let decode_from = Base58check.decode(serializParams.from, "hex")
                 .data;
             let from = decode_from.slice(2);
@@ -139,28 +138,23 @@ const utilMethods = {
 
             let byteArrayamount = BigInteger(serializParams.amount.toString()).toByteArray();
             let amount = "08" + Buffer.from(byteArrayamount, "hex").toString("hex");
-            console.log(amount);
+            // console.log(amount);
             let byteArraygasePrice = BigInteger(serializParams.gasPrice.toString()).toByteArray();
             let gasPrice = "02" + Buffer.from(byteArraygasePrice, "hex").toString("hex");
-            console.log(gasPrice);
+            // console.log(gasPrice);
             let byteArraygaseLimit = BigInteger(serializParams.gasLimit.toString()).toByteArray();
             let gasLimit = "02" + Buffer.from(byteArraygaseLimit, "hex").toString("hex");
-            console.log(gasLimit);
+            // console.log(gasLimit);
             return serializParams.version + serializParams.txType + from + toPubKeyHash + amount + serializParams.nonce + serializParams.data + gasPrice + gasLimit + serializParams.executeTime + serializParams.signature;
         }
     },
     produce_KeyStore(keyStoreParams) {
         let data = keyStoreParams.data;
-        console.log("privKey=" + data);
         let bigArraypwd = BigInteger(keyStoreParams.key).toByteArray();
         let pwdToBuffer = Buffer.from(bigArraypwd, "hex");
         let byteArraypwd = CryptoJS.enc.Utf8.parse(pwdToBuffer);
         let key = CryptoJS.SHA256(byteArraypwd).toString();
-        console.log("key=" + key);
-
         let iv = key.substring(0, 16);
-        console.log("iv=" + iv);
-
         // Encrypt
         let keyStore = CryptoJS.AES.encrypt(data, key, iv);
         let downKeyStore = keyStore.toString();

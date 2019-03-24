@@ -55,6 +55,7 @@ import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "../../../utils/utils";
 import Bus from "./../../../utils/bus";
+import db from "./../../../utils/myDatabase";
 
 export default {
   name: "Transfer",
@@ -84,26 +85,46 @@ export default {
 
   mounted() {
     this.getAddress();
-    setTimeout(() => {
-      this.getAccountInfo();
-    });
+    // if (this.apAddress !== null) {
+        setTimeout(() => {
+          this.getAccountInfo(this.apAddress);
+        });
+        // }
   },
 
   methods: {
     getAddress() {
       Bus.$on("apAddress", data => {
         this.apAddress = data;
+        console.log(this.apAddress);
+        
       });
-      this.KStore = JSON.parse(sessionStorage.getItem("KStore"));
+      // if (this.apAddress !== null) {
+        setTimeout(() => {
+          db.APKStore.get(this.apAddress).then(APKStore => {
+            console.log(APKStore.KStore);
+            this.KStore = APKStore.KStore;
+          });
+        });
+      // }
     },
+
+    // getPSAddress() {
+    //   this.psAddress = this.$refs.psAddress.value;
+    //   db.APKStore.get(this.psAddress).then(APKStore => {
+    //     console.log("通过用户粘贴的地址获得KStore" + APKStore.KStore);
+    //     this.KStore = APKStore.KStore;
+    //   });
+    //   this.getAccountInfo(this.psAddress);
+    // },
     getPwd() {
       this.pwd = this.$refs.firstPwd.value;
       console.log(this.pwd);
     },
-    getAccountInfo() {
+    getAccountInfo(address) {
       this.$axios
         .post(this.accountInfo_url, {
-          address: "APCb4FchfFUrqPjYc2LLrUbKjw6pt7pdF56"
+          address: address
         })
         .then(response => {
           let res = response.data.data;
@@ -128,8 +149,6 @@ export default {
       this.$refs.dialog.style.display = "flex";
       let signParams = {
         message: "416c616e20547572696e67",
-        // privKey:
-        // "48cd9eea1e9ab9bef56186ea7bc9496caf5187e65ee0d79e3bd239c3b1564946"
         privKey: this.privKey
       };
       this.signature = util.utilMethods.Sign(signParams);
@@ -160,7 +179,7 @@ export default {
     checkAddress() {
       this.privKey = util.utilMethods.produceKeyPriv(this.KStore, this.pwd);
       console.log("根据KStore导出的私钥" + this.privKey);
-      
+
       this.walletAddress = util.utilMethods.keyStoreWallet(
         this.KStore,
         this.pwd
