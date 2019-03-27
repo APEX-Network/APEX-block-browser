@@ -21,7 +21,10 @@
           <span class="col">
             Block Height:
             <span class="clol col-lg-8">
-              <router-link to="/blocks/BlocksInfo" @click.native="setHeightValue">{{transactionInfoData.blockHeight}}</router-link>
+              <router-link
+                to="/blocks/BlocksInfo"
+                @click.native="setHeightValue"
+              >{{transactionInfoData.blockHeight}}</router-link>
             </span>
           </span>
         </li>
@@ -129,14 +132,17 @@ export default {
   created() {},
   mounted() {
     this.getClickValue();
-    setTimeout(() => {
-      this.getTransactionsInfo();
-    });
+    // setTimeout(() => {
+    //   this.getTransactionsInfo();
+    // });
   },
   methods: {
     getClickValue() {
       Bus.$on("txHash", data => {
         this.Hash = data;
+        setTimeout(() => {
+          this.getTransactionsInfo();
+        });
       });
     },
     setHeightValue(e) {
@@ -155,7 +161,9 @@ export default {
           this.transactionInfoData.txHash = res.txHash;
           this.transactionInfoData.txReceiptStatus = res.confirmed;
           this.transactionInfoData.blockHeight = res.refBlockHeight;
-          this.transactionInfoData.timeStamp = util.utilMethods.tierAllTime(res.refBlockTime);
+          this.transactionInfoData.timeStamp = util.utilMethods.tierAllTime(
+            res.refBlockTime
+          );
           this.transactionInfoData.from = res.from;
           this.transactionInfoData.to = res.to;
           this.transactionInfoData.amount = res.amount;

@@ -43,7 +43,7 @@ export default {
       transaction_list_url: "/api/v1.0/transactions/transactionList",
       parmas: {
         start: "0",
-        pageSize: "13"
+        pageSize: "10"
       }
     };
   },

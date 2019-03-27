@@ -26,6 +26,7 @@ Vue.prototype.$BitcoinJS = BitcoinJS;
 Vue.prototype.$Base58check = base58check;
 Vue.prototype.$Base58 = base58;
 // Vue.prototype.setClickValue = SetClickValue;
+VueClipboard.config.autoSetContainer = true;
 Vue.use(VueClipboard)
 Vue.use(Vuex)
 Vue.config.productionTip = false

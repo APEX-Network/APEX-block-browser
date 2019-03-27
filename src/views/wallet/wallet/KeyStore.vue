@@ -7,9 +7,19 @@
         <p>Import wallet address by keystore.</p>
       </div>
       <div class="enterpwd">
-        <input ref="keyStore" v-model="keyStore" @change="getkeyStore" placeholder="Paste or type keystore">
+        <input
+          ref="keyStore"
+          v-model="keyStore"
+          @change="getkeyStore"
+          placeholder="Paste or type keystore"
+        >
         <div class="repatpwd">
-          <input ref="pwd" v-model="pwd" @change="getPwd" placeholder="Enter the password corresponding to this keystore">
+          <input
+            ref="pwd"
+            v-model="pwd"
+            @change="getPwd"
+            placeholder="Enter the password corresponding to this keystore"
+          >
           <img src="./../../../assets/images/eye.png">
         </div>
       </div>
@@ -23,8 +33,9 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import util from './../../../utils/utils';
-import Bus from './../../../utils/bus';
+import util from "./../../../utils/utils";
+import Bus from "./../../../utils/bus";
+import db from "./../../../utils/myDatabase";
 
 export default {
   name: "KeyStore",
@@ -65,7 +76,14 @@ export default {
       let key = this.pwd;
       this.walletAddress = util.utilMethods.keyStoreWallet(downKeyStore, key);
       Bus.$emit("apAddress", this.walletAddress);
-      console.log("通过用户导入的keyStore文件解密出正确的钱包地址====" + this.walletAddress);
+      db.APKStore.put({
+        APAddress: this.walletAddress,
+        KStore: this.keyStore
+      });
+      console.log(
+        "通过用户导入的keyStore文件解密出正确的钱包地址====" +
+          this.walletAddress
+      );
     }
   },
 

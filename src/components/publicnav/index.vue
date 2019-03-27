@@ -3,21 +3,32 @@
     <div class="main clearboth">
       <div class="logo fl">
         <a href="/home">
-          <img src="../../assets/images/logo.png" alt=""  ></a>
+          <img src="../../assets/images/logo.png" alt>
+        </a>
       </div>
       <div class="search-box fl clearboth">
-        <input class="fl"  type="text"  placeholder="Search Accounts/Transactions/Blocks"  maxlength="100" >
-        <div class="fl search-btn"></div>
+        <input
+          class="fl"
+          ref="search"
+          @change="getSearchValue"
+          type="text"
+          placeholder="Search Accounts/Transactions/Blocks"
+          maxlength="100"
+        >
+        <div class="fl search-btn" @click="startSearch"></div>
       </div>
-      <div
-        class="language" :class="isShow ? 'active' : ''" @click="changeLang" >
+      <div class="language" :class="isShow ? 'active' : ''" @click="changeLang">
         <i></i>
-        <span class="language-span" v-show="isShow" @click.stop="changeLangEvent" >{{language}}</span>
+        <span class="language-span" v-show="isShow" @click.stop="changeLangEvent">{{language}}</span>
       </div>
     </div>
     <div class="nav-bar">
       <ul class="fl">
-        <li v-for="(item, index) in nav" :key="index" :class=" ((item.path === defaultNav) || ( defaultNav === '/' &&  index == '0')) ? 'active' : ''">
+        <li
+          v-for="(item, index) in nav"
+          :key="index"
+          :class=" ((item.path === defaultNav) || ( defaultNav === '/' &&  index == '0')) ? 'active' : ''"
+        >
           <router-link :to="item.path"></router-link>
         </li>
       </ul>
@@ -27,6 +38,9 @@
   </div>
 </template>
 <script>
+import Bus from "./../../utils/bus";
+const Base58check = require("base58check");
+
 export default {
   name: "PublicNav",
   props: ["active"],
@@ -34,7 +48,22 @@ export default {
     return {
       navIndex: 0,
       isShow: false,
-      language: "中文"
+      language: "中文",
+      search: null,
+      url: {
+        blockHash_url: "/api/v1.0/blocks/blockHash/",
+        blockHeight_url: "/api/v1.0/blocks/blockHeight/",
+        transactions_url: "/api/v1.0/transactions/",
+        accountInfo_url: "/api/v1.0/accounts/account"
+      },
+      searchHeight: {
+        type: null,
+        value: null
+      },
+      searchBlock: {
+        type: null,
+        value: null
+      }
     };
   },
   computed: {
@@ -42,9 +71,9 @@ export default {
       return [
         { title: this.$t("nav.home"), path: "/home" },
         { title: this.$t("nav.wallet"), path: "/wallet" },
-        { title: '', path: "/blocks" },
-        { title: '', path: "/transactions" },
-        { title: '', path: "/producer" },
+        { title: "", path: "/blocks" },
+        { title: "", path: "/transactions" },
+        { title: "", path: "/producer" }
       ];
     },
     defaultNav() {
@@ -55,15 +84,117 @@ export default {
     let _this = this;
     document.addEventListener("click", function(e) {
       // let flag = e.target.contains(document.getElementsByClassName("language-span")[0]);
-      let flag = e.target.className == "language"
+      let flag = e.target.className == "language";
       if (flag) return;
       _this.isShow = false;
     });
   },
   methods: {
-    // checkRouterLocal(path) {
-    //   this.navIndex = this.nav.findIndex(item => item.path === path);
-    // },
+    getSearchValue() {
+      this.search = this.$refs.search.value;
+      console.log(this.search);
+    },
+
+    startSearch() {
+      console.log(this.search.slice(0, 2));
+      if (
+        !!this.search &&
+        this.search.length == 35 &&
+        this.search.slice(0, 2) == "AP"
+      ) {
+        let account = Base58check.decode(this.search).data.toString("hex");
+        console.log("跳转到账户详情页");
+        this.$axios
+          .post(this.url.accountInfo_url, {
+            address: this.search
+          })
+          .then(response => {
+            if (response.data.data == null) {
+              return;
+            }
+            if (response.data.status == 200) {
+              let res = response.data.data;
+              if (res.length !== 0) {
+                this.$router.push("/transactions/TransactionsInfo/AccountInfo");
+                Bus.$emit("accountValue", this.search);
+              }
+            }
+          })
+          .catch(function(err) {
+            if (err.response) {
+              console.log(err.response);
+            }
+          });
+      }
+      if (!!this.search && Number.isInteger(Number(this.search)) == true) {
+        this.$axios
+          .get(this.url.blockHeight_url + this.search)
+          .then(response => {
+            if (response.data.status == 404) {
+              // console.log("跳转到错误页面!");
+              return;
+            }
+            if (response.data.status == 200) {
+              let res = response.data.data;
+              if (res.length !== 0) {
+                this.searchHeight = {
+                  type: "height",
+                  value: this.search
+                };
+                this.$router.push("/blocks/BlocksInfo");
+                Bus.$emit("clickValue", JSON.stringify(this.searchHeight));
+              }
+            }
+          })
+          .catch(function(response) {
+            console.log(response);
+          });
+        return;
+      }
+
+      if (!!this.search && this.search.length == 64) {
+        this.$axios
+          .get(this.url.blockHash_url + this.search)
+          .then(response => {
+            if (response.data.status == 404) {
+              // console.log("跳转到错误页面!");
+              return;
+            }
+            if (response.data.status == 200) {
+              let res = response.data.data;
+              if (res.length !== 0) {
+                this.searchBlock = {
+                  type: "hash",
+                  value: this.search
+                };
+                Bus.$emit("clickValue", JSON.stringify(this.searchBlock));
+                this.$router.push("/blocks/BlocksInfo");
+                return;
+              }
+            }
+          })
+          .catch(function(response) {
+            console.log(response);
+          });
+        this.$axios
+          .get(this.url.transactions_url + this.search)
+          .then(response => {
+            if (response.data.status == 404) {
+              // console.log("跳转到错误页面!");
+              return;
+            }
+            if (response.data.status == 200) {
+              let res = response.data.data;
+              if (res.length !== 0) {
+                this.$router.push("/transactions/TransactionsInfo");
+                Bus.$emit("txHash", this.search);
+                return;
+              }
+            }
+          })
+          .catch(function(response) {});
+      }
+    },
     changeLang() {
       this.isShow = !this.isShow;
     },
@@ -80,7 +211,7 @@ export default {
       }
     },
     showAbout() {
-      console.log('clicked');
+      console.log("clicked");
     }
   }
 };
@@ -108,7 +239,7 @@ export default {
       margin-top: 34px;
     }
   }
- 
+
   .search-box {
     padding-top: 26px;
     height: 56px;
@@ -123,6 +254,10 @@ export default {
       padding: 4px 56px 4px 15px;
       background: rgba(255, 255, 255, 0.2);
       color: #fff;
+      border: 1px solid #f26522;
+    }
+    input:hover {
+      box-shadow: 2px 2px 8px 2px #f26522;
     }
     .search-btn {
       position: absolute;
@@ -133,6 +268,9 @@ export default {
       background: url(../../assets/images/shared/search.png) center 6px
         no-repeat;
     }
+    // .search-btn:hover {
+    //   box-shadow: 2px 2px 7px 2px #f26522;
+    // }
   }
   .language {
     position: absolute;
@@ -171,11 +309,11 @@ export default {
       }
     }
   }
-  .nav-bar{
+  .nav-bar {
     z-index: 9999;
     position: fixed;
     bottom: 200px;
-    left:106px;
+    left: 106px;
     width: 30px;
     height: 350px;
     ul {
@@ -183,7 +321,7 @@ export default {
         width: 30px;
         height: 30px;
         margin-bottom: 25px;
-        background: url(../../assets/images/nav-fix.png)no-repeat;
+        background: url(../../assets/images/nav-fix.png) no-repeat;
         background-position: center 3px;
         a {
           display: block;
@@ -192,30 +330,30 @@ export default {
         }
         &:hover,
         &.active {
-            background-position: center -34px;
+          background-position: center -34px;
         }
-        &:nth-child(2){
+        &:nth-child(2) {
           background-position: center -68px;
           &:hover,
           &.active {
             background-position: center -99px;
           }
         }
-        &:nth-child(3){
+        &:nth-child(3) {
           background-position: center -134px;
           &:hover,
           &.active {
             background-position: center -171px;
           }
         }
-        &:nth-child(4){
+        &:nth-child(4) {
           background-position: center -209px;
           &:hover,
           &.active {
             background-position: center -246px;
           }
         }
-        &:nth-child(5){
+        &:nth-child(5) {
           background-position: center -283px;
           &:hover,
           &.active {
@@ -233,9 +371,9 @@ export default {
 //   padding: 680px 0px 0px 63px;
 // }
 @media screen and(max-width:1366px) {
-  .nav{
-     .nav-bar{
-      left:55px;
+  .nav {
+    .nav-bar {
+      left: 55px;
     }
   }
 }

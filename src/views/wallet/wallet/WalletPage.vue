@@ -4,7 +4,7 @@
     <div class="flex-container1">
       <div class="flex-item1">Address</div>
       <input class="flex-item2" v-model="address">
-      <div class="flex-item3">CPX: 145.0125</div>
+      <div class="flex-item3">CPX: {{CPX}}</div>
     </div>
     <div class="flex-container2">
       <div class="flex-item1">
@@ -20,18 +20,25 @@
     </div>
     <!-- <div class="flex-container3">
       <div class="flex-item1">CLOSE WALLET</div>
-    </div> -->
+    </div>-->
   </div>
 </template>
 
 <script>
+// import Vue from 'vue';
 import { mapActions, mapGetters } from "vuex";
-import Bus from './../../../utils/bus';
+import Bus from "./../../../utils/bus";
+// import vSelect from './components/Select.vue'
+
+// Vue.component('v-select', vSelect)
 export default {
   name: "walletpage",
   props: ["address"],
   data() {
     return {
+      APAddress: [],
+      accountInfo_url: "/api/v1.0/accounts/account",
+      CPX: 0
     };
   },
 
@@ -40,13 +47,42 @@ export default {
   beforeMount() {},
 
   mounted() {
-    
+    // this.APAddress.push(this.address);
+    setTimeout(() => {
+      this.getCPX(this.address);
+    });
   },
 
   methods: {
     // ...mapActions(["modifyAddress"])
     sendAddress() {
-      Bus.$emit("apAddress", this.address);      
+      Bus.$emit("apAddress", this.address);
+    },
+    getCPX(address) {
+      this.$axios
+        .post(this.accountInfo_url, {
+          address: address
+        })
+        .then(response => {
+          let res = response.data.data;
+          let result = res.toString().indexOf(".");
+          if (result != -1) {
+            let pointLength = res.balance.toString().split(".")[1].length;
+            if (pointLength > 8) {
+              this.CPX = Number(res.balance).toFixed(8);
+            } else {
+              this.CPX = Number(res.balance);
+            }
+          } else {
+            console.log(res.balance);
+            this.CPX = Number(res.balance);
+          }
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
     }
   },
   computed: {

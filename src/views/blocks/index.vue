@@ -59,7 +59,7 @@ export default {
       allBlockUrl: "/api/v1.0/blocks/blockList",
       params: {
         start: "0",
-        pageSize: "12"
+        pageSize: "10"
       },
       clickValue: {
         type: "height",

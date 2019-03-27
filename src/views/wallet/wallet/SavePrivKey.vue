@@ -19,7 +19,18 @@
         <div>Save Your Private Key</div>
         <p class="p3">
           <span class="s1">Private Key</span>
-          <span class="s2">{{privKey}}</span>
+          <i class="privkey">
+            {{privKey}}
+            <img
+              @click="Copy(index)"
+              style="cursor: pointer; padding-left: 10px;"
+              src="./../../../assets/images/copy.png"
+              alt
+            >
+          </i>
+          <!-- <span class="s2"> -->
+
+          <!-- </span> -->
         </p>
       </div>
       <!-- <div class="create1">
@@ -73,6 +84,20 @@ export default {
     },
     getAddress() {
       Bus.$emit("apAddress", this.apAddress);
+    },
+    Copy(index) {
+      let getCopyText = this.privKey;
+      this.doCopy(getCopyText);
+    },
+    doCopy(val) {
+      this.$copyText(val).then(
+        function(e) {
+          alert("拷贝成功!");
+        },
+        function(e) {
+          // console.log(e)
+        }
+      );
     }
   },
 
@@ -110,6 +135,14 @@ export default {
       }
       .p3 {
         margin-left: 50px;
+        .s1 {
+          color: #f26522;
+        }
+        .privkey {
+          padding-left: 20px;
+          position: absolute;
+          padding-top: 8px;
+        }
       }
       div {
         font-size: 20px;

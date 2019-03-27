@@ -7,8 +7,15 @@
         <li class="row">
           <span class="col">Address</span>
           <span class="col col-lg-8" ref="address">
-            {{accountTransaction_param.address}}
-            <i @click="Copy(index)"></i>
+            <i>
+              {{accountTransaction_param.address}}
+              <img
+                @click="Copy(index)"
+                style="cursor: pointer; padding-left: 10px;"
+                src="./../../assets/images/copy.png"
+                alt
+              >
+            </i>
           </span>
         </li>
         <li class="row">
@@ -74,27 +81,26 @@ export default {
   },
   mounted() {
     this.getClickValue();
-    setTimeout(() => {
-      this.getAccountInfo();
-      this.getAccountTransactionInfo();
-    });
-    const timer = setInterval(() => {
-      this.getAccountInfo();
-      this.getAccountTransactionInfo();
-    }, 1500);
-    this.$once("hook:beforeDestroy", () => {
-      clearInterval(timer);
-    });
+    // setTimeout(() => {
+    //   this.getAccountInfo();
+    //   this.getAccountTransactionInfo();
+    // });
+    // const timer = setInterval(() => {
+      // this.getAccountInfo();
+    // }, 1500);
+    // this.$once("hook:beforeDestroy", () => {
+    //   clearInterval(timer);
+    // });
   },
   methods: {
     Copy(index) {
-      let getCopyText = this.details.Address;
+      let getCopyText = this.accountTransaction_param.address;
       this.doCopy(getCopyText);
     },
     doCopy(val) {
       this.$copyText(val).then(
         function(e) {
-          // console.log(e)
+          alert("拷贝成功!");
         },
         function(e) {
           // console.log(e)
@@ -104,7 +110,8 @@ export default {
     getClickValue() {
       Bus.$on("accountValue", data => {
         this.accountTransaction_param.address = data;
-        console.log(this.accountTransaction_param.address);
+        this.getAccountInfo();
+        this.getAccountTransactionInfo();
       });
     },
     getAccountInfo() {

@@ -11,11 +11,23 @@
       </div>
       <div class="enterpwd">
         <span>Enter Password</span>
-        <input ref="firstPwd" v-model="firstPwd" @change="getPwd">
+        <input
+          type="password"
+          ref="firstPwd"
+          v-model="firstPwd"
+          @change="getPwd"
+        >
+        <!-- <input type="text" ref="firstPwdCover" v-model="firstPwdCover" @change="coverFirstPwd"> -->
         <img src="./../../../assets/images/eye.png">
         <div class="repatpwd">
           <span>Repeat Password</span>
-          <input type="text" ref="secondPwd" v-model="secondPwd" @change="getPwd">
+          <input
+            type="password"
+            ref="secondPwd"
+            v-model="secondPwd"
+            @change="getPwd"
+          >
+          <!-- <input type="text" ref="secondPwdCover" v-model="secondPwdCover" @change="coverSecondPwd"> -->
           <img src="./../../../assets/images/eye.png">
         </div>
         <div class="epd">Enter Password differ</div>
@@ -40,7 +52,10 @@ import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "../../../utils/utils";
 import ECPair from "bitcoinjs-lib/src/ecpair";
 import Bus from "./../../../utils/bus";
-import db from './../../../utils/myDatabase';
+import db from "./../../../utils/myDatabase";
+
+// import DBOperator from './../../../utils/myIndexDB';
+
 export default {
   name: "NewWallet",
   props: [""],
@@ -49,7 +64,9 @@ export default {
       title: "NewWallet",
       apAddress: null,
       firstPwd: null,
+      firstPwdCover: null,
       secondPwd: null,
+      secondPwdCover: null,
       keyStore: null
     };
   },
@@ -68,8 +85,24 @@ export default {
   methods: {
     getPwd() {
       this.first = this.$refs.firstPwd.value;
+      console.log(this.first);
       this.second = this.$refs.secondPwd.value;
+      console.log(this.second);
     },
+    // coverFirstPwd() {
+    //   this.firstPwdCover = this.$refs.firstPwdCover;
+    //   this.firstPwdCover.onkeyup = function(e) {
+    //     console.log(e);
+    //     this.firstPwdCover.value = e.key.replace(/./, "*");
+    //   };
+    // },
+    // coverSecondPwd() {
+    //   this.secondPwdCover = this.$refs.secondPwdCover;
+    //   this.secondPwdCover.onkeyup = function(e) {
+    //     console.log(e);
+    //     this.secondPwdCover.value = e.key.replace(/./, "*");
+    //   };
+    // },
     produceSign() {
       if (this.firstPwd != null && this.secondPwd != null) {
         if (this.first != this.second) {
@@ -101,6 +134,7 @@ export default {
           APAddress: this.apAddress,
           KStore: this.keyStore
         });
+        // DBOperator.set({APAddress: this.apAddress, KStore: this.keyStore});
       }
       if (this.firstPwd == null || this.secondPwd == null) {
         alert("请输入密码!");

@@ -19,7 +19,7 @@
         <li class="row">
           <span class="col">
             Transactions:
-            <span class="clol col-lg-8">{{transactions}}  transactions in this block</span>
+            <span class="clol col-lg-8">{{transactions}} transactions in this block</span>
           </span>
         </li>
         <li class="row">
@@ -90,20 +90,22 @@ export default {
   },
   mounted() {
     this.getClickValue();
-    setTimeout(() => {
-      this.getBlocksInfo();
-    });
-    const timer = setInterval(() => {
-      this.getParentBlock();
-    }, 1500);
-    this.$once("hook:beforeDestroy", () => {
-      clearInterval(timer);
-    });
+    // setTimeout(() => {
+    //   this.getBlocksInfo();
+    // });
+    // const timer = setInterval(() => {
+    //   this.getParentBlock();
+    // }, 1500);
+    // this.$once("hook:beforeDestroy", () => {
+    //   clearInterval(timer);
+    // });
   },
   methods: {
     getClickValue() {
       Bus.$on("clickValue", data => {
         this.result = JSON.parse(data);
+        console.log(this.result);
+        this.getBlocksInfo();
       });
     },
     setClickValue(e) {
@@ -171,7 +173,16 @@ export default {
           });
       }
     }
-  }
+  },
+  watch: {
+    $route: function (to, from) {
+      let path = "/blocks/BlocksInfo";
+      if (to.path == path) {
+        console.log(to.path);
+        this.getBlocksInfo();
+      }
+    }
+  },
 };
 </script>
 

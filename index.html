@@ -13,12 +13,12 @@
   <!-- built files will be auto injected -->
 </body>
 <script language="javascript">
-  //防止页面后退
-  // history.pushState(null, null, document.URL);
-  // window.addEventListener("popstate", function (e) {
-  //   console.log(e);
-  //   history.pushState(null, null, document.URL);
-  // }, false);
+  // 防止页面后退
+  history.pushState(null, null, document.URL);
+  window.addEventListener("popstate", function (e) {
+    console.log(e);
+    history.pushState(null, null, document.URL);
+  }, false);
 </script>
 
 </html>
