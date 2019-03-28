@@ -90,13 +90,10 @@ export default {
   },
   mounted() {
     this.getClickValue();
-    // setTimeout(() => {
-    //   this.getBlocksInfo();
-    // });
     // const timer = setInterval(() => {
-    //   this.getParentBlock();
-    // }, 1500);
-    // this.$once("hook:beforeDestroy", () => {
+    //   this.getBlocksInfo();
+    // }, );
+    // this.$once("hook:beforeUpdate", () => {
     //   clearInterval(timer);
     // });
   },
@@ -104,7 +101,6 @@ export default {
     getClickValue() {
       Bus.$on("clickValue", data => {
         this.result = JSON.parse(data);
-        console.log(this.result);
         this.getBlocksInfo();
       });
     },

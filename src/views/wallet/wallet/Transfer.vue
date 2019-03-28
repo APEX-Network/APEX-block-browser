@@ -16,7 +16,7 @@
       </div>
 
       <div class="amount">
-        <span v-if="amount !== null">Amount (Available:{{amount}})</span>
+        <div>Amount (Available:{{amount}})</div>
         <input type="text" ref="inputAmout" @change="getInputAmout" placeholder="Transfer Amount">
         <div>
           <router-link to>All</router-link>
@@ -25,14 +25,19 @@
         <div>Please enter the correct transfer amount</div>
       </div>
       <div class="gasPrice">
-        <input type="text" ref="inputGasePrice" @change="getInputGasePrice" placeholder="Please enter the  gas price">
+        <input
+          type="text"
+          ref="inputGasePrice"
+          @change="getInputGasePrice"
+          placeholder="Please enter the  gas price"
+        >
         <div>Mp</div>
         <div>Please enter the correct gas price</div>
       </div>
       <div class="password">
         <div>Password</div>
         <input type="password" ref="firstPwd" v-model="pwd" @change="getPwd">
-        <img src="./../../../assets/images/eye.png">
+        <img src="./../../../assets/images/eye.png" @click="displayPwd">
         <div>Password Incorrect</div>
       </div>
       <div class="send" @click="SendTransfer()">
@@ -90,32 +95,31 @@ export default {
   mounted() {
     this.getAddress();
     // if (this.apAddress !== null) {
-        setTimeout(() => {
-          // this.apAddress = "APMMCd8qWPm9QRzgspFXEBn8zGGuwrYYAJs";
-          this.getAccountInfo(this.apAddress);
-        });
-        // }
+    setTimeout(() => {
+      // this.apAddress = "APMMCd8qWPm9QRzgspFXEBn8zGGuwrYYAJs";
+      this.getAccountInfo(this.apAddress);
+    });
+    // }
   },
 
   methods: {
     getAddress() {
       Bus.$on("apAddress", data => {
-        this.apAddress = data;        
+        this.apAddress = data;
       });
       // if (this.apAddress !== null) {
-        setTimeout(() => {
-          db.APKStore.get(this.apAddress).then(APKStore => {
-            console.log(APKStore.KStore);
-            this.KStore = APKStore.KStore;
-          });
+      setTimeout(() => {
+        db.APKStore.get(this.apAddress).then(APKStore => {
+          console.log(APKStore.KStore);
+          this.KStore = APKStore.KStore;
         });
+      });
       // }
     },
 
     getToAddress() {
       this.toAddress = this.$refs.to.value;
       console.log("获得用户粘贴的to地址:" + this.toAddress);
-      
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
@@ -137,6 +141,9 @@ export default {
       this.pwd = this.$refs.firstPwd.value;
       console.log(this.pwd);
     },
+    displayPwd() {
+      this.$refs.firstPwd.type = "text";
+    },
     getAccountInfo(address) {
       this.$axios
         .post(this.accountInfo_url, {
@@ -156,9 +163,7 @@ export default {
             this.amount = Number(res.balance);
           }
           this.nonce = res.nextNonce;
-          console.log(
-          parseFloat(this.nonce)
-          );
+          console.log(parseFloat(this.nonce));
           console.log("该账户的nonce值为===========" + this.nonce);
         })
         .catch(function(err) {
@@ -178,9 +183,9 @@ export default {
         amount: this.inputAmout * Math.pow(10, 18),
         nonce: "0000000000000002", //从服务器获取该账户的nonce值
         data: "00", //不变
-        gasPrice: this.inputGasePrice * Math.pow(10, -18),//用户输入
+        gasPrice: this.inputGasePrice * Math.pow(10, -18), //用户输入
         gasLimit: 100000, //程序限制
-        executeTime: "0000000000000000", //不变
+        executeTime: "0000000000000000" //不变
       };
       this.message = util.utilMethods.produce_message(serializParams);
       let signParams = {
@@ -190,7 +195,8 @@ export default {
       this.signature = util.utilMethods.Sign(signParams);
       alert("生成签名:" + this.signature);
       this.serialized_transaction = util.utilMethods.serialized_transaction(
-        this.message, this.signature
+        this.message,
+        this.signature
       );
       alert("序列化交易:" + this.serialized_transaction);
     },
@@ -207,8 +213,8 @@ export default {
       }
       if (this.walletAddress !== this.apAddress) {
         alert("sorry!请输入正确的密码,才能给我转钱哦😯");
-          this.$router.push("/wallet/Transfer");
-          return;
+        this.$router.push("/wallet/Transfer");
+        return;
       }
       console.log(this.walletAddress);
     },
@@ -271,7 +277,9 @@ export default {
       }
     }
     .amount {
-      margin: 5% 0 0 11.5%;
+      float: left;
+      position: relative;
+      margin-right: 10px;
       // span {
       //   position: absolute;
       // }
@@ -361,6 +369,7 @@ export default {
         margin-top: -23px;
         position: relative;
         display: block;
+        cursor: pointer;
       }
       div:nth-child(4) {
         color: #f26522;

@@ -92,107 +92,119 @@ export default {
   methods: {
     getSearchValue() {
       this.search = this.$refs.search.value;
-      console.log(this.search);
     },
 
     startSearch() {
-      console.log(this.search.slice(0, 2));
-      if (
-        !!this.search &&
-        this.search.length == 35 &&
-        this.search.slice(0, 2) == "AP"
-      ) {
-        let account = Base58check.decode(this.search).data.toString("hex");
-        console.log("跳转到账户详情页");
-        this.$axios
-          .post(this.url.accountInfo_url, {
-            address: this.search
-          })
-          .then(response => {
-            if (response.data.data == null) {
-              return;
-            }
-            if (response.data.status == 200) {
-              let res = response.data.data;
-              if (res.length !== 0) {
-                this.$router.push("/transactions/TransactionsInfo/AccountInfo");
-                Bus.$emit("accountValue", this.search);
-              }
-            }
-          })
-          .catch(function(err) {
-            if (err.response) {
-              console.log(err.response);
-            }
-          });
-      }
-      if (!!this.search && Number.isInteger(Number(this.search)) == true) {
-        this.$axios
-          .get(this.url.blockHeight_url + this.search)
-          .then(response => {
-            if (response.data.status == 404) {
-              // console.log("跳转到错误页面!");
-              return;
-            }
-            if (response.data.status == 200) {
-              let res = response.data.data;
-              if (res.length !== 0) {
-                this.searchHeight = {
-                  type: "height",
-                  value: this.search
-                };
-                this.$router.push("/blocks/BlocksInfo");
-                Bus.$emit("clickValue", JSON.stringify(this.searchHeight));
-              }
-            }
-          })
-          .catch(function(response) {
-            console.log(response);
-          });
-        return;
-      }
+      if (!!this.search) {
+        if (
+          (this.search.length == 35 && this.search.slice(0, 2) == "AP") ||
+          Number.isInteger(Number(this.search)) == true ||
+          this.search.length == 64
+        ) {
+          if (
+            !!this.search &&
+            this.search.length == 35 &&
+            this.search.slice(0, 2) == "AP"
+          ) {
+            let account = Base58check.decode(this.search).data.toString("hex");
+            console.log("跳转到账户详情页");
+            this.$axios
+              .post(this.url.accountInfo_url, {
+                address: this.search
+              })
+              .then(response => {
+                if (response.data.data == null) {
+                  alert("跳转到错误页面");
+                  return;
+                }
+                if (response.data.status == 200) {
+                  let res = response.data.data;
+                  if (res.length !== 0) {
+                    Bus.$emit("accountValue", this.search);
+                    this.$router.push(
+                      "/transactions/TransactionsInfo/AccountInfo"
+                    );
+                  }
+                }
+              })
+              .catch(function(err) {
+                if (err.response) {
+                  console.log(err.response);
+                }
+              });
+          }
+          if (!!this.search && Number.isInteger(Number(this.search)) == true) {
+            this.$axios
+              .get(this.url.blockHeight_url + this.search)
+              .then(response => {
+                if (response.data.status == 404) {
+                  // console.log("跳转到错误页面!");
+                  return;
+                }
+                if (response.data.status == 200) {
+                  let res = response.data.data;
+                  if (res.length !== 0) {
+                    this.searchHeight = {
+                      type: "height",
+                      value: this.search
+                    };
+                    Bus.$emit("clickValue", JSON.stringify(this.searchHeight));
+                    this.$router.push("/blocks/BlocksInfo");
+                  }
+                }
+              })
+              .catch(function(response) {
+                console.log(response);
+              });
+            return;
+          }
 
-      if (!!this.search && this.search.length == 64) {
-        this.$axios
-          .get(this.url.blockHash_url + this.search)
-          .then(response => {
-            if (response.data.status == 404) {
-              // console.log("跳转到错误页面!");
-              return;
-            }
-            if (response.data.status == 200) {
-              let res = response.data.data;
-              if (res.length !== 0) {
-                this.searchBlock = {
-                  type: "hash",
-                  value: this.search
-                };
-                Bus.$emit("clickValue", JSON.stringify(this.searchBlock));
-                this.$router.push("/blocks/BlocksInfo");
-                return;
-              }
-            }
-          })
-          .catch(function(response) {
-            console.log(response);
-          });
-        this.$axios
-          .get(this.url.transactions_url + this.search)
-          .then(response => {
-            if (response.data.status == 404) {
-              // console.log("跳转到错误页面!");
-              return;
-            }
-            if (response.data.status == 200) {
-              let res = response.data.data;
-              if (res.length !== 0) {
-                this.$router.push("/transactions/TransactionsInfo");
-                Bus.$emit("txHash", this.search);
-                return;
-              }
-            }
-          })
-          .catch(function(response) {});
+          if (!!this.search && this.search.length == 64) {
+            this.$axios
+              .get(this.url.blockHash_url + this.search)
+              .then(response => {
+                if (response.data.status == 404) {
+                  // console.log("跳转到错误页面!");
+                  return;
+                }
+                if (response.data.status == 200) {
+                  let res = response.data.data;
+                  if (res.length !== 0) {
+                    this.searchBlock = {
+                      type: "hash",
+                      value: this.search
+                    };
+                    Bus.$emit("clickValue", JSON.stringify(this.searchBlock));
+                    this.$router.push("/blocks/BlocksInfo");
+                    return;
+                  }
+                }
+              })
+              .catch(function(response) {
+                console.log(response);
+              });
+            this.$axios
+              .get(this.url.transactions_url + this.search)
+              .then(response => {
+                if (response.data.status == 404) {
+                  // console.log("跳转到错误页面!");
+                  return;
+                }
+                if (response.data.status == 200) {
+                  let res = response.data.data;
+                  if (res.length !== 0) {
+                    Bus.$emit("txHash", this.search);
+                    this.$router.push("/transactions/TransactionsInfo");
+                    return;
+                  }
+                }
+              })
+              .catch(function(response) {});
+          }
+        } else {
+          this.$router.push("/error");
+          return;
+        }
       }
     },
     changeLang() {

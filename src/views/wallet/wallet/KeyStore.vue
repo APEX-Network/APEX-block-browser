@@ -15,12 +15,13 @@
         >
         <div class="repatpwd">
           <input
+            type="password"
             ref="pwd"
             v-model="pwd"
             @change="getPwd"
             placeholder="Enter the password corresponding to this keystore"
           >
-          <img src="./../../../assets/images/eye.png">
+          <img src="./../../../assets/images/eye.png" @click="displayPwd">
         </div>
       </div>
       <div class="create">
@@ -68,6 +69,9 @@ export default {
     getPwd() {
       this.pwd = this.$refs.pwd.value;
       console.log(this.pwd);
+    },
+    displayPwd() {
+      this.$refs.pwd.type = "text";
     },
     keyStoreWallet() {
       //获取用户导入的key文件
@@ -118,6 +122,10 @@ export default {
         width: 370px;
         height: 30px;
         position: absolute;
+        color: aliceblue;
+      }
+      input:hover {
+        box-shadow: 2px 2px 8px 2px #f26522;
       }
       .repatpwd {
         margin: 45px 100px 0 0;
@@ -126,12 +134,18 @@ export default {
           margin-top: 25px;
           width: 370px;
           height: 30px;
+          position: absolute;
+          color: aliceblue;
+        }
+        input:hover {
+          box-shadow: 2px 2px 8px 2px #f26522;
         }
         img {
           z-index: 1000;
           margin-left: 370px;
           margin-top: 33px;
           position: relative;
+          cursor: pointer;
         }
       }
     }
@@ -149,6 +163,9 @@ export default {
         color: #f26522;
       }
     }
+    .create:hover {
+          box-shadow: 2px 2px 8px 2px #f26522;
+        }
   }
 }
 </style>

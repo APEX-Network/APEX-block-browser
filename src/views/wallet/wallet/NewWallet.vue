@@ -11,24 +11,14 @@
       </div>
       <div class="enterpwd">
         <span>Enter Password</span>
-        <input
-          type="password"
-          ref="firstPwd"
-          v-model="firstPwd"
-          @change="getPwd"
-        >
+        <input type="password" ref="firstPwd" v-model="firstPwd" @change="getPwd">
         <!-- <input type="text" ref="firstPwdCover" v-model="firstPwdCover" @change="coverFirstPwd"> -->
-        <img src="./../../../assets/images/eye.png">
+        <img src="./../../../assets/images/eye.png" @click="displayFirstPwd">
         <div class="repatpwd">
           <span>Repeat Password</span>
-          <input
-            type="password"
-            ref="secondPwd"
-            v-model="secondPwd"
-            @change="getPwd"
-          >
+          <input type="password" ref="secondPwd" v-model="secondPwd" @change="getPwd">
           <!-- <input type="text" ref="secondPwdCover" v-model="secondPwdCover" @change="coverSecondPwd"> -->
-          <img src="./../../../assets/images/eye.png">
+          <img src="./../../../assets/images/eye.png" @click="displaySecondPwd">
         </div>
         <div class="epd">Enter Password differ</div>
         <div class="agreePolicy">
@@ -141,6 +131,12 @@ export default {
         this.$router.push("/wallet/NewWallet");
         return;
       }
+    },
+    displayFirstPwd() {
+      this.$refs.firstPwd.type = "text";
+    },
+    displaySecondPwd() {
+      this.$refs.secondPwd.type = "text";
     }
   },
 
@@ -197,6 +193,7 @@ export default {
         margin-left: 256px;
         position: relative;
         margin-top: 6px;
+        cursor: pointer;
       }
       .epd {
         margin-left: 130px;
@@ -210,6 +207,7 @@ export default {
           margin-left: 132px;
           margin-right: 10px;
           margin-top: 0px;
+          cursor: pointer;
         }
         span {
           margin-right: 5px;
@@ -233,6 +231,7 @@ export default {
           margin-left: 246px;
           margin-top: 6px;
           position: relative;
+          cursor: pointer;
         }
       }
     }

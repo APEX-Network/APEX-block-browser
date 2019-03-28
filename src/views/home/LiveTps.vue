@@ -25,13 +25,6 @@ export default {
     };
   },
   created() {
-    // this.initWebSocket();
-    // const timer = setInterval(() => {
-    //   this.postBlockTips();
-    // }, 1500);
-    // this.$once("hook:beforeDestroy", () => {
-    //   clearInterval(timer);
-    // });
   },
   mounted() {
     this.myChart = echarts.init(document.getElementById("echartContainer"));
@@ -53,7 +46,7 @@ export default {
           let data = [];
           let tooltps = [];
           for (let i = 0; i < res.length; i++) {
-            time.push(util.utilMethods.tierNoYear(res[i].timeStamp));
+            time.push(util.utilMethods.tierAllTime(res[i].timeStamp));
             data.push(res[i].tps);
             tooltps.push(util.utilMethods.tierAllTime(res[i].timeStamp));
           }
@@ -72,16 +65,20 @@ export default {
       this.myChart.setOption({
         color: ["#1AC8FF"],
         grid: {
-          left: -23,
+          left: -48,
           right: 0,
-          top: 10,
+          top: 5,
           bottom: 5,
           containLabel: true
         },
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: this.time,
+          data: this.time.map(item => {
+            console.log(item);
+            let x = item.trim().split(" ");
+            return x[1];
+          }),
           show: true,
           axisLine: {
             show: true,
@@ -92,7 +89,7 @@ export default {
           splitLine: { show: false },
           axisTick: { show: false },
           axisLabel: {
-            interval: 2
+            interval: 2,
           }
         },
         yAxis: {
@@ -120,11 +117,11 @@ export default {
           textStyle: {
             color: "#ffffff",
             fontSize: "14px"
-          }
+          },
           // formatter: function(data) {
           //   let res;
-          //   data.forEach(v => {
-          //     res = v;
+          //   tooltps.forEach(v => {
+          //       res = "2019-03-28" + v
           //   });
           //   return "TPS " + res;
           // }

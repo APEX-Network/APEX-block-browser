@@ -16,11 +16,12 @@ import KeyStore from '@/views/wallet/wallet/KeyStore'
 import CreatedKeystore from '@/views/wallet/wallet/CreatedKeystore'
 import SavePrivKey from '@/views/wallet/wallet/SavePrivKey'
 import Transfer from '@/views/wallet/wallet/Transfer'
+import error from '@/views/error/error';
 
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [{
       path: '/',
       name: 'default',
@@ -124,6 +125,11 @@ export default new Router({
       alias: '/producer/ProducerInfo',
       name: "ProducerInfo",
       component: ProducerInfo,
-    }
+    },
+    {
+      path: '/error',
+      name: 'error',
+      component: error,
+    },
   ]
 })

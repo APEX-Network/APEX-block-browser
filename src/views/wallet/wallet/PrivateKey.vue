@@ -12,11 +12,11 @@
           type="text"
           v-model="privKey"
           @change="getprivKey"
+          placeholder="please paste your private key"
         >
         <div class="repatpwd">
-          <input type="text" >
-          <input type="text" ref="firstPwd" v-model="firstPwd" @change="getPwd">
-          <img src="./../../../assets/images/eye.png">
+          <input type="password" ref="pwd" v-model="firstPwd" @change="getPwd" placeholder="please set you password">
+          <img src="./../../../assets/images/eye.png" @click="displayPwd">
         </div>
       </div>
       <div class="create">
@@ -66,7 +66,9 @@ export default {
     },
     getPwd() {
       this.pwd = this.$refs.pwd.value;
-      console.log(this.pwd);
+    },
+    displayPwd() {
+      this.$refs.pwd.type = "text";
     },
     privKeyAddress() {
       let userPrivKey = this.privKey;
@@ -131,6 +133,7 @@ export default {
           margin-left: 340px;
           margin-top: 33px;
           position: relative;
+          cursor: pointer;
         }
       }
     }
