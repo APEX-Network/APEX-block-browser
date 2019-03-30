@@ -140,10 +140,10 @@ export default {
     getClickValue() {
       Bus.$on("txHash", data => {
         this.Hash = data;
-        setTimeout(() => {
-          this.getTransactionsInfo();
-        });
+        this.getTransactionsInfo();
       });
+      // this.Hash = JSON.parse(sessionStorage.getItem("txHash"));
+      // this.getTransactionsInfo();
     },
     setHeightValue(e) {
       this.clickValue.type = "height";

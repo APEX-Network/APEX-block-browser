@@ -11,23 +11,36 @@
 
       <div class="to">
         <div>To:</div>
-        <input ref="to" @change="getToAddress" type="text" placeholder="Please Input Address">
+        <input
+          ref="to"
+          @keyup.enter="seInput($event)"
+          @change="getToAddress"
+          type="text"
+          placeholder="Please Input Address"
+        >
         <div>Please enter the correct wallet address</div>
       </div>
 
       <div class="amount">
         <div>Amount (Available:{{amount}})</div>
-        <input type="text" ref="inputAmout" @change="getInputAmout" placeholder="Transfer Amount">
-        <div>
+        <input
+          type="text"
+          ref="inputAmout"
+          @keyup.enter="thInput($event)"
+          @change="getInputAmout"
+          placeholder="Transfer Amount"
+        >
+        <p class="p1" @click="setAllAmount">
           <router-link to>All</router-link>
-        </div>
-        <div>CPX</div>
+        </p>
+        <p class="p2">CPX</p>
         <div>Please enter the correct transfer amount</div>
       </div>
       <div class="gasPrice">
         <input
           type="text"
           ref="inputGasePrice"
+          @keyup.enter="foInput($event)"
           @change="getInputGasePrice"
           placeholder="Please enter the  gas price"
         >
@@ -36,7 +49,12 @@
       </div>
       <div class="password">
         <div>Password</div>
-        <input type="password" ref="firstPwd" v-model="pwd" @change="getPwd">
+        <input
+          type="password"
+          ref="firstPwd"
+          v-model="pwd"
+          @change="getPwd"
+        >
         <img src="./../../../assets/images/eye.png" @click="displayPwd">
         <div>Password Incorrect</div>
       </div>
@@ -73,7 +91,7 @@ export default {
       signature: null,
       apAddress: null,
       walletAddress: null,
-      amount: null,
+      amount: 0,
       nonce: null,
       KStore: null,
       pwd: null,
@@ -81,7 +99,11 @@ export default {
       toAddress: null,
       message: null,
       inputAmout: null,
-      inputGasePrice: null //用户输入
+      inputGasePrice: null, //用户输入
+      secondInput: null,
+      thereInput: null,
+      fourInput: null,
+      fiveInput: null
     };
   },
 
@@ -93,28 +115,26 @@ export default {
   computed: {},
 
   mounted() {
+    this.getAllInput();
     this.getAddress();
-    // if (this.apAddress !== null) {
-    setTimeout(() => {
-      // this.apAddress = "APMMCd8qWPm9QRzgspFXEBn8zGGuwrYYAJs";
-      this.getAccountInfo(this.apAddress);
-    });
-    // }
   },
 
   methods: {
     getAddress() {
       Bus.$on("apAddress", data => {
         this.apAddress = data;
+        if (this.apAddress !== null) {
+          setTimeout(() => {
+            this.getAccountInfo(this.apAddress);
+            db.APKStore.get(this.apAddress).then(APKStore => {
+              console.log(APKStore.KStore);
+              this.KStore = APKStore.KStore;
+            });
+          });
+        } else {
+          return;
+        }
       });
-      // if (this.apAddress !== null) {
-      setTimeout(() => {
-        db.APKStore.get(this.apAddress).then(APKStore => {
-          console.log(APKStore.KStore);
-          this.KStore = APKStore.KStore;
-        });
-      });
-      // }
     },
 
     getToAddress() {
@@ -125,9 +145,13 @@ export default {
       this.inputAmout = this.$refs.inputAmout.value;
       console.log("获得用户输入的amount值:" + this.inputAmout);
     },
+    setAllAmount() {
+      this.$refs.inputAmout.value = this.amount;
+      this.inputAmout = this.amount;
+    },
     getInputGasePrice() {
       this.inputGasePrice = this.$refs.inputGasePrice.value;
-      console.log("获得用户输入的GasePrice值:" + this.inputAmout);
+      console.log("获得用户输入的GasePrice值:" + this.inputGasePrice);
     },
     // getPSAddress() {
     //   this.psAddress = this.$refs.psAddress.value;
@@ -140,6 +164,27 @@ export default {
     getPwd() {
       this.pwd = this.$refs.firstPwd.value;
       console.log(this.pwd);
+    },
+    getAllInput() {
+      this.secondInput = this.$refs.inputAmout;
+      this.thereInput = this.$refs.inputGasePrice;
+      this.fourInput = this.$refs.firstPwd;
+      // this.fiveInput = this.$refs.firstPwd;
+    },
+    seInput(ev) {
+      if (ev.keyCode == 13) {
+        this.secondInput.focus();
+      }
+    },
+    thInput(ev) {
+      if (ev.keyCode == 13) {
+        this.thereInput.focus();
+      }
+    },
+    foInput(ev) {
+      if (ev.keyCode == 13) {
+        this.fourInput.focus();
+      }
     },
     displayPwd() {
       this.$refs.firstPwd.type = "text";
@@ -173,37 +218,54 @@ export default {
         });
     },
     SendTransfer() {
-      this.checkAddress();
-      this.$refs.dialog.style.display = "flex";
-      let serializParams = {
-        version: "00000001", //不变
-        txType: "01", //不变
-        from: this.apAddress,
-        to: this.toAddress,
-        amount: this.inputAmout * Math.pow(10, 18),
-        nonce: "0000000000000002", //从服务器获取该账户的nonce值
-        data: "00", //不变
-        gasPrice: this.inputGasePrice * Math.pow(10, -18), //用户输入
-        gasLimit: 100000, //程序限制
-        executeTime: "0000000000000000" //不变
-      };
-      this.message = util.utilMethods.produce_message(serializParams);
-      let signParams = {
-        message: this.message,
-        privKey: this.privKey
-      };
-      this.signature = util.utilMethods.Sign(signParams);
-      alert("生成签名:" + this.signature);
-      this.serialized_transaction = util.utilMethods.serialized_transaction(
-        this.message,
-        this.signature
-      );
-      alert("序列化交易:" + this.serialized_transaction);
+      if (
+        this.apAddress == null ||
+        this.toAddress == null ||
+        this.inputAmout == null ||
+        this.inputGasePrice == null ||
+        this.pwd == null
+      ) {
+        alert("请填写完整后进行交易!");
+        return;
+      }
+
+      if (
+        this.apAddress !== null &&
+        this.toAddress !== null &&
+        this.inputAmout !== null &&
+        this.inputGasePrice !== null &&
+        this.pwd !== null
+      ) {
+        this.checkAddress();
+        this.$refs.dialog.style.display = "flex";
+        let serializParams = {
+          version: "00000001", //不变
+          txType: "01", //不变
+          from: this.apAddress,
+          to: this.toAddress,
+          amount: this.inputAmout * Math.pow(10, 18),
+          // nonce: this.nonce, //从服务器获取该账户的nonce值
+          nonce: "0000000000000002",
+          data: "00", //不变
+          gasPrice: this.inputGasePrice * Math.pow(10, -18), //用户输入
+          gasLimit: 30000, //程序限制
+          executeTime: "0000000000000000" //不变
+        };
+        this.message = util.utilMethods.produce_message(serializParams);
+        let signParams = {
+          message: this.message,
+          privKey: this.privKey
+        };
+        this.signature = util.utilMethods.Sign(signParams);
+        this.serialized_transaction = util.utilMethods.serialized_transaction(
+          this.message,
+          this.signature
+        );
+      }
+      return;
     },
     checkAddress() {
       this.privKey = util.utilMethods.produceKeyPriv(this.KStore, this.pwd);
-      console.log("根据KStore导出的私钥" + this.privKey);
-
       this.walletAddress = util.utilMethods.keyStoreWallet(
         this.KStore,
         this.pwd
@@ -216,7 +278,7 @@ export default {
         this.$router.push("/wallet/Transfer");
         return;
       }
-      console.log(this.walletAddress);
+      return;
     },
     confirm() {
       // this.$refs.dialog.style.display = "none";
@@ -254,7 +316,7 @@ export default {
       }
     }
     .to {
-      margin: 8% 0 0 0%;
+      margin: 5% 0 0 0%;
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
@@ -271,18 +333,16 @@ export default {
       div:nth-child(3) {
         margin-top: 8px;
         color: #f26522;
-        margin-left: 10px;
         visibility: hidden;
         // visibility:visible;
       }
     }
     .amount {
-      float: left;
       position: relative;
-      margin-right: 10px;
-      // span {
-      //   position: absolute;
-      // }
+      div {
+        margin: 0% 5% 0 2%;
+        position: relative;
+      }
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
@@ -291,6 +351,17 @@ export default {
       }
       input:hover {
         box-shadow: 2px 2px 8px 2px #f26522;
+      }
+      .p1 {
+        display: inline-block;
+        margin-left: 25px;
+        a {
+          color: #f26522;
+        }
+      }
+      .p2 {
+        display: inline-block;
+        margin-left: 25px;
       }
       div:nth-child(2) {
         margin-left: 5%;
@@ -313,13 +384,13 @@ export default {
       div:nth-child(5) {
         color: #f26522;
         margin-top: 8px;
-        margin-left: 10px;
+        margin-left: -2px;
         visibility: hidden;
         // visibility:visible;
       }
     }
     .gasPrice {
-      margin: 5% 0 0 -16.5%;
+      margin: 1% 0 0 -14%;
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
@@ -331,7 +402,7 @@ export default {
       }
       div:nth-child(2) {
         // margin-left: 5%;
-        padding-left: 10px;
+        padding-left: 25px;
         display: inline-block;
       }
       div:nth-child(3) {
@@ -347,13 +418,13 @@ export default {
       div:nth-child(3) {
         color: #f26522;
         margin-top: 8px;
-        margin-left: 10px;
+        margin-left: -1px;
         visibility: hidden;
         // visibility:visible;
       }
     }
     .password {
-      margin: 10% 0 0 0.1%;
+      margin: 7% 0 0 0%;
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
@@ -374,19 +445,17 @@ export default {
       div:nth-child(4) {
         color: #f26522;
         margin-top: 15px;
-        margin-left: 10px;
         visibility: hidden;
         // visibility:visible;
       }
     }
     .send {
-      margin: 5% 0 0 18%;
+      margin: 20px 0 0 18%;
       color: #ffffff;
       background: #f26522;
       width: 180px;
       height: 30px;
       margin-right: 18%;
-      margin-top: 30px;
       text-align: center;
       line-height: 30px;
       border-radius: 4px;
@@ -404,7 +473,7 @@ export default {
     display: none;
     position: relative;
     width: 100%;
-    height: 102%;
+    height: 103%;
     margin-top: -38px;
     background: rgba(255, 255, 255, 0.1);
     justify-content: center;

@@ -1,20 +1,12 @@
 <template>
   <div class="home clearboth">
     <div class="top-modul clearboth">
-      <keep-alive>
         <over-view/>
-      </keep-alive>
-      <keep-alive>
         <live-tps/>
-      </keep-alive>
     </div>
     <div class="bottom-modul clearboth">
-      <keep-alive>
         <blocks-list/>
-      </keep-alive>
-      <keep-alive>
         <transactions-list/>
-      </keep-alive>
     </div>
   </div>
 </template>

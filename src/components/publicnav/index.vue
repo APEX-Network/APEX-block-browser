@@ -11,6 +11,7 @@
           class="fl"
           ref="search"
           @change="getSearchValue"
+          @keyup.enter="enterSearch($event)"
           type="text"
           placeholder="Search Accounts/Transactions/Blocks"
           maxlength="100"
@@ -29,16 +30,21 @@
           :key="index"
           :class=" ((item.path === defaultNav) || ( defaultNav === '/' &&  index == '0')) ? 'active' : ''"
         >
-          <router-link :to="item.path"></router-link>
+          <router-link :to="item.path" @click.native="hiddenAboutUs"></router-link>
         </li>
       </ul>
+      <ul class="fl about">
+        <img src="./../../assets/images/about.png" alt @click="showAboutUs">
+      </ul>
     </div>
-    <!-- <div class="nav about" @click="showAbout()"><img src="../../assets/images/about.png"/></div> -->
-    <!-- <div class="aboutus"><img src="../../assets/images/aboutus.png"/></div> -->
+    <div ref="aboutUs" class="aboutus">
+      <img src="../../assets/images/aboutus.png">
+    </div>
   </div>
 </template>
 <script>
 import Bus from "./../../utils/bus";
+import { setTimeout } from "timers";
 const Base58check = require("base58check");
 
 export default {
@@ -50,6 +56,8 @@ export default {
       isShow: false,
       language: "中文",
       search: null,
+      about: null,
+      clickValue: 0,
       url: {
         blockHash_url: "/api/v1.0/blocks/blockHash/",
         blockHeight_url: "/api/v1.0/blocks/blockHeight/",
@@ -81,6 +89,8 @@ export default {
     }
   },
   mounted() {
+    this.about = this.$refs.aboutUs;
+    this.search = this.$refs.search;
     let _this = this;
     document.addEventListener("click", function(e) {
       // let flag = e.target.contains(document.getElementsByClassName("language-span")[0]);
@@ -91,6 +101,7 @@ export default {
   },
   methods: {
     getSearchValue() {
+      this.about.style.visibility = "hidden";
       this.search = this.$refs.search.value;
     },
 
@@ -107,7 +118,6 @@ export default {
             this.search.slice(0, 2) == "AP"
           ) {
             let account = Base58check.decode(this.search).data.toString("hex");
-            console.log("跳转到账户详情页");
             this.$axios
               .post(this.url.accountInfo_url, {
                 address: this.search
@@ -120,7 +130,9 @@ export default {
                 if (response.data.status == 200) {
                   let res = response.data.data;
                   if (res.length !== 0) {
-                    Bus.$emit("accountValue", this.search);
+                    setTimeout(() => {
+                      Bus.$emit("accountValue", this.search);
+                    });
                     this.$router.push(
                       "/transactions/TransactionsInfo/AccountInfo"
                     );
@@ -148,7 +160,12 @@ export default {
                       type: "height",
                       value: this.search
                     };
-                    Bus.$emit("clickValue", JSON.stringify(this.searchHeight));
+                    setTimeout(() => {
+                      Bus.$emit(
+                        "clickValue",
+                        JSON.stringify(this.searchHeight)
+                      );
+                    });
                     this.$router.push("/blocks/BlocksInfo");
                   }
                 }
@@ -174,7 +191,9 @@ export default {
                       type: "hash",
                       value: this.search
                     };
-                    Bus.$emit("clickValue", JSON.stringify(this.searchBlock));
+                    setTimeout(() => {
+                      Bus.$emit("clickValue", JSON.stringify(this.searchBlock));
+                    });
                     this.$router.push("/blocks/BlocksInfo");
                     return;
                   }
@@ -193,7 +212,9 @@ export default {
                 if (response.data.status == 200) {
                   let res = response.data.data;
                   if (res.length !== 0) {
-                    Bus.$emit("txHash", this.search);
+                    setTimeout(() => {
+                      Bus.$emit("txHash", this.search);
+                    });
                     this.$router.push("/transactions/TransactionsInfo");
                     return;
                   }
@@ -205,6 +226,11 @@ export default {
           this.$router.push("/error");
           return;
         }
+      }
+    },
+    enterSearch(ev) {
+      if (ev.keyCode == 13) {
+        this.startSearch();
       }
     },
     changeLang() {
@@ -222,8 +248,11 @@ export default {
         this.$i18n.locale = localStorage.getItem("locale");
       }
     },
-    showAbout() {
-      console.log("clicked");
+    showAboutUs() {
+      this.about.style.visibility = "visible";
+    },
+    hiddenAboutUs() {
+      this.about.style.visibility = "hidden";
     }
   }
 };
@@ -236,12 +265,13 @@ export default {
   left: 0;
   width: 100%;
   height: 90px;
-  .about {
-    z-index: 10000;
-    width: 30px;
-    height: 30px;
-    left: 110px;
-    top: 520px;
+  .aboutus {
+    // z-index: 10000;
+    width: 80%;
+    margin-left: 200px;
+    margin-right: 148px;
+    padding-top: 472px;
+    visibility: hidden;
   }
   .main {
     position: relative;
@@ -266,10 +296,10 @@ export default {
       padding: 4px 56px 4px 15px;
       background: rgba(255, 255, 255, 0.2);
       color: #fff;
-      border: 1px solid #f26522;
+      // border: 1px solid #f26522;
     }
     input:hover {
-      box-shadow: 2px 2px 8px 2px #f26522;
+      box-shadow: 2px 2px 8px 2px #333333;
     }
     .search-btn {
       position: absolute;
@@ -324,10 +354,14 @@ export default {
   .nav-bar {
     z-index: 9999;
     position: fixed;
-    bottom: 200px;
+    bottom: 150px;
     left: 106px;
     width: 30px;
     height: 350px;
+    .about {
+      padding-top: 70px;
+      cursor: pointer;
+    }
     ul {
       li {
         width: 30px;
@@ -376,12 +410,6 @@ export default {
     }
   }
 }
-// .aboutus {
-//   z-index: 10000;
-//   display: flex;
-//   position: relative;
-//   padding: 680px 0px 0px 63px;
-// }
 @media screen and(max-width:1366px) {
   .nav {
     .nav-bar {

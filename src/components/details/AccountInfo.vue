@@ -70,7 +70,7 @@ export default {
       accountTransaction_url: "/api/v1.0/transactions/account/transactionList",
       accountTransaction_param: {
         start: 0,
-        pageSize: 7,
+        pageSize: 6,
         address: null
       },
       accountInfo: null,
@@ -82,15 +82,15 @@ export default {
   mounted() {
     this.getClickValue();
     // setTimeout(() => {
-    //   this.getAccountInfo();
+    //   // this.getAccountInfo();
     //   this.getAccountTransactionInfo();
     // });
-    // const timer = setInterval(() => {
-      // this.getAccountInfo();
-    // }, 1500);
-    // this.$once("hook:beforeDestroy", () => {
-    //   clearInterval(timer);
-    // });
+    const timer = setInterval(() => {
+      this.getAccountTransactionInfo();
+    }, 1500);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer);
+    });
   },
   methods: {
     Copy(index) {
@@ -163,7 +163,7 @@ export default {
   height: 100%;
   background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
   .uchain-box {
-    padding-top: 90px;
+    padding-top: 80px;
     .apex-title {
       padding-left: 30px;
     }
@@ -176,21 +176,20 @@ export default {
         width: 100%;
         max-width: 100%;
         margin-top: 20px;
-        border-top: #0000 1px solid;
+        border-top: #0000 2px solid;
         & > li {
           &.row {
             margin: 0;
             color: #ebebeb;
             height: 40px;
+            line-height: 40px;
           }
-          border-bottom: #333333 1px solid;
           & > span {
             line-height: 35px;
             height: 35px;
             box-sizing: border-box;
             padding: 0 8px 0 0px;
             vertical-align: middle;
-            color: #ebebeb;
             overflow: hidden;
             white-space: nowrap;
             .bottom {
@@ -201,9 +200,9 @@ export default {
               background: url(./../../assets/images/shared/icon-fix.png) left
                 5px no-repeat;
               a {
-                max-width: 300px;
-                overflow: hidden;
-                white-space: nowrap;
+                // max-width: 300px;
+                // overflow: hidden;
+                // white-space: nowrap;
                 color: #f26522;
                 margin-top: 5px;
               }

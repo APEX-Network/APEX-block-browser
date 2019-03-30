@@ -67,7 +67,7 @@ export default {
         grid: {
           left: -48,
           right: 0,
-          top: 5,
+          top: 100,
           bottom: 5,
           containLabel: true
         },
@@ -75,7 +75,6 @@ export default {
           type: "category",
           boundaryGap: false,
           data: this.time.map(item => {
-            console.log(item);
             let x = item.trim().split(" ");
             return x[1];
           }),

@@ -43,7 +43,7 @@ export default {
       transaction_list_url: "/api/v1.0/transactions/transactionList",
       parmas: {
         start: "0",
-        pageSize: "10"
+        pageSize: "11"
       }
     };
   },
@@ -79,6 +79,7 @@ export default {
     },
     setClickValue(e) {
       Bus.$emit("txHash", e.target.innerHTML);
+      // sessionStorage.setItem("txHash", JSON.stringify(e.target.innerHTML));
     }
   }
 };
@@ -86,6 +87,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
+@import "./../../assets/css/layout";
 .transactions {
   width: 100%;
   height: 100%;
@@ -98,21 +100,18 @@ export default {
     .table-ul {
       width: 100%;
       max-width: 100%;
-      border-top: #0000 1px solid;
       & > li {
         &.row {
           margin: 0;
           color: #ebebeb;
           height: 40px;
         }
-        border-bottom: #333333 1px solid;
         & > span {
           line-height: 35px;
           height: 35px;
           box-sizing: border-box;
           padding: 0 8px 0 0px;
           vertical-align: middle;
-          color: #ebebeb;
           overflow: hidden;
           white-space: nowrap;
           .bottom {
@@ -123,11 +122,11 @@ export default {
             background: url(./../../assets/images/shared/icon-fix.png) left 5px
               no-repeat;
             a {
-              max-width: 300px;
-              overflow: hidden;
-              white-space: nowrap;
+              // max-width: 300px;
+              // overflow: hidden;
+              // white-space: nowrap;
               color: #f26522;
-              margin-top: 5px;
+              // margin-top: 5px;
             }
           }
         }

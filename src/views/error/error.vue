@@ -1,7 +1,7 @@
 <template>
 
   <div>
-    <div class="error">
+    <div class="data-table">
     <img src="./../../assets/images/error.png" alt>
   </div>
      <!-- <div @click="backHome" class="back-home">
@@ -36,11 +36,7 @@ export default {
 };
 </script>
 <style lang='less' scoped>
-.error {
-  width: 100%;
-  height: 100vh;
-  position: relative;
-}
+@import "./../../assets/css/layout";
 .back-home {
    width: 100%;
   height: 760px;

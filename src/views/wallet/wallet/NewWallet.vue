@@ -11,12 +11,24 @@
       </div>
       <div class="enterpwd">
         <span>Enter Password</span>
-        <input type="password" ref="firstPwd" v-model="firstPwd" @change="getPwd">
+        <input
+          type="password"
+          ref="firstPwd"
+          @keyup.enter="nextInput($event)"
+          v-model="firstPwd"
+          @change="getPwd"
+        >
         <!-- <input type="text" ref="firstPwdCover" v-model="firstPwdCover" @change="coverFirstPwd"> -->
         <img src="./../../../assets/images/eye.png" @click="displayFirstPwd">
         <div class="repatpwd">
           <span>Repeat Password</span>
-          <input type="password" ref="secondPwd" v-model="secondPwd" @change="getPwd">
+          <input
+            type="password"
+            ref="secondPwd"
+            @keyup.enter="prevInput($event)"
+            v-model="secondPwd"
+            @change="getPwd"
+          >
           <!-- <input type="text" ref="secondPwdCover" v-model="secondPwdCover" @change="coverSecondPwd"> -->
           <img src="./../../../assets/images/eye.png" @click="displaySecondPwd">
         </div>
@@ -57,7 +69,9 @@ export default {
       firstPwdCover: null,
       secondPwd: null,
       secondPwdCover: null,
-      keyStore: null
+      keyStore: null,
+      firstInput: null,
+      secondInput: null
     };
   },
 
@@ -70,7 +84,10 @@ export default {
 
   beforeMount() {},
 
-  mounted() {},
+  mounted() {
+    this.firstInput = this.$refs.firstPwd;
+    this.secondInput = this.$refs.secondPwd;
+  },
 
   methods: {
     getPwd() {
@@ -79,6 +96,16 @@ export default {
       this.second = this.$refs.secondPwd.value;
       console.log(this.second);
     },
+    nextInput(ev) {
+      if (ev.keyCode == 13) {
+        this.secondInput.focus();
+      }
+    },
+    // prevInput(ev) {
+    //   if (ev.keyCode == 13) {
+    //     this.produceSign();
+    //   }
+    // },
     // coverFirstPwd() {
     //   this.firstPwdCover = this.$refs.firstPwdCover;
     //   this.firstPwdCover.onkeyup = function(e) {

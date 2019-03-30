@@ -21,7 +21,10 @@
           </span>
           <span class="col">{{item.timeStamp}}</span>
           <!-- <span class="col txn">{{item.txNum}}</span> -->
-          <span class="col">{{item.producer}}</span>
+          <!-- <span class="col">{{item.producer}}</span> -->
+           <span class="col">
+            <router-link to="/producer/ProducerInfo" @click.native="setMinerByValue">{{item.producer}}</router-link>
+          </span>
         </li>
       </ul>
       <div class="uchain-pagination">
@@ -67,7 +70,7 @@ export default {
       }
     };
   },
-   mounted() {
+  mounted() {
     this.getFirstBlocks();
     const timer = setInterval(() => {
       this.getFirstBlocks();
@@ -104,11 +107,16 @@ export default {
       this.clickValue.type = "height";
       this.clickValue.value = e.target.innerHTML;
       Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+      // sessionStorage.setItem("clickValue", JSON.stringify(this.clickValue));
     },
     setHashValue(e) {
       this.clickValue.type = "hash";
       this.clickValue.value = e.target.innerHTML;
       Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+      // sessionStorage.setItem("clickValue", JSON.stringify(this.clickValue));
+    },
+    setMinerByValue(e) {
+      Bus.$emit("minerBy", e.target.innerHTML);
     },
     getNextBlocks() {
       this.nextPage = this.start++;

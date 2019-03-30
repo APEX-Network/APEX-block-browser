@@ -11,7 +11,7 @@
           <span class="col">Blocks</span>
         </li>
         <li v-for="(item,index) in producer" :key="index" class="row">
-          <span class="col">{{Rank}}</span>
+          <span class="col">{{item.Rank}}</span>
           <span class="col col-lg-6">
             <router-link
               to="/producer/ProducerInfo"
@@ -73,9 +73,9 @@ export default {
         .post(this.minerBy_url, this.params)
         .then(response => {
           this.producer = response.data.data;
-          // for (let i = 0; i < this.producer.length; i++) {
-          //   this.Rank++;
-          // }
+          for (let i = 0; i < this.producer.length; i++) {
+            this.producer[i]['Rank'] = this.Rank++;
+          }
         })
         .catch(function(err) {
           if (err.response) {

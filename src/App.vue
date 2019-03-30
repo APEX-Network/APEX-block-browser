@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <publicnav />
+    <publicnav/>
     <div class="main-box">
-      <router-view></router-view>
+      <router-view :key="key"></router-view>
     </div>
-    <publicfooter />
+    <publicfooter/>
   </div>
 </template>
 
@@ -17,6 +17,15 @@ export default {
   components: {
     publicnav,
     publicfooter
+  },
+  computed: {
+    key() {
+      return this.$route.name !== undefined
+        ? this.$route.name + new Date()
+        : this.$route + new Date();
+    }
   }
 };
 </script>
+
+

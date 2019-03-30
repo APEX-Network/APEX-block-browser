@@ -74,7 +74,6 @@ export default {
               this.CPX = Number(res.balance);
             }
           } else {
-            console.log(res.balance);
             this.CPX = Number(res.balance);
           }
         })

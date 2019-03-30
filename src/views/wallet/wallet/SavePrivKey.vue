@@ -23,7 +23,7 @@
             {{privKey}}
             <img
               @click="Copy(index)"
-              style="cursor: pointer; padding-left: 10px;"
+              style="cursor: pointer; padding-left: 10px;float: right;"
               src="./../../../assets/images/copy.png"
               alt
             >
@@ -88,6 +88,7 @@ export default {
     Copy(index) {
       let getCopyText = this.privKey;
       this.doCopy(getCopyText);
+      // this.privKey = null;
     },
     doCopy(val) {
       this.$copyText(val).then(
@@ -139,14 +140,15 @@ export default {
           color: #f26522;
         }
         .privkey {
-          padding-left: 20px;
+          padding-left: 10px;
           position: absolute;
           padding-top: 8px;
+          border-bottom: 1px solid #ffffff;
         }
       }
       div {
         font-size: 20px;
-        margin: 30px 0px 0px 215px;
+        margin: 30px 0px 30px 215px;
       }
     }
     .create1 {
@@ -168,7 +170,7 @@ export default {
     .create2 {
       color: #f26522;
       border: 1px solid #f26522;
-      margin-top: 30px;
+      margin-top: 50px;
       text-align: center;
       height: 30px;
       width: 220px;

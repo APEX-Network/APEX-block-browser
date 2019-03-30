@@ -59,7 +59,6 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
-import { setTimeout } from "timers";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
 
@@ -70,7 +69,6 @@ export default {
     ApexTitle,
     ApexBackGround
   },
-  created() {},
   data() {
     return {
       title: "Blocks Information",
@@ -90,12 +88,6 @@ export default {
   },
   mounted() {
     this.getClickValue();
-    // const timer = setInterval(() => {
-    //   this.getBlocksInfo();
-    // }, );
-    // this.$once("hook:beforeUpdate", () => {
-    //   clearInterval(timer);
-    // });
   },
   methods: {
     getClickValue() {
@@ -103,6 +95,8 @@ export default {
         this.result = JSON.parse(data);
         this.getBlocksInfo();
       });
+      // this.result = JSON.parse(sessionStorage.getItem("clickValue"));
+      // this.getBlocksInfo();
     },
     setClickValue(e) {
       Bus.$emit("minerBy", e.target.innerHTML);
@@ -150,7 +144,6 @@ export default {
       }
     },
     getParentBlock(e) {
-      // let parentHash = e.target.innerHTML;
       if (!!this.parentHash) {
         this.$axios
           .get(this.url.blockHash_url + this.parentHash)
@@ -171,14 +164,14 @@ export default {
     }
   },
   watch: {
-    $route: function (to, from) {
+    $route: function(to, from) {
       let path = "/blocks/BlocksInfo";
       if (to.path == path) {
         console.log(to.path);
         this.getBlocksInfo();
       }
     }
-  },
+  }
 };
 </script>
 
