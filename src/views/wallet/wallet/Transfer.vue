@@ -6,12 +6,13 @@
       <div class="from">
         <div>From:</div>
         <div>Wallet</div>
-        <input v-model="apAddress">
+        <input v-model="apAddress" readonly="readonly">
       </div>
 
       <div class="to">
         <div>To:</div>
         <input
+          spellcheck="false"
           ref="to"
           @keyup.enter="seInput($event)"
           @change="getToAddress"
@@ -24,6 +25,7 @@
       <div class="amount">
         <div>Amount (Available:{{amount}})</div>
         <input
+          spellcheck="false"
           type="text"
           ref="inputAmout"
           @keyup.enter="thInput($event)"
@@ -38,6 +40,7 @@
       </div>
       <div class="gasPrice">
         <input
+          spellcheck="false"
           type="text"
           ref="inputGasePrice"
           @keyup.enter="foInput($event)"
@@ -49,12 +52,7 @@
       </div>
       <div class="password">
         <div>Password</div>
-        <input
-          type="password"
-          ref="firstPwd"
-          v-model="pwd"
-          @change="getPwd"
-        >
+        <input spellcheck="false" type="password" ref="firstPwd" v-model="pwd" @change="getPwd">
         <img src="./../../../assets/images/eye.png" @click="displayPwd">
         <div>Password Incorrect</div>
       </div>
@@ -79,6 +77,7 @@ import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "../../../utils/utils";
 import Bus from "./../../../utils/bus";
 import db from "./../../../utils/myDatabase";
+import { stringify } from "querystring";
 
 export default {
   name: "Transfer",
@@ -87,7 +86,10 @@ export default {
     return {
       title: "Transfer",
       serialized_transaction: null,
-      accountInfo_url: "/api/v1.0/accounts/account",
+      url: {
+        accountInfo_url: "/api/v1.0/accounts/account",
+        transfer_url: "/api/v1.0/transactions/trading"
+      },
       signature: null,
       apAddress: null,
       walletAddress: null,
@@ -127,7 +129,6 @@ export default {
           setTimeout(() => {
             this.getAccountInfo(this.apAddress);
             db.APKStore.get(this.apAddress).then(APKStore => {
-              console.log(APKStore.KStore);
               this.KStore = APKStore.KStore;
             });
           });
@@ -135,15 +136,16 @@ export default {
           return;
         }
       });
+      Bus.$on("privKey", data => {
+        this.privKey = data;
+      });
     },
 
     getToAddress() {
       this.toAddress = this.$refs.to.value;
-      console.log("获得用户粘贴的to地址:" + this.toAddress);
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
-      console.log("获得用户输入的amount值:" + this.inputAmout);
     },
     setAllAmount() {
       this.$refs.inputAmout.value = this.amount;
@@ -153,23 +155,13 @@ export default {
       this.inputGasePrice = this.$refs.inputGasePrice.value;
       console.log("获得用户输入的GasePrice值:" + this.inputGasePrice);
     },
-    // getPSAddress() {
-    //   this.psAddress = this.$refs.psAddress.value;
-    //   db.APKStore.get(this.psAddress).then(APKStore => {
-    //     console.log("通过用户粘贴的地址获得KStore" + APKStore.KStore);
-    //     this.KStore = APKStore.KStore;
-    //   });
-    //   this.getAccountInfo(this.psAddress);
-    // },
     getPwd() {
       this.pwd = this.$refs.firstPwd.value;
-      console.log(this.pwd);
     },
     getAllInput() {
       this.secondInput = this.$refs.inputAmout;
       this.thereInput = this.$refs.inputGasePrice;
       this.fourInput = this.$refs.firstPwd;
-      // this.fiveInput = this.$refs.firstPwd;
     },
     seInput(ev) {
       if (ev.keyCode == 13) {
@@ -191,25 +183,26 @@ export default {
     },
     getAccountInfo(address) {
       this.$axios
-        .post(this.accountInfo_url, {
+        .post(this.url.accountInfo_url, {
           address: address
         })
         .then(response => {
           let res = response.data.data;
           let result = res.toString().indexOf(".");
-          if (result != -1) {
+          console.log(result);
+          
+          if (result !== -1) {
             let pointLength = res.balance.toString().split(".")[1].length;
             if (pointLength > 8) {
               this.amount = Number(res.balance).toFixed(8);
             } else {
               this.amount = Number(res.balance);
             }
-          } else {
+          };
+          if (result == -1) {
             this.amount = Number(res.balance);
           }
           this.nonce = res.nextNonce;
-          console.log(parseFloat(this.nonce));
-          console.log("该账户的nonce值为===========" + this.nonce);
         })
         .catch(function(err) {
           if (err.response) {
@@ -236,7 +229,7 @@ export default {
         this.inputGasePrice !== null &&
         this.pwd !== null
       ) {
-        this.checkAddress();
+        // this.checkAddress();
         this.$refs.dialog.style.display = "flex";
         let serializParams = {
           version: "00000001", //不变
@@ -244,18 +237,26 @@ export default {
           from: this.apAddress,
           to: this.toAddress,
           amount: this.inputAmout * Math.pow(10, 18),
-          // nonce: this.nonce, //从服务器获取该账户的nonce值
-          nonce: "0000000000000002",
+          nonce: this.nonce, //从服务器获取该账户的nonce值
           data: "00", //不变
-          gasPrice: this.inputGasePrice * Math.pow(10, -18), //用户输入
-          gasLimit: 30000, //程序限制
+          gasPrice: this.inputGasePrice * Math.pow(10, -18), //用户输入(此处转换不对)
+          gasLimit: "30000", //程序限制
           executeTime: "0000000000000000" //不变
         };
         this.message = util.utilMethods.produce_message(serializParams);
         let signParams = {
           message: this.message,
-          privKey: this.privKey
+          privKey: null
         };
+        if (this.KStore !== null && this.pwd !== null) {
+          signParams.privKey = util.utilMethods.produceKeyPriv(
+            this.KStore,
+            this.pwd
+          );
+        }
+        if (this.privKey !== null) {
+          signParams.privKey = String(this.privKey);
+        }
         this.signature = util.utilMethods.Sign(signParams);
         this.serialized_transaction = util.utilMethods.serialized_transaction(
           this.message,
@@ -281,7 +282,19 @@ export default {
       return;
     },
     confirm() {
-      // this.$refs.dialog.style.display = "none";
+      this.$axios
+        .post(this.url.transfer_url, {
+          rawTx: this.serialized_transaction
+        })
+        .then(response => {
+          let res = response.data.data;
+          console.log(res);
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
     }
   },
 
@@ -450,7 +463,7 @@ export default {
       }
     }
     .send {
-      margin: 20px 0 0 18%;
+      margin: 5px 0 0 18%;
       color: #ffffff;
       background: #f26522;
       width: 180px;

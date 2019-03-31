@@ -103,7 +103,6 @@ export default {
           alert("拷贝成功!");
         },
         function(e) {
-          // console.log(e)
         }
       );
     },
@@ -121,7 +120,18 @@ export default {
         })
         .then(response => {
           let res = response.data.data;
-          this.Balance = res.balance;
+          let result = res.toString().indexOf(".");
+          if (result !== -1) {
+            let pointLength = res.balance.toString().split(".")[1].length;
+            if (pointLength > 8) {
+              this.Balance = Number(res.balance).toFixed(8);
+            } else {
+              this.Balance = Number(res.balance);
+            }
+          };
+          if (result == -1) {
+            this.Balance = Number(res.balance);
+          };
         })
         .catch(function(err) {
           if (err.response) {

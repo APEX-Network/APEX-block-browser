@@ -1,10 +1,10 @@
 <template>
   <div class="home clearboth">
     <div class="top-modul clearboth">
-        <wallet-page :address="apAddress"/>
+        <wallet-page :address="apAddress" :privKey="privKey"/>
     </div>
     <div class="bottom-modul clearboth">
-      <transfers-list/>
+      <transfers-list />
         <transactions-list />
     </div>
   </div>
@@ -25,6 +25,7 @@ export default {
   data() {
     return {
       apAddress: null,
+      privKey: null
     };
   },
   mounted() {
@@ -35,6 +36,9 @@ export default {
       Bus.$on("apAddress", data => {
         this.apAddress = data;
       });
+      Bus.$on("privKey", data => {
+      this.privKey = data;
+    });
     }
   },
   computed: {}

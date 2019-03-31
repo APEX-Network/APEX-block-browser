@@ -4,12 +4,48 @@
     <apex-back-ground/>
     <div class="data-table">
       <ul class="table-ul">
-        <li v-for="(value, key ,index ) in producerInfo" :key="index" class="row">
+        <!-- <li v-for="(value, key ,index ) in producerInfo" :key="index" class="row">
           <span class="col">{{key}} :</span>
           <span class="col col-lg-8" v-if="key === 'webSite'">
             <router-link to="/home">{{value}}</router-link>
           </span>
           <span class="col col-lg-8" v-else>{{value}}</span>
+        </li> -->
+        <li class="row">
+          <span class="col">
+            Miner:
+            <span class="clo col-lg-8">{{producerInfo.Miner}}</span>
+          </span>
+        </li>
+         <li class="row" v-if="producerInfo.Area !== ''"> 
+          <span class="col">
+            Area:
+            <span class="clo col-lg-8">{{producerInfo.Area}}</span>
+          </span>
+        </li>
+         <li class="row">
+          <span class="col">
+            CurrentRank:
+            <span class="clo col-lg-8">{{producerInfo.CurrentRank}}</span>
+          </span>
+        </li>
+         <li class="row" v-if="producerInfo.Website !== ''">
+          <span class="col">
+            Website:
+            <router-link to="/home">{{producerInfo.Website}}</router-link>
+          </span>
+        </li>
+         <li class="row" v-if="producerInfo.Description !== null">
+          <span class="col">
+            Description:
+            <span class="clo col-lg-8">{{producerInfo.Description}}</span>
+          </span>
+        </li>
+        <li class="row">
+          <span class="col">
+            Block:
+            <span class="clo col-lg-8">{{producerInfo.block}}</span>
+          </span>
         </li>
       </ul>
     </div>
@@ -83,8 +119,19 @@ export default {
 <style scoped lang="less">
 @import "./../../assets/css/layout";
 .ProducerInfo {
-  width: 100%;
+ width: 100%;
   height: 100%;
   background: url(./../../assets/images/shared/yunshi.png) 75% 95% no-repeat;
+  .data-table {
+    .table-ul {
+      li {
+        span {
+          span {
+            float: right;
+          }
+        }
+      }
+    }
+  }
 }
 </style>

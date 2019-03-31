@@ -86,7 +86,6 @@ export default {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      // sessionStorage.setItem("KStore", JSON.stringify(this.keyStore));
     }
   },
 

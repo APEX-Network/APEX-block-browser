@@ -8,6 +8,7 @@
       </div>
       <div class="enterpwd">
         <input
+          spellcheck="false"
           ref="keyStore"
           v-model="keyStore"
           @change="getkeyStore"
@@ -15,6 +16,7 @@
         >
         <div class="repatpwd">
           <input
+            spellcheck="false"
             type="password"
             ref="pwd"
             v-model="pwd"
@@ -64,18 +66,14 @@ export default {
   methods: {
     getkeyStore() {
       this.keyStore = this.$refs.keyStore.value;
-      console.log(this.keyStore);
     },
     getPwd() {
       this.pwd = this.$refs.pwd.value;
-      console.log(this.pwd);
     },
     displayPwd() {
       this.$refs.pwd.type = "text";
     },
     keyStoreWallet() {
-      //获取用户导入的key文件
-      console.log("用户导入的keyStore文件:" + this.keyStore);
       let downKeyStore = this.keyStore;
       let key = this.pwd;
       this.walletAddress = util.utilMethods.keyStoreWallet(downKeyStore, key);
@@ -84,10 +82,6 @@ export default {
         APAddress: this.walletAddress,
         KStore: this.keyStore
       });
-      console.log(
-        "通过用户导入的keyStore文件解密出正确的钱包地址====" +
-          this.walletAddress
-      );
     }
   },
 
@@ -164,8 +158,8 @@ export default {
       }
     }
     .create:hover {
-          box-shadow: 2px 2px 8px 2px #f26522;
-        }
+      box-shadow: 2px 2px 8px 2px #f26522;
+    }
   }
 }
 </style>

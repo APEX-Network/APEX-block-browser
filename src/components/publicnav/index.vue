@@ -8,6 +8,7 @@
       </div>
       <div class="search-box fl clearboth">
         <input
+          spellcheck="false"
           class="fl"
           ref="search"
           @change="getSearchValue"
@@ -237,7 +238,6 @@ export default {
       this.isShow = !this.isShow;
     },
     changeLangEvent() {
-      console.log(this.$i18n.locale);
       if (this.$i18n.locale === "ZH") {
         this.language = "English";
         localStorage.setItem("locale", "EN");

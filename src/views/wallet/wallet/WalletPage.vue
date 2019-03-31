@@ -3,7 +3,7 @@
     <p class="apex-title">Wallet</p>
     <div class="flex-container1">
       <div class="flex-item1">Address</div>
-      <input class="flex-item2" v-model="address">
+      <input class="flex-item2" v-model="address" readonly="readonly">
       <div class="flex-item3">CPX: {{CPX}}</div>
     </div>
     <div class="flex-container2">
@@ -28,15 +28,18 @@
 // import Vue from 'vue';
 import { mapActions, mapGetters } from "vuex";
 import Bus from "./../../../utils/bus";
+import db from "./../../../utils/myDatabase";
 // import vSelect from './components/Select.vue'
 
 // Vue.component('v-select', vSelect)
 export default {
   name: "walletpage",
-  props: ["address"],
+  props: ["address", "privKey"],
   data() {
     return {
       APAddress: [],
+      // privKey: null,
+      getAllAddress: null,
       accountInfo_url: "/api/v1.0/accounts/account",
       CPX: 0
     };
@@ -47,16 +50,25 @@ export default {
   beforeMount() {},
 
   mounted() {
-    // this.APAddress.push(this.address);
     setTimeout(() => {
       this.getCPX(this.address);
     });
+    this.getAllAddress = db.APKStore.where("APAddress")
+      .above(0)
+      .toArray(APKStore => {
+        APKStore.forEach(v => {
+          this.APAddress.push(v.APAddress);
+        });
+      });
   },
 
   methods: {
     // ...mapActions(["modifyAddress"])
     sendAddress() {
       Bus.$emit("apAddress", this.address);
+      setTimeout(() => {
+        Bus.$emit("privKey", this.privKey);
+      });
     },
     getCPX(address) {
       this.$axios

@@ -120,10 +120,10 @@ const utilMethods = {
         let hash = Bitcoin.crypto.sha256(signParams.message);
         let keyToBuffer = Buffer.from(signParams.privKey, "hex");
         let signature = ECPair.fromPrivateKey(keyToBuffer).sign(hash);
-        let signature_encode = script_signature.encode(signature, 1);
+        let signature_encode = script_signature.encode(signature, 0x01);
         let signature_toHex = signature_encode.toString("hex");
-        let signature_result = signature_toHex.substring(0, signature_toHex.length - 2);
-        return signature_result
+        // let signature_result = signature_toHex.substring(0, signature_toHex.length - 2);
+        return "46" + signature_toHex
     },
     serialized_transaction(message, signature) {
         return message + signature
@@ -168,7 +168,9 @@ const utilMethods = {
         if (gasLimit_prefix >= 10) {
             gasLimit = gasLimit_prefix .toString("hex") + gasLimit_hex;
         };
-        return serializParams.version + serializParams.txType + from + to + amount + serializParams.nonce + serializParams.data + gasPrice + gasLimit + serializParams.executeTime;
+        console.log("amount:" + amount + "serializParams.nonce" + serializParams.nonce);
+        
+        return serializParams.version + serializParams.txType + from + to + amount + "000000000000000"+serializParams.nonce + serializParams.data + "020237" + gasLimit+ serializParams.executeTime;
     },
     produce_KeyStore(keyStoreParams) {
         let data = keyStoreParams.data;

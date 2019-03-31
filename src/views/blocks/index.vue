@@ -107,13 +107,11 @@ export default {
       this.clickValue.type = "height";
       this.clickValue.value = e.target.innerHTML;
       Bus.$emit("clickValue", JSON.stringify(this.clickValue));
-      // sessionStorage.setItem("clickValue", JSON.stringify(this.clickValue));
     },
     setHashValue(e) {
       this.clickValue.type = "hash";
       this.clickValue.value = e.target.innerHTML;
       Bus.$emit("clickValue", JSON.stringify(this.clickValue));
-      // sessionStorage.setItem("clickValue", JSON.stringify(this.clickValue));
     },
     setMinerByValue(e) {
       Bus.$emit("minerBy", e.target.innerHTML);
@@ -124,8 +122,6 @@ export default {
       this.$axios
         .post(this.allBlockUrl, this.params)
         .then(response => {
-          // let res = response.data.data;
-          // this.dataList = res;
           let res = response.data.data;
           let seconds;
           for (let i = 0; i < res.length; i++) {
@@ -145,8 +141,6 @@ export default {
         this.$axios
           .post(this.allBlockUrl, this.params)
           .then(response => {
-            // let res = response.data.data;
-            // this.dataList = res;
             this.dataList = null;
             let res = response.data.data;
             let seconds;
@@ -215,13 +209,13 @@ export default {
   height: 100%;
   background: url(./../../assets/images/shared/yunshi.png) 40% 45% no-repeat;
   .data-table {
-    .table-ul {
-      .row {
-        .height {
-          color: #f26522;
-        }
-      }
-    }
+    // .table-ul {
+    //   .row {
+    //     .height {
+    //       color: #f26522;
+    //     }
+    //   }
+    // }
     .uchain-pagination {
       width: 100%;
       height: 50px;

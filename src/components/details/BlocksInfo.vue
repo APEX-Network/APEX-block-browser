@@ -95,8 +95,6 @@ export default {
         this.result = JSON.parse(data);
         this.getBlocksInfo();
       });
-      // this.result = JSON.parse(sessionStorage.getItem("clickValue"));
-      // this.getBlocksInfo();
     },
     setClickValue(e) {
       Bus.$emit("minerBy", e.target.innerHTML);
@@ -164,13 +162,6 @@ export default {
     }
   },
   watch: {
-    $route: function(to, from) {
-      let path = "/blocks/BlocksInfo";
-      if (to.path == path) {
-        console.log(to.path);
-        this.getBlocksInfo();
-      }
-    }
   }
 };
 </script>

@@ -34,7 +34,7 @@
             <span class="clol col-lg-8">{{transactionInfoData.timeStamp}}</span>
           </span>
         </li>
-        <li class="row">
+        <li class="row" v-if="transactionInfoData.from !== ''">
           <span class="col">
             From:
             <span class="clol col-lg-8">
@@ -74,13 +74,13 @@
             <span class="clol col-lg-8">{{transactionInfoData.gasPrice}}</span>
           </span>
         </li>
-        <li class="row" v-if="gasUsed !== null">
+        <li class="row" v-if="transactionInfoData.gasUsed !== null ">
           <span class="col">
             Gas Used:
             <span class="clol col-lg-8">{{transactionInfoData.gasUsed}}</span>
           </span>
         </li>
-        <li class="row" v-if="fee !== null">
+        <li class="row" v-if="transactionInfoData.fee !== null ">
           <span class="col">
             Transaction Fee:
             <span class="clol col-lg-8">{{transactionInfoData.fee}}</span>

@@ -8,6 +8,7 @@
       </div>
       <div class="enterpwd">
         <input
+          spellcheck="false"
           ref="privKey"
           type="text"
           v-model="privKey"
@@ -15,7 +16,14 @@
           placeholder="please paste your private key"
         >
         <div class="repatpwd">
-          <input type="password" ref="pwd" v-model="firstPwd" @change="getPwd" placeholder="please set you password">
+          <input
+            spellcheck="false"
+            type="password"
+            ref="pwd"
+            v-model="firstPwd"
+            @change="getPwd"
+            placeholder="please set you password"
+          >
           <img src="./../../../assets/images/eye.png" @click="displayPwd">
         </div>
       </div>
@@ -31,6 +39,7 @@ import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "./../../../utils/utils";
 import Bus from "./../../../utils/bus";
+import db from './../../../utils/myDatabase';
 
 export default {
   name: "PrivateKey",
@@ -62,7 +71,6 @@ export default {
   methods: {
     getprivKey() {
       this.privKey = this.$refs.privKey.value;
-      console.log("用户粘贴的私钥:" + this.privKey);
     },
     getPwd() {
       this.pwd = this.$refs.pwd.value;
@@ -71,11 +79,11 @@ export default {
       this.$refs.pwd.type = "text";
     },
     privKeyAddress() {
+      Bus.$emit("privKey", this.privKey);
       let userPrivKey = this.privKey;
       let key = this.pwd;
       this.walletAddress = util.utilMethods.privKeyWallet(userPrivKey, key);
       Bus.$emit("apAddress", this.walletAddress);
-      console.log("通过用户粘贴的私钥生成的地址:" + this.walletAddress);
     }
   },
 

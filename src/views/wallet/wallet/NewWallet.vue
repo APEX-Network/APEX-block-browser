@@ -12,6 +12,7 @@
       <div class="enterpwd">
         <span>Enter Password</span>
         <input
+          spellcheck="false"
           type="password"
           ref="firstPwd"
           @keyup.enter="nextInput($event)"
@@ -23,6 +24,7 @@
         <div class="repatpwd">
           <span>Repeat Password</span>
           <input
+            spellcheck="false"
             type="password"
             ref="secondPwd"
             @keyup.enter="prevInput($event)"
@@ -92,9 +94,7 @@ export default {
   methods: {
     getPwd() {
       this.first = this.$refs.firstPwd.value;
-      console.log(this.first);
       this.second = this.$refs.secondPwd.value;
-      console.log(this.second);
     },
     nextInput(ev) {
       if (ev.keyCode == 13) {
@@ -145,13 +145,11 @@ export default {
           iv: null
         };
         this.keyStore = util.utilMethods.produce_KeyStore(keyStoreParams);
-        console.log("供下载的keyStore====" + this.keyStore);
         Bus.$emit("keyStore", this.keyStore);
         db.APKStore.put({
           APAddress: this.apAddress,
           KStore: this.keyStore
         });
-        // DBOperator.set({APAddress: this.apAddress, KStore: this.keyStore});
       }
       if (this.firstPwd == null || this.secondPwd == null) {
         alert("请输入密码!");
