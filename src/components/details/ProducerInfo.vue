@@ -10,32 +10,34 @@
             <router-link to="/home">{{value}}</router-link>
           </span>
           <span class="col col-lg-8" v-else>{{value}}</span>
-        </li> -->
+        </li>-->
         <li class="row">
           <span class="col">
             Miner:
             <span class="clo col-lg-8">{{producerInfo.Miner}}</span>
           </span>
         </li>
-         <li class="row" v-if="producerInfo.Area !== ''"> 
+        <li class="row" v-if="producerInfo.Area !== ''">
           <span class="col">
             Area:
             <span class="clo col-lg-8">{{producerInfo.Area}}</span>
           </span>
         </li>
-         <li class="row">
+        <li class="row">
           <span class="col">
             CurrentRank:
             <span class="clo col-lg-8">{{producerInfo.CurrentRank}}</span>
           </span>
         </li>
-         <li class="row" v-if="producerInfo.Website !== ''">
+        <li class="row" v-if="producerInfo.Website !== ''">
           <span class="col">
             Website:
-            <router-link to="/home">{{producerInfo.Website}}</router-link>
+            <span class="clo col-lg-8">
+              <router-link to="" @click.native="gotHome">{{producerInfo.Website}}</router-link>
+            </span>
           </span>
         </li>
-         <li class="row" v-if="producerInfo.Description !== null">
+        <li class="row" v-if="producerInfo.Description !== null">
           <span class="col">
             Description:
             <span class="clo col-lg-8">{{producerInfo.Description}}</span>
@@ -56,7 +58,7 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
-import Bus from './../../utils/bus'
+import Bus from "./../../utils/bus";
 
 export default {
   name: "ProducerInfo",
@@ -88,9 +90,12 @@ export default {
     });
   },
   methods: {
+    gotHome() {
+      window.location.href = "https://www.apexnetwork.io/"
+    },
     getClickValue() {
       Bus.$on("minerBy", data => {
-        this.minerBy = data;        
+        this.minerBy = data;
       });
     },
     getProduceInfo() {
@@ -119,7 +124,7 @@ export default {
 <style scoped lang="less">
 @import "./../../assets/css/layout";
 .ProducerInfo {
- width: 100%;
+  width: 100%;
   height: 100%;
   background: url(./../../assets/images/shared/yunshi.png) 75% 95% no-repeat;
   .data-table {

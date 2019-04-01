@@ -78,6 +78,7 @@ export default {
       let key = this.pwd;
       this.walletAddress = util.utilMethods.keyStoreWallet(downKeyStore, key);
       Bus.$emit("apAddress", this.walletAddress);
+      sessionStorage.setItem("apAddress", this.walletAddress);
       db.APKStore.put({
         APAddress: this.walletAddress,
         KStore: this.keyStore

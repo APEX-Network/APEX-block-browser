@@ -115,15 +115,16 @@ const utilMethods = {
         return pubAddress
     },
     Sign(signParams) {
-        // let messageToBuffer = Buffer.from(signParams.message, "hex");
-        console.log(signParams.message);
-        let hash = Bitcoin.crypto.sha256(signParams.message);
+        let messageToBuffer = Buffer.from(signParams.message, "hex");
+        let hash = Bitcoin.crypto.sha256(messageToBuffer);
         let keyToBuffer = Buffer.from(signParams.privKey, "hex");
         let signature = ECPair.fromPrivateKey(keyToBuffer).sign(hash);
         let signature_encode = script_signature.encode(signature, 0x01);
         let signature_toHex = signature_encode.toString("hex");
-        // let signature_result = signature_toHex.substring(0, signature_toHex.length - 2);
-        return "46" + signature_toHex
+        let signature_result = signature_toHex.substring(0, signature_toHex.length - 2);
+        let signature_result_length = signature_result.length / 2;
+        let signature_result_prefix = (signature_result_length).toString(16);
+        return  signature_result_prefix + signature_result;
     },
     serialized_transaction(message, signature) {
         return message + signature
@@ -148,16 +149,29 @@ const utilMethods = {
         if (amount_prefix >= 10) {
             amount = amount_prefix.toString("hex") + amount_hex;
         };
-        let byteArraygasePrice = BigInteger(serializParams.gasPrice.toString()).toByteArray();
-        let gasPrice_hex = Buffer.from(byteArraygasePrice, "hex").toString("hex");
-        let gasPrice_prefix = (gasPrice_hex.length) / 2;
+        let gasPrice_hex = Number(serializParams.gasPrice).toString(16);
         let gasPrice;
-        if (gasPrice_prefix < 10) {
-            gasPrice = "0" + gasPrice_prefix + gasPrice_hex;
+        if (gasPrice_hex.length % 2 == 1) {
+            let gasPrice_prefix = "0" + gasPrice_hex;
+            let gasPrice_length = gasPrice_prefix.length / 2;
+            if (gasPrice_length < 10) {
+                gasPrice = "0" + gasPrice_length + gasPrice_prefix;
+            };
+            if (gasPrice_length >= 10) {
+                gasPrice = gasPrice_length + gasPrice_prefix;
+            };
         };
-        if (gasPrice_prefix >= 10) {
-            gasPrice = gasPrice_prefix.toString("hex") + gasPrice_hex;
-        }
+        if (gasPrice_hex.length % 2 == 0) {
+            let gasPrice_prefix = gasPrice_hex;
+            let gasPrice_length = gasPrice_prefix.length / 2;
+            if (gasPrice_length < 10) {
+                gasPrice = "0" + gasPrice_length + gasPrice_prefix;
+            };
+            if (gasPrice_length >= 10) {
+                gasPrice = gasPrice_length + gasPrice_prefix;
+            };
+        };
+        console.log(gasPrice);
         let byteArraygaseLimit = BigInteger(serializParams.gasLimit.toString()).toByteArray();
         let gasLimit_hex = Buffer.from(byteArraygaseLimit, "hex").toString("hex");
         let gasLimit_prefix = (gasLimit_hex.length) / 2;
@@ -168,9 +182,7 @@ const utilMethods = {
         if (gasLimit_prefix >= 10) {
             gasLimit = gasLimit_prefix .toString("hex") + gasLimit_hex;
         };
-        console.log("amount:" + amount + "serializParams.nonce" + serializParams.nonce);
-        
-        return serializParams.version + serializParams.txType + from + to + amount + "000000000000000"+serializParams.nonce + serializParams.data + "020237" + gasLimit+ serializParams.executeTime;
+        return serializParams.version + serializParams.txType + from + to + amount + serializParams.nonce + serializParams.data + gasPrice + gasLimit+ serializParams.executeTime;
     },
     produce_KeyStore(keyStoreParams) {
         let data = keyStoreParams.data;

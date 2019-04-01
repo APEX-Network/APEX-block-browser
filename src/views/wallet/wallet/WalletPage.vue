@@ -4,7 +4,7 @@
     <div class="flex-container1">
       <div class="flex-item1">Address</div>
       <input class="flex-item2" v-model="address" readonly="readonly">
-      <div class="flex-item3">CPX: {{CPX}}</div>
+      <div class="flex-item3">CPX:  {{CPX}}</div>
     </div>
     <div class="flex-container2">
       <div class="flex-item1">
@@ -12,7 +12,7 @@
         <!-- @click.native="modifyAddress('abc')" -->
       </div>
       <div class="flex-item2">
-        <router-link to="/wallet/OpenWallet">OPEN WALLET</router-link>
+        <router-link to="/wallet/OpenWallet">IMPORT WALLET</router-link>
       </div>
       <div class="flex-item3">
         <router-link to="/wallet/Transfer" @click.native="sendAddress">TRANSFER</router-link>
@@ -135,9 +135,9 @@ export default {
     box-shadow: 2px 2px 8px 2px #f26522;
   }
   .flex-item3 {
-    width: 220px;
+    // width: 220px;
     height: 35px;
-    margin: 50px 0 0 95px;
+    margin: 50px 0 0 155px;
     line-height: 35px;
     text-align: center;
     font-size: 22px;

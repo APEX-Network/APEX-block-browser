@@ -1,7 +1,7 @@
 <template>
   <div class="home clearboth">
     <div class="top-modul clearboth">
-        <wallet-page :address="apAddress" :privKey="privKey"/>
+        <wallet-page :address="apAddress" :privKey="privKey" />
     </div>
     <div class="bottom-modul clearboth">
       <transfers-list />

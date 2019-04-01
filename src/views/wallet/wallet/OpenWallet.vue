@@ -25,7 +25,7 @@ export default {
   props: [""],
   data() {
     return {
-      title: "OpenWallet"
+      title: "ImportWallet"
     };
   },
 

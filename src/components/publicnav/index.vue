@@ -39,7 +39,7 @@
       </ul>
     </div>
     <div ref="aboutUs" class="aboutus">
-      <img src="../../assets/images/aboutus.png">
+      <img src="../../../static/bottom/bg.jpg">
     </div>
   </div>
 </template>
@@ -268,9 +268,9 @@ export default {
   .aboutus {
     // z-index: 10000;
     width: 80%;
-    margin-left: 200px;
+    margin-left: 205px;
     margin-right: 148px;
-    padding-top: 472px;
+    padding-top: 440px;
     visibility: hidden;
   }
   .main {
@@ -354,7 +354,7 @@ export default {
   .nav-bar {
     z-index: 9999;
     position: fixed;
-    bottom: 150px;
+    bottom: 300px;
     left: 106px;
     width: 30px;
     height: 350px;

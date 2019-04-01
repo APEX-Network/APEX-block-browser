@@ -36,19 +36,23 @@ export default {
       ops: {},
       transactions: [],
       clickValue: null,
-      transaction_list_url: "/api/v1.0/transactions/transactionList",
-      params: {
-        start: "0",
-        pageSize: "11"
-      }
+      accountTransaction_url: "/api/v1.0/transactions/account/transactionList",
+      accountTransaction_param: {
+        start: 0,
+        pageSize: 6,
+        address: null
+      },
     };
   },
   mounted() {
+    this.accountTransaction_param.address = sessionStorage.getItem("apAddress");  
+    console.log(this.accountTransaction_param.address);
     this.getTransactionsList();
     const timer = setInterval(() => {
       this.getTransactionsList();
     }, 1500);
     this.$once("hook:beforeDestroy", () => {
+      // sessionStorage.setItem("apAddress", null)
       clearInterval(timer);
     });
   },
@@ -57,23 +61,24 @@ export default {
       Bus.$emit("txHash", e.target.innerHTML);
     },
     getTransactionsList() {
-      if (!!this.params) {
+      if (!!this.accountTransaction_param) {
         this.$axios
-          .post(this.transaction_list_url, this.params)
-          .then(response => {
-            let res = response.data.data;
-            let seconds;
-            for (let i = 0; i < res.length; i++) {
-              const item = res[i];
-              seconds = util.utilMethods.getSec(item.refBlockTime);
-              item.refBlockTime = seconds;
-            }
-            this.transactions = res;
-          })
-          .catch(function(err) {
-            if (err.response) {
-            }
-          });
+        .post(this.accountTransaction_url,  this.accountTransaction_param)
+        .then(response => {
+          let res = response.data.data;
+          this.transactions = res;
+          let time;
+          for (let i = 0; i < this.transactions.length; i++) {
+            let element = this.transactions[i];
+            time = util.utilMethods.getSec(element.refBlockTime);
+            element.refBlockTime = time;
+          };
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
       }
     }
   }

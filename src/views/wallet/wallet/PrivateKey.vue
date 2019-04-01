@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="create">
-        <router-link to="/wallet" @click.native="privKeyAddress">UNLOCK</router-link>
+        <router-link to="/wallet" @click.native="privKeyAddress">ENCRYPT</router-link>
       </div>
     </div>
   </div>
@@ -84,6 +84,7 @@ export default {
       let key = this.pwd;
       this.walletAddress = util.utilMethods.privKeyWallet(userPrivKey, key);
       Bus.$emit("apAddress", this.walletAddress);
+      sessionStorage.setItem("apAddress", this.walletAddress);
     }
   },
 

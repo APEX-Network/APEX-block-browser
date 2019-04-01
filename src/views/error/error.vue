@@ -37,6 +37,12 @@ export default {
 </script>
 <style lang='less' scoped>
 @import "./../../assets/css/layout";
+.data-table {
+  // img {
+  //   min-height: 80vh;
+  //   width: 100%
+  // }
+}
 .back-home {
    width: 100%;
   height: 760px;

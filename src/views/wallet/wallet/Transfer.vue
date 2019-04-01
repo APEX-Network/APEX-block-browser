@@ -23,7 +23,7 @@
       </div>
 
       <div class="amount">
-        <div>Amount (Available:{{amount}})</div>
+        <div>Amount (Available:   <span>{{amount}}</span>)</div>
         <input
           spellcheck="false"
           type="text"
@@ -148,8 +148,11 @@ export default {
       this.inputAmout = this.$refs.inputAmout.value;
     },
     setAllAmount() {
-      this.$refs.inputAmout.value = this.amount;
-      this.inputAmout = this.amount;
+      let allamount = this.amount - (this.amount * Math.pow(10, -12)) * 30000;
+      console.log(allamount);
+      
+      this.$refs.inputAmout.value = allamount;
+      this.inputAmout = allamount;
     },
     getInputGasePrice() {
       this.inputGasePrice = this.$refs.inputGasePrice.value;
@@ -190,7 +193,7 @@ export default {
           let res = response.data.data;
           let result = res.toString().indexOf(".");
           console.log(result);
-          
+
           if (result !== -1) {
             let pointLength = res.balance.toString().split(".")[1].length;
             if (pointLength > 8) {
@@ -198,7 +201,7 @@ export default {
             } else {
               this.amount = Number(res.balance);
             }
-          };
+          }
           if (result == -1) {
             this.amount = Number(res.balance);
           }
@@ -229,17 +232,17 @@ export default {
         this.inputGasePrice !== null &&
         this.pwd !== null
       ) {
-        // this.checkAddress();
+        this.checkAddress();
         this.$refs.dialog.style.display = "flex";
         let serializParams = {
           version: "00000001", //不变
           txType: "01", //不变
           from: this.apAddress,
           to: this.toAddress,
-          amount: this.inputAmout * Math.pow(10, 18),
-          nonce: this.nonce, //从服务器获取该账户的nonce值
+          amount: this.inputAmout,
+          nonce: "0000000000000000", //从服务器获取该账户的nonce值
           data: "00", //不变
-          gasPrice: this.inputGasePrice * Math.pow(10, -18), //用户输入(此处转换不对)
+          gasPrice: this.inputGasePrice, //用户输入(此处转换不对)
           gasLimit: "30000", //程序限制
           executeTime: "0000000000000000" //不变
         };
@@ -355,6 +358,9 @@ export default {
       div {
         margin: 0% 5% 0 2%;
         position: relative;
+        span {
+          color: #f26522;
+        }
       }
       input {
         background: rgba(255, 255, 255, 0.001);
