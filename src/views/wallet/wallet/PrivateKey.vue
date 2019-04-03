@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="create">
-        <router-link to="/wallet" @click.native="privKeyAddress">ENCRYPT</router-link>
+        <router-link to="" @click.native="privKeyAddress">ENCRYPT</router-link>
       </div>
     </div>
   </div>
@@ -39,7 +39,7 @@ import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "./../../../utils/utils";
 import Bus from "./../../../utils/bus";
-import db from './../../../utils/myDatabase';
+import db from "./../../../utils/myDatabase";
 
 export default {
   name: "PrivateKey",
@@ -49,7 +49,8 @@ export default {
       title: "OpenWallet",
       privKey: null,
       pwd: null,
-      keyStore: null
+      keyStore: null,
+      privKeyStore: null
     };
   },
 
@@ -79,12 +80,26 @@ export default {
       this.$refs.pwd.type = "text";
     },
     privKeyAddress() {
-      Bus.$emit("privKey", this.privKey);
-      let userPrivKey = this.privKey;
-      let key = this.pwd;
-      this.walletAddress = util.utilMethods.privKeyWallet(userPrivKey, key);
-      Bus.$emit("apAddress", this.walletAddress);
-      sessionStorage.setItem("apAddress", this.walletAddress);
+      if (this.privKey !== null && this.pwd !== null) {
+        Bus.$emit("privKey", this.privKey);
+        let userPrivKey = this.privKey;
+        let key = this.pwd;
+        let keyStoreParams = {
+          data: this.privKey,
+          key: this.pwd,
+          iv: null
+        };
+        this.walletAddress = util.utilMethods.privKeyWallet(userPrivKey, key);
+        this.privKeyStore = util.utilMethods.produce_KeyStore(keyStoreParams);
+        console.log(this.walletAddress + "</br>" + this.privKeyStore);
+        db.APKStore.put({
+          APAddress: this.walletAddress,
+          KStore: this.privKeyStore
+        });
+        Bus.$emit("apAddress", this.walletAddress);
+        sessionStorage.setItem("apAddress", this.walletAddress);
+        this.$router.push("/wallet");
+      }
     }
   },
 

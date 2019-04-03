@@ -5,6 +5,7 @@ const Base58check = require('base58check');
 const script_signature = require("bitcoinjs-lib/src/script_signature");
 const CryptoJS = require('./../../node_modules/crypto-js/crypto-js.js');
 const BigInteger = require('bigi');
+const bigdecimal = require("bigdecimal");
 
 
 const utilMethods = {
@@ -124,30 +125,50 @@ const utilMethods = {
         let signature_result = signature_toHex.substring(0, signature_toHex.length - 2);
         let signature_result_length = signature_result.length / 2;
         let signature_result_prefix = (signature_result_length).toString(16);
-        return  signature_result_prefix + signature_result;
+        return signature_result_prefix + signature_result;
     },
     serialized_transaction(message, signature) {
         return message + signature
     },
     produce_message(serializParams) {
+        console.log(serializParams.amount);
         let decode_from = Base58check.decode(serializParams.from).data.toString("hex");
         let from = decode_from.substring(2);
-        console.log(from);
-
         //Base58check decode
         let decode_PubKeyHash = Base58check.decode(serializParams.to).data.toString("hex");
         let to = decode_PubKeyHash.substring(2);
-        console.log(to);
-
-        let byteArrayamount = BigInteger(serializParams.amount.toString()).toByteArray();
-        let amount_hex = Buffer.from(byteArrayamount, "hex").toString("hex")
+        let eightPow = new bigdecimal.BigInteger(Math.pow(10, 18).toString());
+        let bigEightPow = new bigdecimal.BigDecimal(eightPow);
+        let bigAmount = new bigdecimal.BigDecimal(String(serializParams.amount));
+        let amountMultiplyEightPow = bigAmount.multiply(bigEightPow).toString();
+        let byteArrayamount = BigInteger(amountMultiplyEightPow.split(".")[0]).toByteArray();            
+        let amount_hex = Buffer.from(byteArrayamount, "hex").toString("hex");
         let amount_prefix = (amount_hex.length) / 2;
         let amount;
-        if (amount_prefix < 10) {
-            amount = "0" + amount_prefix + amount_hex;
+        if (amount_prefix <= 15) {
+            amount = "0" + Number(amount_prefix).toString(16) + amount_hex;
+            console.log(amount);
         };
-        if (amount_prefix >= 10) {
-            amount = amount_prefix.toString("hex") + amount_hex;
+        if (amount_prefix >= 16) {
+            amount = Number(amount_prefix).toString(16) + amount_hex;
+            console.log(amount);
+        };
+        console.log(amount_prefix);
+        let nonce;
+        if (serializParams.nonce <= 15) {
+            if (serializParams.nonce < 10) {
+                nonce = "000000000000000" + serializParams.nonce;
+                console.log(nonce);
+            };
+            if (serializParams.nonce >= 10) {
+                nonce = "000000000000000" + Number(serializParams.nonce).toString(16);
+                console.log(nonce);
+            };
+        };
+        if (serializParams.nonce > 15 && serializParams.nonce < 255) {
+            let nonce_hex = Number(serializParams.nonce).toString(16);
+            nonce = "00000000000000" + nonce_hex;
+            console.log(nonce);
         };
         let gasPrice_hex = Number(serializParams.gasPrice).toString(16);
         let gasPrice;
@@ -160,6 +181,7 @@ const utilMethods = {
             if (gasPrice_length >= 10) {
                 gasPrice = gasPrice_length + gasPrice_prefix;
             };
+            console.log(gasPrice);
         };
         if (gasPrice_hex.length % 2 == 0) {
             let gasPrice_prefix = gasPrice_hex;
@@ -170,8 +192,8 @@ const utilMethods = {
             if (gasPrice_length >= 10) {
                 gasPrice = gasPrice_length + gasPrice_prefix;
             };
+            console.log(gasPrice);
         };
-        console.log(gasPrice);
         let byteArraygaseLimit = BigInteger(serializParams.gasLimit.toString()).toByteArray();
         let gasLimit_hex = Buffer.from(byteArraygaseLimit, "hex").toString("hex");
         let gasLimit_prefix = (gasLimit_hex.length) / 2;
@@ -180,9 +202,10 @@ const utilMethods = {
             gasLimit = "0" + gasLimit_prefix + gasLimit_hex;
         };
         if (gasLimit_prefix >= 10) {
-            gasLimit = gasLimit_prefix .toString("hex") + gasLimit_hex;
+            gasLimit = gasLimit_prefix.toString("hex") + gasLimit_hex;
         };
-        return serializParams.version + serializParams.txType + from + to + amount + serializParams.nonce + serializParams.data + gasPrice + gasLimit+ serializParams.executeTime;
+        console.log(gasLimit);
+        return serializParams.version + serializParams.txType + from + to + amount + nonce + serializParams.data + gasPrice + gasLimit + serializParams.executeTime;
     },
     produce_KeyStore(keyStoreParams) {
         let data = keyStoreParams.data;
@@ -205,7 +228,7 @@ const utilMethods = {
         let DeckeyStore = CryptoJS.AES.decrypt(downKeyStore, keyStorekey, iv);
         let privKey = DeckeyStore.toString(CryptoJS.enc.Utf8);
         console.log(privKey);
-        
+
         //  根据私钥生成地址
         let privKeyToBuffer = Buffer.from(privKey, "hex");
         let privKeyToPub = ECPair.fromPrivateKey(privKeyToBuffer).publicKey;

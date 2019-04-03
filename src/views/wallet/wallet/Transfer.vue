@@ -105,7 +105,8 @@ export default {
       secondInput: null,
       thereInput: null,
       fourInput: null,
-      fiveInput: null
+      fiveInput: null,
+      allamount: null
     };
   },
 
@@ -143,20 +144,20 @@ export default {
 
     getToAddress() {
       this.toAddress = this.$refs.to.value;
+      if (this.toAddress == this.apAddress) {
+        this.$refs.to.value = null;
+        alert("账户填写重复!请重新填写")
+      }
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
     },
     setAllAmount() {
-      let allamount = this.amount - (this.amount * Math.pow(10, -12)) * 30000;
-      console.log(allamount);
-      
-      this.$refs.inputAmout.value = allamount;
-      this.inputAmout = allamount;
+      this.$refs.inputAmout.value = this.amount;
+      this.inputAmout = this.allamount;
     },
     getInputGasePrice() {
       this.inputGasePrice = this.$refs.inputGasePrice.value;
-      console.log("获得用户输入的GasePrice值:" + this.inputGasePrice);
     },
     getPwd() {
       this.pwd = this.$refs.firstPwd.value;
@@ -192,9 +193,8 @@ export default {
         .then(response => {
           let res = response.data.data;
           let result = res.toString().indexOf(".");
-          console.log(result);
-
-          if (result !== -1) {
+          this.allamount = res.balance;
+          if (result == -1) {
             let pointLength = res.balance.toString().split(".")[1].length;
             if (pointLength > 8) {
               this.amount = Number(res.balance).toFixed(8);
@@ -202,7 +202,7 @@ export default {
               this.amount = Number(res.balance);
             }
           }
-          if (result == -1) {
+          if (result !== -1) {
             this.amount = Number(res.balance);
           }
           this.nonce = res.nextNonce;
@@ -239,13 +239,13 @@ export default {
           txType: "01", //不变
           from: this.apAddress,
           to: this.toAddress,
-          amount: this.inputAmout,
-          nonce: "0000000000000000", //从服务器获取该账户的nonce值
+          amount: this.inputAmout - ((this.inputGasePrice * Math.pow(10, -12)) * 30000),
+          nonce: this.nonce, //从服务器获取该账户的nonce值
           data: "00", //不变
-          gasPrice: this.inputGasePrice, //用户输入(此处转换不对)
+          gasPrice: this.inputGasePrice,
           gasLimit: "30000", //程序限制
           executeTime: "0000000000000000" //不变
-        };
+        };             
         this.message = util.utilMethods.produce_message(serializParams);
         let signParams = {
           message: this.message,
@@ -265,6 +265,7 @@ export default {
           this.message,
           this.signature
         );
+        console.log(this.serialized_transaction);
       }
       return;
     },
@@ -492,12 +493,12 @@ export default {
     display: none;
     position: relative;
     width: 100%;
-    height: 103%;
-    margin-top: -38px;
-    background: rgba(255, 255, 255, 0.1);
+    height: 100%;
+    // margin-top: -38px;
+    background: rgba(255, 255, 255, 0);
     justify-content: center;
     align-items: center;
-    z-index: 1;
+    z-index: 2;
     .confirm {
       margin: auto;
       width: 310px;

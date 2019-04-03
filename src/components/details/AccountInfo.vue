@@ -121,7 +121,7 @@ export default {
         .then(response => {
           let res = response.data.data;
           let result = res.toString().indexOf(".");
-          if (result !== -1) {
+          if (result == -1) {
             let pointLength = res.balance.toString().split(".")[1].length;
             if (pointLength > 8) {
               this.Balance = Number(res.balance).toFixed(8);
@@ -129,7 +129,7 @@ export default {
               this.Balance = Number(res.balance);
             }
           };
-          if (result == -1) {
+          if (result !== -1) {
             this.Balance = Number(res.balance);
           };
         })

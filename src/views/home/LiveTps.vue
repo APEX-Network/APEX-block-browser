@@ -67,7 +67,7 @@ export default {
         grid: {
           left: -48,
           right: 0,
-          top: 60,
+          top: 0,
           bottom: 5,
           containLabel: true
         },

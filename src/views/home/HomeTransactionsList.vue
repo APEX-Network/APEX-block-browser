@@ -26,64 +26,55 @@
 import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
-import { setTimeout } from "timers";
 export default {
-  name: "transactionsList",
+  name: "HomeTransactionsList",
   components: {
     Pagination
   },
-  data() {
+   data() {
     return {
-      ops: {},
+      title: "Transactions",
       transactions: [],
       clickValue: null,
-      accountTransaction_url: "/api/v1.0/transactions/account/transactionList",
-      accountTransaction_param: {
-        start: 0,
-        pageSize: 10,
-        address: null
+      transaction_list_url: "/api/v1.0/transactions/transactionList",
+      parmas: {
+        start: "0",
+        pageSize: "20"
       }
     };
   },
+  created() {
+  },
   mounted() {
-    setTimeout(() => {
-      this.accountTransaction_param.address = sessionStorage.getItem(
-        "apAddress"
-      );
-    });
-    this.getTransactionsList();
+    this.getAllTransactions();
     const timer = setInterval(() => {
-      this.getTransactionsList();
+      this.getAllTransactions();
     }, 1500);
     this.$once("hook:beforeDestroy", () => {
-      // sessionStorage.setItem("apAddress", null)
       clearInterval(timer);
     });
   },
   methods: {
+    getAllTransactions() {
+      this.$axios
+        .post(this.transaction_list_url, this.parmas)
+        .then(response => {
+          let res = response.data.data;
+          let minu;
+          for (let i = 0; i < res.length; i++) {
+            const item = res[i];
+            minu = util.utilMethods.getSec(item.refBlockTime);
+            item.refBlockTime = minu;
+          }
+          this.transactions = res;
+        })
+        .catch(function(err) {
+          if (err.response) {
+          }
+        });
+    },
     setClickValue(e) {
       Bus.$emit("txHash", e.target.innerHTML);
-    },
-    getTransactionsList() {
-      if (!!this.accountTransaction_param) {
-        this.$axios
-          .post(this.accountTransaction_url, this.accountTransaction_param)
-          .then(response => {
-            let res = response.data.data;
-            this.transactions = res;
-            let time;
-            for (let i = 0; i < this.transactions.length; i++) {
-              let element = this.transactions[i];
-              time = util.utilMethods.getSec(element.refBlockTime);
-              element.refBlockTime = time;
-            }
-          })
-          .catch(function(err) {
-            if (err.response) {
-              console.log(err.response);
-            }
-          });
-      }
     }
   }
 };

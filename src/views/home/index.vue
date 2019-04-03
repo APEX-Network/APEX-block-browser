@@ -6,7 +6,7 @@
     </div>
     <div class="bottom-modul clearboth">
         <blocks-list/>
-        <transactions-list/>
+        <home-transactions-list/>
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@
 import LiveTps from "@/views/home/LiveTps";
 import OverView from "@/views/home/OverView";
 import BlocksList from "@/components/list/BlocksList";
-import TransactionsList from "@/components/list/TransactionsList";
+import HomeTransactionsList from "./HomeTransactionsList";
 
 export default {
   name: "home",
@@ -22,7 +22,7 @@ export default {
     LiveTps,
     OverView,
     BlocksList,
-    TransactionsList
+    HomeTransactionsList
   },
   data() {
     return {};

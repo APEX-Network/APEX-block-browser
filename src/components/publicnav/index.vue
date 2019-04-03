@@ -354,7 +354,7 @@ export default {
   .nav-bar {
     z-index: 9999;
     position: fixed;
-    bottom: 300px;
+    bottom: 25%;
     left: 106px;
     width: 30px;
     height: 350px;

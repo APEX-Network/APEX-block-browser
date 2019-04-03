@@ -3,8 +3,12 @@
     <p class="apex-title">Wallet</p>
     <div class="flex-container1">
       <div class="flex-item1">Address</div>
-      <input class="flex-item2" v-model="address" readonly="readonly">
-      <div class="flex-item3">CPX:  {{CPX}}</div>
+      <!-- <input class="flex-item2" v-model="address" readonly="readonly"> -->
+      <select class="flex-item2" v-model="address"  readonly="readonly">
+        <option v-for="(address, index) in APAddress" :key="index" >{{address}}</option>
+      </select>
+      <!-- <v-select class="flex-item2" v-model="selected" :options="APAddress"></v-select> -->
+      <div class="flex-item3">CPX: {{CPX}}</div>
     </div>
     <div class="flex-container2">
       <div class="flex-item1">
@@ -25,19 +29,21 @@
 </template>
 
 <script>
-// import Vue from 'vue';
+import Vue from "vue";
 import { mapActions, mapGetters } from "vuex";
 import Bus from "./../../../utils/bus";
 import db from "./../../../utils/myDatabase";
+import vSelect from "vue-select";
 // import vSelect from './components/Select.vue'
 
-// Vue.component('v-select', vSelect)
+Vue.component("v-select", vSelect);
 export default {
   name: "walletpage",
   props: ["address", "privKey"],
   data() {
     return {
       APAddress: [],
+      // selected: null,
       // privKey: null,
       getAllAddress: null,
       accountInfo_url: "/api/v1.0/accounts/account",
@@ -50,6 +56,7 @@ export default {
   beforeMount() {},
 
   mounted() {
+    this.address = sessionStorage.getItem("apAddress");
     setTimeout(() => {
       this.getCPX(this.address);
     });
@@ -60,6 +67,7 @@ export default {
           this.APAddress.push(v.APAddress);
         });
       });
+    console.log(this.APAddress);
   },
 
   methods: {
@@ -78,14 +86,16 @@ export default {
         .then(response => {
           let res = response.data.data;
           let result = res.toString().indexOf(".");
-          if (result != -1) {
+          console.log(result);
+          if (result == -1) {
             let pointLength = res.balance.toString().split(".")[1].length;
             if (pointLength > 8) {
               this.CPX = Number(res.balance).toFixed(8);
             } else {
               this.CPX = Number(res.balance);
             }
-          } else {
+          }
+          if (result !== -1) {
             this.CPX = Number(res.balance);
           }
         })
@@ -123,7 +133,7 @@ export default {
     margin: 50px 0 0 30px;
   }
   .flex-item2 {
-    width: 306px;
+    width: 335px;
     height: 33px;
     margin: 50px 0px 0px 0px;
     line-height: 33px;
@@ -137,7 +147,7 @@ export default {
   .flex-item3 {
     // width: 220px;
     height: 35px;
-    margin: 50px 0 0 155px;
+    margin: 50px 0 0 132px;
     line-height: 35px;
     text-align: center;
     font-size: 22px;
@@ -169,7 +179,7 @@ export default {
     line-height: 35px;
     text-align: center;
     border: 1px solid #f26522;
-    margin: 40px 0px 0px 27px;
+    margin: 40px 0px 0px 55px;
     a {
       color: #f26522;
     }

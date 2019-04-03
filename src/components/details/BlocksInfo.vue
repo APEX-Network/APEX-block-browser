@@ -19,7 +19,7 @@
         <li class="row">
           <span class="col">
             Transactions:
-            <span class="clol col-lg-8">{{transactions}} transactions in this block</span>
+            <span class="clol col-lg-8">{{transactions}}</span>
           </span>
         </li>
         <li class="row">
@@ -112,7 +112,8 @@ export default {
                 this.height = res.height;
                 this.blockHash = res.blockHash;
                 this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
-                this.transactions = res.txNum;
+                this.transactions =
+                  res.txNum + " " + "transactions in this block";
                 this.parentHash = res.prevBlock;
                 this.minedBy = res.producer;
                 this.nonce = res.txNum;
@@ -126,13 +127,16 @@ export default {
               .get(this.url.blockHeight_url + params)
               .then(response => {
                 let res = response.data.data;
-                this.height = res.height;
-                this.blockHash = res.blockHash;
-                this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
-                this.transactions = res.txNum;
-                this.parentHash = res.prevBlock;
-                this.minedBy = res.producer;
-                this.nonce = res.txNum;
+                if (res !== "NotFound") {
+                  this.height = res.height;
+                  this.blockHash = res.blockHash;
+                  this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
+                  this.transactions =
+                    res.txNum + " " + "transactions in this block";
+                  this.parentHash = res.prevBlock;
+                  this.minedBy = res.producer;
+                  this.nonce = res.txNum;
+                }
               })
               .catch(function(response) {
                 console.log(response);
@@ -149,7 +153,7 @@ export default {
             let res = response.data.data;
             this.height = res.height;
             this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
-            this.transactions = res.txNum;
+            this.transactions = res.txNum + " " + "transactions in this block";
             this.blockHash = res.blockHash;
             this.parentHash = res.prevBlock;
             this.minedBy = res.producer;
@@ -161,8 +165,7 @@ export default {
       }
     }
   },
-  watch: {
-  }
+  watch: {}
 };
 </script>
 

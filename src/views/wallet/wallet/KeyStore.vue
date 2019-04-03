@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="create">
-        <router-link to="/wallet" @click.native="keyStoreWallet">CONTNUE</router-link>
+        <router-link to @click.native="keyStoreWallet">CONTNUE</router-link>
       </div>
     </div>
   </div>
@@ -74,15 +74,18 @@ export default {
       this.$refs.pwd.type = "text";
     },
     keyStoreWallet() {
-      let downKeyStore = this.keyStore;
-      let key = this.pwd;
-      this.walletAddress = util.utilMethods.keyStoreWallet(downKeyStore, key);
-      Bus.$emit("apAddress", this.walletAddress);
-      sessionStorage.setItem("apAddress", this.walletAddress);
-      db.APKStore.put({
-        APAddress: this.walletAddress,
-        KStore: this.keyStore
-      });
+      if (this.keyStore !== null && this.pwd !== null) {
+        let downKeyStore = this.keyStore;
+        let key = this.pwd;
+        this.walletAddress = util.utilMethods.keyStoreWallet(downKeyStore, key);
+        Bus.$emit("apAddress", this.walletAddress);
+        sessionStorage.setItem("apAddress", this.walletAddress);
+        db.APKStore.put({
+          APAddress: this.walletAddress,
+          KStore: this.keyStore
+        });
+        this.$router.push("/wallet");
+      }
     }
   },
 

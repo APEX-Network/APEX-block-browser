@@ -129,16 +129,16 @@ export default {
         }
         let ap = "0548";
         let signParams = {
-          message: "416c616e20547572696e67",
           privKey: ECPair.makeRandom().privateKey.toString("hex")
         };
         Bus.$emit("privKey", signParams.privKey);
-        let signature = util.utilMethods.Sign(signParams);
+        // let signature = util.utilMethods.Sign(signParams);
         this.apAddress = util.utilMethods.produce_address(
           signParams.privKey,
           ap
         );
         Bus.$emit("apAddress", this.apAddress);
+        sessionStorage.setItem("apAddress", this.apAddress);
         let keyStoreParams = {
           data: signParams.privKey,
           key: this.secondPwd,
