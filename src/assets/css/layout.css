@@ -57,6 +57,7 @@ body .logo-left {
 }
 #app {
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 #app .main-box {
   position: absolute;

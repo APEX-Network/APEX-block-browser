@@ -209,13 +209,15 @@ export default {
   height: 100%;
   background: url(./../../assets/images/shared/yunshi.png) 40% 45% no-repeat;
   .data-table {
-    // .table-ul {
-    //   .row {
-    //     .height {
-    //       color: #f26522;
-    //     }
-    //   }
-    // }
+    .table-ul {
+      //  & > li {
+      //   & > span {
+      //     a{
+      //     width: 40%;
+      //     }
+      //   }
+      // }
+    }
     .uchain-pagination {
       width: 100%;
       height: 50px;

@@ -77,7 +77,7 @@ import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "../../../utils/utils";
 import Bus from "./../../../utils/bus";
 import db from "./../../../utils/myDatabase";
-import { stringify } from "querystring";
+const bigdecimal = require("bigdecimal");
 
 export default {
   name: "Transfer",
@@ -154,7 +154,7 @@ export default {
     },
     setAllAmount() {
       this.$refs.inputAmout.value = this.amount;
-      this.inputAmout = this.allamount;
+      this.inputAmout = this.amount;
     },
     getInputGasePrice() {
       this.inputGasePrice = this.$refs.inputGasePrice.value;
@@ -228,8 +228,8 @@ export default {
       if (
         this.apAddress !== null &&
         this.toAddress !== null &&
-        this.inputAmout !== null &&
-        this.inputGasePrice !== null &&
+        this.inputAmout !== null && this.inputAmout !== 0 && 
+        this.inputGasePrice !== null && this.inputGasePrice !== 0 &&
         this.pwd !== null
       ) {
         this.checkAddress();
@@ -239,13 +239,13 @@ export default {
           txType: "01", //不变
           from: this.apAddress,
           to: this.toAddress,
-          amount: this.inputAmout - ((this.inputGasePrice * Math.pow(10, -12)) * 30000),
+          amount: new bigdecimal.BigDecimal(String(this.inputAmout)).subtract(new bigdecimal.BigDecimal(String((this.inputGasePrice * Math.pow(10, -12)) * 30000))),
           nonce: this.nonce, //从服务器获取该账户的nonce值
           data: "00", //不变
           gasPrice: this.inputGasePrice,
           gasLimit: "30000", //程序限制
           executeTime: "0000000000000000" //不变
-        };             
+        }; 
         this.message = util.utilMethods.produce_message(serializParams);
         let signParams = {
           message: this.message,
@@ -276,10 +276,10 @@ export default {
         this.pwd
       );
       if (this.walletAddress == this.apAddress) {
-        alert("恭喜您输入密码正确,您可以给我转钱了");
+        alert("密码输入正确,请确定交易!");
       }
       if (this.walletAddress !== this.apAddress) {
-        alert("sorry!请输入正确的密码,才能给我转钱哦😯");
+        alert("sorry!请输入正确的密码,进行交易!");
         this.$router.push("/wallet/Transfer");
         return;
       }

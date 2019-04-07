@@ -1,12 +1,17 @@
 <template>
-
-  <div>
+  <div class="error">
     <div class="data-table">
-    <img src="./../../assets/images/error.png" alt>
-  </div>
-     <!-- <div @click="backHome" class="back-home">
-    <router-link to="/home">BACK HOME</router-link>
-  </div> -->
+      <ul>
+        <li>ERROR</li>
+
+        <li class="second-li">NOTHING FOUND</li>
+
+        <li>SORRY. THIS IS AN INVALID SEARCH STRING.</li>
+       <li class="flex-item3">
+        <router-link to="/home">BACK HOME</router-link>
+      </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -27,9 +32,9 @@ export default {
   mounted() {},
 
   methods: {
-    backHome() {
-      alert("返回主页面");
-    }
+    // backHome() {
+    //   this.$router.push("/home")
+    // }
   },
 
   watch: {}
@@ -37,15 +42,42 @@ export default {
 </script>
 <style lang='less' scoped>
 @import "./../../assets/css/layout";
-.data-table {
-  // img {
-  //   min-height: 80vh;
-  //   width: 100%
-  // }
+.error {
+    background: url("../../assets/images/shared/yunshi.png") 25% 41% no-repeat;
 }
-.back-home {
-   width: 100%;
-  height: 760px;
-  position: relative;
+.data-table {
+  height: calc(100vh - 210px);
+  background-color: hsla(0, 0%, 100%, 0.1);
+  ul {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    li {
+      list-style: none;
+      margin: 0 auto 50px auto;
+      font-size: 20px;
+      font-family: Semibold, Microsoft YaHei, Open Sans, Arial, Helvetica,
+        Sans-serif, Verdana, Tahoma;
+      color: #fff;
+    }
+    .second-li {
+       margin: 0 auto 20px auto;
+    }
+    .flex-item3 {
+    width: 120px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    border: 1px solid #f26522;
+    font-size: 15px;
+    a {
+      color: #f26522;
+    }
+    a:hover {
+      box-shadow: 2px 2px 8px 2px #f26522;
+    }
+  }
+  }
 }
 </style>

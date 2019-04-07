@@ -9,7 +9,6 @@
 <script>
 import echarts from "echarts";
 import util from "./../../utils/utils";
-import { setTimeout, clearInterval, setInterval } from "timers";
 
 export default {
   name: "livetps",
@@ -24,14 +23,13 @@ export default {
       myChart: null
     };
   },
-  created() {
-  },
+  created() {},
   mounted() {
     this.myChart = echarts.init(document.getElementById("echartContainer"));
     this.postBlockTips();
     const timer = setInterval(() => {
       this.postBlockTips();
-    }, 1500);
+    }, 2000);
     this.$once("hook:beforeDestroy", () => {
       clearInterval(timer);
     });
@@ -67,7 +65,7 @@ export default {
         grid: {
           left: -48,
           right: 0,
-          top: 0,
+          top: 120,
           bottom: 5,
           containLabel: true
         },
@@ -88,7 +86,7 @@ export default {
           splitLine: { show: false },
           axisTick: { show: false },
           axisLabel: {
-            interval: 2,
+            interval: 2
           }
         },
         yAxis: {
@@ -116,7 +114,7 @@ export default {
           textStyle: {
             color: "#ffffff",
             fontSize: "14px"
-          },
+          }
           // formatter: function(data) {
           //   let res;
           //   tooltps.forEach(v => {
@@ -155,10 +153,13 @@ export default {
           }
         ]
       });
+      window.addEventListener("resize", () => {
+        // this.myChart.resize();
+        this.myChart.setOption.grid = "0"
+      });
     }
   },
   destroyed() {
-    // this.wesocketclose();
   },
   computed: {}
 };
@@ -196,7 +197,7 @@ export default {
   .home {
     .tps {
       .chart-box {
-          height: 300px;
+        height: 200px;
       }
     }
   }

@@ -2,9 +2,9 @@
   <div class="block apex-modul fl">
     <p class="apex-title">
       Blocks
-      <span>
-        <router-link to="/blocks">ALL</router-link>
-      </span>
+      <router-link to="/blocks">
+        <span>ALL</span>
+      </router-link>
     </p>
     <ul class="apex-list">
       <vue-scroll :ops="ops">
@@ -82,7 +82,7 @@ export default {
       this.clickValue.value = e.target.innerHTML;
       Bus.$emit("clickValue", JSON.stringify(this.clickValue));
     }
-  },
+  }
 };
 </script>
 
@@ -90,8 +90,9 @@ export default {
 .apex-modul {
   .apex-title {
     height: 43px;
-    span {
-      a {
+    a {
+      display: inline;
+      span {
         color: #f26522;
       }
     }

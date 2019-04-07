@@ -2,9 +2,9 @@
   <div class="transactions apex-modul fr">
     <p class="apex-title">
       Transactions
-      <span>
-        <router-link to="/transactions">ALL</router-link>
-      </span>
+      <router-link to="/transactions/TransactionsInfo/AccountInfo" @click.native="goAccountInfo">
+        <span>ALL</span>
+      </router-link>
     </p>
     <ul class="apex-list">
       <vue-scroll :ops="ops">
@@ -64,6 +64,9 @@ export default {
     setClickValue(e) {
       Bus.$emit("txHash", e.target.innerHTML);
     },
+    goAccountInfo() {
+      Bus.$emit("accountValue", sessionStorage.getItem("apAddress"));
+    },
     getTransactionsList() {
       if (!!this.accountTransaction_param) {
         this.$axios
@@ -93,8 +96,9 @@ export default {
 .apex-modul {
   .apex-title {
     height: 43px;
-    span {
-      a {
+    a {
+      display: inline;
+      span {
         color: #f26522;
       }
     }

@@ -54,18 +54,18 @@ export default {
       minerBy_url: "/api/v1.0/minerInfo/minerList",
       params: {
         start: "0",
-        pageSize: "12"
+        pageSize: "10"
       }
     };
   },
   mounted() {
     this.getProducerList();
-    const timer = setInterval(() => {
-      this.getProducerList();
-    }, 1500);
-    this.$once("hook:beforeDestroy", () => {
-      clearInterval(timer);
-    });
+    // const timer = setInterval(() => {
+    //   this.getProducerList();
+    // }, 1500);
+    // this.$once("hook:beforeDestroy", () => {
+    //   clearInterval(timer);
+    // });
   },
   methods: {
     getProducerList() {

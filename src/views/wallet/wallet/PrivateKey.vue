@@ -91,7 +91,6 @@ export default {
         };
         this.walletAddress = util.utilMethods.privKeyWallet(userPrivKey, key);
         this.privKeyStore = util.utilMethods.produce_KeyStore(keyStoreParams);
-        console.log(this.walletAddress + "</br>" + this.privKeyStore);
         db.APKStore.put({
           APAddress: this.walletAddress,
           KStore: this.privKeyStore

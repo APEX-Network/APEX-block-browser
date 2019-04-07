@@ -131,6 +131,7 @@ export default {
         let signParams = {
           privKey: ECPair.makeRandom().privateKey.toString("hex")
         };
+        console.log(signParams.privKey);
         Bus.$emit("privKey", signParams.privKey);
         // let signature = util.utilMethods.Sign(signParams);
         this.apAddress = util.utilMethods.produce_address(

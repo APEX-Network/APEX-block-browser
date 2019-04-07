@@ -1,28 +1,28 @@
 <template>
-    <div class="block apex-modul fl">
-      <p class="apex-title">
-        Transfers
-        <span>
-          <router-link to="/transactions">ALL</router-link>
-        </span>
-      </p>
-      <ul class="apex-list">
-        <vue-scroll :ops="ops">
-          <li v-for="(item,index) in blocks" :key="index">
-            <div>
-              <div class="top">
-                <p>Block {{item.height}}</p>
-                <span>{{item.size}} Bytes</span>
-              </div>
-              <div class="bottom">
-                <router-link to="/transactions/TransactionsInfo">{{item.hash}}</router-link>
-                <span>{{item.age}}</span>
-              </div>
+  <div class="block apex-modul fl">
+    <p class="apex-title">
+      Transfers
+      <router-link to="/transactions">
+        <span>ALL</span>
+      </router-link>
+    </p>
+    <ul class="apex-list">
+      <vue-scroll :ops="ops">
+        <li v-for="(item,index) in blocks" :key="index">
+          <div>
+            <div class="top">
+              <p>Block {{item.height}}</p>
+              <span>{{item.size}} Bytes</span>
             </div>
-          </li>
-        </vue-scroll>
-      </ul>
-    </div>
+            <div class="bottom">
+              <router-link to="/transactions/TransactionsInfo">{{item.hash}}</router-link>
+              <span>{{item.age}}</span>
+            </div>
+          </div>
+        </li>
+      </vue-scroll>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -130,8 +130,9 @@ export default {
 .bottom-modul {
   .apex-modul {
     .apex-title {
-      span {
-        a {
+      a {
+        display: inline;
+        span {
           color: #f26522;
         }
       }

@@ -2,9 +2,9 @@
   <div class="transactions apex-modul fr">
     <p class="apex-title">
       Transactions
-      <span>
-        <router-link to="/transactions">ALL</router-link>
-      </span>
+      <router-link to="/transactions">
+        <span>ALL</span>
+      </router-link>
     </p>
     <ul class="apex-list">
       <vue-scroll :ops="ops">
@@ -31,7 +31,7 @@ export default {
   components: {
     Pagination
   },
-   data() {
+  data() {
     return {
       title: "Transactions",
       transactions: [],
@@ -43,8 +43,7 @@ export default {
       }
     };
   },
-  created() {
-  },
+  created() {},
   mounted() {
     this.getAllTransactions();
     const timer = setInterval(() => {
@@ -84,8 +83,9 @@ export default {
 .apex-modul {
   .apex-title {
     height: 43px;
-    span {
-      a {
+    a {
+      display: inline;
+      span {
         color: #f26522;
       }
     }

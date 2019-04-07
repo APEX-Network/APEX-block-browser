@@ -34,6 +34,12 @@
             <span class="clol col-lg-8">{{transactionInfoData.timeStamp}}</span>
           </span>
         </li>
+        <li class="row" v-if="transactionInfoData.nonce !== null">
+          <span class="col">
+            Nonce:
+            <span class="clol col-lg-8">{{transactionInfoData.nonce}}</span>
+          </span>
+        </li>
         <li class="row" v-if="transactionInfoData.from !== ''">
           <span class="col">
             From:
@@ -62,7 +68,7 @@
             <span class="clol col-lg-8">{{transactionInfoData.amount}}</span>
           </span>
         </li>
-        <li class="row" v-if="gasLimit !== null">
+        <li class="row" v-if="transactionInfoData.gasLimit !== null">
           <span class="col">
             Gas Limit:
             <span class="clol col-lg-8">{{transactionInfoData.gasLimit}}</span>
@@ -120,7 +126,8 @@ export default {
         gasLimit: null,
         gasPrice: null,
         gasUsed: null,
-        fee: null
+        fee: null,
+        nonce: null
       },
       clickValue: {
         type: "height",
@@ -165,6 +172,7 @@ export default {
             res.refBlockTime
           );
           this.transactionInfoData.from = res.from;
+          this.transactionInfoData.nonce = res.nonce;
           this.transactionInfoData.to = res.to;
           this.transactionInfoData.amount = res.amount;
           this.transactionInfoData.gasLimit = res.gasLimit;

@@ -44,12 +44,6 @@
             </span>
           </span>
         </li>
-        <li class="row">
-          <span class="col">
-            Nonce:
-            <span class="clol col-lg-8">{{nonce}}</span>
-          </span>
-        </li>
       </ul>
     </div>
   </div>
@@ -82,7 +76,6 @@ export default {
       blockHash: null,
       parentHash: null,
       minedBy: null,
-      nonce: null,
       result: null
     };
   },
@@ -157,7 +150,6 @@ export default {
             this.blockHash = res.blockHash;
             this.parentHash = res.prevBlock;
             this.minedBy = res.producer;
-            this.nonce = res.txNum;
           })
           .catch(function(response) {
             console.log(response);

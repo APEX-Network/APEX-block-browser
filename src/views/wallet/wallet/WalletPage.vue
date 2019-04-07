@@ -3,10 +3,10 @@
     <p class="apex-title">Wallet</p>
     <div class="flex-container1">
       <div class="flex-item1">Address</div>
-      <!-- <input class="flex-item2" v-model="address" readonly="readonly"> -->
-      <select class="flex-item2" v-model="address"  readonly="readonly">
+      <input class="flex-item2" v-model="address" readonly="readonly">
+      <!-- <select class="flex-item2" v-model="address"  readonly="readonly">
         <option v-for="(address, index) in APAddress" :key="index" >{{address}}</option>
-      </select>
+      </select> -->
       <!-- <v-select class="flex-item2" v-model="selected" :options="APAddress"></v-select> -->
       <div class="flex-item3">CPX: {{CPX}}</div>
     </div>

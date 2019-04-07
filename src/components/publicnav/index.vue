@@ -1,13 +1,14 @@
 <template>
   <div class="nav">
     <div class="main clearboth">
-      <div class="logo fl">
+      <div class="logo fl" @click="hiddenAboutUs">
         <a href="/home">
           <img src="../../assets/images/logo.png" alt>
         </a>
       </div>
       <div class="search-box fl clearboth">
         <input
+          @click="hiddenAboutUs"
           spellcheck="false"
           class="fl"
           ref="search"
@@ -38,14 +39,93 @@
         <img src="./../../assets/images/about.png" alt @click="showAboutUs">
       </ul>
     </div>
-    <div ref="aboutUs" class="aboutus">
-      <img src="../../../static/bottom/bg.jpg">
+    <div ref="wrapAboutUs" class="wrapAboutUs" @click="hiddenAboutUs">
+      <div ref="aboutUs" class="aboutus">
+        <p class="common-title">Join the Conversation</p>
+        <ul class="clearboth">
+          <li>
+            <a href="https://t.me/APEXcommunity" target="_blank">
+              <div class="img-box">
+                <img src="../../../static/bottom/logo-1.png" alt>
+              </div>
+              <p>
+                Telegram
+                (Global)
+              </p>
+            </a>
+          </li>
+          <li>
+            <a href="https://t.me/APEXcommunityCN" target="_blank">
+              <div class="img-box">
+                <img src="../../../static/bottom/logo-1.png" alt>
+              </div>
+              <p>
+                Telegram
+                (China)
+              </p>
+            </a>
+          </li>
+          <li class="wechat">
+            <a href="javascript:;">
+              <div class="img-box">
+                <img src="../../../static/bottom/logo-2.png" alt>
+              </div>
+              <p>Wechat</p>
+            </a>
+            <div class="wechatCode">
+              <img src="../../../static/bottom/wechatCode.jpg" alt>
+            </div>
+          </li>
+          <li>
+            <a href="https://open.kakao.com/o/gOXjb3H" target="_blank">
+              <div class="img-box">
+                <img src="../../../static/bottom/logo-3.png" alt>
+              </div>
+              <p>
+                Kakao
+                (Korea)
+              </p>
+            </a>
+          </li>
+          <li>
+            <a href="https://twitter.com/APEXnetworkCPX" target="_blank">
+              <div class="img-box">
+                <img src="../../../static/bottom/logo-4.png" alt>
+              </div>
+              <p>Twitter</p>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.reddit.com/r/APEXtoken/" target="_blank">
+              <div class="img-box">
+                <img src="../../../static/bottom/logo-5.png" alt>
+              </div>
+              <p>Reddit</p>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/APEX-Network" target="_blank">
+              <div class="img-box">
+                <img src="../../../static/bottom/logo-6.png" alt>
+              </div>
+              <p>Github</p>
+            </a>
+          </li>
+          <li>
+            <a href="https://medium.com/apex-network" target="_blank">
+              <div class="img-box">
+                <img src="../../../static/bottom/logo-7.png" alt>
+              </div>
+              <p style="padding-top:16px;">Medium</p>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import Bus from "./../../utils/bus";
-import { setTimeout } from "timers";
 const Base58check = require("base58check");
 
 export default {
@@ -58,6 +138,7 @@ export default {
       language: "中文",
       search: null,
       about: null,
+      wrapDiv: null,
       clickValue: 0,
       url: {
         blockHash_url: "/api/v1.0/blocks/blockHash/",
@@ -91,6 +172,7 @@ export default {
   },
   mounted() {
     this.about = this.$refs.aboutUs;
+    this.wrapDiv = this.$refs.wrapAboutUs;
     this.search = this.$refs.search;
     let _this = this;
     document.addEventListener("click", function(e) {
@@ -250,9 +332,11 @@ export default {
     },
     showAboutUs() {
       this.about.style.visibility = "visible";
+      this.wrapDiv.style.display = "inline";
     },
     hiddenAboutUs() {
       this.about.style.visibility = "hidden";
+      this.wrapDiv.style.display = "none";
     }
   }
 };
@@ -265,14 +349,80 @@ export default {
   left: 0;
   width: 100%;
   height: 90px;
-  .aboutus {
-    // z-index: 10000;
-    width: 80%;
-    margin-left: 205px;
-    margin-right: 148px;
-    padding-top: 440px;
-    visibility: hidden;
+  .wrapAboutUs {
+    width: 100vw;
+    height: 100vh;
+    .aboutus {
+      height: 240px;
+      width: 100vw;
+      z-index: 10000;
+      position: fixed;
+      bottom: 0;
+      visibility: hidden;
+      background-image: url("../../../static/bottom/bg.jpg");
+      .common-title {
+        margin: 0 auto;
+        font-size: 24px;
+        color: #666666;
+        padding: 50px 0 50px 80px;
+        line-height: 30px;
+        text-align: center;
+        font-family: "Semibold";
+        color: #fff;
+      }
+      .clearboth {
+        display: inline-block;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+      ul {
+        li.wechat a:hover + .wechatCode {
+          opacity: 1;
+        }
+        display: inline-block;
+        li:hover a img {
+          opacity: 0.7;
+        }
+        li {
+          position: relative;
+          width: 46px;
+          margin: 0 15px;
+          text-align: center;
+          float: left;
+          a p {
+            font-size: 14px;
+            color: #fff;
+            line-height: 18px;
+            padding-top: 10px;
+            text-align: center;
+          }
+          a img {
+            -webkit-transition: all 0.3s;
+            -moz-transition: all 0.3s;
+            -ms-transition: all 0.3s;
+            transition: all 0.3s;
+          }
+          .wechatCode {
+            position: absolute;
+            bottom: 97px;
+            left: -37px;
+            width: 120px;
+            height: 120px;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            -ms-transition: all 0.5s;
+            transition: all 0.5s;
+            opacity: 0;
+          }
+        }
+      }
+    }
   }
+
   .main {
     position: relative;
   }
