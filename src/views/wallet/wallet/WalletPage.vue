@@ -6,7 +6,7 @@
       <input class="flex-item2" v-model="address" readonly="readonly">
       <!-- <select class="flex-item2" v-model="address"  readonly="readonly">
         <option v-for="(address, index) in APAddress" :key="index" >{{address}}</option>
-      </select> -->
+      </select>-->
       <!-- <v-select class="flex-item2" v-model="selected" :options="APAddress"></v-select> -->
       <div class="flex-item3">CPX: {{CPX}}</div>
     </div>
@@ -60,6 +60,12 @@ export default {
     setTimeout(() => {
       this.getCPX(this.address);
     });
+     const timer = setInterval(() => {
+      this.getCPX(this.address);
+    }, 1500);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer);
+    });
     this.getAllAddress = db.APKStore.where("APAddress")
       .above(0)
       .toArray(APKStore => {
@@ -83,17 +89,21 @@ export default {
         })
         .then(response => {
           let res = response.data.data;
-          let result = res.toString().indexOf(".");
-          if (result == -1) {
+          let result = (res.balance.toString()).indexOf(".");
+          if (result > -1) {
             let pointLength = res.balance.toString().split(".")[1].length;
             if (pointLength > 8) {
-              this.CPX = Number(res.balance).toFixed(8);
-            } else {
-              this.CPX = Number(res.balance);
-            }
-          }
-          if (result !== -1) {
-            this.CPX = Number(res.balance);
+              this.CPX = res.balance.toString().split(".")[0] + "." + res.balance
+                .toString()
+                .split(".")[1]
+                .substring(0, 8);
+            };
+            if (pointLength <= 8) {
+              this.CPX = res.balance
+            };
+          };
+          if (result == -1) {
+            this.CPX = res.balance;
           }
         })
         .catch(function(err) {
@@ -103,8 +113,7 @@ export default {
         });
     }
   },
-  computed: {
-  },
+  computed: {},
 
   watch: {}
 };

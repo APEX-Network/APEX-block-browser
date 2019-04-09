@@ -155,7 +155,7 @@ export default {
       });
       window.addEventListener("resize", () => {
         // this.myChart.resize();
-        this.myChart.setOption.grid = "0"
+        // this.myChart.setOption.grid = "0"
       });
     }
   },

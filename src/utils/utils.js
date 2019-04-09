@@ -165,7 +165,6 @@ const utilMethods = {
         };
         let gasPrice_hex = Number(serializParams.gasPrice).toString(16);
         console.log(gasPrice_hex );
-        
         let gasPrice;
         if (gasPrice_hex.length % 2 == 1) {
             let gasPrice_prefix = "0" + gasPrice_hex;

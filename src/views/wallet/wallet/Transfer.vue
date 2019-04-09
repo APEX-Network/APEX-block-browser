@@ -161,7 +161,9 @@ export default {
     },
     setAllAmount() {
       this.$refs.inputAmout.value = this.amount;
-      this.inputAmout = this.amount;
+      this.inputAmout = this.allamount;
+      console.log(this.inputAmout);
+      
     },
     getInputGasePrice() {
       this.inputGasePriceValue = this.$refs.inputGasePrice.value;
@@ -219,18 +221,19 @@ export default {
         })
         .then(response => {
           let res = response.data.data;
-          let result = res.toString().indexOf(".");
+          let result = (res.balance.toString()).indexOf(".");
           this.allamount = res.balance;
-          if (result == -1) {
+          if (result > -1) {
             let pointLength = res.balance.toString().split(".")[1].length;
             if (pointLength > 8) {
-              this.amount = Number(res.balance).toFixed(8);
-            } else {
-              this.amount = Number(res.balance);
-            }
-          }
-          if (result !== -1) {
-            this.amount = Number(res.balance);
+              this.amount = res.balance.toString().split(".")[0] + "." + res.balance.toString().split(".")[1].substring(0,8);
+            };
+            if (pointLength <= 8) {
+              this.amount = res.balance;              
+            };
+          };
+          if (result == -1) {
+            this.amount = res.balance;
           }
           this.nonce = res.nextNonce;
         })
@@ -270,17 +273,20 @@ export default {
           to: this.toAddress,
           amount: new bigdecimal.BigDecimal(String(this.inputAmout)).subtract(
             new bigdecimal.BigDecimal(
-              String((Math.pow(10, -18) * String(this.inputGasePrice) * Math.pow(10, -12)) * 21000)
+              String((Math.pow(10, -18) * String(this.inputGasePrice) * Math.pow(10, 6)) * 21000)
             )
           ),
           nonce: this.nonce, //从服务器获取该账户的nonce值
           data: "00", //不变
           gasPrice: new bigdecimal.BigDecimal(
             String(this.inputGasePrice)
-          ).multiply(new bigdecimal.BigDecimal(String(Math.pow(10, -12)))),
+          ).multiply(new bigdecimal.BigDecimal(String(Math.pow(10, 6)))),
+          // gasPrice: this.inputGasePrice,
           gasLimit: "21000", //程序限制
           executeTime: "0000000000000000" //不变
         };
+        console.log(serializParams.amount.toString());
+        console.log(serializParams.gasPrice);
         this.message = util.utilMethods.produce_message(serializParams);
         let signParams = {
           message: this.message,
@@ -291,10 +297,10 @@ export default {
             this.KStore,
             this.pwd
           );
-        }
+        };
         if (this.privKey !== null) {
           signParams.privKey = String(this.privKey);
-        }
+        };
         this.signature = util.utilMethods.Sign(signParams);
         this.serialized_transaction = util.utilMethods.serialized_transaction(
           this.message,

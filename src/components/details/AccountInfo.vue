@@ -114,7 +114,7 @@ export default {
         );
         this.getAccountInfo();
         this.getAccountTransactionInfo();
-      }
+      };
     },
     getAccountInfo() {
       this.$axios
@@ -123,18 +123,25 @@ export default {
         })
         .then(response => {
           let res = response.data.data;
-          let result = res.toString().indexOf(".");
-          if (result == -1) {
+          let result = res.balance.toString().indexOf(".");
+          if (result > -1) {
             let pointLength = res.balance.toString().split(".")[1].length;
             if (pointLength > 8) {
-              this.Balance = Number(res.balance).toFixed(8);
-            } else {
-              this.Balance = Number(res.balance);
-            }
-          }
-          if (result !== -1) {
-            this.Balance = Number(res.balance);
-          }
+              this.Balance =
+                res.balance.toString().split(".")[0] +
+                "." +
+                res.balance
+                  .toString()
+                  .split(".")[1]
+                  .substring(0, 8);
+            };
+            if (pointLength <= 8) {
+              this.Balance = res.balance;
+            };
+          };
+          if (result == -1) {
+            this.Balance = res.balance;
+          };
         })
         .catch(function(err) {
           if (err.response) {

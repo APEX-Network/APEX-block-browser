@@ -158,6 +158,10 @@ body .logo-left {
   line-height: 24px;
   border-bottom: 1px solid #f26522;
   display: inline-block;
+  max-width: 476px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .apex-modul .apex-list li .bottom span {
   float: right;

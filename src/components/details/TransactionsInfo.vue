@@ -34,6 +34,12 @@
             <span class="clol col-lg-8">{{transactionInfoData.timeStamp}}</span>
           </span>
         </li>
+         <li class="row">
+          <span class="col">
+            Type:
+            <span class="clol col-lg-8">{{transactionInfoData.type}}</span>
+          </span>
+        </li>
         <li class="row" v-if="transactionInfoData.nonce !== null">
           <span class="col">
             Nonce:
@@ -135,7 +141,8 @@ export default {
         gasPrice: null,
         gasUsed: null,
         fee: null,
-        nonce: null
+        nonce: null,
+        type: null
       },
       clickValue: {
         type: "height",
@@ -166,13 +173,13 @@ export default {
     getClickValue() {
       Bus.$on("txHash", data => {
         this.Hash = data;
-        sessionStorage.setItem("refreshtxHash", data);
+        sessionStorage.setItem("refresh", data);
         this.getTransactionsInfo();
         return;
       });
       this.flag = sessionStorage.getItem("flag");
       if (this.Hash == null && this.flag == 1) {
-        this.Hash = sessionStorage.getItem("refreshtxHash");
+        this.Hash = sessionStorage.getItem("refresh");
         this.getTransactionsInfo();
         return;
       }
@@ -205,6 +212,7 @@ export default {
             this.transactionInfoData.gasPrice = res.gasPrice;
             this.transactionInfoData.gasUsed = res.gasUsed;
             this.transactionInfoData.fee = res.fee;
+            this.transactionInfoData.type = res.type;
           })
           .catch(function(response) {});
       }

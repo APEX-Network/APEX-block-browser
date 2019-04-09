@@ -50,13 +50,12 @@ export default {
       this.accountTransaction_param.address = sessionStorage.getItem(
         "apAddress"
       );
+      this.getTransactionsList();
     });
-    this.getTransactionsList();
     const timer = setInterval(() => {
       this.getTransactionsList();
     }, 1500);
     this.$once("hook:beforeDestroy", () => {
-      // sessionStorage.setItem("apAddress", null)
       clearInterval(timer);
     });
   },
@@ -77,7 +76,7 @@ export default {
             let time;
             for (let i = 0; i < this.transactions.length; i++) {
               let element = this.transactions[i];
-              time = util.utilMethods.getSec(element.refBlockTime);
+              time = util.utilMethods.tierNoYear(element.refBlockTime);
               element.refBlockTime = time;
             }
           })
