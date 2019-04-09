@@ -87,7 +87,14 @@ export default {
             }
           });
       }
+    },
+    offListener() {
+      Bus.$off("txHash");
+      Bus.$off("accountValue");
     }
+  },
+  beforeDestroy() {
+    this.offListener();
   }
 };
 </script>

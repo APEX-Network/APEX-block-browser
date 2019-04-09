@@ -22,12 +22,15 @@
           <span class="col">{{item.timeStamp}}</span>
           <!-- <span class="col txn">{{item.txNum}}</span> -->
           <!-- <span class="col">{{item.producer}}</span> -->
-           <span class="col">
-            <router-link to="/producer/ProducerInfo" @click.native="setMinerByValue">{{item.producer}}</router-link>
+          <span class="col">
+            <router-link
+              to="/producer/ProducerInfo"
+              @click.native="setMinerByValue"
+            >{{item.producer}}</router-link>
           </span>
         </li>
       </ul>
-      <div class="uchain-pagination">
+      <div class="apex-pagination">
         <div class="pagination-content">
           <span class="first">First</span>
           <span class="prev" @click="getPreviousBlocks"></span>
@@ -40,7 +43,7 @@
   </div>
 </template>
 <script>
-import Pagination from "@/components/public/Pagination.vue";
+// import Pagination from "@/components/public/Pagination.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import Bus from "./../../utils/bus";
@@ -49,7 +52,7 @@ import util from "./../../utils/utils";
 export default {
   name: "blocks",
   components: {
-    Pagination,
+    // Pagination,
     ApexBackGround,
     ApexTitle
   },
@@ -85,8 +88,6 @@ export default {
         this.$axios
           .post(this.allBlockUrl, this.params)
           .then(response => {
-            // let res = response.data.data;
-            // this.dataList = res;
             let res = response.data.data;
             let seconds;
             for (let i = 0; i < res.length; i++) {
@@ -159,7 +160,6 @@ export default {
       }
     },
     getPreviousBlocks() {
-      console.log("previous");
       this.previousPage = this.start--;
       this.params.start = this.previousPage;
       this.$axios
@@ -198,7 +198,14 @@ export default {
             }
           });
       }
+    },
+    offListener() {
+      Bus.$off("clickValue");
+      Bus.$off("minerBy");
     }
+  },
+  beforeDestroy() {
+    this.offListener();
   }
 };
 </script>
@@ -210,22 +217,21 @@ export default {
   background: url(./../../assets/images/shared/yunshi.png) 40% 45% no-repeat;
   .data-table {
     .table-ul {
-      //  & > li {
-      //   & > span {
-      //     a{
-      //     width: 40%;
-      //     }
-      //   }
-      // }
+      & > li {
+        & > span {
+          a:hover {
+            color: #f26522;
+          }
+        }
+      }
     }
-    .uchain-pagination {
+    .apex-pagination {
       width: 100%;
       height: 50px;
       padding: 10px 35px;
       box-sizing: border-box;
       text-align: right;
       font-size: 12px;
-      color: #333333;
       span {
         display: inline-block;
         padding: 9px 0;

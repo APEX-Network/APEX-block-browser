@@ -47,7 +47,15 @@
               <router-link
                 to="/transactions/TransactionsInfo/AccountInfo"
                 @click.native="setToValue"
-              >{{transactionInfoData.from}}</router-link>
+              >
+                {{transactionInfoData.from}}
+                <!-- <img
+                @click="Copy(index)"
+                style="cursor: pointer; padding-left: 10px;"
+                src="./../../assets/images/copy.png"
+                alt
+                >-->
+              </router-link>
             </span>
           </span>
         </li>
@@ -133,24 +141,41 @@ export default {
         type: "height",
         value: null
       },
-      Hash: null
+      Hash: null,
+      flag: null
     };
   },
   created() {},
   mounted() {
+    window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
-    // setTimeout(() => {
-    //   this.getTransactionsInfo();
-    // });
   },
   methods: {
+    Copy(index) {
+      let getCopyText = this.accountTransaction_param.address;
+      this.doCopy(getCopyText);
+    },
+    doCopy(val) {
+      this.$copyText(val).then(
+        function(e) {
+          alert("拷贝成功!");
+        },
+        function(e) {}
+      );
+    },
     getClickValue() {
       Bus.$on("txHash", data => {
         this.Hash = data;
+        sessionStorage.setItem("refreshtxHash", data);
         this.getTransactionsInfo();
+        return;
       });
-      // this.Hash = JSON.parse(sessionStorage.getItem("txHash"));
-      // this.getTransactionsInfo();
+      this.flag = sessionStorage.getItem("flag");
+      if (this.Hash == null && this.flag == 1) {
+        this.Hash = sessionStorage.getItem("refreshtxHash");
+        this.getTransactionsInfo();
+        return;
+      }
     },
     setHeightValue(e) {
       this.clickValue.type = "height";
@@ -161,29 +186,48 @@ export default {
       Bus.$emit("accountValue", e.target.innerHTML);
     },
     getTransactionsInfo() {
-      this.$axios
-        .get(this.transactions_url + this.Hash)
-        .then(response => {
-          let res = response.data.data;
-          this.transactionInfoData.txHash = res.txHash;
-          this.transactionInfoData.txReceiptStatus = res.confirmed;
-          this.transactionInfoData.blockHeight = res.refBlockHeight;
-          this.transactionInfoData.timeStamp = util.utilMethods.tierAllTime(
-            res.refBlockTime
-          );
-          this.transactionInfoData.from = res.from;
-          this.transactionInfoData.nonce = res.nonce;
-          this.transactionInfoData.to = res.to;
-          this.transactionInfoData.amount = res.amount;
-          this.transactionInfoData.gasLimit = res.gasLimit;
-          this.transactionInfoData.gasPrice = res.gasPrice;
-          this.transactionInfoData.gasUsed = res.gasUsed;
-          this.transactionInfoData.fee = res.fee;
-        })
-        .catch(function(response) {});
+      if (this.Hash !== null) {
+        this.$axios
+          .get(this.transactions_url + this.Hash)
+          .then(response => {
+            let res = response.data.data;
+            this.transactionInfoData.txHash = res.txHash;
+            this.transactionInfoData.txReceiptStatus = res.confirmed;
+            this.transactionInfoData.blockHeight = res.refBlockHeight;
+            this.transactionInfoData.timeStamp = util.utilMethods.tierAllTime(
+              res.refBlockTime
+            );
+            this.transactionInfoData.from = res.from;
+            this.transactionInfoData.nonce = res.nonce;
+            this.transactionInfoData.to = res.to;
+            this.transactionInfoData.amount = res.amount;
+            this.transactionInfoData.gasLimit = res.gasLimit;
+            this.transactionInfoData.gasPrice = res.gasPrice;
+            this.transactionInfoData.gasUsed = res.gasUsed;
+            this.transactionInfoData.fee = res.fee;
+          })
+          .catch(function(response) {});
+      }
+    },
+    offListener() {
+      Bus.$off("clickValue");
+      Bus.$off("accountValue");
+    },
+    beforeunloadHandler(e) {
+      this.flag = 1;
+      sessionStorage.setItem("flag", this.flag);
+      console.log(this.flag);      
     }
   },
-  watch: {}
+  beforeDestroy() {
+    sessionStorage.setItem("flag", null);
+    this.offListener();
+  },
+  destroyed() {
+    window.removeEventListener("beforeunload", e =>
+      this.beforeunloadHandler(e)
+    );
+  }
 };
 </script>
 
@@ -194,12 +238,16 @@ export default {
   width: 100%;
   height: 100%;
   background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
+  background-color: rgba(0, 0, 0, 0);
   .data-table {
     .table-ul {
       li {
         span {
           span {
             float: right;
+            a {
+              width: 50%;
+            }
           }
         }
       }

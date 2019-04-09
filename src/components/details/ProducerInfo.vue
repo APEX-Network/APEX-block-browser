@@ -33,7 +33,7 @@
           <span class="col">
             Website:
             <span class="clo col-lg-8">
-              <router-link to="" @click.native="gotHome">{{producerInfo.Website}}</router-link>
+              <router-link to @click.native="gotHome">{{producerInfo.Website}}</router-link>
             </span>
           </span>
         </li>
@@ -91,12 +91,17 @@ export default {
   },
   methods: {
     gotHome() {
-      window.location.href = "https://www.apexnetwork.io/"
+      window.location.href = "https://www.apexnetwork.io/";
     },
     getClickValue() {
       Bus.$on("minerBy", data => {
+        sessionStorage.setItem("refresh", data);
         this.minerBy = data;
       });
+      if (this.minerBy == null) {
+        this.minerBy = sessionStorage.getItem("refresh");
+        this.getProduceInfo();
+      }
     },
     getProduceInfo() {
       if (!!this.minerBy) {
@@ -116,6 +121,9 @@ export default {
           });
       }
     }
+  },
+  beforeDestroy() {
+    sessionStorage.setItem("refresh", null);
   }
 };
 </script>

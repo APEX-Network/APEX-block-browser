@@ -88,7 +88,7 @@ export default {
     Copy(index) {
       let getCopyText = this.privKey;
       this.doCopy(getCopyText);
-      // this.privKey = null;
+      this.privKey = null;
     },
     doCopy(val) {
       this.$copyText(val).then(
@@ -140,6 +140,7 @@ export default {
           color: #f26522;
         }
         .privkey {
+          min-width: 520px;
           padding-left: 10px;
           position: absolute;
           padding-top: 8px;

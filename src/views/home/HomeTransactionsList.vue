@@ -74,7 +74,13 @@ export default {
     },
     setClickValue(e) {
       Bus.$emit("txHash", e.target.innerHTML);
+    },
+    offListener() {
+      Bus.$off("txHash");
     }
+  },
+  beforeDestroy() {
+    this.offListener();
   }
 };
 </script>

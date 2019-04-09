@@ -164,6 +164,8 @@ const utilMethods = {
             nonce = "00000000000000" + nonce_hex;
         };
         let gasPrice_hex = Number(serializParams.gasPrice).toString(16);
+        console.log(gasPrice_hex );
+        
         let gasPrice;
         if (gasPrice_hex.length % 2 == 1) {
             let gasPrice_prefix = "0" + gasPrice_hex;
@@ -185,6 +187,8 @@ const utilMethods = {
                 gasPrice = gasPrice_length + gasPrice_prefix;
             };
         };
+        console.log(gasPrice);
+        
         let byteArraygaseLimit = BigInteger(serializParams.gasLimit.toString()).toByteArray();
         let gasLimit_hex = Buffer.from(byteArraygaseLimit, "hex").toString("hex");
         let gasLimit_prefix = (gasLimit_hex.length) / 2;

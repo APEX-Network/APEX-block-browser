@@ -2,9 +2,9 @@
   <div class="nav">
     <div class="main clearboth">
       <div class="logo fl" @click="hiddenAboutUs">
-        <a href="/home">
+        <router-link to="/home">
           <img src="../../assets/images/logo.png" alt>
-        </a>
+        </router-link>
       </div>
       <div class="search-box fl clearboth">
         <input
@@ -46,7 +46,7 @@
           <li>
             <a href="https://t.me/APEXcommunity" target="_blank">
               <div class="img-box">
-                <img src="../../../static/bottom/logo-1.png" alt>
+                <img src="../../assets/bottom/logo-1.png" alt>
               </div>
               <p>
                 Telegram
@@ -57,7 +57,7 @@
           <li>
             <a href="https://t.me/APEXcommunityCN" target="_blank">
               <div class="img-box">
-                <img src="../../../static/bottom/logo-1.png" alt>
+                <img src="../../assets/bottom/logo-1.png" alt>
               </div>
               <p>
                 Telegram
@@ -68,18 +68,18 @@
           <li class="wechat">
             <a href="javascript:;">
               <div class="img-box">
-                <img src="../../../static/bottom/logo-2.png" alt>
+                <img src="../../assets/bottom/logo-2.png" alt>
               </div>
               <p>Wechat</p>
             </a>
             <div class="wechatCode">
-              <img src="../../../static/bottom/wechatCode.jpg" alt>
+              <img src="../../assets/bottom/wechatCode.jpg" alt>
             </div>
           </li>
           <li>
             <a href="https://open.kakao.com/o/gOXjb3H" target="_blank">
               <div class="img-box">
-                <img src="../../../static/bottom/logo-3.png" alt>
+                <img src="../../assets/bottom/logo-3.png" alt>
               </div>
               <p>
                 Kakao
@@ -90,7 +90,7 @@
           <li>
             <a href="https://twitter.com/APEXnetworkCPX" target="_blank">
               <div class="img-box">
-                <img src="../../../static/bottom/logo-4.png" alt>
+                <img src="../../assets/bottom/logo-4.png" alt>
               </div>
               <p>Twitter</p>
             </a>
@@ -98,7 +98,7 @@
           <li>
             <a href="https://www.reddit.com/r/APEXtoken/" target="_blank">
               <div class="img-box">
-                <img src="../../../static/bottom/logo-5.png" alt>
+                <img src="../../assets/bottom/logo-5.png" alt>
               </div>
               <p>Reddit</p>
             </a>
@@ -106,7 +106,7 @@
           <li>
             <a href="https://github.com/APEX-Network" target="_blank">
               <div class="img-box">
-                <img src="../../../static/bottom/logo-6.png" alt>
+                <img src="../../assets/bottom/logo-6.png" alt>
               </div>
               <p>Github</p>
             </a>
@@ -114,7 +114,7 @@
           <li>
             <a href="https://medium.com/apex-network" target="_blank">
               <div class="img-box">
-                <img src="../../../static/bottom/logo-7.png" alt>
+                <img src="../../assets/bottom/logo-7.png" alt>
               </div>
               <p style="padding-top:16px;">Medium</p>
             </a>
@@ -207,7 +207,7 @@ export default {
               })
               .then(response => {
                 if (response.data.data == null) {
-                  alert("跳转到错误页面");
+                  this.$router.push("/error");
                   return;
                 }
                 if (response.data.status == 200) {
@@ -233,7 +233,7 @@ export default {
               .get(this.url.blockHeight_url + this.search)
               .then(response => {
                 if (response.data.status == 404) {
-                  // console.log("跳转到错误页面!");
+                  this.$router.push("/error");
                   return;
                 }
                 if (response.data.status == 200) {
@@ -264,7 +264,7 @@ export default {
               .get(this.url.blockHash_url + this.search)
               .then(response => {
                 if (response.data.status == 404) {
-                  // console.log("跳转到错误页面!");
+                  this.$router.push("/error");
                   return;
                 }
                 if (response.data.status == 200) {
@@ -289,7 +289,7 @@ export default {
               .get(this.url.transactions_url + this.search)
               .then(response => {
                 if (response.data.status == 404) {
-                  // console.log("跳转到错误页面!");
+                  this.$router.push("/error");
                   return;
                 }
                 if (response.data.status == 200) {
@@ -350,6 +350,7 @@ export default {
   width: 100%;
   height: 90px;
   .wrapAboutUs {
+    z-index: 12000;
     width: 100vw;
     height: 100vh;
     .aboutus {
@@ -359,7 +360,7 @@ export default {
       position: fixed;
       bottom: 0;
       visibility: hidden;
-      background-image: url("../../../static/bottom/bg.jpg");
+      background-image: url("../../assets/bottom/bottombg.jpg");
       .common-title {
         margin: 0 auto;
         font-size: 24px;

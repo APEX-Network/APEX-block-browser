@@ -30,7 +30,7 @@
 
 <script>
 import Vue from "vue";
-import { mapActions, mapGetters } from "vuex";
+// import { mapActions, mapGetters } from "vuex";
 import Bus from "./../../../utils/bus";
 import db from "./../../../utils/myDatabase";
 import vSelect from "vue-select";
@@ -67,11 +67,9 @@ export default {
           this.APAddress.push(v.APAddress);
         });
       });
-    console.log(this.APAddress);
   },
 
   methods: {
-    // ...mapActions(["modifyAddress"])
     sendAddress() {
       Bus.$emit("apAddress", this.address);
       setTimeout(() => {
@@ -86,7 +84,6 @@ export default {
         .then(response => {
           let res = response.data.data;
           let result = res.toString().indexOf(".");
-          console.log(result);
           if (result == -1) {
             let pointLength = res.balance.toString().split(".")[1].length;
             if (pointLength > 8) {
@@ -107,7 +104,6 @@ export default {
     }
   },
   computed: {
-    // ...mapGetters(["address"])
   },
 
   watch: {}

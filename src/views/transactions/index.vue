@@ -47,8 +47,7 @@ export default {
       }
     };
   },
-  created() {
-  },
+  created() {},
   mounted() {
     this.getAllTransactions();
     const timer = setInterval(() => {
@@ -59,6 +58,11 @@ export default {
     });
   },
   methods: {
+    setClickValue(e) {      
+      if (e.target.innerHTML !== null) {
+        Bus.$emit("txHash", e.target.innerHTML);
+      }
+    },
     getAllTransactions() {
       this.$axios
         .post(this.transaction_list_url, this.parmas)
@@ -77,10 +81,12 @@ export default {
           }
         });
     },
-    setClickValue(e) {
-      Bus.$emit("txHash", e.target.innerHTML);
-      // sessionStorage.setItem("txHash", JSON.stringify(e.target.innerHTML));
+    offListener() {
+      Bus.$off("txHash");
     }
+  },
+  beforeDestroy() {
+    this.offListener();
   }
 };
 </script>

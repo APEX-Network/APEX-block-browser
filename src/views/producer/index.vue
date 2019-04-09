@@ -82,62 +82,16 @@ export default {
             console.log(err.response);
           }
         });
-      //   let producer = [
-      //     {
-      //         "address": "APHLU98wbCvujZc1N8ddthDNEUhJaxki2sz",
-      //         "name": "创略科技",
-      //         "blockCount": 0,
-      //         "votes": -1,
-      //         "zone": "china"
-      //     },
-      //     {
-      //         "address": "AP8g6hZiepX4Vdvd2TS8HtoZmw8cxFioiPq",
-      //         "name": "创略科技",
-      //         "blockCount": 0,
-      //         "votes": 0,
-      //         "zone": "中国"
-      //     },
-      //     {
-      //         "address": "AP8hKwPm8X37YnsDn47KHF7JzvRVUuMD7YH",
-      //         "name": "",
-      //         "blockCount": 8505,
-      //         "votes": 0,
-      //         "zone": ""
-      //     },
-      //     {
-      //         "address": "APCb4FchfFUrqPjYc2LLrUbKjw6pt7pdF56",
-      //         "name": "",
-      //         "blockCount": 8504,
-      //         "votes": 1,
-      //         "zone": ""
-      //     },
-      //     {
-      //         "address": "AP3CFsBWwVMsF2Kq39nZ4XBYZcoR1HQhKru",
-      //         "name": "",
-      //         "blockCount": 8506,
-      //         "votes": 4,
-      //         "zone": ""
-      //     },
-      //     {
-      //         "address": "APMMCd8qWPm9QRzgspFXEBn8zGGuwrYYAJs",
-      //         "name": "",
-      //         "blockCount": 8505,
-      //         "votes": 5,
-      //         "zone": ""
-      //     },
-      //     {
-      //         "address": "APLUskGEPT6s272kA9PVLqLVBWF6M4kZHAT",
-      //         "name": "",
-      //         "blockCount": 8504,
-      //         "votes": 6,
-      //         "zone": ""
-      //     }
-      // ];
-      // this.producer = producer.reverse();
     },
     setClickValue(e) {
       Bus.$emit("minerBy", e.target.innerHTML);
+    },
+    offListener() {
+      Bus.$off("minerBy");
     }
+  }, 
+  beforeDestroy() {
+    this.offListener();
   }
 };
 </script>

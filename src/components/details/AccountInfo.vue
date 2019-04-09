@@ -24,7 +24,7 @@
         </li>
       </ul>
     </div>
-    <div class="uchain-box">
+    <div class="apex-box">
       <div class="apex-title">
         <p>Transactions</p>
       </div>
@@ -81,10 +81,6 @@ export default {
   },
   mounted() {
     this.getClickValue();
-    // setTimeout(() => {
-    //   // this.getAccountInfo();
-    //   this.getAccountTransactionInfo();
-    // });
     const timer = setInterval(() => {
       this.getAccountTransactionInfo();
     }, 1500);
@@ -102,16 +98,23 @@ export default {
         function(e) {
           alert("拷贝成功!");
         },
-        function(e) {
-        }
+        function(e) {}
       );
     },
     getClickValue() {
       Bus.$on("accountValue", data => {
         this.accountTransaction_param.address = data;
+        sessionStorage.setItem("refresh", data);
         this.getAccountInfo();
         this.getAccountTransactionInfo();
       });
+      if (this.accountTransaction_param.address == null) {
+        this.accountTransaction_param.address = sessionStorage.getItem(
+          "refresh"
+        );
+        this.getAccountInfo();
+        this.getAccountTransactionInfo();
+      }
     },
     getAccountInfo() {
       this.$axios
@@ -128,10 +131,10 @@ export default {
             } else {
               this.Balance = Number(res.balance);
             }
-          };
+          }
           if (result !== -1) {
             this.Balance = Number(res.balance);
-          };
+          }
         })
         .catch(function(err) {
           if (err.response) {
@@ -160,7 +163,14 @@ export default {
     },
     setRefBlockHash(e) {
       Bus.$emit("txHash", e.target.innerHTML);
+    },
+    offListener() {
+      Bus.$off("txHash");
     }
+  },
+  beforeDestroy() {
+    sessionStorage.setItem("refresh", null);
+    this.offListener();
   }
 };
 </script>
@@ -172,7 +182,7 @@ export default {
   width: 100%;
   height: 100%;
   background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
-  .uchain-box {
+  .apex-box {
     padding-top: 80px;
     .apex-title {
       padding-left: 30px;

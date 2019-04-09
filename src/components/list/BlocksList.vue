@@ -81,7 +81,14 @@ export default {
     setClickValue(e) {
       this.clickValue.value = e.target.innerHTML;
       Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+    },
+    offListener() {
+      Bus.$off("clickValue");
+      Bus.$off("lastBlock");
     }
+  },
+  beforeDestroy() {
+    this.offListener();
   }
 };
 </script>

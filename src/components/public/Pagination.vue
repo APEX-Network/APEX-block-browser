@@ -1,5 +1,5 @@
 <template>
-  <div class="uchain-pagination">
+  <div class="apex-pagination">
     <div class="pagination-content">
       <span class="first">First</span>
       <span class="prev" @click="getPreviousBlocks"></span>
@@ -31,14 +31,13 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "./../../assets/css/layout";
-.uchain-pagination {
+.apex-pagination {
   width: 100%;
   height: 50px;
   padding: 10px 35px;
   box-sizing: border-box;
   text-align: right;
   font-size: 12px;
-  color: #333333;
   span {
     display: inline-block;
     padding: 9px 0;

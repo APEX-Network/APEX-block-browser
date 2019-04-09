@@ -55,6 +55,7 @@ import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
+import { setTimeout } from "timers";
 
 export default {
   name: "BlocksInfo",
@@ -79,6 +80,7 @@ export default {
       result: null
     };
   },
+  created() {},
   mounted() {
     this.getClickValue();
   },
@@ -86,8 +88,13 @@ export default {
     getClickValue() {
       Bus.$on("clickValue", data => {
         this.result = JSON.parse(data);
+        sessionStorage.setItem("refresh", data);
         this.getBlocksInfo();
       });
+      if (this.result == null) {
+        this.result = JSON.parse(sessionStorage.getItem("refresh"));
+        this.getBlocksInfo();
+      }
     },
     setClickValue(e) {
       Bus.$emit("minerBy", e.target.innerHTML);
@@ -120,7 +127,7 @@ export default {
               .get(this.url.blockHeight_url + params)
               .then(response => {
                 let res = response.data.data;
-                if (res !== "NotFound") {
+                if (res !== "NotFound" && res.txNum !== null) {
                   this.height = res.height;
                   this.blockHash = res.blockHash;
                   this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
@@ -155,9 +162,15 @@ export default {
             console.log(response);
           });
       }
+    },
+    offListener() {
+      Bus.$off("minerBy");
     }
   },
-  watch: {}
+  beforeDestroy() {
+    sessionStorage.setItem("refresh", null);
+    this.offListener();
+  }
 };
 </script>
 
