@@ -114,59 +114,63 @@ export default {
         );
         this.getAccountInfo();
         this.getAccountTransactionInfo();
-      };
+      }
     },
     getAccountInfo() {
-      this.$axios
-        .post(this.accountInfo_url, {
-          address: this.accountTransaction_param.address
-        })
-        .then(response => {
-          let res = response.data.data;
-          let result = res.balance.toString().indexOf(".");
-          if (result > -1) {
-            let pointLength = res.balance.toString().split(".")[1].length;
-            if (pointLength > 8) {
-              this.Balance =
-                res.balance.toString().split(".")[0] +
-                "." +
-                res.balance
-                  .toString()
-                  .split(".")[1]
-                  .substring(0, 8);
-            };
-            if (pointLength <= 8) {
+      if (this.accountTransaction_param.address !== null) {
+        this.$axios
+          .post(this.accountInfo_url, {
+            address: this.accountTransaction_param.address
+          })
+          .then(response => {
+            let res = response.data.data;
+            let result = res.balance.toString().indexOf(".");
+            if (result > -1) {
+              let pointLength = res.balance.toString().split(".")[1].length;
+              if (pointLength > 8) {
+                this.Balance =
+                  res.balance.toString().split(".")[0] +
+                  "." +
+                  res.balance
+                    .toString()
+                    .split(".")[1]
+                    .substring(0, 8);
+              }
+              if (pointLength <= 8) {
+                this.Balance = res.balance;
+              }
+            }
+            if (result == -1) {
               this.Balance = res.balance;
-            };
-          };
-          if (result == -1) {
-            this.Balance = res.balance;
-          };
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
+            }
+          })
+          .catch(function(err) {
+            if (err.response) {
+              console.log(err.response);
+            }
+          });
+      }
     },
     getAccountTransactionInfo() {
-      this.$axios
-        .post(this.accountTransaction_url, this.accountTransaction_param)
-        .then(response => {
-          let res = response.data.data;
-          this.transactions = res;
-          let time;
-          for (let i = 0; i < this.transactions.length; i++) {
-            let element = this.transactions[i];
-            time = util.utilMethods.getSec(element.refBlockTime);
-            element.refBlockTime = time;
-          }
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
+      if (this.accountTransaction_param.address !== null) {
+        this.$axios
+          .post(this.accountTransaction_url, this.accountTransaction_param)
+          .then(response => {
+            let res = response.data.data;
+            this.transactions = res;
+            let time;
+            for (let i = 0; i < this.transactions.length; i++) {
+              let element = this.transactions[i];
+              time = util.utilMethods.getSec(element.refBlockTime);
+              element.refBlockTime = time;
+            }
+          })
+          .catch(function(err) {
+            if (err.response) {
+              console.log(err.response);
+            }
+          });
+      }
     },
     setRefBlockHash(e) {
       Bus.$emit("txHash", e.target.innerHTML);

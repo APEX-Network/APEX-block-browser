@@ -82,4 +82,18 @@ export default {
     }
   }
 }
+@media screen and(max-width:1366px) {
+  .home {
+  .bottom-modul,
+  .top-modul {
+    .apex-modul {
+      .apex-title {
+        ul {
+            padding-top: 65px;
+        }
+      }
+    }
+  }
+  }
+}
 </style>

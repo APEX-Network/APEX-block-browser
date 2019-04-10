@@ -67,7 +67,7 @@ export default {
       Bus.$emit("accountValue", sessionStorage.getItem("apAddress"));
     },
     getTransactionsList() {
-      if (!!this.accountTransaction_param) {
+      if (this.accountTransaction_param.address !== null) {
         this.$axios
           .post(this.accountTransaction_url, this.accountTransaction_param)
           .then(response => {

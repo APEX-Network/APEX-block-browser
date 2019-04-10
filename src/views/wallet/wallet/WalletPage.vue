@@ -58,10 +58,14 @@ export default {
   mounted() {
     this.address = sessionStorage.getItem("apAddress");
     setTimeout(() => {
-      this.getCPX(this.address);
+      if (this.address !== null) {
+        this.getCPX(this.address);
+      }
     });
-     const timer = setInterval(() => {
-      this.getCPX(this.address);
+    const timer = setInterval(() => {
+      if (this.address !== null) {
+        this.getCPX(this.address);
+      }
     }, 1500);
     this.$once("hook:beforeDestroy", () => {
       clearInterval(timer);
@@ -89,19 +93,22 @@ export default {
         })
         .then(response => {
           let res = response.data.data;
-          let result = (res.balance.toString()).indexOf(".");
+          let result = res.balance.toString().indexOf(".");
           if (result > -1) {
             let pointLength = res.balance.toString().split(".")[1].length;
             if (pointLength > 8) {
-              this.CPX = res.balance.toString().split(".")[0] + "." + res.balance
-                .toString()
-                .split(".")[1]
-                .substring(0, 8);
-            };
+              this.CPX =
+                res.balance.toString().split(".")[0] +
+                "." +
+                res.balance
+                  .toString()
+                  .split(".")[1]
+                  .substring(0, 8);
+            }
             if (pointLength <= 8) {
-              this.CPX = res.balance
-            };
-          };
+              this.CPX = res.balance;
+            }
+          }
           if (result == -1) {
             this.CPX = res.balance;
           }

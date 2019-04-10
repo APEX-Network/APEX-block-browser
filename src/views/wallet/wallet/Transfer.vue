@@ -158,12 +158,12 @@ export default {
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
+      console.log(this.inputAmout);
     },
     setAllAmount() {
       this.$refs.inputAmout.value = this.amount;
       this.inputAmout = this.allamount;
       console.log(this.inputAmout);
-      
     },
     getInputGasePrice() {
       this.inputGasePriceValue = this.$refs.inputGasePrice.value;
@@ -221,17 +221,23 @@ export default {
         })
         .then(response => {
           let res = response.data.data;
-          let result = (res.balance.toString()).indexOf(".");
+          let result = res.balance.toString().indexOf(".");
           this.allamount = res.balance;
           if (result > -1) {
             let pointLength = res.balance.toString().split(".")[1].length;
             if (pointLength > 8) {
-              this.amount = res.balance.toString().split(".")[0] + "." + res.balance.toString().split(".")[1].substring(0,8);
-            };
+              this.amount =
+                res.balance.toString().split(".")[0] +
+                "." +
+                res.balance
+                  .toString()
+                  .split(".")[1]
+                  .substring(0, 8);
+            }
             if (pointLength <= 8) {
-              this.amount = res.balance;              
-            };
-          };
+              this.amount = res.balance;
+            }
+          }
           if (result == -1) {
             this.amount = res.balance;
           }
@@ -273,7 +279,12 @@ export default {
           to: this.toAddress,
           amount: new bigdecimal.BigDecimal(String(this.inputAmout)).subtract(
             new bigdecimal.BigDecimal(
-              String((Math.pow(10, -18) * String(this.inputGasePrice) * Math.pow(10, 6)) * 21000)
+              String(
+                Math.pow(10, -18) *
+                  String(this.inputGasePrice) *
+                  Math.pow(10, 6) *
+                  21000
+              )
             )
           ),
           nonce: this.nonce, //从服务器获取该账户的nonce值
@@ -297,10 +308,10 @@ export default {
             this.KStore,
             this.pwd
           );
-        };
+        }
         if (this.privKey !== null) {
           signParams.privKey = String(this.privKey);
-        };
+        }
         this.signature = util.utilMethods.Sign(signParams);
         this.serialized_transaction = util.utilMethods.serialized_transaction(
           this.message,

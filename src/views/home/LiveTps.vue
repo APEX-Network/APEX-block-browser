@@ -65,7 +65,7 @@ export default {
         grid: {
           left: -48,
           right: 0,
-          top: 50,
+          top: 0,
           bottom: 5,
           containLabel: true
         },
@@ -154,7 +154,7 @@ export default {
         ]
       });
       window.addEventListener("resize", () => {
-        // this.myChart.resize();
+        this.myChart.resize();
         // this.myChart.setOption.grid = "0"
       });
     }
@@ -187,19 +187,14 @@ export default {
     bottom: 0;
     left: 0;
     margin: 0;
-    // width: 100%;
-    // .chart {
-    height: 300px;
-    // }
+    height: calc(~"100% - 70px");
   }
 }
 @media screen and(max-width:1366px) {
   .home {
-    .tps {
       .chart-box {
-        height: 200px;
+        height: calc(~"100% - 70px");
       }
-    }
   }
 }
 </style>

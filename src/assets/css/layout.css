@@ -180,8 +180,8 @@ body .logo-left {
 }
 .apex-modul.overview ul {
   width: 100%;
-  height: calc(100% - 60px);
   padding: 0 50px;
+  padding-top: 20px;
   box-sizing: border-box;
 }
 .apex-modul.overview ul li {
