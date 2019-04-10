@@ -146,6 +146,9 @@ export default {
       }
     },
     getParentBlock(e) {
+      if (this.height == 0) {
+        return;
+      }
       if (!!this.parentHash) {
         this.$axios
           .get(this.url.blockHash_url + this.parentHash)

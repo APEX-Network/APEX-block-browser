@@ -11,7 +11,7 @@
           spellcheck="false"
           ref="privKey"
           type="text"
-          v-model="privKey"
+          v-model="inputPrivKey"
           @change="getprivKey"
           placeholder="please paste your private key"
         >
@@ -40,6 +40,7 @@ import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "./../../../utils/utils";
 import Bus from "./../../../utils/bus";
 import db from "./../../../utils/myDatabase";
+const Base58check = require('base58check');
 
 export default {
   name: "PrivateKey",
@@ -52,7 +53,8 @@ export default {
       keyStore: null,
       privKeyStore: null,
       hiddenpwd: null,
-      firstClick: 1
+      firstClick: 1,
+      inputPrivKey: null
     };
   },
 
@@ -74,7 +76,10 @@ export default {
 
   methods: {
     getprivKey() {
-      this.privKey = this.$refs.privKey.value;
+      this.inputPrivKey = this.$refs.privKey.value;
+      let decode_privKey_Hex = Base58check.decode(this.inputPrivKey).data.toString("hex");
+      let decode_privKey = decode_privKey_Hex.substring(0,decode_privKey_Hex.length - 2);
+      this.privKey = decode_privKey;
     },
     getPwd() {
       this.pwd = this.$refs.pwd.value;

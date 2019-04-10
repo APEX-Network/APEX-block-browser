@@ -163,7 +163,6 @@ export default {
     setAllAmount() {
       this.$refs.inputAmout.value = this.amount;
       this.inputAmout = this.allamount;
-      console.log(this.inputAmout);
     },
     getInputGasePrice() {
       this.inputGasePriceValue = this.$refs.inputGasePrice.value;
@@ -176,7 +175,6 @@ export default {
         this.$refs.inputGasePrice.value = null;
         alert("gasPrice值输入不正确！请输入0.001~10^9之间的数");
       }
-      console.log(this.inputGasePriceValue);
     },
     getPwd() {
       this.pwd = this.$refs.firstPwd.value;
@@ -292,12 +290,12 @@ export default {
           gasPrice: new bigdecimal.BigDecimal(
             String(this.inputGasePrice)
           ).multiply(new bigdecimal.BigDecimal(String(Math.pow(10, 6)))),
-          // gasPrice: this.inputGasePrice,
           gasLimit: "21000", //程序限制
           executeTime: "0000000000000000" //不变
         };
-        console.log(serializParams.amount.toString());
-        console.log(serializParams.gasPrice);
+        if (this.inputAmout !== this.allamount) {
+          serializParams.amount =  new bigdecimal.BigDecimal(String(this.inputAmout));
+        };
         this.message = util.utilMethods.produce_message(serializParams);
         let signParams = {
           message: this.message,
@@ -317,7 +315,6 @@ export default {
           this.message,
           this.signature
         );
-        console.log(this.serialized_transaction);
       }
       return;
     },

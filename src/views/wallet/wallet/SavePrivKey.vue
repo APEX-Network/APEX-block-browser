@@ -47,6 +47,7 @@
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
 import Bus from "./../../../utils/bus";
+const ECPair = require("bitcoinjs-lib/src/ecpair");
 
 export default {
   name: "SavePrivKey",
@@ -79,7 +80,9 @@ export default {
         this.apAddress = data;
       });
       Bus.$on("privKey", data => {
-        this.privKey = data;
+        let privKeyToBuffer = Buffer.from(data, "hex");
+        let privKeyToWif = ECPair.fromPrivateKey(privKeyToBuffer).toWIF();
+        this.privKey = privKeyToWif;        
       });
     },
     getAddress() {
@@ -140,7 +143,7 @@ export default {
           color: #f26522;
         }
         .privkey {
-          min-width: 520px;
+          min-width: 453px;
           padding-left: 10px;
           position: absolute;
           padding-top: 8px;

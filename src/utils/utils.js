@@ -107,7 +107,6 @@ const utilMethods = {
     },
     produce_address(privKey, ap) {
         let privKeyToBuffer = Buffer.from(privKey, "hex");
-        let privKeyToWif = ECPair.fromPrivateKey(privKeyToBuffer).toWIF();
         let privKeyToPub = ECPair.fromPrivateKey(privKeyToBuffer).publicKey;
         let pubHash = Crypto.ripemd160(Crypto.sha256(privKeyToPub)).toString(
             "hex"
@@ -164,7 +163,6 @@ const utilMethods = {
             nonce = "00000000000000" + nonce_hex;
         };
         let gasPrice_hex = Number(serializParams.gasPrice).toString(16);
-        console.log(gasPrice_hex );
         let gasPrice;
         if (gasPrice_hex.length % 2 == 1) {
             let gasPrice_prefix = "0" + gasPrice_hex;
@@ -186,7 +184,6 @@ const utilMethods = {
                 gasPrice = gasPrice_length + gasPrice_prefix;
             };
         };
-        console.log(gasPrice);
         
         let byteArraygaseLimit = BigInteger(serializParams.gasLimit.toString()).toByteArray();
         let gasLimit_hex = Buffer.from(byteArraygaseLimit, "hex").toString("hex");
@@ -221,7 +218,7 @@ const utilMethods = {
         let DeckeyStore = CryptoJS.AES.decrypt(downKeyStore, keyStorekey, iv);
         let privKey = DeckeyStore.toString(CryptoJS.enc.Utf8);
         //  根据私钥生成地址
-        let privKeyToBuffer = Buffer.from(privKey, "hex");
+        let privKeyToBuffer = Buffer.from(privKey, "hex");  
         let privKeyToPub = ECPair.fromPrivateKey(privKeyToBuffer).publicKey;
         let pubHash = Crypto.ripemd160(Crypto.sha256(privKeyToPub)).toString(
             "hex"

@@ -187,13 +187,13 @@ export default {
     bottom: 0;
     left: 0;
     margin: 0;
-    height: calc(~"100% - 70px");
+    height: calc(~"100% - 60px");
   }
 }
 @media screen and(max-width:1366px) {
   .home {
       .chart-box {
-        height: calc(~"100% - 70px");
+        height: calc(~"100% - 60px");
       }
   }
 }
