@@ -1,8 +1,7 @@
 
 <template>
   <div class="TransactionsInfo">
-    <apex-title :title="title"/>
-    <apex-back-ground/>
+    <apex-title :title="title" class="title"/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
         <li class="row">
@@ -123,7 +122,6 @@ export default {
   components: {
     Pagination,
     ApexTitle,
-    ApexBackGround
   },
   data() {
     return {
@@ -245,8 +243,18 @@ export default {
 .TransactionsInfo {
   width: 100%;
   height: 100%;
-  background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
-  background-color: rgba(0, 0, 0, 0);
+  background: url(./../../assets/images/shared/yunshi.png) 68% 89% no-repeat;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  .title {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    text-indent: 30px;
+    box-sizing: border-box;
+    border-radius: 0px 0px 4px 4px;
+    border-bottom: 2px solid #000;
+  }
   .data-table {
     .table-ul {
       li {

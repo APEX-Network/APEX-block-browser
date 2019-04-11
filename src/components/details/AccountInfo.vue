@@ -1,7 +1,6 @@
 <template>
   <div class="AccountInfo">
-    <apex-title :title="title"/>
-    <apex-back-ground/>
+    <apex-title :title="title" class="title"/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
         <li class="row">
@@ -42,7 +41,28 @@
             <span class="col">{{ list.refBlockTime }}</span>
           </li>
         </ul>
-        <Pagination/>
+        <!-- <Pagination/> -->
+        <div class="apex-pagination">
+          <div class="pagination-content">
+            <a class="first" @click="getFirst()">First</a>
+            <img
+              ref="left"
+              class="prev"
+              @click="getPrevious()"
+              src="../../assets/images/shared/leftWhiteArrow.png"
+              alt
+            >
+            <span class="list-number">{{pageNumber}}</span>
+            <img
+              ref="right"
+              class="next"
+              @click="isClick && getNext()"
+              src="../../assets/images/shared/rightArrow.png"
+              alt
+            >
+            <a class="last" @click="isClick && getLast()">Last</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -50,17 +70,16 @@
 
 <script>
 import ApexTitle from "@/components/public/ApexTitle.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue";
-import Pagination from "@/components/public/Pagination.vue";
+// import ApexBackGround from "@/components/public/ApexBackGround.vue";
+// import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
 
 export default {
   name: "AccountInfo",
   components: {
-    Pagination,
-    ApexTitle,
-    ApexBackGround
+    // Pagination,
+    ApexTitle
   },
   created() {},
   data() {
@@ -68,20 +87,31 @@ export default {
       title: "AccountInfo Information",
       accountInfo_url: "/api/v1.0/accounts/account",
       accountTransaction_url: "/api/v1.0/transactions/account/transactionList",
+      start: 0,
       accountTransaction_param: {
         start: 0,
         pageSize: 6,
         address: null
       },
+      pageNumber: "1-10",
+      arrow: {
+        leftArrow: null,
+        rightArrow: null
+      },
       accountInfo: null,
       transactions: [],
       refBlockTime: null,
-      Balance: null
+      Balance: null,
+      flag: null,
+      isClick: true
     };
   },
   mounted() {
+    this.getInstance();
+    window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
     const timer = setInterval(() => {
+      this.getAccountInfo();
       this.getAccountTransactionInfo();
     }, 1500);
     this.$once("hook:beforeDestroy", () => {
@@ -89,6 +119,10 @@ export default {
     });
   },
   methods: {
+    getInstance() {
+      this.arrow.leftArrow = this.$refs.left;
+      this.arrow.rightArrow = this.$refs.right;
+    },
     Copy(index) {
       let getCopyText = this.accountTransaction_param.address;
       this.doCopy(getCopyText);
@@ -107,13 +141,16 @@ export default {
         sessionStorage.setItem("refresh", data);
         this.getAccountInfo();
         this.getAccountTransactionInfo();
+        return;
       });
-      if (this.accountTransaction_param.address == null) {
+      this.flag = sessionStorage.getItem("flag");
+      if (this.accountTransaction_param.address == null && this.flag == 1) {
         this.accountTransaction_param.address = sessionStorage.getItem(
           "refresh"
         );
         this.getAccountInfo();
         this.getAccountTransactionInfo();
+        return;
       }
     },
     getAccountInfo() {
@@ -158,6 +195,29 @@ export default {
           .then(response => {
             let res = response.data.data;
             this.transactions = res;
+            if (this.transactions.length == 0) {
+              this.accountTransaction_param.start = this.start - 1;
+              this.$axios
+                .post(
+                  this.accountTransaction_url,
+                  this.accountTransaction_param
+                )
+                .then(response => {
+                  let res = response.data.data;
+                  this.transactions = res;
+                  let time;
+                  for (let i = 0; i < this.transactions.length; i++) {
+                    let element = this.transactions[i];
+                    time = util.utilMethods.getSec(element.refBlockTime);
+                    element.refBlockTime = time;
+                  }
+                })
+                .catch(function(err) {
+                  if (err.response) {
+                    console.log(err.response);
+                  }
+                });
+            }
             let time;
             for (let i = 0; i < this.transactions.length; i++) {
               let element = this.transactions[i];
@@ -172,16 +232,178 @@ export default {
           });
       }
     },
+    getFirst() {
+      if (this.accountTransaction_param.address !== null) {
+        this.isClick = true;
+        this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
+        this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+        this.pageNumber = "1-10";
+        this.start = 0;
+        this.accountTransaction_param.start = "0";
+        this.$axios
+          .post(this.accountTransaction_url, this.accountTransaction_param)
+          .then(response => {
+            let res = response.data.data;
+            this.transactions = res;
+            let time;
+            for (let i = 0; i < this.transactions.length; i++) {
+              let element = this.transactions[i];
+              time = util.utilMethods.getSec(element.refBlockTime);
+              element.refBlockTime = time;
+            }
+          })
+          .catch(function(err) {
+            if (err.response) {
+              console.log(err.response);
+            }
+          });
+      }
+    },
+    getLast() {
+      // this.isClick = true;
+      // this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+      // this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+      // this.start--;
+      // this.pageNumber = this.start + "/10";
+      // this.accountTransaction_param.start = this.start;
+      // if (this.accountTransaction_param.address !== null) {
+      //   this.$axios
+      //     .post(this.accountTransaction_url, this.accountTransaction_param)
+      //     .then(response => {
+      //       let res = response.data.data;
+      //       this.transactions = res;
+      //       let time;
+      //       for (let i = 0; i < this.transactions.length; i++) {
+      //         let element = this.transactions[i];
+      //         time = util.utilMethods.getSec(element.refBlockTime);
+      //         element.refBlockTime = time;
+      //       }
+      //     })
+      //     .catch(function(err) {
+      //       if (err.response) {
+      //         console.log(err.response);
+      //       }
+      //     });
+      // }
+      // if (this.start == 0) {
+      //   this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
+      //   this.pageNumber = "1-10";
+      //   return;
+      // }
+    },
+    getNext() {
+      if (this.start < 10) {
+        this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+        this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+        this.start++;
+        this.pageNumber = this.start + "/10";
+        this.accountTransaction_param.start = this.start;
+        if (this.accountTransaction_param.address !== null) {
+          this.$axios
+            .post(this.accountTransaction_url, this.accountTransaction_param)
+            .then(response => {
+              let res = response.data.data;
+              if (res.length == 0) {
+                this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+                this.isClick = false;
+                this.accountTransaction_param.start = this.start - 1;
+                this.pageNumber = this.start - 1 + "/10";
+                this.$axios
+                  .post(
+                    this.accountTransaction_url,
+                    this.accountTransaction_param
+                  )
+                  .then(response => {
+                    let res = response.data.data;
+                    this.transactions = res;
+                    let time;
+                    for (let i = 0; i < this.transactions.length; i++) {
+                      let element = this.transactions[i];
+                      time = util.utilMethods.getSec(element.refBlockTime);
+                      element.refBlockTime = time;
+                    }
+                  })
+                  .catch(function(err) {
+                    if (err.response) {
+                      console.log(err.response);
+                    }
+                  });
+                return;
+              }
+              this.transactions = res;
+              let time;
+              for (let i = 0; i < this.transactions.length; i++) {
+                let element = this.transactions[i];
+                time = util.utilMethods.getSec(element.refBlockTime);
+                element.refBlockTime = time;
+              }
+            })
+            .catch(function(err) {
+              if (err.response) {
+                console.log(err.response);
+              }
+            });
+        }
+        if (this.start == 10) {
+          this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+          return;
+        }
+      }
+    },
+    getPrevious() {
+      this.isClick = true;
+      if (this.start > 0) {
+        this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+        this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+        this.start--;
+        this.pageNumber = this.start + "/10";
+        this.accountTransaction_param.start = this.start;
+        if (this.accountTransaction_param.address !== null) {
+          this.$axios
+            .post(this.accountTransaction_url, this.accountTransaction_param)
+            .then(response => {
+              let res = response.data.data;
+              this.transactions = res;
+              let time;
+              for (let i = 0; i < this.transactions.length; i++) {
+                let element = this.transactions[i];
+                time = util.utilMethods.getSec(element.refBlockTime);
+                element.refBlockTime = time;
+              }
+            })
+            .catch(function(err) {
+              if (err.response) {
+                console.log(err.response);
+              }
+            });
+        }
+        if (this.start == 0) {
+          this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
+          this.pageNumber = "1-10";
+          return;
+        }
+      }
+    },
     setRefBlockHash(e) {
       Bus.$emit("txHash", e.target.innerHTML);
     },
     offListener() {
       Bus.$off("txHash");
+    },
+    beforeunloadHandler(e) {
+      this.flag = 1;
+      sessionStorage.setItem("flag", this.flag);
     }
   },
   beforeDestroy() {
     sessionStorage.setItem("refresh", null);
+    sessionStorage.setItem("flag", null);
     this.offListener();
+  },
+  destroyed() {
+    window.removeEventListener("beforeunload", e =>
+      this.beforeunloadHandler(e)
+    );
   }
 };
 </script>
@@ -192,13 +414,26 @@ export default {
 .AccountInfo {
   width: 100%;
   height: 100%;
+  background-color: rgba(255, 255, 255, 0.1) !important;
   background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
+  .title {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    text-indent: 30px;
+    box-sizing: border-box;
+    border-radius: 0px 0px 4px 4px;
+    border-bottom: 2px solid #000;
+  }
   .apex-box {
+    // background-color: rgba(255, 255, 255, 0.1);
     padding-top: 80px;
     .apex-title {
       padding-left: 30px;
     }
     .data-table {
+      // background-color: rgba(255, 255, 255, 0.1);
       width: 100%;
       padding: 0px 12px 0px;
       box-sizing: border-box;
@@ -243,6 +478,42 @@ export default {
             span {
               color: #ebebeb;
               font-family: "Semibold";
+            }
+          }
+        }
+      }
+      .apex-pagination {
+        width: 100%;
+        height: 50px;
+        padding: 10px 35px;
+        box-sizing: border-box;
+        text-align: right;
+        font-size: 12px;
+        .pagination-content {
+          .prev {
+            cursor: pointer;
+            padding-left: 5px;
+          }
+          .next {
+            cursor: pointer;
+            padding-right: 5px;
+          }
+          a {
+            display: inline-block;
+            padding: 9px 0;
+            margin: 0 4px;
+            cursor: pointer;
+            font-family: "Semibold";
+            vertical-align: middle;
+            &.list-number {
+              cursor: initial;
+            }
+            &.first,
+            &.last {
+              transition: all 0.3s;
+              &:hover {
+                color: #f26522;
+              }
             }
           }
         }

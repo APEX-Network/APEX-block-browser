@@ -1,7 +1,6 @@
 <template>
   <div class="BlocksInfo">
-    <apex-title :title="title"/>
-    <apex-back-ground/>
+    <apex-title :title="title" class="title"/>
     <div class="data-table">
       <ul class="table-ul">
         <li class="row">
@@ -40,7 +39,7 @@
           <span class="col">
             Mined By:
             <span class="clol col-lg-8">
-              <router-link to="/producer/ProducerInfo" @click.native="setClickValue">{{minedBy}}</router-link>
+              <router-link to @click.native="setClickValue">{{minedBy}}</router-link>
             </span>
           </span>
         </li>
@@ -51,18 +50,17 @@
 
 <script>
 import ApexTitle from "@/components/public/ApexTitle.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue";
-import Pagination from "@/components/public/Pagination.vue";
+// import ApexBackGround from "@/components/public/ApexBackGround.vue";
+// import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
-import { setTimeout } from "timers";
 
 export default {
   name: "BlocksInfo",
   components: {
-    Pagination,
+    // Pagination,
     ApexTitle,
-    ApexBackGround
+    // ApexBackGround
   },
   data() {
     return {
@@ -77,11 +75,13 @@ export default {
       blockHash: null,
       parentHash: null,
       minedBy: null,
-      result: null
+      result: null,
+      flag: null
     };
   },
   created() {},
   mounted() {
+    window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
   },
   methods: {
@@ -90,14 +90,22 @@ export default {
         this.result = JSON.parse(data);
         sessionStorage.setItem("refresh", data);
         this.getBlocksInfo();
+        return;
       });
-      if (this.result == null) {
+      this.flag = sessionStorage.getItem("flag");
+      if (this.result == null && this.flag == 1) {
         this.result = JSON.parse(sessionStorage.getItem("refresh"));
         this.getBlocksInfo();
+        return;
       }
     },
     setClickValue(e) {
-      Bus.$emit("minerBy", e.target.innerHTML);
+      if (this.height !== 0 && this.height !== null) {
+        setTimeout(() => {
+          Bus.$emit("minerBy", e.target.innerHTML);
+        });
+        this.$router.push("/producer/ProducerInfo");
+      }
     },
     getBlocksInfo() {
       if (!!this.result) {
@@ -168,11 +176,21 @@ export default {
     },
     offListener() {
       Bus.$off("minerBy");
+    },
+    beforeunloadHandler(e) {
+      this.flag = 1;
+      sessionStorage.setItem("flag", this.flag);
     }
   },
   beforeDestroy() {
     sessionStorage.setItem("refresh", null);
+    sessionStorage.setItem("flag", null);
     this.offListener();
+  },
+  destroyed() {
+    window.removeEventListener("beforeunload", e =>
+      this.beforeunloadHandler(e)
+    );
   }
 };
 </script>
@@ -184,7 +202,18 @@ export default {
 .BlocksInfo {
   width: 100%;
   height: 100%;
-  background: url(./../../assets/images/shared/yunshi.png) 40% 45% no-repeat;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  background: url(./../../assets/images/shared/yunshi.png) 55% 67% no-repeat;
+  .title {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    text-indent: 30px;
+    box-sizing: border-box;
+    border-radius: 0px 0px 4px 4px;
+    border-bottom: 2px solid #000;
+  }
   .data-table {
     .table-ul {
       li {

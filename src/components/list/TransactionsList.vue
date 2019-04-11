@@ -1,5 +1,5 @@
 <template>
-  <div class="transactions apex-modul fr">
+  <div class="transactions apex-modul fl">
     <p class="apex-title">
       Transactions
       <router-link to="/transactions/TransactionsInfo/AccountInfo" @click.native="goAccountInfo">

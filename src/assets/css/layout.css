@@ -14,7 +14,7 @@ input:-ms-input-placeholder {
   color: #b3b3b3;
 }
 .main {
-  width: 1100px;
+  width: 73%;
   margin: 0 auto;
 }
 .min-height {
@@ -67,7 +67,7 @@ body .logo-left {
   -moz-transform: translate(-50%, 0);
   -ms-transform: translate(-50%, 0);
   transform: translate(-50%, 0);
-  width: 1170px;
+  width: 77%;
   height: calc( 100vh - 130px);
   box-sizing: border-box;
   padding: 40px 45px;
@@ -99,7 +99,7 @@ body .logo-left {
   position: relative;
   width: 49%;
   height: 98%;
-  background: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.1) !important;
   border-radius: 0px 0px 4px 4px;
 }
 .apex-modul .apex-title {
@@ -181,7 +181,6 @@ body .logo-left {
 .apex-modul.overview ul {
   width: 100%;
   padding: 0 50px;
-  padding-top: 5px;
   box-sizing: border-box;
 }
 .apex-modul.overview ul li {

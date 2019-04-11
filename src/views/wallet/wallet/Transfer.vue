@@ -1,7 +1,7 @@
 <template>
   <div class="transfer">
-    <apex-title :title="title"/>
-    <apex-back-ground/>
+    <apex-title :title="title" class="title"/>
+    <!-- <apex-back-ground/> -->
     <div class="flex-container">
       <div class="from">
         <div>From:</div>
@@ -203,14 +203,12 @@ export default {
       this.firstClick++;
       if (this.firstClick % 2 == 0 && this.pwd !== null) {
         this.$refs.firstPwd.type = "text";
-        this.transferPwd.src =
-          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAMCAYAAABvEu28AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQwIDc5LjE2MDQ1MSwgMjAxNy8wNS8wNi0wMTowODoyMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjJDQ0M3RjJDREU1MTExRThCMzdEQ0VDRTMzMkY0MkEyIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjU5RkU1OEM2REU1MTExRThCMzdEQ0VDRTMzMkY0MkEyIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MkNDQzdGMkFERTUxMTFFOEIzN0RDRUNFMzMyRjQyQTIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MkNDQzdGMkJERTUxMTFFOEIzN0RDRUNFMzMyRjQyQTIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4342abAAABe0lEQVR42lzTSyjEURTHcTNGnkOTpGw8ZoFioWxIikyUlYWFFBZepYiFskXySKFshMJCGWQ7K4VSFhZIShYehZ1GUozH9+in/v1vfZr/3O4993/OPX9PtKsgzjWSkYcK1KEQCbjDPg5xhagt9i/d/G3yuYIUoRdtCOAd1/qtRCN+sIcFHCFmG72OICHsYkBBThQ0JM0I4wtNWtv32h1MtM0epVaNdeQq6DlalUItshDBC9bQonX2dkOY92rznCPIJ6YUbFYn2yEbSMM0HrXWg1E7zAL1o8yR4jPOVK92pGhDPTpwgVPHej/GvaqHc1gNvpHkqqGNDBU35poPeJXWrWMyG/k6OeKYt//LsKKWuAKN+ZTGCFbUQ/YmgzhGj644HZt4wIwO+h/2IuH/PtpCKiaRiRqsYkILbeTouVMp240tWrFpyg+Po7Pj1QbDaNDcvVKymwyiWEEudXvbBHlzd/aXPgG7kXI1XRVKtdk+iR21wwGedCl/41eAAQB+5Vx/vl4kBAAAAABJRU5ErkJggg==";
-      }
+        this.transferPwd.src = require("../../../assets/images/eye.png");
+      };
       if (this.firstClick % 2 == 1 && this.pwd !== null) {
         this.$refs.firstPwd.type = "password";
-        this.transferPwd.src =
-          "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAPCAYAAAACsSQRAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQwIDc5LjE2MDQ1MSwgMjAxNy8wNS8wNi0wMTowODoyMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjEzMDMxMTAzNEQxOTExRTk5NjM2RDE0OUI2NzgxODU4IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjEzMDMxMTA0NEQxOTExRTk5NjM2RDE0OUI2NzgxODU4Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MTMwMzExMDE0RDE5MTFFOTk2MzZEMTQ5QjY3ODE4NTgiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MTMwMzExMDI0RDE5MTFFOTk2MzZEMTQ5QjY3ODE4NTgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4J7CJ6AAAC8klEQVR42lRSzYtcRRD/VXX3zNuZTRxI3BCXjaselkTxIIIQDFEEBTdqIhIS9OBBQjyJf4GgJy9+3IKClxgDCUn2sCQYRWEQRA+BhaAgGNAsLCJEs5udN/NeV5X1Zj/AfhS8bqp//fsoGpyemRIJp7LkT1PAmoUOaPAPiBk57QCZwIgQDCDKiPgXgknACqjW6N5bRjSjvYbwARNeBPJBQP1SmCai/QDmvJLXwOtXr58IUjmC/xK2VqRES6Guj4ulCwZaiKiPSru9TzR8Qw6ojs5+R6m5FG8Dk58z6CNA1rdAwnsHvCEUvxi48HrLW/dHxidqetOMJwqhS0q2oi1+FEz3iRTPgsJJIv0ZpsupWnPJrwBru2fnLaYvSGXK/NXAWCSWl4IKSAl1Ski/D2aGu4o+9cKsZWskI+Xhc527t7/j0c7ejDu26KhTDTVijMRwRCVeCdH3sX5COF1L9Z2V7tLyYaUworEjBuF4vZro7eNhd89ZB3FKNvaK1D6Loi+o2dEyty+Rphudu8P++kO7ztcHen+GUb640a9NXKHs7vnS5efDW2abV1t0RTRe9xeX2epXS26dn0jVybZ0HrP7a8SqulWhvZ0Na32I8ffwB52M4wNy8BHHJ6lYRatYvQyNMLETZTstUiE3tSJUnJ4Zs0YTNDWpLXDB9AZl2zxuogzzqVx9pKP33uFAZ5zybz5v80Pji04AgfRjn60xAJsOJkROc9oZ/0jr1fO6SZBZ2mWc7g/L3Y8b1W+36nIuaj4oSq9J5suuf4E5v9zEHpGPtLL8FX2GYWzfJlRPG+I5UTxIkR6oLCxB7Xvj0Pf56TWzlpWPuegrCaNjzuJrl1U1cZK9OYt1H0lm38fWDrX4rqidclLTY91NU+P8huBbLuNhNrkaUM17Rg5AiFuj22j0b60V6P1S5EP3+CkmnvMou2okifOPTHaj1njCfTsHa10LVr/usu5sg2yDbTg88upv1v+Ws/qKkFkpniW2457Pmf8EGABwNmg2JKFbewAAAABJRU5ErkJggg==";
-      }
+        this.transferPwd.src = require("../../../assets/images/hiddeneye.jpg");
+      };
     },
     getAccountInfo(address) {
       this.$axios
@@ -290,12 +288,17 @@ export default {
           gasPrice: new bigdecimal.BigDecimal(
             String(this.inputGasePrice)
           ).multiply(new bigdecimal.BigDecimal(String(Math.pow(10, 6)))),
+          // gasPrice: new bigdecimal.BigDecimal(
+          //   String(this.inputGasePrice)
+          // ),
           gasLimit: "21000", //程序限制
           executeTime: "0000000000000000" //不变
         };
         if (this.inputAmout !== this.allamount) {
-          serializParams.amount =  new bigdecimal.BigDecimal(String(this.inputAmout));
-        };
+          serializParams.amount = new bigdecimal.BigDecimal(
+            String(this.inputAmout)
+          );
+        }
         this.message = util.utilMethods.produce_message(serializParams);
         let signParams = {
           message: this.message,
@@ -356,8 +359,20 @@ export default {
 </script>
 <style lang='less' scoped>
 .transfer {
+  background: url(./../../../assets/images/shared/yunshi.png) 34% 58% no-repeat;
   width: 100%;
   height: 100%;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  .title {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    text-indent: 30px;
+    box-sizing: border-box;
+    border-radius: 0px 0px 4px 4px;
+    border-bottom: 2px solid #000;
+  }
   .flex-container {
     position: absolute;
     display: flex;

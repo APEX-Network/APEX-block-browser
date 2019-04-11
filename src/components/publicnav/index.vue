@@ -264,7 +264,7 @@ export default {
               .get(this.url.blockHash_url + this.search)
               .then(response => {
                 if (response.data.status == 404) {
-                  this.$router.push("/error");
+                  // this.$router.push("/error");
                   return;
                 }
                 if (response.data.status == 200) {
@@ -289,7 +289,7 @@ export default {
               .get(this.url.transactions_url + this.search)
               .then(response => {
                 if (response.data.status == 404) {
-                  this.$router.push("/error");
+                  // this.$router.push("/error");
                   return;
                 }
                 if (response.data.status == 200) {
@@ -337,7 +337,15 @@ export default {
     hiddenAboutUs() {
       this.about.style.visibility = "hidden";
       this.wrapDiv.style.display = "none";
+    },
+    offListener() {
+      Bus.$off("accountValue");
+      Bus.$off("clickValue");
+      Bus.$off("txHash");
     }
+  },
+  beforeDestroy() {
+    this.offListener();
   }
 };
 </script>
@@ -438,8 +446,9 @@ export default {
     height: 56px;
     position: relative;
     margin-left: 20px;
+    width: 60%;
     input {
-      width: 710px;
+      width: 100%;
       height: 100%;
       border: 0px;
       border-radius: 4px;
@@ -468,7 +477,7 @@ export default {
   .language {
     position: absolute;
     top: 25px;
-    right: -55px;
+    margin-left: 96%;
     line-height: 32px;
     height: 32px;
     color: #fff;

@@ -3,7 +3,7 @@
     <p class="apex-title">Wallet</p>
     <div class="flex-container1">
       <div class="flex-item1">Address</div>
-      <input class="flex-item2" v-model="address" readonly="readonly">
+      <input class="flex-item2" v-model="address" readonly="readonly" placeholder="Please create or import your wallet">
       <!-- <select class="flex-item2" v-model="address"  readonly="readonly">
         <option v-for="(address, index) in APAddress" :key="index" >{{address}}</option>
       </select>-->
@@ -159,7 +159,7 @@ export default {
   .flex-item3 {
     // width: 220px;
     height: 35px;
-    margin: 50px 0 0 132px;
+    margin: 50px 0 0 142px;
     line-height: 35px;
     text-align: center;
     font-size: 22px;
@@ -205,7 +205,7 @@ export default {
     line-height: 35px;
     text-align: center;
     border: 1px solid #f26522;
-    margin: 40px 20px 0px 136px;
+    margin: 40px 20px 0px 146px;
     a {
       color: #f26522;
     }

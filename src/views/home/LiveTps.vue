@@ -2,7 +2,6 @@
   <div class="tps apex-modul fr">
     <p class="apex-title">Live TPS</p>
     <div class="chart-box" id="echartContainer" style="width:100%;">
-      <!-- <div class="chart" id="echartContainer" style="width:100%;"></div> -->
     </div>
   </div>
 </template>

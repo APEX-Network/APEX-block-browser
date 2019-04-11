@@ -1,7 +1,7 @@
 <template>
   <div class="Blocks">
-    <apex-title :title="title"/>
-    <apex-back-ground/>
+    <apex-title :title="title" class="title"/>
+    <!-- <apex-back-ground/> -->
     <div class="data-table">
       <ul class="table-ul">
         <li class="row">
@@ -32,11 +32,23 @@
       </ul>
       <div class="apex-pagination">
         <div class="pagination-content">
-          <span class="first">First</span>
-          <span class="prev" @click="getPreviousBlocks"></span>
-          <span class="list-number">1-10</span>
-          <span class="next" @click="getNextBlocks"></span>
-          <span class="last">Last</span>
+          <a class="first" @click="getPrevious">First</a>
+          <img
+            ref="left"
+            class="prev"
+            @click="getPrevious"
+            src="../../assets/images/shared/leftWhiteArrow.png"
+            alt
+          >
+          <span class="list-number">{{pageNumber}}</span>
+          <img
+            ref="right"
+            class="next"
+            @click="getNext"
+            src="../../assets/images/shared/rightArrow.png"
+            alt
+          >
+          <a class="last" @click="getNext">Last</a>
         </div>
       </div>
     </div>
@@ -44,7 +56,7 @@
 </template>
 <script>
 // import Pagination from "@/components/public/Pagination.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue";
+// import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
@@ -53,7 +65,7 @@ export default {
   name: "blocks",
   components: {
     // Pagination,
-    ApexBackGround,
+    // ApexBackGround,
     ApexTitle
   },
   data() {
@@ -61,7 +73,7 @@ export default {
       title: "Blocks",
       dataList: null,
       secondTime: null,
-      start: 1,
+      start: 0,
       allBlockUrl: "/api/v1.0/blocks/blockList",
       params: {
         start: "0",
@@ -70,10 +82,16 @@ export default {
       clickValue: {
         type: "height",
         value: null
+      },
+      pageNumber: "1-10",
+      arrow: {
+        leftArrow: null,
+        rightArrow: null
       }
     };
   },
   mounted() {
+    this.getInstance();
     this.getFirstBlocks();
     const timer = setInterval(() => {
       this.getFirstBlocks();
@@ -83,6 +101,10 @@ export default {
     });
   },
   methods: {
+    getInstance() {
+      this.arrow.leftArrow = this.$refs.left;
+      this.arrow.rightArrow = this.$refs.right;
+    },
     getFirstBlocks() {
       if (!!this.params) {
         this.$axios
@@ -117,37 +139,21 @@ export default {
     setMinerByValue(e) {
       Bus.$emit("minerBy", e.target.innerHTML);
     },
-    getNextBlocks() {
-      this.nextPage = this.start++;
-      this.params.start = this.nextPage;
-      this.$axios
-        .post(this.allBlockUrl, this.params)
-        .then(response => {
-          let res = response.data.data;
-          let seconds;
-          for (let i = 0; i < res.length; i++) {
-            const item = res[i];
-            seconds = util.utilMethods.getSec(item.timeStamp);
-            item.timeStamp = seconds;
-          }
-          this.dataList = res;
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
-      if (this.nextPage >= 10) {
-        this.params.start = "10";
+    getNext() {
+      if (this.start < 10) {
+        this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+        this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+        this.start++;
+        this.pageNumber = this.start + "/10";
+        this.params.start = this.start;
         this.$axios
           .post(this.allBlockUrl, this.params)
           .then(response => {
-            this.dataList = null;
             let res = response.data.data;
             let seconds;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              seconds = util.utilMethods.getSeconds(item.timeStamp);
+              seconds = util.utilMethods.getSec(item.timeStamp);
               item.timeStamp = seconds;
             }
             this.dataList = res;
@@ -157,29 +163,19 @@ export default {
               console.log(err.response);
             }
           });
+        if (this.start == 10) {
+          this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+          return;
+        }
       }
     },
-    getPreviousBlocks() {
-      this.previousPage = this.start--;
-      this.params.start = this.previousPage;
-      this.$axios
-        .post(this.allBlockUrl, this.params)
-        .then(response => {
-          let res = response.data.data;
-          let seconds;
-          for (let i = 0; i < res.length; i++) {
-            const item = res[i];
-            seconds = util.utilMethods.getSeconds(item.timeStamp);
-            item.timeStamp = seconds;
-          }
-          this.dataList = res;
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
-      if (this.previousPage <= 0) {
+    getPrevious() {
+      if (this.start > 0) {
+        this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+        this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+        this.start--;
+        this.pageNumber = this.start + "/10";
+        this.params.start = this.start;
         this.$axios
           .post(this.allBlockUrl, this.params)
           .then(response => {
@@ -191,12 +187,18 @@ export default {
               item.timeStamp = seconds;
             }
             this.dataList = res;
+            console.log(this.dataList);
           })
           .catch(function(err) {
             if (err.response) {
               console.log(err.response);
             }
           });
+        if (this.start == 0) {
+          this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
+          this.pageNumber = "1-10";
+          return;
+        }
       }
     },
     offListener() {
@@ -214,8 +216,20 @@ export default {
 .Blocks {
   width: 100%;
   height: 100%;
-  background: url(./../../assets/images/shared/yunshi.png) 40% 45% no-repeat;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  background: url(./../../assets/images/shared/yunshi.png) 55% 67% no-repeat;
+  .title {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    text-indent: 30px;
+    box-sizing: border-box;
+    border-radius: 0px 0px 4px 4px;
+    border-bottom: 2px solid #000;
+  }
   .data-table {
+    height: 93%;
     .table-ul {
       & > li {
         & > span {
@@ -232,36 +246,31 @@ export default {
       box-sizing: border-box;
       text-align: right;
       font-size: 12px;
-      span {
-        display: inline-block;
-        padding: 9px 0;
-        margin: 0 4px;
-        cursor: pointer;
-        font-family: "Semibold";
-        vertical-align: middle;
-        &.list-number {
-          cursor: initial;
+      .pagination-content {
+        .prev {
+          cursor: pointer;
+          padding-left: 5px;
         }
-        &.prev,
-        &.next {
-          padding: 9px;
-          background: url("../../assets/images/shared/page.png") no-repeat
-            center 2px;
-          color: #f26522;
-
-          &:hover {
-            background-position: center -34px;
-            color: #f26522;
+        .next {
+          cursor: pointer;
+          padding-right: 5px;
+        }
+        a {
+          display: inline-block;
+          padding: 9px 0;
+          margin: 0 4px;
+          cursor: pointer;
+          font-family: "Semibold";
+          vertical-align: middle;
+          &.list-number {
+            cursor: initial;
           }
-        }
-        &.next {
-          transform: rotate(-180deg);
-        }
-        &.first,
-        &.last {
-          transition: all 0.3s;
-          &:hover {
-            color: #f26522;
+          &.first,
+          &.last {
+            transition: all 0.3s;
+            &:hover {
+              color: #f26522;
+            }
           }
         }
       }

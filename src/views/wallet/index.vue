@@ -1,11 +1,11 @@
 <template>
   <div class="home clearboth">
     <div class="top-modul clearboth">
-        <wallet-page :address="apAddress" :privKey="privKey" />
+      <wallet-page :address="apAddress" :privKey="privKey"/>
     </div>
     <div class="bottom-modul clearboth">
-      <transfers-list />
-        <transactions-list />
+      <transfers-list/>
+      <transactions-list/>
     </div>
   </div>
 </template>
@@ -37,8 +37,8 @@ export default {
         this.apAddress = data;
       });
       Bus.$on("privKey", data => {
-      this.privKey = data;
-    });
+        this.privKey = data;
+      });
     }
   },
   computed: {}
@@ -48,7 +48,8 @@ export default {
 .home {
   width: 100%;
   height: 100%;
-  background: url(./../../assets/images/shared/yunshi.png) 25% 35% no-repeat;
+  // background-color: rgba(255, 255, 255, 0.1) !important;
+  background: url(./../../assets/images/shared/yunshi.png) 34% 58% no-repeat;
   .bottom-modul,
   .top-modul {
     height: 49%;

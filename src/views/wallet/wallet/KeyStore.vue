@@ -1,7 +1,7 @@
 <template>
   <div class="keyStore">
-    <apex-title :title="title"/>
-    <apex-back-ground/>
+    <apex-title :title="title" class="title"/>
+    <!-- <apex-back-ground/> -->
     <div class="flex-container">
       <div class="text">
         <p>Import wallet address by keystore.</p>
@@ -23,7 +23,7 @@
             @change="getPwd"
             placeholder="Enter the password corresponding to this keystore"
           >
-          <img src="./../../../assets/images/eye.png" @click="displayPwd">
+          <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenPwd">
         </div>
       </div>
       <div class="create">
@@ -48,7 +48,9 @@ export default {
       title: "OpenWallet",
       walletAddress: null,
       keyStore: null,
-      pwd: null
+      pwd: null,
+      firstClick: 1,
+      hiddenpwd: null
     };
   },
 
@@ -61,7 +63,9 @@ export default {
 
   beforeMount() {},
 
-  mounted() {},
+  mounted() {
+    this.hiddenpwd = this.$refs.hiddenPwd;
+  },
 
   methods: {
     getkeyStore() {
@@ -71,7 +75,15 @@ export default {
       this.pwd = this.$refs.pwd.value;
     },
     displayPwd() {
-      this.$refs.pwd.type = "text";
+      this.firstClick++;
+      if (this.firstClick % 2 == 0 && this.pwd !== null) {
+        this.$refs.pwd.type = "text";
+        this.hiddenpwd.src = require("../../../assets/images/eye.png");
+      }
+      if (this.firstClick % 2 == 1 && this.pwd !== null) {
+        this.$refs.pwd.type = "password";
+        this.hiddenpwd.src = require("../../../assets/images/hiddeneye.jpg");
+      }
     },
     keyStoreWallet() {
       if (this.keyStore !== null && this.pwd !== null) {
@@ -97,7 +109,18 @@ export default {
 .keyStore {
   width: 100%;
   height: 100%;
-  background: url(./../../../assets/images/shared/yunshi.png) 25% 35% no-repeat;
+  background: url(./../../../assets/images/shared/yunshi.png) 34% 58% no-repeat;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  .title {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    text-indent: 30px;
+    box-sizing: border-box;
+    border-radius: 0px 0px 4px 4px;
+    border-bottom: 2px solid #000;
+  }
   .flex-container {
     display: flex;
     height: auto;
@@ -112,7 +135,8 @@ export default {
     }
     .enterpwd {
       margin-top: 80px;
-      margin-left: 35px;
+      height: 100px;
+      width: 406px;
       input {
         margin-left: 30px;
         background: rgba(255, 255, 255, 0.001);
@@ -151,7 +175,6 @@ export default {
       color: #f26522;
       border: 1px solid #f26522;
       margin-top: 60px;
-      margin-right: 25px;
       text-align: center;
       height: 30px;
       width: 160px;

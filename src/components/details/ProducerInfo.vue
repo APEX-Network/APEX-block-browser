@@ -1,7 +1,6 @@
 <template>
   <div class="ProducerInfo">
-    <apex-title :title="title"/>
-    <apex-back-ground/>
+    <apex-title :title="title" class="title"/>
     <div class="data-table">
       <ul class="table-ul">
         <!-- <li v-for="(value, key ,index ) in producerInfo" :key="index" class="row">
@@ -56,16 +55,15 @@
 
 <script>
 import ApexTitle from "@/components/public/ApexTitle.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue";
-import Pagination from "@/components/public/Pagination.vue";
+// import ApexBackGround from "@/components/public/ApexBackGround.vue";
+// import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 
 export default {
   name: "ProducerInfo",
   components: {
-    Pagination,
+    // Pagination,
     ApexTitle,
-    ApexBackGround
   },
   data() {
     return {
@@ -78,16 +76,18 @@ export default {
         CurrentRank: null,
         Website: null,
         Description: null,
-        block: null
+        block: null,
+        flag: null
       }
     };
   },
   created() {},
   mounted() {
+    window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
-    setTimeout(() => {
-      this.getProduceInfo();
-    });
+    // setTimeout(() => {
+    //   this.getProduceInfo();
+    // });
   },
   methods: {
     gotHome() {
@@ -95,12 +95,16 @@ export default {
     },
     getClickValue() {
       Bus.$on("minerBy", data => {
-        sessionStorage.setItem("refresh", data);
         this.minerBy = data;
+        sessionStorage.setItem("refresh", data);
+        this.getProduceInfo();
+        return;
       });
-      if (this.minerBy == null) {
+      this.flag = sessionStorage.getItem("flag");
+      if (this.minerBy == null && this.flag == 1) {
         this.minerBy = sessionStorage.getItem("refresh");
         this.getProduceInfo();
+        return;
       }
     },
     getProduceInfo() {
@@ -120,10 +124,20 @@ export default {
             console.log(response);
           });
       }
+    },
+    beforeunloadHandler(e) {
+      this.flag = 1;
+      sessionStorage.setItem("flag", this.flag);
     }
   },
   beforeDestroy() {
     sessionStorage.setItem("refresh", null);
+    sessionStorage.setItem("flag", null);
+  },
+  destroyed() {
+    window.removeEventListener("beforeunload", e =>
+      this.beforeunloadHandler(e)
+    );
   }
 };
 </script>
@@ -134,7 +148,18 @@ export default {
 .ProducerInfo {
   width: 100%;
   height: 100%;
-  background: url(./../../assets/images/shared/yunshi.png) 75% 95% no-repeat;
+  background: url(./../../assets/images/shared/yunshi.png) 75% 93% no-repeat;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  .title {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    text-indent: 30px;
+    box-sizing: border-box;
+    border-radius: 0px 0px 4px 4px;
+    border-bottom: 2px solid #000;
+  }
   .data-table {
     .table-ul {
       li {

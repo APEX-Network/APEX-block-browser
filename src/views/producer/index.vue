@@ -1,18 +1,18 @@
 <template>
   <div class="producer">
-    <apex-title :title="title"/>
-    <apex-back-ground/>
+    <apex-title :title="title" class="title"/>
+    <!-- <apex-back-ground/> -->
     <div class="data-table">
       <ul class="table-ul">
         <li class="row">
           <span class="col">Rank</span>
-          <span class="col col-lg-6">Account</span>
+          <span class="col col-lg-8">Account</span>
           <span class="col">Votes</span>
           <span class="col">Blocks</span>
         </li>
         <li v-for="(item,index) in producer" :key="index" class="row">
           <span class="col">{{item.Rank}}</span>
-          <span class="col col-lg-6">
+          <span class="col col-lg-8">
             <router-link
               to="/producer/ProducerInfo"
               @click.native.self="setClickValue"
@@ -31,7 +31,7 @@
 import PublicNav from "@/components/publicnav/index.vue";
 import PublicFooter from "@/components/publicfooter/index.vue";
 import ApexTitle from "@/components/public/ApexTitle.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue";
+// import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import utils from "./../../utils/utils";
@@ -41,7 +41,7 @@ export default {
     PublicNav,
     PublicFooter,
     ApexTitle,
-    ApexBackGround,
+    // ApexBackGround,
     Pagination
   },
   created() {},
@@ -74,7 +74,7 @@ export default {
         .then(response => {
           this.producer = response.data.data;
           for (let i = 0; i < this.producer.length; i++) {
-            this.producer[i]['Rank'] = this.Rank++;
+            this.producer[i]["Rank"] = this.Rank++;
           }
         })
         .catch(function(err) {
@@ -89,7 +89,7 @@ export default {
     offListener() {
       Bus.$off("minerBy");
     }
-  }, 
+  },
   beforeDestroy() {
     this.offListener();
   }
@@ -102,6 +102,20 @@ export default {
 .producer {
   width: 100%;
   height: 100%;
-  background: url(./../../assets/images/shared/yunshi.png) 75% 95% no-repeat;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  background: url(./../../assets/images/shared/yunshi.png) 75% 93% no-repeat;
+  .title {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    text-indent: 30px;
+    box-sizing: border-box;
+    border-radius: 0px 0px 4px 4px;
+    border-bottom: 2px solid #000;
+  }
+  .data-table {
+    height: 93%;
+  }
 }
 </style>

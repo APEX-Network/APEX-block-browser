@@ -1,18 +1,14 @@
 <template>
   <div class="apex-title">
-        <p class="apex-title">{{ title }}</p>
+    <p class="apex-title">{{ title }}</p>
   </div>
 </template>
 <script>
-
 export default {
   name: "ApexTitle",
-  props: [
-    'title',
-  ],
+  props: ["title"],
   data() {
-    return {
-    };
+    return {};
   }
 };
 </script>
@@ -24,7 +20,7 @@ export default {
   font-size: 14px;
   text-indent: 30px;
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.05);
+  // background-color: rgba(255, 255, 255, 0.1);
   border-radius: 4px 4px 0px 0px;
-} 
+}
 </style>

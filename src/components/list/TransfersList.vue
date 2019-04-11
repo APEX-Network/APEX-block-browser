@@ -1,8 +1,9 @@
 <template>
-  <div class="block apex-modul fl">
+  <div class="block apex-modul fr">
     <p class="apex-title">
       Transfers
-      <router-link to="/transactions">
+      <!-- <router-link to="/transactions"> -->
+      <router-link to="">
         <span>ALL</span>
       </router-link>
     </p>

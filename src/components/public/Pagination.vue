@@ -1,11 +1,11 @@
 <template>
   <div class="apex-pagination">
     <div class="pagination-content">
-      <span class="first">First</span>
-      <span class="prev" @click="getPreviousBlocks"></span>
-      <span class="list-number">1-10</span>
-      <span class="next" @click="getNextBlocks"></span>
-      <span class="last">Last</span>
+      <a class="first">First</a>
+      <img ref="left" class="prev"  src="../../assets/images/shared/leftWhiteArrow.png" alt>
+      <span class="list-number">{{pageNumber}}</span>
+      <img ref="right" class="next" src="../../assets/images/shared/rightWhiteArrow.png" alt>
+      <a class="last">Last</a>
     </div>
   </div>
 </template>
@@ -14,18 +14,19 @@ export default {
   name: "pagination",
   data() {
     return {
-      start: 0
+      start: 0,
+      pageNumber: "1-10"
     };
   },
   methods: {
-    getNextBlocks() {
-      console.log("next");
-      sessionStorage.setItem("nextBlocks", this.start++);
-    },
-    getPreviousBlocks() {
-      console.log("previous");
-      sessionStorage.setItem("nextBlocks", this.start--);
-    }
+    // getNextBlocks() {
+    //   console.log("next");
+    //   sessionStorage.setItem("nextBlocks", this.start++);
+    // },
+    // getPreviousBlocks() {
+    //   console.log("previous");
+    //   sessionStorage.setItem("nextBlocks", this.start--);
+    // }
   }
 };
 </script>
@@ -38,36 +39,31 @@ export default {
   box-sizing: border-box;
   text-align: right;
   font-size: 12px;
-  span {
-    display: inline-block;
-    padding: 9px 0;
-    margin: 0 4px;
-    cursor: pointer;
-    font-family: "Semibold";
-    vertical-align: middle;
-    &.list-number {
-      cursor: initial;
+  .pagination-content {
+    .prev {
+      cursor: pointer;
+      padding-left: 5px;
     }
-    &.prev,
-    &.next {
-      padding: 9px;
-      background: url("../../assets/images/shared/page.png") no-repeat center
-        2px;
-      color: #f26522;
-
-      &:hover {
-        background-position: center -34px;
-        color: #f26522;
+    .next {
+      cursor: pointer;
+      padding-right: 5px;
+    }
+    a {
+      display: inline-block;
+      padding: 9px 0;
+      margin: 0 4px;
+      cursor: pointer;
+      font-family: "Semibold";
+      vertical-align: middle;
+      &.list-number {
+        cursor: initial;
       }
-    }
-    &.next {
-      transform: rotate(-180deg);
-    }
-    &.first,
-    &.last {
-      transition: all 0.3s;
-      &:hover {
-        color: #f26522;
+      &.first,
+      &.last {
+        transition: all 0.3s;
+        &:hover {
+          color: #f26522;
+        }
       }
     }
   }

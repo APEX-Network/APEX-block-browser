@@ -2,11 +2,17 @@
   <div class="error">
     <div class="data-table">
       <ul>
-        <li>ERROR</li>
+        <li>
+          <img src="../../assets/images/error.png" alt="">
+        </li>
 
-        <li class="second-li">NOTHING FOUND</li>
+        <li class="second-li">
+          <img src="../../assets/images/nothingfound.png" alt="">
+        </li>
 
-        <li>SORRY. THIS IS AN INVALID SEARCH STRING.</li>
+        <li>
+          <img src="../../assets/images/sorry.png" alt="">
+        </li>
        <li class="flex-item3">
         <router-link to="/home">BACK HOME</router-link>
       </li>
