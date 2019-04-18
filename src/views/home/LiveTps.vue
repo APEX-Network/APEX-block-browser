@@ -1,8 +1,7 @@
 <template>
   <div class="tps apex-modul fr">
     <p class="apex-title">Live TPS</p>
-    <div class="chart-box" id="echartContainer" style="width:100%;">
-    </div>
+    <div class="chart-box" id="echartContainer" style="width:100%;"></div>
   </div>
 </template>
 <script>
@@ -158,8 +157,7 @@ export default {
       });
     }
   },
-  destroyed() {
-  },
+  destroyed() {},
   computed: {}
 };
 </script>
@@ -191,9 +189,9 @@ export default {
 }
 @media screen and(max-width:1366px) {
   .home {
-      .chart-box {
-        height: calc(~"100% - 60px");
-      }
+    .chart-box {
+      height: calc(~"100% - 60px");
+    }
   }
 }
 </style>

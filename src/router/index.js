@@ -16,6 +16,8 @@ import KeyStore from '@/views/wallet/wallet/KeyStore'
 import CreatedKeystore from '@/views/wallet/wallet/CreatedKeystore'
 import SavePrivKey from '@/views/wallet/wallet/SavePrivKey'
 import Transfer from '@/views/wallet/wallet/Transfer'
+import VotingSupport from '@/views/wallet/wallet/VotingSupport';
+import RefundVote from '@/views/wallet/wallet/RefundVote';
 import error from '@/views/error/error';
 
 Vue.use(Router)
@@ -86,6 +88,18 @@ export default new Router({
       alias: '/wallet/Transfer',
       name: 'Transfer',
       component: Transfer,
+    },
+    {
+      path: '/VotingSupport',
+      alias: '/wallet/VotingSupport',
+      name: 'VotingSupport',
+      component: VotingSupport,
+    },
+    {
+      path: '/RefundVote',
+      alias: '/wallet/RefundVote',
+      name: 'RefundVote',
+      component: RefundVote,
     },
     {
       path: '/blocks',

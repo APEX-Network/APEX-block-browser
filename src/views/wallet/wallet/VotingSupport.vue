@@ -1,5 +1,5 @@
 <template>
-  <div class="transfer">
+  <div class="votingSupport">
     <apex-title :title="title" class="title"/>
     <apex-back-ground class="bg"/>
     <div class="flex-container">
@@ -10,7 +10,7 @@
       </div>
 
       <div class="to">
-        <div>To:</div>
+        <div>Supported node address</div>
         <input
           spellcheck="false"
           ref="to"
@@ -42,6 +42,10 @@
         <div>Please enter the correct transfer amount</div>
       </div>
       <div class="gasPrice">
+        <div class="recommend">
+          Recommended:
+          <span>{{gasePrice}} Mp</span>
+        </div>
         <input
           spellcheck="false"
           type="text"
@@ -83,16 +87,19 @@ import db from "./../../../utils/myDatabase";
 const bigdecimal = require("bigdecimal");
 
 export default {
-  name: "Transfer",
+  name: "VotingSupport",
   props: [""],
   data() {
     return {
-      title: "Transfer",
+      title: "Voting Support node",
       serialized_transaction: null,
       url: {
         accountInfo_url: "/api/v1.0/accounts/account",
-        transfer_url: "/api/v1.0/transactions/trading"
+        transfer_url: "/api/v1.0/transactions/trading",
+        gasePrice_url: "/RPCJSON/getAverageGasPrice",
+        producer_url: "/api/v1.0/minerInfo/minerList"
       },
+      produce_params: {"start":"0","pageSize":"10"},
       signature: null,
       apAddress: null,
       walletAddress: null,
@@ -112,7 +119,9 @@ export default {
       fiveInput: null,
       allamount: null,
       firstClick: 1,
-      transferPwd: null
+      transferPwd: null,
+      gasePrice: null,
+      producerAddress: []
     };
   },
 
@@ -127,9 +136,14 @@ export default {
     this.transferPwd = this.$refs.hiddenpwd;
     this.getAllInput();
     this.getAddress();
+    this.getGasePrice();
+    this.getProducer();
   },
 
   methods: {
+    getProducer() {
+
+    },
     getAddress() {
       Bus.$on("apAddress", data => {
         this.apAddress = data;
@@ -148,13 +162,28 @@ export default {
         this.privKey = data;
       });
     },
-
+    getGasePrice() {
+      this.$axios
+        .post(this.url.gasePrice_url)
+        .then(response => {
+          let res = response.data.result;
+          if (res < 1.0) {
+            this.gasePrice = 1.0;
+          }
+          if (res > 1) {
+            this.gasePrice = res;
+          }
+        })
+        .catch(function(response) {
+          console.log(response);
+        });
+    },
     getToAddress() {
       this.toAddress = this.$refs.to.value;
-      if (this.toAddress == this.apAddress) {
-        this.$refs.to.value = null;
-        alert("账户填写重复!请重新填写");
-      }
+      // if (this.toAddress == this.apAddress) {
+      //   this.$refs.to.value = null;
+      //   alert("账户填写重复!请重新填写");
+      // }
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
@@ -270,23 +299,31 @@ export default {
         this.$refs.dialog.style.display = "flex";
         let serializParams = {
           version: "00000001", //不变
-          txType: "01", //不变
+          txType: "03", //不变
           from: this.apAddress,
-          to: this.toAddress,
+          to: "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU", //合约地址
           amount: new bigdecimal.BigDecimal(String(this.inputAmout)).subtract(
             new bigdecimal.BigDecimal(
-              String(Math.pow(10, -12) * String(this.inputGasePrice) * 21000)
+              String(
+                Math.pow(10, -18) *
+                  String(this.inputGasePrice) *
+                  Math.pow(10, 6) *
+                  30000
+              )
             )
           ),
           nonce: this.nonce, //从服务器获取该账户的nonce值
-          data: "00", //不变
+          data: this.toAddress, //被投地址
           gasPrice: new bigdecimal.BigDecimal(
             String(this.inputGasePrice)
           ).multiply(new bigdecimal.BigDecimal(String(Math.pow(10, 6)))),
-          gasLimit: "21000", //程序限制
+          // gasPrice: new bigdecimal.BigDecimal(
+          //   String(this.inputGasePrice)
+          // ),
+          gasLimit: "30000", //程序限制
           executeTime: "0000000000000000" //不变
         };
-        if (this.inputAmout !== this.allamount) {
+         if (this.inputAmout !== this.allamount) {
           serializParams.amount = new bigdecimal.BigDecimal(
             String(this.inputAmout)
           );
@@ -310,6 +347,7 @@ export default {
           this.message,
           this.signature
         );
+        console.log(this.serialized_transaction);
       }
       return;
     },
@@ -350,7 +388,7 @@ export default {
 };
 </script>
 <style lang='less' scoped>
-.transfer {
+.votingSupport {
   width: 100%;
   height: 100%;
   .bg {
@@ -364,8 +402,9 @@ export default {
     width: 33.333%;
     margin-left: 30%;
     flex-direction: column;
+    justify-content: space-between;
     .from {
-      margin: 5% 0 0 0%;
+      margin-bottom: 10px;
       div:nth-child(1) {
         color: rgba(255, 255, 255, 0.5);
         margin: 0px 0px 15px 0px;
@@ -381,7 +420,7 @@ export default {
       }
     }
     .to {
-      margin: 5% 0 0 0%;
+      margin: 0% 0 0 0%;
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
@@ -458,7 +497,15 @@ export default {
       }
     }
     .gasPrice {
-      // margin: 1% 0 0 -14%;
+      padding-right: 95px;
+      position: relative;
+      .recommend {
+        margin: 0% 5% 0 2%;
+        position: relative;
+        span {
+          color: #f26522;
+        }
+      }
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
@@ -470,10 +517,8 @@ export default {
       }
       div:nth-child(2) {
         // margin-left: 5%;
+        padding-left: 25px;
         display: inline-block;
-        padding-left: 26px;
-        display: inline-block;
-        padding-right: 52px;
       }
       div:nth-child(3) {
         display: inline;
@@ -486,15 +531,17 @@ export default {
         }
       }
       div:nth-child(3) {
+        margin-top: 8px;
+        margin-left: 30px;
+      }
+      div:nth-child(4) {
         color: #f26522;
         margin-top: 8px;
-        margin-left: -1px;
         visibility: hidden;
-        // visibility:visible;
       }
     }
     .password {
-      margin: 7% 0 0 0%;
+      margin: 0% 0 0 0%;
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;

@@ -1,7 +1,7 @@
 <template>
   <div class="SavePrivKey">
     <apex-title :title="title" class="title"/>
-    <!-- <apex-back-ground/> -->
+    <apex-back-ground class="bg"/>
     <div class="flex-container">
       <div class="text">
         <p class="p1">
@@ -82,7 +82,7 @@ export default {
       Bus.$on("privKey", data => {
         let privKeyToBuffer = Buffer.from(data, "hex");
         let privKeyToWif = ECPair.fromPrivateKey(privKeyToBuffer).toWIF();
-        this.privKey = privKeyToWif;        
+        this.privKey = privKeyToWif;
       });
     },
     getAddress() {
@@ -113,17 +113,9 @@ export default {
 .SavePrivKey {
   width: 100%;
   height: 100%;
-  background: url(./../../../assets/images/shared/yunshi.png) 34% 58% no-repeat;
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  .title {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    text-indent: 30px;
-    box-sizing: border-box;
-    border-radius: 0px 0px 4px 4px;
-    border-bottom: 2px solid #000;
+  .bg {
+    background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
+      no-repeat;
   }
   .flex-container {
     display: flex;

@@ -1,7 +1,7 @@
 <template>
   <div class="newWallet">
     <apex-title :title="title" class="title"/>
-    <!-- <apex-back-ground/> -->
+    <apex-back-ground class="bg"/>
     <div class="flex-container">
       <div class="text">
         <p>Password is Used To Encrypt Private Key And Authorize Transaction</p>
@@ -156,22 +156,22 @@ export default {
       if (this.firstClick % 2 == 0 && this.firstPwd !== null) {
         this.$refs.firstPwd.type = "text";
         this.firstEye.src = require("../../../assets/images/eye.png");
-      };
+      }
       if (this.firstClick % 2 == 1 && this.firstPwd !== null) {
         this.$refs.firstPwd.type = "password";
         this.firstEye.src = require("../../../assets/images/hiddeneye.jpg");
-      };
+      }
     },
     displaySecondPwd() {
       this.firstClick++;
       if (this.firstClick % 2 == 0 && this.secondPwd !== null) {
         this.$refs.secondPwd.type = "text";
         this.secondEye.src = require("../../../assets/images/eye.png");
-      };
+      }
       if (this.firstClick % 2 == 1 && this.secondPwd !== null) {
         this.$refs.secondPwd.type = "password";
         this.secondEye.src = require("../../../assets/images/hiddeneye.jpg");
-      };
+      }
     },
     privacyPolicy() {
       this.$router.push("/home");
@@ -180,10 +180,10 @@ export default {
       this.firstClick++;
       if (this.firstClick % 2 == 0) {
         this.nocheckbox.src = require("../../../assets/images/nocheckbox.jpg");
-      };
+      }
       if (this.firstClick % 2 == 1) {
         this.nocheckbox.src = require("../../../assets/images/checkbox.png");
-      };
+      }
     }
   },
 
@@ -195,17 +195,9 @@ export default {
 .newWallet {
   width: 100%;
   height: 100%;
-  background: url(./../../../assets/images/shared/yunshi.png) 34% 58% no-repeat;
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  .title {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    text-indent: 30px;
-    box-sizing: border-box;
-    border-radius: 0px 0px 4px 4px;
-    border-bottom: 2px solid #000;
+  .bg {
+    background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
+      no-repeat;
   }
   .flex-container {
     display: flex;

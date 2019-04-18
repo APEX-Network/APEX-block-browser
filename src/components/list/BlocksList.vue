@@ -65,7 +65,7 @@ export default {
           let seconds;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            seconds = util.utilMethods.getSec(item.timeStamp);
+            seconds = util.utilMethods.Ftime(item.timeStamp);
             item.timeStamp = seconds;
             this.lastBlock = res[0].height;
           }

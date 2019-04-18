@@ -1,7 +1,7 @@
 <template>
   <div class="Blocks">
     <apex-title :title="title" class="title"/>
-    <!-- <apex-back-ground/> -->
+    <apex-back-ground class="bg"/>
     <div class="data-table">
       <ul class="table-ul">
         <li class="row">
@@ -32,11 +32,11 @@
       </ul>
       <div class="apex-pagination">
         <div class="pagination-content">
-          <a class="first" @click="getPrevious">First</a>
+          <a class="first" @click="getFirst">First</a>
           <img
             ref="left"
             class="prev"
-            @click="getPrevious"
+            @click="getPrevious()"
             src="../../assets/images/shared/leftWhiteArrow.png"
             alt
           >
@@ -44,11 +44,11 @@
           <img
             ref="right"
             class="next"
-            @click="getNext"
+            @click="isClick && getNext()"
             src="../../assets/images/shared/rightArrow.png"
             alt
           >
-          <a class="last" @click="getNext">Last</a>
+          <a class="last" @click="getLast">Last</a>
         </div>
       </div>
     </div>
@@ -56,7 +56,7 @@
 </template>
 <script>
 // import Pagination from "@/components/public/Pagination.vue";
-// import ApexBackGround from "@/components/public/ApexBackGround.vue";
+import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
@@ -65,13 +65,13 @@ export default {
   name: "blocks",
   components: {
     // Pagination,
-    // ApexBackGround,
+    ApexBackGround,
     ApexTitle
   },
   data() {
     return {
       title: "Blocks",
-      dataList: null,
+      dataList: [],
       secondTime: null,
       start: 0,
       allBlockUrl: "/api/v1.0/blocks/blockList",
@@ -87,7 +87,9 @@ export default {
       arrow: {
         leftArrow: null,
         rightArrow: null
-      }
+      },
+      isClick: true,
+      serverDate: null
     };
   },
   mounted() {
@@ -106,6 +108,7 @@ export default {
       this.arrow.rightArrow = this.$refs.right;
     },
     getFirstBlocks() {
+      this.getServerDate();
       if (!!this.params) {
         this.$axios
           .post(this.allBlockUrl, this.params)
@@ -114,7 +117,8 @@ export default {
             let seconds;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              seconds = util.utilMethods.getSec(item.timeStamp);
+              let dateDiff = this.serverDate - item.timeStamp;
+              seconds = util.utilMethods.tierNoYear(dateDiff);
               item.timeStamp = seconds;
             }
             this.dataList = res;
@@ -125,6 +129,26 @@ export default {
             }
           });
       }
+    },
+    getServerDate() {
+      var xhr = null;
+      if (window.XMLHttpRequest) {
+        xhr = new window.XMLHttpRequest();
+      } else {
+        // ie
+        xhr = new ActiveObject("Microsoft");
+      }
+
+      xhr.open("GET", "/", true);
+      xhr.send(null);
+      xhr.onreadystatechange = function() {
+        var time, date;
+        if (xhr.readyState == 2) {
+          time = xhr.getResponseHeader("Date");
+          this.serverDate = new Date(time);
+          console.log(this.serverDate);
+        }
+      };
     },
     setHeightValue(e) {
       this.clickValue.type = "height";
@@ -144,7 +168,7 @@ export default {
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start++;
-        this.pageNumber = this.start + "/10";
+        this.pageNumber = this.start + 1 + "-10";
         this.params.start = this.start;
         this.$axios
           .post(this.allBlockUrl, this.params)
@@ -164,17 +188,68 @@ export default {
             }
           });
         if (this.start == 10) {
+          this.pageNumber = this.start + "-10";
           this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+          this.isClick = false;
           return;
         }
       }
     },
+    getLast() {
+      this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+      this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+      this.start = 10;
+      this.pageNumber = this.start + "-10";
+      this.params.start = this.start;
+      this.$axios
+        .post(this.allBlockUrl, this.params)
+        .then(response => {
+          let res = response.data.data;
+          let seconds;
+          for (let i = 0; i < res.length; i++) {
+            const item = res[i];
+            seconds = util.utilMethods.getSec(item.timeStamp);
+            item.timeStamp = seconds;
+          }
+          this.dataList = res;
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+    },
+    getFirst() {
+      this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
+      this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+      this.start = 0;
+      this.pageNumber = this.start + 1 + "-10";
+      this.params.start = this.start;
+      this.$axios
+        .post(this.allBlockUrl, this.params)
+        .then(response => {
+          let res = response.data.data;
+          let seconds;
+          for (let i = 0; i < res.length; i++) {
+            const item = res[i];
+            seconds = util.utilMethods.getSec(item.timeStamp);
+            item.timeStamp = seconds;
+          }
+          this.dataList = res;
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+    },
     getPrevious() {
+      this.isClick = true;
       if (this.start > 0) {
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start--;
-        this.pageNumber = this.start + "/10";
+        this.pageNumber = this.start + "-10";
         this.params.start = this.start;
         this.$axios
           .post(this.allBlockUrl, this.params)
@@ -183,7 +258,7 @@ export default {
             let seconds;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              seconds = util.utilMethods.getSeconds(item.timeStamp);
+              seconds = util.utilMethods.getSec(item.timeStamp);
               item.timeStamp = seconds;
             }
             this.dataList = res;
@@ -196,7 +271,7 @@ export default {
           });
         if (this.start == 0) {
           this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
-          this.pageNumber = "1-10";
+          this.pageNumber = this.start + 1 + "-10";
           return;
         }
       }
@@ -216,18 +291,20 @@ export default {
 .Blocks {
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  background: url(./../../assets/images/shared/yunshi.png) 55% 67% no-repeat;
-  .title {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    text-indent: 30px;
-    box-sizing: border-box;
-    border-radius: 0px 0px 4px 4px;
-    border-bottom: 2px solid #000;
+  // background-color: rgba(255, 255, 255, 0.1) !important;
+  .bg {
+    background: url(./../../assets/images/shared/yunshi.png) 55% 67% no-repeat;
   }
+  // .title {
+  //   width: 100%;
+  //   height: 40px;
+  //   line-height: 40px;
+  //   font-size: 14px;
+  //   text-indent: 30px;
+  //   box-sizing: border-box;
+  //   border-radius: 0px 0px 4px 4px;
+  //   border-bottom: 2px solid #000;
+  // }
   .data-table {
     height: 93%;
     .table-ul {
@@ -249,11 +326,13 @@ export default {
       .pagination-content {
         .prev {
           cursor: pointer;
-          padding-left: 5px;
+          padding-right: 8px;
+          padding-left: 8px;
         }
         .next {
           cursor: pointer;
-          padding-right: 5px;
+          padding-right: 8px;
+          padding-left: 8px;
         }
         a {
           display: inline-block;

@@ -48,7 +48,6 @@ export default {
 .home {
   width: 100%;
   height: 100%;
-  // background-color: rgba(255, 255, 255, 0.1) !important;
   background: url(./../../assets/images/shared/yunshi.png) 34% 58% no-repeat;
   .bottom-modul,
   .top-modul {

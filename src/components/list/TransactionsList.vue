@@ -26,7 +26,6 @@
 import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
-import { setTimeout } from "timers";
 export default {
   name: "transactionsList",
   components: {
@@ -53,6 +52,9 @@ export default {
       this.getTransactionsList();
     });
     const timer = setInterval(() => {
+      this.accountTransaction_param.address = sessionStorage.getItem(
+        "apAddress"
+      );
       this.getTransactionsList();
     }, 1500);
     this.$once("hook:beforeDestroy", () => {
@@ -71,12 +73,12 @@ export default {
         this.$axios
           .post(this.accountTransaction_url, this.accountTransaction_param)
           .then(response => {
-            let res = response.data.data;
+            let res = response.data.data.transactions;
             this.transactions = res;
             let time;
             for (let i = 0; i < this.transactions.length; i++) {
               let element = this.transactions[i];
-              time = util.utilMethods.tierNoYear(element.refBlockTime);
+              time = util.utilMethods.Ftime(element.refBlockTime);
               element.refBlockTime = time;
             }
           })

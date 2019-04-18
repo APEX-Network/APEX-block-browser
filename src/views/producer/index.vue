@@ -1,7 +1,7 @@
 <template>
   <div class="producer">
     <apex-title :title="title" class="title"/>
-    <!-- <apex-back-ground/> -->
+    <apex-back-ground class="bg"/>
     <div class="data-table">
       <ul class="table-ul">
         <li class="row">
@@ -22,7 +22,27 @@
           <span class="col">{{item.blockCount}}</span>
         </li>
       </ul>
-      <Pagination/>
+      <div class="apex-pagination">
+        <div class="pagination-content">
+          <a class="first" @click="getFirst">First</a>
+          <img
+            ref="left"
+            class="prev"
+            @click="getPrevious()"
+            src="../../assets/images/shared/leftWhiteArrow.png"
+            alt
+          >
+          <span class="list-number">{{pageNumber}}</span>
+          <img
+            ref="right"
+            class="next"
+            @click="isClick && getNext()"
+            src="../../assets/images/shared/rightArrow.png"
+            alt
+          >
+          <a class="last" @click="getLast">Last</a>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -31,8 +51,8 @@
 import PublicNav from "@/components/publicnav/index.vue";
 import PublicFooter from "@/components/publicfooter/index.vue";
 import ApexTitle from "@/components/public/ApexTitle.vue";
-// import ApexBackGround from "@/components/public/ApexBackGround.vue";
-import Pagination from "@/components/public/Pagination.vue";
+import ApexBackGround from "@/components/public/ApexBackGround.vue";
+// import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import utils from "./../../utils/utils";
 export default {
@@ -41,8 +61,7 @@ export default {
     PublicNav,
     PublicFooter,
     ApexTitle,
-    // ApexBackGround,
-    Pagination
+    ApexBackGround
   },
   created() {},
   data() {
@@ -55,20 +74,137 @@ export default {
       params: {
         start: "0",
         pageSize: "10"
-      }
+      },
+      start: 0,
+      pageNumber: null,
+      arrow: {
+        leftArrow: null,
+        rightArrow: null
+      },
+      isClick: true,
+      totalPage: null,
+      point: null,
+      count: null
     };
   },
   mounted() {
+    this.getInstance();
     this.getProducerList();
     // const timer = setInterval(() => {
     //   this.getProducerList();
     // }, 1500);
-    // this.$once("hook:beforeDestroy", () => {
-    //   clearInterval(timer);
-    // });
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer);
+    });
   },
   methods: {
+    getInstance() {
+      this.arrow.leftArrow = this.$refs.left;
+      this.arrow.rightArrow = this.$refs.right;
+    },
     getProducerList() {
+      this.$axios
+        .post(this.minerBy_url, this.params)
+        .then(response => {
+          this.producer = response.data.data;
+          this.count = this.producer.length / this.params.pageSize;
+          console.log(this.count);
+          if (this.count >= 10) {
+            this.totalPage = 10;
+            this.pageNumber = "1-" + this.totalPage;
+          }
+          if (this.count < 10) {
+            this.point = this.count.toString().indexOf(".");
+            if (this.point > -1) {
+              this.totalPage = Number(this.count.toString().split(".")[0]) + 1;
+              console.log(this.totalPage);
+            }
+            if (this.point == -1) {
+              this.totalPage = this.count;
+            }
+            this.pageNumber = "1-" + this.totalPage;
+            console.log(this.pageNumber);
+            if (this.totalPage == 1) {
+              this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+            }
+          }
+          for (let i = 0; i < this.producer.length; i++) {
+            this.producer[i]["Rank"] = this.Rank++;
+          }
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+    },
+    getNext() {
+      this.Rank = 1;
+      if (this.start < 10) {
+        this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+        this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+        this.start++;
+        this.pageNumber = this.start + 1 + "-" + this.totalPage;
+        console.log(this.pageNumber);
+        this.params.start = this.start;
+        this.$axios
+          .post(this.minerBy_url, this.params)
+          .then(response => {
+            this.producer = response.data.data;
+            for (let i = 0; i < this.producer.length; i++) {
+              this.producer[i]["Rank"] = this.Rank++;
+            }
+          })
+          .catch(function(err) {
+            if (err.response) {
+              console.log(err.response);
+            }
+          });
+        if (this.start == 10) {
+          this.pageNumber = this.start + "-" + this.totalPage;
+          this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+          this.isClick = false;
+          return;
+        }
+      }
+    },
+    getPrevious() {
+      this.Rank = 1;
+      this.isClick = true;
+      if (this.start > 0) {
+        this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+        this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+        this.start--;
+        this.pageNumber = this.start + "-" + this.totalPage;
+        this.params.start = this.start;
+        this.$axios
+          .post(this.minerBy_url, this.params)
+          .then(response => {
+            this.producer = response.data.data;
+            for (let i = 0; i < this.producer.length; i++) {
+              this.producer[i]["Rank"] = this.Rank++;
+            }
+          })
+          .catch(function(err) {
+            if (err.response) {
+              console.log(err.response);
+            }
+          });
+        if (this.start == 0) {
+          this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
+          this.pageNumber = "1-" + this.totalPage;
+          return;
+        }
+      }
+    },
+    getFirst() {
+      this.Rank = 1;
+      this.isClick = true;
+      this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
+      this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+      this.start = 0;
+      this.pageNumber = "1-" + this.totalPage;
+      this.params.start = this.start;
       this.$axios
         .post(this.minerBy_url, this.params)
         .then(response => {
@@ -82,6 +218,30 @@ export default {
             console.log(err.response);
           }
         });
+      return;
+    },
+    getLast() {
+      this.isClick = true;
+      this.Rank = 1;
+      this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+      this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+      this.start = this.totalPage - 1;
+      this.pageNumber = this.totalPage + "-" + this.totalPage;
+      this.params.start = this.start;
+      this.$axios
+        .post(this.minerBy_url, this.params)
+        .then(response => {
+          this.producer = response.data.data;
+          for (let i = 0; i < this.producer.length; i++) {
+            this.producer[i]["Rank"] = this.Rank++;
+          }
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+      return;
     },
     setClickValue(e) {
       Bus.$emit("minerBy", e.target.innerHTML);
@@ -102,20 +262,49 @@ export default {
 .producer {
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  background: url(./../../assets/images/shared/yunshi.png) 75% 93% no-repeat;
-  .title {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    text-indent: 30px;
-    box-sizing: border-box;
-    border-radius: 0px 0px 4px 4px;
-    border-bottom: 2px solid #000;
+  .bg {
+    background: url(./../../assets/images/shared/yunshi.png) 75% 93% no-repeat;
   }
   .data-table {
     height: 93%;
+    .apex-pagination {
+      width: 100%;
+      height: 50px;
+      padding: 10px 35px;
+      box-sizing: border-box;
+      text-align: right;
+      font-size: 12px;
+      .pagination-content {
+        .prev {
+          cursor: pointer;
+          padding-right: 8px;
+          padding-left: 8px;
+        }
+        .next {
+          cursor: pointer;
+          padding-right: 8px;
+          padding-left: 8px;
+        }
+        a {
+          display: inline-block;
+          padding: 9px 0;
+          margin: 0 4px;
+          cursor: pointer;
+          font-family: "Semibold";
+          vertical-align: middle;
+          &.list-number {
+            cursor: initial;
+          }
+          &.first,
+          &.last {
+            transition: all 0.3s;
+            &:hover {
+              color: #f26522;
+            }
+          }
+        }
+      }
+    }
   }
 }
 </style>

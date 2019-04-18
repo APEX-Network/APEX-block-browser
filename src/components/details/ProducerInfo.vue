@@ -1,6 +1,7 @@
 <template>
   <div class="ProducerInfo">
     <apex-title :title="title" class="title"/>
+    <apex-back-ground class="bg"/>
     <div class="data-table">
       <ul class="table-ul">
         <!-- <li v-for="(value, key ,index ) in producerInfo" :key="index" class="row">
@@ -55,7 +56,7 @@
 
 <script>
 import ApexTitle from "@/components/public/ApexTitle.vue";
-// import ApexBackGround from "@/components/public/ApexBackGround.vue";
+import ApexBackGround from "@/components/public/ApexBackGround.vue";
 // import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 
@@ -64,6 +65,7 @@ export default {
   components: {
     // Pagination,
     ApexTitle,
+    ApexBackGround
   },
   data() {
     return {
@@ -148,17 +150,8 @@ export default {
 .ProducerInfo {
   width: 100%;
   height: 100%;
-  background: url(./../../assets/images/shared/yunshi.png) 75% 93% no-repeat;
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  .title {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    text-indent: 30px;
-    box-sizing: border-box;
-    border-radius: 0px 0px 4px 4px;
-    border-bottom: 2px solid #000;
+  .bg {
+    background: url(./../../assets/images/shared/yunshi.png) 75% 93% no-repeat;
   }
   .data-table {
     .table-ul {

@@ -9,28 +9,43 @@ const bigdecimal = require("bigdecimal");
 
 
 const utilMethods = {
-    tierNoYear(data) {
-        var datatime = '';
-        if (data != null || data != undefined) {
-            timestampToTime(data);
-            function timestampToTime(timestamp) {
-                var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-                var Y = date.getUTCFullYear() + '-';
-                var M = (date.getUTCMonth() + 1 < 10 ? '0' + (date.getUTCMonth() + 1) : date.getUTCMonth() + 1) + '-';
-                var D;
-                if (date.getUTCDate() < 10) {
-                    D = "0" + date.getUTCDate() + " ";
-                } else {
-                    D = date.getUTCDate() + " ";
-                }
-                var h = (date.getUTCHours() < 10 ? '0' + (date.getUTCHours()) : date.getUTCHours()) + ':';
-                var m = (date.getUTCMinutes() < 10 ? '0' + (date.getUTCMinutes()) : date.getUTCMinutes()) + ':';
-                var s = (date.getUTCSeconds() < 10 ? '0' + (date.getUTCSeconds()) : date.getUTCSeconds());
-                datatime = h + m + s;
-                return h + m + s;
-            }
-            return datatime;
-        }
+    /**
+ * Unix时间戳转换为当前时间多久之前
+ * @param timespan  int         Unix时间戳
+ * @return timeSpanStr  string      转换之后的前台需要的字符串
+ */
+    Ftime(timespan) {
+        let dateTime = new Date(timespan);
+        let year = dateTime.getUTCFullYear();
+        let month = dateTime.getUTCMonth() + 1;
+        let day = dateTime.getUTCDate();
+        let hour = dateTime.getUTCHours();
+
+        let minute = dateTime.getUTCMinutes();
+        let seconds = dateTime.getUTCSeconds();
+        //当前时间
+        // let now = Date.parse(new Date());  //typescript转换写法
+        // let milliseconds = 0;
+        // let timeSpanStr;
+        //计算时间差
+        // console.log(now);
+        // console.log(timespan);
+
+        // milliseconds = now - timespan;
+        // console.log(milliseconds);
+        //一分钟以内
+        return hour + ":" + minute + ":" + seconds;
+    },
+    toUTCtime(dateStr) {
+        let dateTime = new Date(dateStr);
+        console.log(dateTime);
+        let utcTime = Date.UTC(dateTime.getUTCFullYear(), dateTime.getUTCMonth(), dateTime.getUTCDate(), dateTime.getUTCHours(), dateTime.getUTCMinutes(), dateTime.getUTCSeconds());
+        return new Date(utcTime);
+    },
+    tierNoYear(dateStr) {
+        let dateTime = new Date(dateStr);
+        let utcTime = dateTime.getUTCHours() + ":" + dateTime.getUTCMinutes() + ":" + dateTime.getUTCSeconds();
+        return utcTime;
     },
     tierAllTime(data) {
         var datatime = '';
@@ -82,29 +97,29 @@ const utilMethods = {
             return datatime + " " + "seconds ago";
         }
     },
-    getMin(data) {
-        var datatime = '';
-        if (data != null || data != undefined) {
-            timestampToTime(data);
-            function timestampToTime(timestamp) {
-                var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-                var Y = date.getFullYear() + '-';
-                var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-                var D;
-                if (date.getDate() < 10) {
-                    D = "0" + date.getDate() + " ";
-                } else {
-                    D = date.getDate() + " ";
-                }
-                var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
-                var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes());
-                var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds());
-                datatime = m;
-                return m;
-            }
-            return datatime;
-        }
-    },
+    // getMin(data) {
+    //     var datatime = '';
+    //     if (data != null || data != undefined) {
+    //         timestampToTime(data);
+    //         function timestampToTime(timestamp) {
+    //             var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    //             var Y = date.getFullYear() + '-';
+    //             var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+    //             var D;
+    //             if (date.getDate() < 10) {
+    //                 D = "0" + date.getDate() + " ";
+    //             } else {
+    //                 D = date.getDate() + " ";
+    //             }
+    //             var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
+    //             var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes());
+    //             var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds());
+    //             datatime = m;
+    //             return m;
+    //         }
+    //         return datatime;
+    //     }
+    // },
     produce_address(privKey, ap) {
         let privKeyToBuffer = Buffer.from(privKey, "hex");
         let privKeyToPub = ECPair.fromPrivateKey(privKeyToBuffer).publicKey;
@@ -139,14 +154,14 @@ const utilMethods = {
         let bigEightPow = new bigdecimal.BigDecimal(eightPow);
         let bigAmount = new bigdecimal.BigDecimal(String(serializParams.amount));
         let amountMultiplyEightPow = bigAmount.multiply(bigEightPow).toString();
-        let byteArrayamount = BigInteger(amountMultiplyEightPow.split(".")[0]).toByteArray();            
+        let byteArrayamount = BigInteger(amountMultiplyEightPow.split(".")[0]).toByteArray();
+        let amount_length = byteArrayamount.length;
         let amount_hex = Buffer.from(byteArrayamount, "hex").toString("hex");
-        let amount_prefix = (amount_hex.length) / 2;
-        let amount;
-        if (amount_prefix <= 15) {
-            amount = "0" + Number(amount_prefix).toString(16) + amount_hex;
+        let amount
+        if (amount_length <= 15) {
+            amount = "0" + Number(amount_length).toString(16) + amount_hex;
         };
-        if (amount_prefix >= 16) {
+        if (amount_length >= 16) {
             amount = Number(amount_prefix).toString(16) + amount_hex;
         };
         let nonce;
@@ -184,7 +199,6 @@ const utilMethods = {
                 gasPrice = gasPrice_length + gasPrice_prefix;
             };
         };
-        
         let byteArraygaseLimit = BigInteger(serializParams.gasLimit.toString()).toByteArray();
         let gasLimit_hex = Buffer.from(byteArraygaseLimit, "hex").toString("hex");
         let gasLimit_prefix = (gasLimit_hex.length) / 2;
@@ -195,8 +209,116 @@ const utilMethods = {
         if (gasLimit_prefix >= 10) {
             gasLimit = gasLimit_prefix.toString("hex") + gasLimit_hex;
         };
-        return serializParams.version + serializParams.txType + from + to + amount + nonce + serializParams.data + gasPrice + gasLimit + serializParams.executeTime;
+        if (serializParams.data == "00") {
+            console.log("0000000000");
+            return serializParams.version + serializParams.txType + from + to + amount + nonce + serializParams.data + gasPrice + gasLimit + serializParams.executeTime;
+        };
+        if (serializParams.data !== "00") {
+            let decode_vote = Base58check.decode(serializParams.data).data.toString("hex");
+            let vote_length = Base58check.decode(serializParams.data).data.length;
+            let vote = decode_vote.substring(2);
+            let voting_data = vote + amount + "00";
+            let data_length = vote_length + amount_length + 1;
+            let data;
+            if (data_length < 16) {
+                data = "0" + Number(data_length).toString(16) + voting_data;
+            };
+
+            if (data_length >= 16) {
+                data = Number(data_length).toString(16) + voting_data;
+            };
+            return serializParams.version + serializParams.txType + from + to + "0100" + nonce + data + gasPrice + gasLimit + serializParams.executeTime;
+        }
+
     },
+    // produce_vote_message(serializParams) {
+    //     let decode_from = Base58check.decode(serializParams.from).data.toString("hex");
+    //     let from = decode_from.substring(2);
+    //     //Base58check decode
+    //     let decode_PubKeyHash = Base58check.decode(serializParams.to).data.toString("hex");
+    //     let to = decode_PubKeyHash.substring(2);
+
+    //     let decode_vote = Base58check.decode(serializParams.data).data.toString("hex");
+    //     let vote = decode_vote.substring(2);
+    //     console.log(vote);
+    //     let eightPow = new bigdecimal.BigInteger(Math.pow(10, 18).toString());
+    //     let bigEightPow = new bigdecimal.BigDecimal(eightPow);
+    //     let bigAmount = new bigdecimal.BigDecimal(String(serializParams.amount));
+    //     let amountMultiplyEightPow = bigAmount.multiply(bigEightPow).toString();
+    //     let byteArrayamount = BigInteger(amountMultiplyEightPow.split(".")[0]).toByteArray();
+    //     let amount_hex = Buffer.from(byteArrayamount, "hex").toString("hex");
+    //     let amount_prefix = (amount_hex.length) / 2;
+    //     let amount;
+    //     if (amount_prefix <= 15) {
+    //         amount = "0" + Number(amount_prefix).toString(16) + amount_hex;
+    //     };
+    //     if (amount_prefix >= 16) {
+    //         amount = Number(amount_prefix).toString(16) + amount_hex;
+    //     };
+    //     let nonce;
+    //     if (serializParams.nonce <= 15) {
+    //         if (serializParams.nonce < 10) {
+    //             nonce = "000000000000000" + serializParams.nonce;
+    //         };
+    //         if (serializParams.nonce >= 10) {
+    //             nonce = "000000000000000" + Number(serializParams.nonce).toString(16);
+    //         };
+    //     };
+    //     if (serializParams.nonce > 15 && serializParams.nonce < 255) {
+    //         let nonce_hex = Number(serializParams.nonce).toString(16);
+    //         nonce = "00000000000000" + nonce_hex;
+    //     };
+    //     let gasPrice_hex = Number(serializParams.gasPrice).toString(16);
+    //     let gasPrice;
+    //     if (gasPrice_hex.length % 2 == 1) {
+    //         let gasPrice_prefix = "0" + gasPrice_hex;
+    //         let gasPrice_length = gasPrice_prefix.length / 2;
+    //         if (gasPrice_length < 10) {
+    //             gasPrice = "0" + gasPrice_length + gasPrice_prefix;
+    //         };
+    //         if (gasPrice_length >= 10) {
+    //             gasPrice = gasPrice_length + gasPrice_prefix;
+    //         };
+    //     };
+    //     if (gasPrice_hex.length % 2 == 0) {
+    //         let gasPrice_prefix = gasPrice_hex;
+    //         let gasPrice_length = gasPrice_prefix.length / 2;
+    //         if (gasPrice_length < 10) {
+    //             gasPrice = "0" + gasPrice_length + gasPrice_prefix;
+    //         };
+    //         if (gasPrice_length >= 10) {
+    //             gasPrice = gasPrice_length + gasPrice_prefix;
+    //         };
+    //     };
+
+    //     let voting_data = vote + amount_hex + "0x00";
+    //     let data_length = voting_data.length / 2;
+    //     console.log(data_length);
+
+    //     console.log(voting_data);
+    //     let data;
+    //     if (data_length < 16) {
+    //         data = "0" + data_length.toString(16) + voting_data;
+    //         console.log(data);
+    //     };
+
+    //     if (data_length >= 16) {
+    //         data = data_length.toString(16) + voting_data;
+    //         console.log(data);
+    //     };
+
+    //     let byteArraygaseLimit = BigInteger(serializParams.gasLimit.toString()).toByteArray();
+    //     let gasLimit_hex = Buffer.from(byteArraygaseLimit, "hex").toString("hex");
+    //     let gasLimit_prefix = (gasLimit_hex.length) / 2;
+    //     let gasLimit;
+    //     if (gasLimit_prefix < 10) {
+    //         gasLimit = "0" + gasLimit_prefix + gasLimit_hex;
+    //     };
+    //     if (gasLimit_prefix >= 10) {
+    //         gasLimit = gasLimit_prefix.toString("hex") + gasLimit_hex;
+    //     };
+    //     return serializParams.version + serializParams.txType + from + to + amount + nonce + data + gasPrice + gasLimit + serializParams.executeTime;
+    // },
     produce_KeyStore(keyStoreParams) {
         let data = keyStoreParams.data;
         let bigArraypwd = BigInteger(keyStoreParams.key).toByteArray();
@@ -217,8 +339,7 @@ const utilMethods = {
         let iv = keyStorekey.substring(0, 16);
         let DeckeyStore = CryptoJS.AES.decrypt(downKeyStore, keyStorekey, iv);
         let privKey = DeckeyStore.toString(CryptoJS.enc.Utf8);
-        //  根据私钥生成地址
-        let privKeyToBuffer = Buffer.from(privKey, "hex");  
+        let privKeyToBuffer = Buffer.from(privKey, "hex");
         let privKeyToPub = ECPair.fromPrivateKey(privKeyToBuffer).publicKey;
         let pubHash = Crypto.ripemd160(Crypto.sha256(privKeyToPub)).toString(
             "hex"

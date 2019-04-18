@@ -2,6 +2,7 @@
 <template>
   <div class="TransactionsInfo">
     <apex-title :title="title" class="title"/>
+    <apex-back-ground class="bg"/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
         <li class="row">
@@ -33,7 +34,7 @@
             <span class="clol col-lg-8">{{transactionInfoData.timeStamp}}</span>
           </span>
         </li>
-         <li class="row">
+        <li class="row">
           <span class="col">
             Type:
             <span class="clol col-lg-8">{{transactionInfoData.type}}</span>
@@ -122,6 +123,7 @@ export default {
   components: {
     Pagination,
     ApexTitle,
+    ApexBackGround
   },
   data() {
     return {
@@ -199,7 +201,7 @@ export default {
             this.transactionInfoData.txHash = res.txHash;
             this.transactionInfoData.txReceiptStatus = res.confirmed;
             this.transactionInfoData.blockHeight = res.refBlockHeight;
-            this.transactionInfoData.timeStamp = util.utilMethods.tierAllTime(
+            this.transactionInfoData.timeStamp = util.utilMethods.toUTCtime(
               res.refBlockTime
             );
             this.transactionInfoData.from = res.from;
@@ -222,7 +224,7 @@ export default {
     beforeunloadHandler(e) {
       this.flag = 1;
       sessionStorage.setItem("flag", this.flag);
-      console.log(this.flag);      
+      console.log(this.flag);
     }
   },
   beforeDestroy() {
@@ -243,17 +245,8 @@ export default {
 .TransactionsInfo {
   width: 100%;
   height: 100%;
-  background: url(./../../assets/images/shared/yunshi.png) 68% 89% no-repeat;
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  .title {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    text-indent: 30px;
-    box-sizing: border-box;
-    border-radius: 0px 0px 4px 4px;
-    border-bottom: 2px solid #000;
+  .bg {
+    background: url(./../../assets/images/shared/yunshi.png) 68% 89% no-repeat;
   }
   .data-table {
     .table-ul {

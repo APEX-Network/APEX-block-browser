@@ -68,6 +68,8 @@ body .logo-left {
   -ms-transform: translate(-50%, 0);
   transform: translate(-50%, 0);
   width: 77%;
+  min-width: 1110px;
+  min-height: 600px;
   height: calc( 100vh - 130px);
   box-sizing: border-box;
   padding: 40px 45px;
@@ -79,7 +81,8 @@ body .logo-left {
   -webkit-transform: translate(-50%, 0);
   transform: translate(-50%, 0);
   width: 100%;
-  height: 84%;
+  height: 85%;
+  z-index: -1;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding: 2px 45px;
@@ -169,7 +172,6 @@ body .logo-left {
 .apex-modul.transactions .apex-list li .bottom {
   padding-left: 30px;
   box-sizing: border-box;
-  font-family: "Regular";
   background: url(../images/shared/icon-fix.png) left 4px no-repeat;
 }
 .apex-modul.transactions .apex-list li .bottom a {
@@ -251,7 +253,6 @@ body .logo-left {
 }
 .transactions-table .table-ul > li:first-of-type span {
   color: #ebebeb;
-  font-family: "Regular";
 }
 @media screen and (max-width: 1366px) {
   body .logo-left {

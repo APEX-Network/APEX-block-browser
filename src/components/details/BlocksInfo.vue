@@ -1,6 +1,7 @@
 <template>
   <div class="BlocksInfo">
     <apex-title :title="title" class="title"/>
+    <apex-back-ground class="bg"/>
     <div class="data-table">
       <ul class="table-ul">
         <li class="row">
@@ -50,7 +51,7 @@
 
 <script>
 import ApexTitle from "@/components/public/ApexTitle.vue";
-// import ApexBackGround from "@/components/public/ApexBackGround.vue";
+import ApexBackGround from "@/components/public/ApexBackGround.vue";
 // import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
@@ -60,7 +61,7 @@ export default {
   components: {
     // Pagination,
     ApexTitle,
-    // ApexBackGround
+    ApexBackGround
   },
   data() {
     return {
@@ -119,7 +120,7 @@ export default {
                 let res = response.data.data;
                 this.height = res.height;
                 this.blockHash = res.blockHash;
-                this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
+                this.timeStamp = util.utilMethods.Ftime(res.timeStamp);
                 this.transactions =
                   res.txNum + " " + "transactions in this block";
                 this.parentHash = res.prevBlock;
@@ -138,7 +139,7 @@ export default {
                 if (res !== "NotFound" && res.txNum !== null) {
                   this.height = res.height;
                   this.blockHash = res.blockHash;
-                  this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
+                  this.timeStamp = util.utilMethods.Ftime(res.timeStamp);
                   this.transactions =
                     res.txNum + " " + "transactions in this block";
                   this.parentHash = res.prevBlock;
@@ -163,7 +164,7 @@ export default {
           .then(response => {
             let res = response.data.data;
             this.height = res.height;
-            this.timeStamp = util.utilMethods.tierAllTime(res.timeStamp);
+            this.timeStamp = util.utilMethods.Ftime(res.timeStamp);
             this.transactions = res.txNum + " " + "transactions in this block";
             this.blockHash = res.blockHash;
             this.parentHash = res.prevBlock;
@@ -202,17 +203,8 @@ export default {
 .BlocksInfo {
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  background: url(./../../assets/images/shared/yunshi.png) 55% 67% no-repeat;
-  .title {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    text-indent: 30px;
-    box-sizing: border-box;
-    border-radius: 0px 0px 4px 4px;
-    border-bottom: 2px solid #000;
+  .bg {
+    background: url(./../../assets/images/shared/yunshi.png) 55% 67% no-repeat;
   }
   .data-table {
     .table-ul {

@@ -1,6 +1,7 @@
 <template>
   <div class="AccountInfo">
     <apex-title :title="title" class="title"/>
+    <apex-back-ground class="bg"/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
         <li class="row">
@@ -70,7 +71,7 @@
 
 <script>
 import ApexTitle from "@/components/public/ApexTitle.vue";
-// import ApexBackGround from "@/components/public/ApexBackGround.vue";
+import ApexBackGround from "@/components/public/ApexBackGround.vue";
 // import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
@@ -79,7 +80,8 @@ export default {
   name: "AccountInfo",
   components: {
     // Pagination,
-    ApexTitle
+    ApexTitle,
+    ApexBackGround
   },
   created() {},
   data() {
@@ -93,6 +95,7 @@ export default {
         pageSize: 6,
         address: null
       },
+      totalPage: null,
       pageNumber: "1-10",
       arrow: {
         leftArrow: null,
@@ -101,15 +104,18 @@ export default {
       accountInfo: null,
       transactions: [],
       refBlockTime: null,
-      Balance: null,
+      Balance: 0,
       flag: null,
-      isClick: true
+      isClick: true,
+      count: null,
+      point: null
     };
   },
   mounted() {
     this.getInstance();
     window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
+    this.getAccountTransactionInfo();
     const timer = setInterval(() => {
       this.getAccountInfo();
       this.getAccountTransactionInfo();
@@ -193,7 +199,29 @@ export default {
         this.$axios
           .post(this.accountTransaction_url, this.accountTransaction_param)
           .then(response => {
-            let res = response.data.data;
+            let res = response.data.data.transactions;
+            this.count = response.data.data.count;
+            this.totalPage =
+              this.count / this.accountTransaction_param.pageSize;
+            if (this.totalPage >= 10) {
+              this.totalPage = 10;
+            }
+            if (this.totalPage < 10) {
+              this.point = this.totalPage.toString().indexOf(".");
+              if (this.point > -1) {
+                this.totalPage =
+                  Number(this.count.toString().split(".")[0]) + 1;
+                console.log(this.totalPage);
+              }
+              if (this.point == -1) {
+                this.totalPage = this.count;
+              }
+
+              if (this.totalPage == 1) {
+                this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+              }
+            }
+            this.pageNumber = "1-" + this.totalPage;
             this.transactions = res;
             if (this.transactions.length == 0) {
               this.accountTransaction_param.start = this.start - 1;
@@ -208,7 +236,7 @@ export default {
                   let time;
                   for (let i = 0; i < this.transactions.length; i++) {
                     let element = this.transactions[i];
-                    time = util.utilMethods.getSec(element.refBlockTime);
+                    time = util.utilMethods.Ftime(element.refBlockTime);
                     element.refBlockTime = time;
                   }
                 })
@@ -221,7 +249,7 @@ export default {
             let time;
             for (let i = 0; i < this.transactions.length; i++) {
               let element = this.transactions[i];
-              time = util.utilMethods.getSec(element.refBlockTime);
+              time = util.utilMethods.Ftime(element.refBlockTime);
               element.refBlockTime = time;
             }
           })
@@ -237,18 +265,18 @@ export default {
         this.isClick = true;
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
-        this.pageNumber = "1-10";
+        this.pageNumber = "1-" + this.totalPage;
         this.start = 0;
         this.accountTransaction_param.start = "0";
         this.$axios
           .post(this.accountTransaction_url, this.accountTransaction_param)
           .then(response => {
-            let res = response.data.data;
+            let res = response.data.data.transactions;
             this.transactions = res;
             let time;
             for (let i = 0; i < this.transactions.length; i++) {
               let element = this.transactions[i];
-              time = util.utilMethods.getSec(element.refBlockTime);
+              time = util.utilMethods.Ftime(element.refBlockTime);
               element.refBlockTime = time;
             }
           })
@@ -260,81 +288,49 @@ export default {
       }
     },
     getLast() {
-      // this.isClick = true;
-      // this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
-      // this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
-      // this.start--;
-      // this.pageNumber = this.start + "/10";
-      // this.accountTransaction_param.start = this.start;
-      // if (this.accountTransaction_param.address !== null) {
-      //   this.$axios
-      //     .post(this.accountTransaction_url, this.accountTransaction_param)
-      //     .then(response => {
-      //       let res = response.data.data;
-      //       this.transactions = res;
-      //       let time;
-      //       for (let i = 0; i < this.transactions.length; i++) {
-      //         let element = this.transactions[i];
-      //         time = util.utilMethods.getSec(element.refBlockTime);
-      //         element.refBlockTime = time;
-      //       }
-      //     })
-      //     .catch(function(err) {
-      //       if (err.response) {
-      //         console.log(err.response);
-      //       }
-      //     });
-      // }
-      // if (this.start == 0) {
-      //   this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
-      //   this.pageNumber = "1-10";
-      //   return;
-      // }
+      this.isClick = true;
+      this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+      this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+      this.start = this.totalPage - 1;
+      this.pageNumber = this.totalPage + "-" + this.totalPage;
+      this.accountTransaction_param.start = this.totalPage - 1;
+      if (this.accountTransaction_param.address !== null) {
+        this.$axios
+          .post(this.accountTransaction_url, this.accountTransaction_param)
+          .then(response => {
+            let res = response.data.data.transactions;
+            this.transactions = res;
+            let time;
+            for (let i = 0; i < this.transactions.length; i++) {
+              let element = this.transactions[i];
+              time = util.utilMethods.Ftime(element.refBlockTime);
+              element.refBlockTime = time;
+            }
+          })
+          .catch(function(err) {
+            if (err.response) {
+              console.log(err.response);
+            }
+          });
+      }
     },
     getNext() {
-      if (this.start < 10) {
+      if (this.start < this.totalPage) {
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start++;
-        this.pageNumber = this.start + "/10";
+        this.pageNumber = this.start + 1 + "-" + this.totalPage;
         this.accountTransaction_param.start = this.start;
         if (this.accountTransaction_param.address !== null) {
           this.$axios
             .post(this.accountTransaction_url, this.accountTransaction_param)
             .then(response => {
-              let res = response.data.data;
-              if (res.length == 0) {
-                this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
-                this.isClick = false;
-                this.accountTransaction_param.start = this.start - 1;
-                this.pageNumber = this.start - 1 + "/10";
-                this.$axios
-                  .post(
-                    this.accountTransaction_url,
-                    this.accountTransaction_param
-                  )
-                  .then(response => {
-                    let res = response.data.data;
-                    this.transactions = res;
-                    let time;
-                    for (let i = 0; i < this.transactions.length; i++) {
-                      let element = this.transactions[i];
-                      time = util.utilMethods.getSec(element.refBlockTime);
-                      element.refBlockTime = time;
-                    }
-                  })
-                  .catch(function(err) {
-                    if (err.response) {
-                      console.log(err.response);
-                    }
-                  });
-                return;
-              }
+              let res = response.data.data.transactions;
               this.transactions = res;
               let time;
               for (let i = 0; i < this.transactions.length; i++) {
                 let element = this.transactions[i];
-                time = util.utilMethods.getSec(element.refBlockTime);
+                time = util.utilMethods.Ftime(element.refBlockTime);
                 element.refBlockTime = time;
               }
             })
@@ -344,7 +340,10 @@ export default {
               }
             });
         }
-        if (this.start == 10) {
+        if (this.start == this.totalPage - 1) {
+          this.isClick = false;
+          this.start = this.totalPage - 1;
+          this.pageNumber = this.totalPage + "-" + this.totalPage;
           this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
           return;
         }
@@ -356,18 +355,22 @@ export default {
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start--;
-        this.pageNumber = this.start + "/10";
+        this.pageNumber = this.start + 1 + "-" + this.totalPage;
         this.accountTransaction_param.start = this.start;
+        if (this.accountTransaction_param.start == 0) {
+          this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
+          // this.pageNumber = "1-" + this.totalPage;
+        }
         if (this.accountTransaction_param.address !== null) {
           this.$axios
             .post(this.accountTransaction_url, this.accountTransaction_param)
             .then(response => {
-              let res = response.data.data;
+              let res = response.data.data.transactions;
               this.transactions = res;
               let time;
               for (let i = 0; i < this.transactions.length; i++) {
                 let element = this.transactions[i];
-                time = util.utilMethods.getSec(element.refBlockTime);
+                time = util.utilMethods.toUTCtime(element.refBlockTime);
                 element.refBlockTime = time;
               }
             })
@@ -376,11 +379,6 @@ export default {
                 console.log(err.response);
               }
             });
-        }
-        if (this.start == 0) {
-          this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
-          this.pageNumber = "1-10";
-          return;
         }
       }
     },
@@ -414,17 +412,8 @@ export default {
 .AccountInfo {
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
-  .title {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    text-indent: 30px;
-    box-sizing: border-box;
-    border-radius: 0px 0px 4px 4px;
-    border-bottom: 2px solid #000;
+  .bg {
+    background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
   }
   .apex-box {
     // background-color: rgba(255, 255, 255, 0.1);
@@ -492,11 +481,13 @@ export default {
         .pagination-content {
           .prev {
             cursor: pointer;
-            padding-left: 5px;
+            padding-right: 8px;
+            padding-left: 8px;
           }
           .next {
             cursor: pointer;
-            padding-right: 5px;
+            padding-right: 8px;
+            padding-left: 8px;
           }
           a {
             display: inline-block;

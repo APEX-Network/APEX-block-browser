@@ -1,7 +1,7 @@
 <template>
   <div class="transactions">
     <apex-title :title="title" class="title"/>
-    <!-- <apex-back-ground/> -->
+    <apex-back-ground class="bg"/>
     <div class="data-table transactions-table">
       <ul class="table-ul">
         <li v-for="(list,index) in transactions" :key="index" class="row">
@@ -19,7 +19,7 @@
       <!-- <Pagination ref="pagInation" /> -->
       <div class="apex-pagination">
         <div class="pagination-content">
-          <a class="first" @click="getPrevious">First</a>
+          <a class="first" @click="getFirst">First</a>
           <img
             ref="left"
             class="prev"
@@ -31,11 +31,11 @@
           <img
             ref="right"
             class="next"
-            @click="getNext"
+            @click="isClick &&  getNext()"
             src="../../assets/images/shared/rightArrow.png"
             alt
           >
-          <a class="last" @click="getNext">Last</a>
+          <a class="last" @click="getLast">Last</a>
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@
 
 <script>
 import ApexTitle from "@/components/public/ApexTitle.vue";
-// import ApexBackGround from "@/components/public/ApexBackGround.vue";
+import ApexBackGround from "@/components/public/ApexBackGround.vue";
 // import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
@@ -53,8 +53,8 @@ export default {
   name: "Transactions",
   components: {
     // Pagination,
-    ApexTitle
-    // ApexBackGround
+    ApexTitle,
+    ApexBackGround
   },
   data() {
     return {
@@ -71,7 +71,8 @@ export default {
       arrow: {
         leftArrow: null,
         rightArrow: null
-      }
+      },
+      isClick: true
     };
   },
   created() {},
@@ -103,7 +104,7 @@ export default {
           let minu;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            minu = util.utilMethods.getSec(item.refBlockTime);
+            minu = util.utilMethods.Ftime(item.refBlockTime);
             item.refBlockTime = minu;
           }
           this.transactions = res;
@@ -118,7 +119,7 @@ export default {
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start++;
-        this.pageNumber = this.start + "/10";
+        this.pageNumber = this.start + 1 + "-10";
         this.params.start = this.start;
         this.$axios
           .post(this.transaction_list_url, this.params)
@@ -127,7 +128,7 @@ export default {
             let minu;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              minu = util.utilMethods.getSec(item.refBlockTime);
+              minu = util.utilMethods.Ftime(item.refBlockTime);
               item.refBlockTime = minu;
             }
             this.transactions = res;
@@ -137,17 +138,20 @@ export default {
             }
           });
         if (this.start == 10) {
+          this.pageNumber = this.start + "-10";
           this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+          this.isClick = false;
           return;
         }
       }
     },
     getPrevious() {
+      this.isClick = true;
       if (this.start > 0) {
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start--;
-        this.pageNumber = this.start + "/10";
+        this.pageNumber = this.start + "-10";
         this.params.start = this.start;
         this.$axios
           .post(this.transaction_list_url, this.params)
@@ -156,7 +160,7 @@ export default {
             let minu;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              minu = util.utilMethods.getSec(item.refBlockTime);
+              minu = util.utilMethods.Ftime(item.refBlockTime);
               item.refBlockTime = minu;
             }
             this.transactions = res;
@@ -171,6 +175,55 @@ export default {
           return;
         }
       }
+    },
+    getFirst() {
+      this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
+      this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+      this.start = 0;
+      this.pageNumber = "1-10";
+      this.params.start = this.start;
+      this.$axios
+        .post(this.transaction_list_url, this.params)
+        .then(response => {
+          let res = response.data.data;
+          let minu;
+          for (let i = 0; i < res.length; i++) {
+            const item = res[i];
+            minu = util.utilMethods.Ftime(item.refBlockTime);
+            console.log(minu);
+            item.refBlockTime = minu;
+          }
+          this.transactions = res;
+        })
+        .catch(function(err) {
+          if (err.response) {
+          }
+        });
+      return;
+    },
+    getLast() {
+      this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+      this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+      this.start = 10;
+      this.pageNumber = this.start + "-10";
+      this.params.start = this.start;
+      this.$axios
+        .post(this.transaction_list_url, this.params)
+        .then(response => {
+          let res = response.data.data;
+          let minu;
+          for (let i = 0; i < res.length; i++) {
+            const item = res[i];
+            minu = util.utilMethods.Ftime(item.refBlockTime);
+            item.refBlockTime = minu;
+          }
+          this.transactions = res;
+        })
+        .catch(function(err) {
+          if (err.response) {
+          }
+        });
+      return;
     },
     offListener() {
       Bus.$off("txHash");
@@ -188,17 +241,8 @@ export default {
 .transactions {
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  background: url(./../../assets/images/shared/yunshi.png) 68% 89% no-repeat;
-  .title {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    text-indent: 30px;
-    box-sizing: border-box;
-    border-radius: 0px 0px 4px 4px;
-    border-bottom: 2px solid #000;
+  .bg {
+    background: url(./../../assets/images/shared/yunshi.png) 68% 89% no-repeat;
   }
   .data-table {
     height: 93%;
@@ -256,11 +300,13 @@ export default {
       .pagination-content {
         .prev {
           cursor: pointer;
-          padding-left: 5px;
+          padding-right: 8px;
+          padding-left: 8px;
         }
         .next {
           cursor: pointer;
-          padding-right: 5px;
+          padding-right: 8px;
+          padding-left: 8px;
         }
         a {
           display: inline-block;
