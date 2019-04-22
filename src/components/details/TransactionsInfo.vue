@@ -24,7 +24,7 @@
               <router-link
                 to="/blocks/BlocksInfo"
                 @click.native="setHeightValue"
-              >{{transactionInfoData.blockHeight}}    {{transactionInfoData.heightDiff}} Block Confirmations</router-link>
+              >{{transactionInfoData.blockHeight}}</router-link>
             </span>
           </span>
         </li>
@@ -85,47 +85,19 @@
         <li class="row" v-if="transactionInfoData.gasLimit !== null">
           <span class="col">
             Gas Limit:
-            <span
-              class="clol col-lg-8"
-              style="
-    padding-left: 179px;
-"
-            >{{transactionInfoData.gasLimit}}</span>
-          </span>
-          <span class="col">
-            Gas Price:
-            <span
-              class="clol col-lg-8"
-              style="
-    padding-left: 100px;
-"
-            >{{transactionInfoData.gasPrice}}</span>
+            <span class="clol col-lg-8">{{transactionInfoData.gasLimit}}</span>
           </span>
         </li>
-        <!-- <li class="row">
+        <li class="row">
           <span class="col">
             Gas Price:
             <span class="clol col-lg-8">{{transactionInfoData.gasPrice}}</span>
           </span>
-        </li>-->
+        </li>
         <li class="row" v-if="transactionInfoData.gasUsed !== null ">
           <span class="col">
             Gas Used:
-            <span
-              class="clol col-lg-8"
-              style="
-    padding-left: 180px;
-"
-            >{{transactionInfoData.gasUsed}}</span>
-          </span>
-          <span class="col">
-            Transaction Fee:
-            <span
-              class="clol col-lg-8"
-              style="
-    padding-left: 100px;
-"
-            >{{transactionInfoData.fee}}</span>
+            <span class="clol col-lg-8">{{transactionInfoData.gasUsed}}</span>
           </span>
         </li>
         <!-- <li class="row" v-if="transactionInfoData.fee !== null ">

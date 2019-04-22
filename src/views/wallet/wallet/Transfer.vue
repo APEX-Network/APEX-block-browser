@@ -217,6 +217,9 @@ export default {
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
       console.log(this.inputAmout);
+      if (this.amount == 0 || this.inputAmout == 0) {
+        this.check.checkAmount.style.visibility = "visible";
+      }
       if (this.inputAmout > 0 && this.inputAmout <= this.amount) {
         this.check.checkAmount.style.visibility = "hidden";
         this.inputAmout = this.inputAmout;

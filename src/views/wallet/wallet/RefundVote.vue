@@ -181,7 +181,8 @@ export default {
 
   methods: {
     myChangeEvent(val) {
-      this.toAddress = val;      
+      this.toAddress = val;
+        this.check.checktoAddress.style.visibility = "hidden";
       // sessionStorage.setItem("apAddress", this.address);
     },
     mySelectEvent({ id, text }) {
@@ -302,6 +303,9 @@ export default {
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
       console.log(this.inputAmout);
+       if (this.amount == 0 || this.inputAmout == 0) {
+        this.check.checkAmount.style.visibility = "visible";
+      }
       if (this.inputAmout > 0 && this.inputAmout <= this.amount) {
         this.check.checkAmount.style.visibility = "hidden";
         this.inputAmout = this.inputAmout;
@@ -601,7 +605,7 @@ export default {
         /deep/.select2-selection--single {
           outline: none;
           line-height: 30px;
-          background-color:transparent;
+          background-color: transparent;
           border: 0px solid;
           border-radius: 0px;
           line-height: 33px;
