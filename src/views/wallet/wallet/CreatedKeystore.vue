@@ -101,17 +101,6 @@ export default {
     background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
       no-repeat;
   }
-  // background-color: rgba(255, 255, 255, 0.1) !important;
-  // .title {
-  //   width: 100%;
-  //   height: 40px;
-  //   line-height: 40px;
-  //   font-size: 14px;
-  //   text-indent: 30px;
-  //   box-sizing: border-box;
-  //   border-radius: 0px 0px 4px 4px;
-  //   border-bottom: 2px solid #000;
-  // }
   .flex-container {
     display: flex;
     height: auto;
@@ -140,7 +129,7 @@ export default {
       }
       div {
         font-size: 20px;
-        margin: 30px 0px 0px 215px;
+        margin: 30px 0px 0px 200px;
       }
     }
     .create1 {

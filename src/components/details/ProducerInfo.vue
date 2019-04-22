@@ -80,16 +80,15 @@ export default {
         Description: null,
         block: null,
         flag: null
-      }
+      },
+      producer: []
     };
   },
   created() {},
   mounted() {
     window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
-    // setTimeout(() => {
-    //   this.getProduceInfo();
-    // });
+    this.producer = JSON.parse(sessionStorage.getItem("producer"));
   },
   methods: {
     gotHome() {
@@ -111,13 +110,19 @@ export default {
     },
     getProduceInfo() {
       if (!!this.minerBy) {
+        for (let i = 0; i < this.producer.length; i++) {
+          let item = this.producer[i];
+          if (item.address == this.minerBy) {
+            this.producerInfo.CurrentRank = item.Rank;
+          }
+        }
         this.$axios
           .get(this.minerBy_url + this.minerBy)
           .then(response => {
             let res = response.data.data;
             this.producerInfo.Miner = res.address;
             this.producerInfo.Area = res.zone;
-            this.producerInfo.CurrentRank = res.votes;
+            // this.producerInfo.CurrentRank = res.votes;
             this.producerInfo.block = res.blockCount;
             this.producerInfo.Website = res.webSite;
             this.producerInfo.Description = res.describe;

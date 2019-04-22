@@ -293,7 +293,7 @@ export default {
     .apex-pagination {
       width: 100%;
       height: 50px;
-      padding: 10px 35px;
+      padding: 0px 35px;
       box-sizing: border-box;
       text-align: right;
       font-size: 12px;

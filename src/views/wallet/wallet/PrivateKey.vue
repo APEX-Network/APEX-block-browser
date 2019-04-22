@@ -14,6 +14,7 @@
           v-model="inputPrivKey"
           @change="getprivKey"
           placeholder="please paste your private key"
+          autocomplete="off"
         >
         <div class="repatpwd">
           <input
@@ -23,6 +24,8 @@
             v-model="firstPwd"
             @change="getPwd"
             placeholder="please set you password"
+            onKeyUp="value=value.replace(/[\W]/g,'')"
+            autocomplete="off"
           >
           <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         </div>
@@ -77,14 +80,20 @@ export default {
   methods: {
     getprivKey() {
       this.inputPrivKey = this.$refs.privKey.value;
-      let decode_privKey_Hex = Base58check.decode(
-        this.inputPrivKey
-      ).data.toString("hex");
-      let decode_privKey = decode_privKey_Hex.substring(
-        0,
-        decode_privKey_Hex.length - 2
-      );
-      this.privKey = decode_privKey;
+      let privLength = this.inputPrivKey.length;
+      let firstByte = this.inputPrivKey.slice(0, 1);
+      if ((firstByte == "K" && privLength == 52) || (firstByte == "L" && privLength == 52)) {
+        let decode_privKey_Hex = Base58check.decode(
+          this.inputPrivKey
+        ).data.toString("hex");
+        let decode_privKey = decode_privKey_Hex.substring(
+          0,
+          decode_privKey_Hex.length - 2
+        );
+        this.privKey = decode_privKey;
+      } else {
+        // this.$refs.privKey.value = null;
+      }
     },
     getPwd() {
       this.pwd = this.$refs.pwd.value;
@@ -156,7 +165,7 @@ export default {
         margin-left: 0px;
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
-        width: 370px;
+        width: 456px;
         height: 30px;
         position: absolute;
         color: aliceblue;
@@ -169,7 +178,7 @@ export default {
         input {
           margin-left: 0px;
           margin-top: 25px;
-          width: 370px;
+          width: 456px;
           height: 30px;
           color: aliceblue;
         }
@@ -178,7 +187,7 @@ export default {
         }
         img {
           z-index: 1000;
-          margin-left: 340px;
+          margin-left: 428px;
           margin-top: 33px;
           position: relative;
           cursor: pointer;
@@ -189,7 +198,7 @@ export default {
       color: #f26522;
       border: 1px solid #f26522;
       margin-top: 60px;
-      margin-right: 25px;
+      margin-left: 80px;
       text-align: center;
       height: 30px;
       width: 160px;

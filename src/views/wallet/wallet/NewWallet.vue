@@ -18,6 +18,8 @@
           @keyup.enter="nextInput($event)"
           v-model="firstPwd"
           @change="getPwd"
+          onKeyUp="value=value.replace(/[\W]/g,'')"
+          autocomplete="off"
         >
         <!-- <input type="text" ref="firstPwdCover" v-model="firstPwdCover" @change="coverFirstPwd"> -->
         <img src="../../../assets/images/hiddeneye.jpg" @click="displayFirstPwd" ref="firstEye">
@@ -29,12 +31,14 @@
             ref="secondPwd"
             @keyup.enter="prevInput($event)"
             v-model="secondPwd"
-            @change="getPwd"
+            @change="getSecondPwd"
+            onKeyUp="value=value.replace(/[\W]/g,'')"
+            autocomplete="off"
           >
           <!-- <input type="text" ref="secondPwdCover" v-model="secondPwdCover" @change="coverSecondPwd"> -->
           <img src="../../../assets/images/hiddeneye.jpg" @click="displaySecondPwd" ref="secondEye">
         </div>
-        <div class="epd">Enter Password differ</div>
+        <div ref="epd" class="epd">Enter Password differ</div>
         <div class="agreePolicy">
           <img
             src="./../../../assets/images/nocheckbox.jpg"
@@ -52,8 +56,8 @@
           </span>
         </div>
       </div>
-      <div class="create" @click="produceSign">
-        <router-link to="/wallet/NewWallet/CreatedKeystore">CREATE</router-link>
+      <div class="create" @click=" isClick && produceSign()">
+        <router-link to>CREATE</router-link>
       </div>
     </div>
   </div>
@@ -84,7 +88,10 @@ export default {
       nocheckbox: null,
       firstEye: null,
       secondEye: null,
-      firstClick: 1
+      firstClick: 1,
+      ClickCheckBox: 1,
+      isClick: false,
+      diffPwd: null
     };
   },
 
@@ -98,17 +105,34 @@ export default {
   beforeMount() {},
 
   mounted() {
-    this.firstInput = this.$refs.firstPwd;
-    this.secondInput = this.$refs.secondPwd;
-    this.nocheckbox = this.$refs.nocheckbox;
-    this.firstEye = this.$refs.firstEye;
-    this.secondEye = this.$refs.secondEye;
+    this.getInstances();
   },
 
   methods: {
+    getInstances() {
+      this.diffPwd = this.$refs.epd;
+      this.firstInput = this.$refs.firstPwd;
+      this.secondInput = this.$refs.secondPwd;
+      this.nocheckbox = this.$refs.nocheckbox;
+      this.firstEye = this.$refs.firstEye;
+      this.secondEye = this.$refs.secondEye;
+    },
     getPwd() {
       this.first = this.$refs.firstPwd.value;
+    },
+    getSecondPwd() {
       this.second = this.$refs.secondPwd.value;
+      if (this.first == this.second) {
+        this.diffPwd.style.visibility = "hidden";
+      }
+      if (this.first != this.second) {
+        this.diffPwd.style.visibility = "visible";
+        return;
+      }
+      if (this.firstPwd == null || this.secondPwd == null) {
+        this.diffPwd.style.visibility = "visible";
+        return;
+      }
     },
     nextInput(ev) {
       if (ev.keyCode == 13) {
@@ -116,39 +140,46 @@ export default {
       }
     },
     produceSign() {
-      if (this.firstPwd != null && this.secondPwd != null) {
-        if (this.first != this.second) {
-          alert("两次密码输入不正确,请重新输入!");
-          this.$router.push("/wallet/NewWallet");
-          return;
-        }
-        let ap = "0548";
-        let signParams = {
-          privKey: ECPair.makeRandom().privateKey.toString("hex")
-        };
-        Bus.$emit("privKey", signParams.privKey);
-        this.apAddress = util.utilMethods.produce_address(
-          signParams.privKey,
-          ap
-        );
-        Bus.$emit("apAddress", this.apAddress);
-        sessionStorage.setItem("apAddress", this.apAddress);
-        let keyStoreParams = {
-          data: signParams.privKey,
-          key: this.secondPwd,
-          iv: null
-        };
-        this.keyStore = util.utilMethods.produce_KeyStore(keyStoreParams);
-        Bus.$emit("keyStore", this.keyStore);
-        db.APKStore.put({
-          APAddress: this.apAddress,
-          KStore: this.keyStore
-        });
-      }
       if (this.firstPwd == null || this.secondPwd == null) {
-        alert("请输入密码!");
-        this.$router.push("/wallet/NewWallet");
+        this.diffPwd.style.visibility = "visible";
         return;
+      }
+      if (
+        this.firstPwd != null &&
+        this.secondPwd != null &&
+        this.isClick == true
+      ) {
+        if (this.first != this.second) {
+          this.diffPwd.style.visibility = "visible";
+          return;
+        } else {
+          this.diffPwd.style.visibility = "hidden";
+          let ap = "0548";
+          let signParams = {
+            privKey: ECPair.makeRandom().privateKey.toString("hex")
+          };
+          this.apAddress = util.utilMethods.produce_address(
+            signParams.privKey,
+            ap
+          );
+          let keyStoreParams = {
+            data: signParams.privKey,
+            key: this.secondPwd,
+            iv: null
+          };
+          this.keyStore = util.utilMethods.produce_KeyStore(keyStoreParams);
+          setTimeout(() => {
+            Bus.$emit("privKey", signParams.privKey);
+            Bus.$emit("apAddress", this.apAddress);
+            sessionStorage.setItem("apAddress", this.apAddress);
+            Bus.$emit("keyStore", this.keyStore);
+            db.APKStore.put({
+              APAddress: this.apAddress,
+              KStore: this.keyStore
+            });
+          });
+          this.$router.push("/wallet/NewWallet/CreatedKeystore");
+        }
       }
     },
     displayFirstPwd() {
@@ -174,17 +205,36 @@ export default {
       }
     },
     privacyPolicy() {
-      this.$router.push("/home");
+      // this.$router.push("/home");
     },
     changeCheckBox() {
-      this.firstClick++;
-      if (this.firstClick % 2 == 0) {
-        this.nocheckbox.src = require("../../../assets/images/nocheckbox.jpg");
+      if (
+        this.first == this.second &&
+        this.first != null &&
+        this.second != null
+      ) {
+        this.ClickCheckBox++;
+        if (this.ClickCheckBox % 2 == 0) {
+          this.isClick = false;
+          this.nocheckbox.src = require("../../../assets/images/nocheckbox.jpg");
+        }
+        if (this.ClickCheckBox % 2 == 1) {
+          this.isClick = true;
+          this.nocheckbox.src = require("../../../assets/images/checkbox.png");
+        }
+      } else {
+        this.diffPwd.style.visibility = "visible";
+        return;
       }
-      if (this.firstClick % 2 == 1) {
-        this.nocheckbox.src = require("../../../assets/images/checkbox.png");
-      }
+    },
+    offListener() {
+      Bus.$off("apAddress");
+      Bus.$off("privKey");
+      Bus.$off("keyStore");
     }
+  },
+  beforeDestroy() {
+    this.offListener();
   },
 
   watch: {}

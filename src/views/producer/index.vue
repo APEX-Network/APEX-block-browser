@@ -24,11 +24,11 @@
       </ul>
       <div class="apex-pagination">
         <div class="pagination-content">
-          <a class="first" @click="getFirst">First</a>
+          <a class="first" @click="isClick && getFirst()">First</a>
           <img
             ref="left"
             class="prev"
-            @click="getPrevious()"
+            @click="isClick && getPrevious()"
             src="../../assets/images/shared/leftWhiteArrow.png"
             alt
           >
@@ -40,7 +40,7 @@
             src="../../assets/images/shared/rightArrow.png"
             alt
           >
-          <a class="last" @click="getLast">Last</a>
+          <a class="last" @click="isClick && getLast()">Last</a>
         </div>
       </div>
     </div>
@@ -55,6 +55,7 @@ import ApexBackGround from "@/components/public/ApexBackGround.vue";
 // import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import utils from "./../../utils/utils";
+import { setTimeout } from "timers";
 export default {
   name: "Producer",
   components: {
@@ -93,9 +94,9 @@ export default {
     // const timer = setInterval(() => {
     //   this.getProducerList();
     // }, 1500);
-    this.$once("hook:beforeDestroy", () => {
-      clearInterval(timer);
-    });
+    // this.$once("hook:beforeDestroy", () => {
+    //   clearInterval(timer);
+    // });
   },
   methods: {
     getInstance() {
@@ -116,7 +117,7 @@ export default {
           if (this.count < 10) {
             this.point = this.count.toString().indexOf(".");
             if (this.point > -1) {
-              this.totalPage = Number(this.count.toString().split(".")[0]) + 1;
+              this.totalPage = parseInt(this.count.toString().split(".")[0]) + 1;
               console.log(this.totalPage);
             }
             if (this.point == -1) {
@@ -125,12 +126,14 @@ export default {
             this.pageNumber = "1-" + this.totalPage;
             console.log(this.pageNumber);
             if (this.totalPage == 1) {
+              this.isClick = false;
               this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
             }
           }
           for (let i = 0; i < this.producer.length; i++) {
             this.producer[i]["Rank"] = this.Rank++;
           }
+          sessionStorage.setItem("producer", JSON.stringify(this.producer));
         })
         .catch(function(err) {
           if (err.response) {

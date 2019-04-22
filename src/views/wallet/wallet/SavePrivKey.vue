@@ -23,14 +23,12 @@
             {{privKey}}
             <img
               @click="Copy(index)"
-              style="cursor: pointer; padding-left: 10px;float: right;"
+              style="cursor: pointer; padding-left: 10px;float: right; padding-bottom: 6px;"
               src="./../../../assets/images/copy.png"
               alt
             >
           </i>
-          <!-- <span class="s2"> -->
-
-          <!-- </span> -->
+          <span ref="copyed" class="s2">Copy Successed</span>
         </p>
       </div>
       <!-- <div class="create1">
@@ -57,7 +55,8 @@ export default {
       title: "SavePrivKey",
       address: null,
       apAddress: null,
-      privKey: null
+      privKey: null,
+      tip: null
     };
   },
 
@@ -71,10 +70,14 @@ export default {
   beforeMount() {},
 
   mounted() {
+    this.getInstances();
     this.getlastAddress();
   },
 
   methods: {
+    getInstances() {
+      this.tip = this.$refs.copyed;
+    },
     getlastAddress() {
       Bus.$on("apAddress", data => {
         this.apAddress = data;
@@ -92,12 +95,11 @@ export default {
       let getCopyText = this.privKey;
       this.doCopy(getCopyText);
       this.privKey = null;
+      this.tip.style.visibility = "visible";
     },
     doCopy(val) {
       this.$copyText(val).then(
-        function(e) {
-          alert("拷贝成功!");
-        },
+        function(e) {},
         function(e) {
           // console.log(e)
         }
@@ -145,6 +147,14 @@ export default {
         .s1 {
           color: #f26522;
         }
+        .s2 {
+          float: right;
+          padding-right: 10px;
+          font-size: 15px;
+          padding-top: 37px;
+          color: #f26522;
+          visibility: hidden;
+        }
         .privkey {
           min-width: 453px;
           padding-left: 10px;
@@ -155,7 +165,7 @@ export default {
       }
       div {
         font-size: 20px;
-        margin: 30px 0px 30px 215px;
+        margin: 30px 0px 30px 200px;
       }
     }
     .create1 {

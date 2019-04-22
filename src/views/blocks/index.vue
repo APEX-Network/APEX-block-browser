@@ -94,9 +94,9 @@ export default {
   },
   mounted() {
     this.getInstance();
-    this.getFirstBlocks();
+    this.getBlocks();
     const timer = setInterval(() => {
-      this.getFirstBlocks();
+      this.getBlocks();
     }, 1500);
     this.$once("hook:beforeDestroy", () => {
       clearInterval(timer);
@@ -107,7 +107,7 @@ export default {
       this.arrow.leftArrow = this.$refs.left;
       this.arrow.rightArrow = this.$refs.right;
     },
-    getFirstBlocks() {
+    getBlocks() {
       this.getServerDate();
       if (!!this.params) {
         this.$axios
@@ -291,20 +291,9 @@ export default {
 .Blocks {
   width: 100%;
   height: 100%;
-  // background-color: rgba(255, 255, 255, 0.1) !important;
   .bg {
     background: url(./../../assets/images/shared/yunshi.png) 55% 67% no-repeat;
   }
-  // .title {
-  //   width: 100%;
-  //   height: 40px;
-  //   line-height: 40px;
-  //   font-size: 14px;
-  //   text-indent: 30px;
-  //   box-sizing: border-box;
-  //   border-radius: 0px 0px 4px 4px;
-  //   border-bottom: 2px solid #000;
-  // }
   .data-table {
     height: 93%;
     .table-ul {
@@ -319,7 +308,7 @@ export default {
     .apex-pagination {
       width: 100%;
       height: 50px;
-      padding: 10px 35px;
+      padding: 0px 35px;
       box-sizing: border-box;
       text-align: right;
       font-size: 12px;

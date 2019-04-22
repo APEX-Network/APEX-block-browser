@@ -13,15 +13,18 @@
           v-model="keyStore"
           @change="getkeyStore"
           placeholder="Paste or type keystore"
+          autocomplete="off"
         >
         <div class="repatpwd">
           <input
             spellcheck="false"
             type="password"
+            autocomplete="off"
             ref="pwd"
             v-model="pwd"
             @change="getPwd"
             placeholder="Enter the password corresponding to this keystore"
+            onKeyUp="value=value.replace(/[\W]/g,'')"
           >
           <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenPwd">
         </div>

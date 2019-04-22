@@ -3,27 +3,24 @@
     <p class="apex-title">Wallet</p>
     <div class="flex-container1">
       <div class="flex-item1">Address</div>
-      <input
+      <!-- <input
         class="flex-item2"
         v-model="address"
         readonly="readonly"
         placeholder="Please create or import your wallet"
-      >
-      <!-- <div class="flex-item2">
-        <select
-          class="select-option"
-          ref="mySelect"
-          readonly="readonly"
-          title="Please create or import your wallet"
-        >
-          <option
-            class="option-item"
-            v-for="(address, index) in APAddress"
-            :key="index"
-            @click="setAddress()"
-          >{{address}}</option>
-        </select>
-      </div> -->
+        autocomplete="off"
+      >-->
+      <Select2
+        class="flex-item2"
+        readonly="readonly"
+        autocomplete="off"
+        placeholder="Please create or import your wallet"
+        v-model="address"
+        :options="APAddress"
+        :settings="{ settingOption: value, settingOption: value }"
+        @change="myChangeEvent($event)"
+        @select="mySelectEvent($event)"
+      />
       <div class="flex-item3">CPX: {{CPX}}</div>
     </div>
     <div class="flex-container2">
@@ -62,12 +59,9 @@ export default {
   data() {
     return {
       APAddress: [],
-      // selected: null,
-      // privKey: null,
       getAllAddress: null,
       accountInfo_url: "/api/v1.0/accounts/account",
-      CPX: 0,
-      mySelect: null
+      CPX: 0
     };
   },
 
@@ -76,15 +70,14 @@ export default {
   beforeMount() {},
 
   mounted() {
-    this.mySelect = this.$refs.mySelect;
     this.address = sessionStorage.getItem("apAddress");
     setTimeout(() => {
       if (this.address !== null) {
-        sessionStorage.setItem("apAddress", this.address);
         this.getCPX(this.address);
       }
     });
     const timer = setInterval(() => {
+      this.address = sessionStorage.getItem("apAddress");
       if (this.address !== null) {
         this.getCPX(this.address);
       }
@@ -99,21 +92,15 @@ export default {
           this.APAddress.push(v.APAddress);
         });
       });
-    console.log(this.APAddress);
   },
 
   methods: {
-    setAddress() {
-      this.address = this.mySelect.options[this.mySelect.selectedIndex].text;
-      console.log(this.mySelect.options[this.mySelect.selectedIndex].text);
-      Bus.$emit(
-        "apAddress",
-        this.mySelect.options[this.mySelect.selectedIndex].text
-      );
-      sessionStorage.setItem(
-        "apAddress",
-        this.mySelect.options[this.mySelect.selectedIndex].text
-      );
+    myChangeEvent(val) {
+      this.address = val;
+      sessionStorage.setItem("apAddress", this.address);
+    },
+    mySelectEvent({ id, text }) {
+      console.log({ id, text });
     },
     sendAddress() {
       Bus.$emit("apAddress", this.address);
@@ -128,24 +115,30 @@ export default {
         })
         .then(response => {
           let res = response.data.data;
-          let result = res.balance.toString().indexOf(".");
-          if (result > -1) {
-            let pointLength = res.balance.toString().split(".")[1].length;
-            if (pointLength > 8) {
-              this.CPX =
-                res.balance.toString().split(".")[0] +
-                "." +
-                res.balance
-                  .toString()
-                  .split(".")[1]
-                  .substring(0, 8);
+          if (res == null) {
+            this.CPX = 0;
+            return;
+          }
+          if (res !== null) {
+            let result = res.balance.toString().indexOf(".");
+            if (result > -1) {
+              let pointLength = res.balance.toString().split(".")[1].length;
+              if (pointLength > 8) {
+                this.CPX =
+                  res.balance.toString().split(".")[0] +
+                  "." +
+                  res.balance
+                    .toString()
+                    .split(".")[1]
+                    .substring(0, 8);
+              }
+              if (pointLength <= 8) {
+                this.CPX = res.balance;
+              }
             }
-            if (pointLength <= 8) {
+            if (result == -1) {
               this.CPX = res.balance;
             }
-          }
-          if (result == -1) {
-            this.CPX = res.balance;
           }
         })
         .catch(function(err) {
@@ -153,7 +146,14 @@ export default {
             console.log(err.response);
           }
         });
+    },
+   offListener() {
+      Bus.$off("apAddress");
+      Bus.$off("privKey");
     }
+  },
+  beforeDestroy() {
+    this.offListener();
   },
   computed: {},
 
@@ -168,6 +168,7 @@ export default {
     height: 43px;
   }
 }
+
 .flex-container1 {
   display: flex;
   flex-direction: row;
@@ -180,68 +181,81 @@ export default {
     font-size: 18px;
     margin: 50px 0 0 30px;
   }
+
   .flex-item2 {
-    padding-left: 5px;
-    width: 335px;
-    height: 33px;
-    margin: 50px 0px 0px 0px;
-    line-height: 33px;
-    color: aliceblue;
-    background-color: rgba(255, 255, 255, 0);
+    margin-top: 50px;
+    width: 340px !important;
+    height: 35px !important;
     border: 1px solid #f26522;
-    display: block;
-    // font-size: 28px;
-    box-sizing: border-box;
-    cursor: pointer;
-    position: relative;
-    // &::after {
-    //   content: " ";
-    //   position: absolute;
-    //   right: 6px;
-    //   top: 50%;
-    //   margin-top: -5px;
-    //   width: 0px;
-    //   height: 0px;
-    //   border-left: 10px solid transparent;
-    //   border-right: 10px solid transparent;
-    //   border-top: 10px solid #fff;
-    //   font-size: 0px;
-    //   line-height: 0px;
-    // }
-    background: url("../../../assets/images/shared/dropDownArrow.png") no-repeat
-      scroll 96% center transparent;
-    select::-ms-expand {
-      display: none;
+    /deep/ .form-control:focus {
+      border: 1px solid #f26522;
     }
-    .select-option {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      position: relative;
+    /deep/ .select2-container--focus {
       outline: none;
-      border: 0 none;
-      position: relative;
-      padding: 0 0 0 5px;
-      width: 100%;
-      color: #fff;
-      background: none;
+    }
+    /deep/ .select2-container--open {
+      /deep/ .select2-selection--single {
+        outline: none;
+        /deep/ .select2-selection__arrow {
+          /deep/ b {
+            left: 0;
+            margin-left: 0;
+            display: inline-block;
+            content: " ";
+            height: 14px;
+            width: 14px;
+            border-width: 2px 0px 0px 2px;
+            border-color: #f26522;
+            border-style: solid;
+            transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+            transform-origin: center;
+            transition: transform 0.3s;
+            position: absolute;
+            top: 75%;
+            right: 8px;
+            margin-top: -12px;
+          }
+        }
+      }
+    }
+
+    /deep/.select2-selection--single {
+      outline: none;
+      line-height: 30px;
       background-color: transparent;
-      z-index: 99;
-      overflow: hidden;
-    }
-    &.back-after {
-      width: 240px;
-      margin: 0 30px 0 0;
-      &::after {
-        border-top-color: #666;
+      border: 0px solid;
+      border-radius: 0px;
+      line-height: 33px;
+      height: 33px;
+      /deep/ .select2-selection__rendered {
+        color: #fff;
+        line-height: 35px;
       }
-      .select-option {
-        color: #f26522;
+      /deep/ .select2-selection__arrow {
+        height: 33px;
+        position: absolute;
+        top: 1px;
+        right: 1px;
+        width: 22px;
+        /deep/ b {
+          left: 0;
+          margin-left: 0px;
+          display: inline-block;
+          content: " ";
+          height: 14px;
+          width: 14px;
+          border-width: 0 2px 2px 0;
+          border-color: #f26522;
+          border-style: solid;
+          transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+          transform-origin: center;
+          transition: transform 0.3s;
+          position: absolute;
+          top: 75%;
+          right: 8px;
+          margin-top: -20px;
+        }
       }
-    }
-    &.filter-search {
-      width: 150px;
-      margin: 0;
     }
   }
   .flex-item2:hover {
@@ -263,14 +277,14 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   height: 30%;
-  justify-content: space-between;
+  // justify-content: space-between;
   .flex-item1 {
-    width: 135px;
+    width: 120px;
     height: 35px;
     line-height: 35px;
     text-align: center;
     border: 1px solid #f26522;
-    margin: 40px 10px 0px 150px;
+    margin: 40px 0px 0px 152px;
     a {
       color: #f26522;
     }
@@ -279,12 +293,12 @@ export default {
     }
   }
   .flex-item2 {
-    width: 135px;
+    width: 120px;
     height: 35px;
     line-height: 35px;
     text-align: center;
     border: 1px solid #f26522;
-    margin: 40px 0px 0px 55px;
+    margin: 40px 0px 0px 96px;
     a {
       color: #f26522;
     }

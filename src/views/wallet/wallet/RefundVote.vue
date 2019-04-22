@@ -11,15 +11,27 @@
 
       <div class="to">
         <div>Refund node address</div>
-        <input
+        <!-- <input
           spellcheck="false"
           ref="to"
           @keyup.enter="seInput($event)"
           @change="getToAddress"
           type="text"
           placeholder="Please Input Address"
-        >
-        <div>Please enter the correct wallet address</div>
+          autocomplete="off"
+        >-->
+        <Select2
+          class="flex-item2"
+          readonly="readonly"
+          autocomplete="off"
+          title="Please choose a Refund node address"
+          v-model="toAddress"
+          :options="targetAddress"
+          :settings="{ settingOption: value, settingOption: value }"
+          @change="myChangeEvent($event)"
+          @select="mySelectEvent($event)"
+        />
+        <div ref="checktoAddress">Please enter the correct wallet address</div>
       </div>
 
       <div class="amount">
@@ -34,12 +46,13 @@
           @keyup.enter="thInput($event)"
           @change="getInputAmout"
           placeholder="Transfer Amount"
+          autocomplete="off"
         >
         <p class="p1" @click="setAllAmount">
           <router-link to>All</router-link>
         </p>
         <p class="p2">CPX</p>
-        <div>Please enter the correct transfer amount</div>
+        <div ref="checkAmount">Please enter the correct transfer amount</div>
       </div>
       <div class="gasPrice">
         <div class="recommend">
@@ -53,15 +66,23 @@
           @keyup.enter="foInput($event)"
           @change="getInputGasePrice"
           placeholder="Please enter the  gas price"
+          autocomplete="off"
         >
         <div>Mp</div>
-        <div>Please enter the correct gas price</div>
+        <div ref="checkGasPrice">Please enter the correct gas price</div>
       </div>
       <div class="password">
         <div>Password</div>
-        <input spellcheck="false" type="password" ref="firstPwd" v-model="pwd" @change="getPwd">
+        <input
+          spellcheck="false"
+          type="password"
+          ref="firstPwd"
+          v-model="pwd"
+          @change="getPwd"
+          onKeyUp="value=value.replace(/[\W]/g,'')"
+        >
         <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
-        <div>Password Incorrect</div>
+        <div ref="checkPwd">Password Incorrect</div>
       </div>
       <div class="send" @click="SendTransfer()">
         <router-link to>SEND</router-link>
@@ -70,8 +91,17 @@
     <div class="dialog" ref="dialog">
       <div class="confirm" ref="confirm">
         <div>Successful Broadcast</div>
-        <div @click="confirm()">
+        <div>
           <router-link to="/wallet">CONFIRM</router-link>
+        </div>
+        <div>
+          txId: {{txId}}
+          <img
+            @click="Copy(index)"
+            style="cursor: pointer; padding-left: 16px;"
+            src="./../../../assets/images/copy.png"
+            alt
+          >
         </div>
       </div>
     </div>
@@ -96,8 +126,8 @@ export default {
       url: {
         accountInfo_url: "/api/v1.0/accounts/account",
         transfer_url: "/api/v1.0/transactions/trading",
-        gasePrice_url: "/RPCJSON/getAverageGasPrice",
-        voter_url: "/RPCJSON/getVote" //getVote接口
+        gasePrice_url: "/api/v1.0/getAverageGasPrice",
+        voter_url: "/api/v1.0/vote/getVote" //getVote接口
       },
       voter_params: { address: null },
       signature: null,
@@ -122,7 +152,14 @@ export default {
       transferPwd: null,
       gasePrice: null,
       targetAddress: [],
-      targetAmount: []
+      targetAddressAmount: [],
+      tAddress: null,
+      check: {
+        checktoAddress: null,
+        checkAmount: null,
+        checkGasPrice: null,
+        checkPwd: null
+      }
     };
   },
 
@@ -139,10 +176,38 @@ export default {
     this.getAllInput();
     this.getAddress();
     this.getGasePrice();
-    this.getVoter();
+    this.getAllInputInstances();
   },
 
   methods: {
+    myChangeEvent(val) {
+      this.toAddress = val;      
+      // sessionStorage.setItem("apAddress", this.address);
+    },
+    mySelectEvent({ id, text }) {
+      this.targetAddressAmount.map(item => {
+        // console.log(item.key);
+        if (item.key == { id, text }.id) {
+          this.amount = item.value;
+          // console.log(this.amount + this.toAddress);
+          return this.amount;
+        }
+        // console.log({ id, text });
+      });
+    },
+    Copy(index) {
+      let getCopyText = this.copyTxId;
+      this.doCopy(getCopyText);
+    },
+    doCopy(val) {
+      this.$copyText(val).then(function(e) {}, function(e) {});
+    },
+    getAllInputInstances() {
+      this.check.checktoAddress = this.$refs.checktoAddress;
+      this.check.checkAmount = this.$refs.checkAmount;
+      this.check.checkGasPrice = this.$refs.checkGasPrice;
+      this.check.checkPwd = this.$refs.checkPwd;
+    },
     getVoter() {
       if (this.voter_params.address !== null) {
         this.$axios
@@ -150,35 +215,36 @@ export default {
             address: this.voter_params.address
           })
           .then(response => {
-            let res = response.data.result;
-            let address_amount = JSON.parse(res).target;
+            let res = response.data.data;
+            let address_amount = res.target;
+            let amount, address;
             for (let i = 0; i < address_amount.length; i++) {
               let item = address_amount[i];
-              let address = address_amount[i].split("-")[0];
-              let amount = address_amount[i].split("-")[1];
+              address = address_amount[i].split("-")[0].replace(/\s/gi, "");
+              amount = address_amount[i].split("-")[1].replace(/\s/gi, "");
+              // let result = amount.toString().indexOf(".");
+              // if (result > -1) {
+              //   let pointLength = amount.toString().split(".")[1].length;
+              //   if (pointLength > 8) {
+              //     this.Balance =
+              //       amount.toString().split(".")[0] +
+              //       "." +
+              //       amount
+              //         .toString()
+              //         .split(".")[1]
+              //         .substring(0, 8);
+              //   }
+              //   if (pointLength <= 8) {
+              //     this.Balance = amount;
+              //   }
+              // }
+              // if (result == -1) {
+              //   this.Balance = amount;
+              // }
               this.targetAddress.push(address);
-              this.targetAmount.push(amount);
-              console.log(this.targetAddress, this.targetAmount);
+              this.targetAddressAmount.push({ key: address, value: amount });
             }
-            // let result = res.balance.toString().indexOf(".");
-            // if (result > -1) {
-            //   let pointLength = res.balance.toString().split(".")[1].length;
-            //   if (pointLength > 8) {
-            //     this.Balance =
-            //       res.balance.toString().split(".")[0] +
-            //       "." +
-            //       res.balance
-            //         .toString()
-            //         .split(".")[1]
-            //         .substring(0, 8);
-            //   }
-            //   if (pointLength <= 8) {
-            //     this.Balance = res.balance;
-            //   }
-            // }
-            // if (result == -1) {
-            //   this.Balance = res.balance;
-            // }
+            // console.log(this.targetAddressAmount);
           })
           .catch(function(err) {
             if (err.response) {
@@ -193,6 +259,7 @@ export default {
         if (this.apAddress !== null) {
           setTimeout(() => {
             this.getAccountInfo(this.apAddress);
+            this.getVoter();
             db.APKStore.get(this.apAddress).then(APKStore => {
               this.KStore = APKStore.KStore;
             });
@@ -209,7 +276,7 @@ export default {
       this.$axios
         .post(this.url.gasePrice_url)
         .then(response => {
-          let res = response.data.result;
+          let res = response.data.data;
           if (res < 1.0) {
             this.gasePrice = 1.0;
           }
@@ -223,17 +290,29 @@ export default {
     },
     getToAddress() {
       this.toAddress = this.$refs.to.value;
-      // if (this.toAddress == this.apAddress) {
-      //   this.$refs.to.value = null;
-      //   alert("账户填写重复!请重新填写");
-      // }
+      if (this.toAddress.length !== 35 || this.toAddress.slice(0, 2) !== "AP") {
+        console.log(this.check.checktoAddress);
+        this.check.checktoAddress.style.visibility = "visible";
+        this.$refs.to.value = null;
+      }
+      if (this.toAddress.length == 35 && this.toAddress.slice(0, 2) == "AP") {
+        this.check.checktoAddress.style.visibility = "hidden";
+      }
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
       console.log(this.inputAmout);
+      if (this.inputAmout > 0 && this.inputAmout <= this.amount) {
+        this.check.checkAmount.style.visibility = "hidden";
+        this.inputAmout = this.inputAmout;
+      }
+      if (this.inputAmout > this.amount) {
+        this.check.checkAmount.style.visibility = "visible";
+      }
     },
     setAllAmount() {
       this.$refs.inputAmout.value = this.amount;
+      this.check.checkAmount.style.visibility = "hidden";
       this.inputAmout = this.allamount;
     },
     getInputGasePrice() {
@@ -242,14 +321,16 @@ export default {
         this.inputGasePriceValue >= 0.01 &&
         this.inputGasePriceValue <= 1000000000
       ) {
+        this.check.checkGasPrice.style.visibility = "hidden";
         this.inputGasePrice = this.inputGasePriceValue;
       } else {
         this.$refs.inputGasePrice.value = null;
-        alert("gasPrice值输入不正确！请输入0.001~10^9之间的数");
+        this.check.checkGasPrice.style.visibility = "visible";
       }
     },
     getPwd() {
       this.pwd = this.$refs.firstPwd.value;
+      console.log(this.pwd);
     },
     getAllInput() {
       this.secondInput = this.$refs.inputAmout;
@@ -289,26 +370,26 @@ export default {
         })
         .then(response => {
           let res = response.data.data;
-          let result = res.balance.toString().indexOf(".");
-          this.allamount = res.balance;
-          if (result > -1) {
-            let pointLength = res.balance.toString().split(".")[1].length;
-            if (pointLength > 8) {
-              this.amount =
-                res.balance.toString().split(".")[0] +
-                "." +
-                res.balance
-                  .toString()
-                  .split(".")[1]
-                  .substring(0, 8);
-            }
-            if (pointLength <= 8) {
-              this.amount = res.balance;
-            }
-          }
-          if (result == -1) {
-            this.amount = res.balance;
-          }
+          // let result = res.balance.toString().indexOf(".");
+          // this.allamount = res.balance;
+          // if (result > -1) {
+          //   let pointLength = res.balance.toString().split(".")[1].length;
+          //   if (pointLength > 8) {
+          //     this.amount =
+          //       res.balance.toString().split(".")[0] +
+          //       "." +
+          //       res.balance
+          //         .toString()
+          //         .split(".")[1]
+          //         .substring(0, 8);
+          //   }
+          //   if (pointLength <= 8) {
+          //     this.amount = res.balance;
+          //   }
+          // }
+          // if (result == -1) {
+          //   this.amount = res.balance;
+          // }
           this.nonce = res.nextNonce;
         })
         .catch(function(err) {
@@ -325,7 +406,18 @@ export default {
         this.inputGasePrice == null ||
         this.pwd == null
       ) {
-        alert("请填写完整后进行交易!");
+        if (this.toAddress == null) {
+          this.check.checktoAddress.style.visibility = "visible";
+        }
+        if (this.inputAmout == null) {
+          this.check.checkAmount.style.visibility = "visible";
+        }
+        if (this.inputGasePrice == null) {
+          this.check.checkGasPrice.style.visibility = "visible";
+        }
+        if (this.pwd == null) {
+          this.check.checkPwd.style.visibility = "visible";
+        }
         return;
       }
 
@@ -342,7 +434,7 @@ export default {
         this.$refs.dialog.style.display = "flex";
         let serializParams = {
           version: "00000001", //不变
-          txType: "04", //不变
+          txType: "03", //不变
           from: this.apAddress,
           to: "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU", //合约地址
           amount: new bigdecimal.BigDecimal(String(this.inputAmout)).subtract(
@@ -361,7 +453,8 @@ export default {
             String(this.inputGasePrice)
           ).multiply(new bigdecimal.BigDecimal(String(Math.pow(10, 6)))),
           gasLimit: "30000", //程序限制
-          executeTime: "0000000000000000" //不变
+          executeTime: "0000000000000000", //不变
+          votingRefundType: "01"
         };
         if (this.inputAmout !== this.allamount) {
           serializParams.amount = new bigdecimal.BigDecimal(
@@ -387,6 +480,8 @@ export default {
           this.message,
           this.signature
         );
+        this.confirm();
+
         console.log(this.serialized_transaction);
       }
       return;
@@ -398,10 +493,11 @@ export default {
         this.pwd
       );
       if (this.walletAddress == this.apAddress) {
-        alert("密码输入正确,请确定交易!");
+        this.check.checkPwd.style.visibility = "hidden";
+        return;
       }
       if (this.walletAddress !== this.apAddress) {
-        alert("sorry!请输入正确的密码,进行交易!");
+        this.check.checkPwd.style.visibility = "visible";
         this.$router.push("/wallet/Transfer");
         return;
       }
@@ -414,7 +510,11 @@ export default {
         })
         .then(response => {
           let res = response.data.data;
-          console.log(res);
+          this.copyTxId = res.txId;
+          let x = res.txId.slice(0, 6);
+          let y = res.txId.slice(-6);
+          this.txId = x + "..." + y;
+          console.log(res.txId);
         })
         .catch(function(err) {
           if (err.response) {
@@ -447,12 +547,12 @@ export default {
       margin-bottom: 10px;
       div:nth-child(1) {
         color: rgba(255, 255, 255, 0.5);
-        margin: 0px 0px 15px 0px;
+        margin: 0px 0px 0px 0px;
       }
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
-        width: 300px;
+        width: 335px;
         color: aliceblue;
       }
       input:hover {
@@ -461,13 +561,83 @@ export default {
     }
     .to {
       margin: 0% 0 0 0%;
-      input {
-        background: rgba(255, 255, 255, 0.001);
+      .flex-item2 {
+        width: 340px !important;
+        height: 35px !important;
         border: 1px solid #f26522;
-        width: 300px;
-        color: aliceblue;
+        /deep/ .form-control:focus {
+          border: 1px solid #f26522;
+        }
+        /deep/ .select2-container--focus {
+          outline: none;
+        }
+        /deep/ .select2-container--open {
+          /deep/ .select2-selection--single {
+            outline: none;
+
+            /deep/ .select2-selection__arrow {
+              /deep/ b {
+                left: 0;
+                margin-left: 0;
+                display: inline-block;
+                content: " ";
+                height: 14px;
+                width: 14px;
+                border-width: 2px 0px 0px 2px;
+                border-color: #f26522;
+                border-style: solid;
+                transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+                transform-origin: center;
+                transition: transform 0.3s;
+                position: absolute;
+                top: 75%;
+                right: 8px;
+                margin-top: -12px;
+              }
+            }
+          }
+        }
+
+        /deep/.select2-selection--single {
+          outline: none;
+          line-height: 30px;
+          background-color:transparent;
+          border: 0px solid;
+          border-radius: 0px;
+          line-height: 33px;
+          height: 33px;
+          /deep/ .select2-selection__rendered {
+            color: #fff;
+            line-height: 35px;
+          }
+          /deep/ .select2-selection__arrow {
+            height: 33px;
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            width: 22px;
+            /deep/ b {
+              left: 0;
+              margin-left: 0px;
+              display: inline-block;
+              content: " ";
+              height: 14px;
+              width: 14px;
+              border-width: 0 2px 2px 0;
+              border-color: #f26522;
+              border-style: solid;
+              transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+              transform-origin: center;
+              transition: transform 0.3s;
+              position: absolute;
+              top: 75%;
+              right: 8px;
+              margin-top: -20px;
+            }
+          }
+        }
       }
-      input:hover {
+      .flex-item2:hover {
         box-shadow: 2px 2px 8px 2px #f26522;
       }
       div:nth-child(1) {
@@ -478,7 +648,6 @@ export default {
         margin-top: 8px;
         color: #f26522;
         visibility: hidden;
-        // visibility:visible;
       }
     }
     .amount {
@@ -493,7 +662,7 @@ export default {
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
-        width: 200px;
+        width: 235px;
         color: aliceblue;
       }
       input:hover {
@@ -533,11 +702,10 @@ export default {
         margin-top: 8px;
         margin-left: -2px;
         visibility: hidden;
-        // visibility:visible;
       }
     }
     .gasPrice {
-      padding-right: 95px;
+      width: 340px;
       position: relative;
       .recommend {
         margin: 0% 5% 0 2%;
@@ -549,14 +717,13 @@ export default {
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
-        width: 200px;
+        width: 235px;
         color: aliceblue;
       }
       input:hover {
         box-shadow: 2px 2px 8px 2px #f26522;
       }
       div:nth-child(2) {
-        // margin-left: 5%;
         padding-left: 25px;
         display: inline-block;
       }
@@ -585,7 +752,7 @@ export default {
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
-        width: 300px;
+        width: 335px;
         color: aliceblue;
       }
       input:hover {
@@ -593,7 +760,7 @@ export default {
       }
       img {
         z-index: 1;
-        margin-left: 275px;
+        margin-left: 305px;
         margin-top: -23px;
         position: absolute;
         display: block;
@@ -601,9 +768,8 @@ export default {
       }
       div:nth-child(4) {
         color: #f26522;
-        margin-top: 15px;
+        margin-top: 0px;
         visibility: hidden;
-        // visibility:visible;
       }
     }
     .send {
@@ -665,6 +831,18 @@ export default {
           box-shadow: 2px 2px 8px 2px #f26522;
           border-radius: 4px;
         }
+      }
+      div:nth-child(3) {
+        z-index: 1;
+        text-align: center;
+        width: 100%;
+        height: 30px;
+        margin-left: 0px;
+        margin-top: 9px;
+        line-height: 30px;
+        border-radius: 4px;
+        color: #f26522;
+        font-size: 20px;
       }
     }
   }

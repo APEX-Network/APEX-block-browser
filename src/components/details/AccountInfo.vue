@@ -96,7 +96,7 @@ export default {
         address: null
       },
       totalPage: null,
-      pageNumber: "1-10",
+      pageNumber: null,
       arrow: {
         leftArrow: null,
         rightArrow: null
@@ -136,7 +136,6 @@ export default {
     doCopy(val) {
       this.$copyText(val).then(
         function(e) {
-          alert("拷贝成功!");
         },
         function(e) {}
       );
@@ -196,6 +195,7 @@ export default {
     },
     getAccountTransactionInfo() {
       if (this.accountTransaction_param.address !== null) {
+        this.accountTransaction_param.start = this.start;
         this.$axios
           .post(this.accountTransaction_url, this.accountTransaction_param)
           .then(response => {
@@ -210,42 +210,19 @@ export default {
               this.point = this.totalPage.toString().indexOf(".");
               if (this.point > -1) {
                 this.totalPage =
-                  Number(this.count.toString().split(".")[0]) + 1;
-                console.log(this.totalPage);
+                  parseInt(this.totalPage.toString().split(".")[0]) + 1;                
               }
               if (this.point == -1) {
-                this.totalPage = this.count;
+                this.totalPage = this.totalPage;
               }
 
               if (this.totalPage == 1) {
+                this.isClick = false;
                 this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
               }
             }
-            this.pageNumber = "1-" + this.totalPage;
+            this.pageNumber = this.start + 1 + "-" + this.totalPage;
             this.transactions = res;
-            if (this.transactions.length == 0) {
-              this.accountTransaction_param.start = this.start - 1;
-              this.$axios
-                .post(
-                  this.accountTransaction_url,
-                  this.accountTransaction_param
-                )
-                .then(response => {
-                  let res = response.data.data;
-                  this.transactions = res;
-                  let time;
-                  for (let i = 0; i < this.transactions.length; i++) {
-                    let element = this.transactions[i];
-                    time = util.utilMethods.Ftime(element.refBlockTime);
-                    element.refBlockTime = time;
-                  }
-                })
-                .catch(function(err) {
-                  if (err.response) {
-                    console.log(err.response);
-                  }
-                });
-            }
             let time;
             for (let i = 0; i < this.transactions.length; i++) {
               let element = this.transactions[i];
@@ -265,9 +242,9 @@ export default {
         this.isClick = true;
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
-        this.pageNumber = "1-" + this.totalPage;
         this.start = 0;
-        this.accountTransaction_param.start = "0";
+        this.pageNumber = this.start + 1 + "-" + this.totalPage;
+        this.accountTransaction_param.start = this.start;
         this.$axios
           .post(this.accountTransaction_url, this.accountTransaction_param)
           .then(response => {
@@ -293,7 +270,7 @@ export default {
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
       this.start = this.totalPage - 1;
       this.pageNumber = this.totalPage + "-" + this.totalPage;
-      this.accountTransaction_param.start = this.totalPage - 1;
+      this.accountTransaction_param.start = this.start;
       if (this.accountTransaction_param.address !== null) {
         this.$axios
           .post(this.accountTransaction_url, this.accountTransaction_param)
@@ -359,7 +336,6 @@ export default {
         this.accountTransaction_param.start = this.start;
         if (this.accountTransaction_param.start == 0) {
           this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
-          // this.pageNumber = "1-" + this.totalPage;
         }
         if (this.accountTransaction_param.address !== null) {
           this.$axios
@@ -474,7 +450,7 @@ export default {
       .apex-pagination {
         width: 100%;
         height: 50px;
-        padding: 10px 35px;
+        padding: 0px 35px;
         box-sizing: border-box;
         text-align: right;
         font-size: 12px;

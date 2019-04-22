@@ -206,21 +206,21 @@ export default {
                 address: this.search
               })
               .then(response => {
-                if (response.data.data == null) {
-                  this.$router.push("/error");
-                  return;
-                }
+                // if (response.data.data == null) {
+                //   this.$router.push("/error");
+                //   return;
+                // }
                 if (response.data.status == 200) {
                   let res = response.data.data;
-                  if (res.length !== 0) {
-                    setTimeout(() => {
-                      Bus.$emit("accountValue", this.search);
-                    });
-                    this.$router.push(
-                      "/transactions/TransactionsInfo/AccountInfo"
-                    );
-                  }
+                  // if (res.length !== 0) {
+                  setTimeout(() => {
+                    Bus.$emit("accountValue", this.search);
+                  });
+                  this.$router.push(
+                    "/transactions/TransactionsInfo/AccountInfo"
+                  );
                 }
+                // }
               })
               .catch(function(err) {
                 if (err.response) {
@@ -331,12 +331,12 @@ export default {
       }
     },
     showAboutUs() {
-      this.about.style.visibility = "visible";
-      this.wrapDiv.style.display = "inline";
+      this.about.style.height = "240px";
+      this.wrapDiv.style.height = "100vh";
     },
     hiddenAboutUs() {
-      this.about.style.visibility = "hidden";
-      this.wrapDiv.style.display = "none";
+      this.about.style.height = "0px";
+      this.wrapDiv.style.height = "0vh";
     },
     offListener() {
       Bus.$off("accountValue");
@@ -360,14 +360,15 @@ export default {
   .wrapAboutUs {
     z-index: 12000;
     width: 100vw;
-    height: 100vh;
+    height: 0vh;
+    transition: height 0.6s;
     .aboutus {
-      height: 240px;
+      height: 0px;
       width: 100vw;
       z-index: 10000;
       position: fixed;
       bottom: 0;
-      visibility: hidden;
+      transition: height 0.6s;
       background-image: url("../../assets/bottom/bottombg.jpg");
       .common-title {
         margin: 0 auto;

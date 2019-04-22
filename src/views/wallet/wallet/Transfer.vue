@@ -6,7 +6,7 @@
       <div class="from">
         <div>From:</div>
         <div>Wallet</div>
-        <input v-model="apAddress" readonly="readonly">
+        <input v-model="apAddress" readonly="readonly" autocomplete="off">
       </div>
 
       <div class="to">
@@ -18,8 +18,9 @@
           @change="getToAddress"
           type="text"
           placeholder="Please Input Address"
+          autocomplete="off"
         >
-        <div>Please enter the correct wallet address</div>
+        <div ref="checktoAddress">Please enter the correct wallet address</div>
       </div>
 
       <div class="amount">
@@ -34,12 +35,14 @@
           @keyup.enter="thInput($event)"
           @change="getInputAmout"
           placeholder="Transfer Amount"
+          autocomplete="off"
+          onkeyup="value=value.replace(/[^\d\.]/g,'')"
         >
         <p class="p1" @click="setAllAmount">
           <router-link to>All</router-link>
         </p>
         <p class="p2">CPX</p>
-        <div>Please enter the correct transfer amount</div>
+        <div ref="checkAmount">Please enter the correct transfer amount</div>
       </div>
       <div class="gasPrice">
         <input
@@ -49,15 +52,25 @@
           @keyup.enter="foInput($event)"
           @change="getInputGasePrice"
           placeholder="Please enter the  gas price"
+          autocomplete="off"
+          onkeyup="value=value.replace(/[^\d\.]/g,'')"
         >
         <div>Mp</div>
-        <div>Please enter the correct gas price</div>
+        <div ref="checkGasPrice">Please enter the correct gas price</div>
       </div>
       <div class="password">
         <div>Password</div>
-        <input spellcheck="false" type="password" ref="firstPwd" v-model="pwd" @change="getPwd">
+        <input
+          spellcheck="false"
+          type="password"
+          ref="firstPwd"
+          v-model="pwd"
+          @change="getPwd"
+          onKeyUp="value=value.replace(/[\W]/g,'')"
+          autocomplete="off"
+        >
         <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
-        <div>Password Incorrect</div>
+        <div ref="checkPwd">Password Incorrect</div>
       </div>
       <div class="send" @click="SendTransfer()">
         <router-link to>SEND</router-link>
@@ -66,8 +79,17 @@
     <div class="dialog" ref="dialog">
       <div class="confirm" ref="confirm">
         <div>Successful Broadcast</div>
-        <div @click="confirm()">
+        <div>
           <router-link to="/wallet">CONFIRM</router-link>
+        </div>
+        <div>
+          txId: {{txId}}
+          <img
+            @click="Copy(index)"
+            style="cursor: pointer; padding-left: 16px;"
+            src="./../../../assets/images/copy.png"
+            alt
+          >
         </div>
       </div>
     </div>
@@ -112,7 +134,15 @@ export default {
       fiveInput: null,
       allamount: null,
       firstClick: 1,
-      transferPwd: null
+      transferPwd: null,
+      check: {
+        checktoAddress: null,
+        checkAmount: null,
+        checkGasPrice: null,
+        checkPwd: null
+      },
+      txId: null,
+      copyTxId: null
     };
   },
 
@@ -127,9 +157,28 @@ export default {
     this.transferPwd = this.$refs.hiddenpwd;
     this.getAllInput();
     this.getAddress();
+    this.getAllInputInstances();
   },
 
   methods: {
+    Copy(index) {
+      let getCopyText = this.copyTxId;
+      this.doCopy(getCopyText);
+    },
+    doCopy(val) {
+      this.$copyText(val).then(
+        function(e) {},
+        function(e) {
+          // console.log(e)
+        }
+      );
+    },
+    getAllInputInstances() {
+      this.check.checktoAddress = this.$refs.checktoAddress;
+      this.check.checkAmount = this.$refs.checkAmount;
+      this.check.checkGasPrice = this.$refs.checkGasPrice;
+      this.check.checkPwd = this.$refs.checkPwd;
+    },
     getAddress() {
       Bus.$on("apAddress", data => {
         this.apAddress = data;
@@ -151,17 +200,35 @@ export default {
 
     getToAddress() {
       this.toAddress = this.$refs.to.value;
-      if (this.toAddress == this.apAddress) {
+      if (this.toAddress.length !== 35 || this.toAddress.slice(0, 2) !== "AP") {
+        this.check.checktoAddress.style.visibility = "visible";
+        this.toAddress = null;
         this.$refs.to.value = null;
-        alert("账户填写重复!请重新填写");
+      }
+      if (this.toAddress.length == 35 && this.toAddress.slice(0, 2) == "AP") {
+        this.check.checktoAddress.style.visibility = "hidden";
+      }
+      if (this.toAddress == this.apAddress) {
+        this.toAddress = null;
+        this.$refs.to.value = null;
+        this.check.checktoAddress.style.visibility = "visible";
       }
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
       console.log(this.inputAmout);
+      if (this.inputAmout > 0 && this.inputAmout <= this.amount) {
+        this.check.checkAmount.style.visibility = "hidden";
+        this.inputAmout = this.inputAmout;
+      }
+      if (this.inputAmout > this.amount) {
+        this.inputAmout = null;
+        this.check.checkAmount.style.visibility = "visible";
+      }
     },
     setAllAmount() {
       this.$refs.inputAmout.value = this.amount;
+      this.check.checkAmount.style.visibility = "hidden";
       this.inputAmout = this.allamount;
     },
     getInputGasePrice() {
@@ -170,10 +237,12 @@ export default {
         this.inputGasePriceValue >= 0.01 &&
         this.inputGasePriceValue <= 1000000000
       ) {
+        this.check.checkGasPrice.style.visibility = "hidden";
         this.inputGasePrice = this.inputGasePriceValue;
       } else {
         this.$refs.inputGasePrice.value = null;
-        alert("gasPrice值输入不正确！请输入0.001~10^9之间的数");
+        this.inputGasePrice = null;
+        this.check.checkGasPrice.style.visibility = "visible";
       }
     },
     getPwd() {
@@ -253,7 +322,18 @@ export default {
         this.inputGasePrice == null ||
         this.pwd == null
       ) {
-        alert("请填写完整后进行交易!");
+        if (this.toAddress == null) {
+          this.check.checktoAddress.style.visibility = "visible";
+        }
+        if (this.inputAmout == null) {
+          this.check.checkAmount.style.visibility = "visible";
+        }
+        if (this.inputGasePrice == null) {
+          this.check.checkGasPrice.style.visibility = "visible";
+        }
+        if (this.pwd == null) {
+          this.check.checkPwd.style.visibility = "visible";
+        }
         return;
       }
 
@@ -270,7 +350,7 @@ export default {
         this.$refs.dialog.style.display = "flex";
         let serializParams = {
           version: "00000001", //不变
-          txType: "01", //不变
+          txType: "01", //交易
           from: this.apAddress,
           to: this.toAddress,
           amount: new bigdecimal.BigDecimal(String(this.inputAmout)).subtract(
@@ -310,6 +390,7 @@ export default {
           this.message,
           this.signature
         );
+        this.confirm();
       }
       return;
     },
@@ -320,10 +401,11 @@ export default {
         this.pwd
       );
       if (this.walletAddress == this.apAddress) {
-        alert("密码输入正确,请确定交易!");
+        this.check.checkPwd.style.visibility = "hidden";
+        return;
       }
       if (this.walletAddress !== this.apAddress) {
-        alert("sorry!请输入正确的密码,进行交易!");
+        this.check.checkPwd.style.visibility = "visible";
         this.$router.push("/wallet/Transfer");
         return;
       }
@@ -336,7 +418,11 @@ export default {
         })
         .then(response => {
           let res = response.data.data;
-          console.log(res);
+          this.copyTxId = res.txId;
+          let x = res.txId.slice(0, 6);
+          let y = res.txId.slice(-6);
+          this.txId = x + "..." + y;
+          console.log(res.txId);
         })
         .catch(function(err) {
           if (err.response) {
@@ -368,12 +454,12 @@ export default {
       margin: 5% 0 0 0%;
       div:nth-child(1) {
         color: rgba(255, 255, 255, 0.5);
-        margin: 0px 0px 15px 0px;
+        margin: 0px 0px 0px 0px;
       }
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
-        width: 300px;
+        width: 335px;
         color: aliceblue;
       }
       input:hover {
@@ -385,7 +471,7 @@ export default {
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
-        width: 300px;
+        width: 335px;
         color: aliceblue;
       }
       input:hover {
@@ -414,7 +500,7 @@ export default {
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
-        width: 200px;
+        width: 235px;
         color: aliceblue;
       }
       input:hover {
@@ -462,7 +548,7 @@ export default {
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
-        width: 200px;
+        width: 235px;
         color: aliceblue;
       }
       input:hover {
@@ -498,7 +584,7 @@ export default {
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
-        width: 300px;
+        width: 335px;
         color: aliceblue;
       }
       input:hover {
@@ -506,7 +592,7 @@ export default {
       }
       img {
         z-index: 1;
-        margin-left: 275px;
+        margin-left: 308px;
         margin-top: -23px;
         position: absolute;
         display: block;
@@ -514,9 +600,8 @@ export default {
       }
       div:nth-child(4) {
         color: #f26522;
-        margin-top: 15px;
+        margin-top: 0px;
         visibility: hidden;
-        // visibility:visible;
       }
     }
     .send {
@@ -567,7 +652,7 @@ export default {
         width: 100px;
         height: 30px;
         margin-left: 100px;
-        margin-top: 50px;
+        margin-top: 30px;
         line-height: 30px;
         border-radius: 4px;
         background: #f26522;
@@ -578,6 +663,18 @@ export default {
           box-shadow: 2px 2px 8px 2px #f26522;
           border-radius: 4px;
         }
+      }
+      div:nth-child(3) {
+        z-index: 1;
+        text-align: center;
+        width: 100%;
+        height: 30px;
+        margin-left: 0px;
+        margin-top: 9px;
+        line-height: 30px;
+        border-radius: 4px;
+        color: #f26522;
+        font-size: 20px;
       }
     }
   }

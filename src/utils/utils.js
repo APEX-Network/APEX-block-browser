@@ -36,11 +36,32 @@ const utilMethods = {
         //一分钟以内
         return hour + ":" + minute + ":" + seconds;
     },
-    toUTCtime(dateStr) {
-        let dateTime = new Date(dateStr);
-        console.log(dateTime);
-        let utcTime = Date.UTC(dateTime.getUTCFullYear(), dateTime.getUTCMonth(), dateTime.getUTCDate(), dateTime.getUTCHours(), dateTime.getUTCMinutes(), dateTime.getUTCSeconds());
-        return new Date(utcTime);
+    toUTCtime(timespan) {
+        let xhr = null;
+        let time, date;
+        if (window.XMLHttpRequest) {
+            xhr = new window.XMLHttpRequest();
+        } else {
+            // ie
+            xhr = new ActiveObject("Microsoft");
+        }
+        xhr.open("GET", "/", true);
+        xhr.send(null);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 2) {
+                time = xhr.getResponseHeader("Date");
+                console.log(time); 
+                let serverDate = new Date(time).getTime();
+                console.log(serverDate);
+                console.log(serverDate - timespan);
+                date = (serverDate - timespan) / 1000;
+                console.log(date);
+            }
+        };
+        let allTime = (new Date(timespan)).toUTCString();
+        console.log(allTime);
+        let utctime = allTime.split("GMT")[0] + "UTC";
+        return "  " + "(" + utctime + ")";
     },
     tierNoYear(dateStr) {
         let dateTime = new Date(dateStr);
@@ -173,9 +194,17 @@ const utilMethods = {
                 nonce = "000000000000000" + Number(serializParams.nonce).toString(16);
             };
         };
-        if (serializParams.nonce > 15 && serializParams.nonce < 255) {
+        if (serializParams.nonce > 15 && serializParams.nonce <= 255) {
             let nonce_hex = Number(serializParams.nonce).toString(16);
             nonce = "00000000000000" + nonce_hex;
+        };
+        if (serializParams.nonce > 255 && serializParams.nonce <= 4095) {
+            let nonce_hex = Number(serializParams.nonce).toString(16);
+            nonce = "0000000000000" + nonce_hex;
+        };
+        if (serializParams.nonce > 4095 && serializParams.nonce <= 65535) {
+            let nonce_hex = Number(serializParams.nonce).toString(16);
+            nonce = "000000000000" + nonce_hex;
         };
         let gasPrice_hex = Number(serializParams.gasPrice).toString(16);
         let gasPrice;
@@ -210,14 +239,29 @@ const utilMethods = {
             gasLimit = gasLimit_prefix.toString("hex") + gasLimit_hex;
         };
         if (serializParams.data == "00") {
-            console.log("0000000000");
             return serializParams.version + serializParams.txType + from + to + amount + nonce + serializParams.data + gasPrice + gasLimit + serializParams.executeTime;
         };
-        if (serializParams.data !== "00") {
+        if (serializParams.data !== "00" && serializParams.votingRefundType == "00") {
             let decode_vote = Base58check.decode(serializParams.data).data.toString("hex");
             let vote_length = Base58check.decode(serializParams.data).data.length;
             let vote = decode_vote.substring(2);
-            let voting_data = vote + amount + "00";
+            let voting_data = vote + amount + serializParams.votingRefundType;
+            let data_length = vote_length + amount_length + 1;
+            let data;
+            if (data_length < 16) {
+                data = "0" + Number(data_length).toString(16) + voting_data;
+            };
+
+            if (data_length >= 16) {
+                data = Number(data_length).toString(16) + voting_data;
+            };
+            return serializParams.version + serializParams.txType + from + to + "0100" + nonce + data + gasPrice + gasLimit + serializParams.executeTime;
+        };
+        if (serializParams.data !== "00" && serializParams.votingRefundType == "01") {
+            let decode_vote = Base58check.decode(serializParams.data).data.toString("hex");
+            let vote_length = Base58check.decode(serializParams.data).data.length;
+            let vote = decode_vote.substring(2);
+            let voting_data = vote + amount + serializParams.votingRefundType;
             let data_length = vote_length + amount_length + 1;
             let data;
             if (data_length < 16) {
@@ -231,94 +275,6 @@ const utilMethods = {
         }
 
     },
-    // produce_vote_message(serializParams) {
-    //     let decode_from = Base58check.decode(serializParams.from).data.toString("hex");
-    //     let from = decode_from.substring(2);
-    //     //Base58check decode
-    //     let decode_PubKeyHash = Base58check.decode(serializParams.to).data.toString("hex");
-    //     let to = decode_PubKeyHash.substring(2);
-
-    //     let decode_vote = Base58check.decode(serializParams.data).data.toString("hex");
-    //     let vote = decode_vote.substring(2);
-    //     console.log(vote);
-    //     let eightPow = new bigdecimal.BigInteger(Math.pow(10, 18).toString());
-    //     let bigEightPow = new bigdecimal.BigDecimal(eightPow);
-    //     let bigAmount = new bigdecimal.BigDecimal(String(serializParams.amount));
-    //     let amountMultiplyEightPow = bigAmount.multiply(bigEightPow).toString();
-    //     let byteArrayamount = BigInteger(amountMultiplyEightPow.split(".")[0]).toByteArray();
-    //     let amount_hex = Buffer.from(byteArrayamount, "hex").toString("hex");
-    //     let amount_prefix = (amount_hex.length) / 2;
-    //     let amount;
-    //     if (amount_prefix <= 15) {
-    //         amount = "0" + Number(amount_prefix).toString(16) + amount_hex;
-    //     };
-    //     if (amount_prefix >= 16) {
-    //         amount = Number(amount_prefix).toString(16) + amount_hex;
-    //     };
-    //     let nonce;
-    //     if (serializParams.nonce <= 15) {
-    //         if (serializParams.nonce < 10) {
-    //             nonce = "000000000000000" + serializParams.nonce;
-    //         };
-    //         if (serializParams.nonce >= 10) {
-    //             nonce = "000000000000000" + Number(serializParams.nonce).toString(16);
-    //         };
-    //     };
-    //     if (serializParams.nonce > 15 && serializParams.nonce < 255) {
-    //         let nonce_hex = Number(serializParams.nonce).toString(16);
-    //         nonce = "00000000000000" + nonce_hex;
-    //     };
-    //     let gasPrice_hex = Number(serializParams.gasPrice).toString(16);
-    //     let gasPrice;
-    //     if (gasPrice_hex.length % 2 == 1) {
-    //         let gasPrice_prefix = "0" + gasPrice_hex;
-    //         let gasPrice_length = gasPrice_prefix.length / 2;
-    //         if (gasPrice_length < 10) {
-    //             gasPrice = "0" + gasPrice_length + gasPrice_prefix;
-    //         };
-    //         if (gasPrice_length >= 10) {
-    //             gasPrice = gasPrice_length + gasPrice_prefix;
-    //         };
-    //     };
-    //     if (gasPrice_hex.length % 2 == 0) {
-    //         let gasPrice_prefix = gasPrice_hex;
-    //         let gasPrice_length = gasPrice_prefix.length / 2;
-    //         if (gasPrice_length < 10) {
-    //             gasPrice = "0" + gasPrice_length + gasPrice_prefix;
-    //         };
-    //         if (gasPrice_length >= 10) {
-    //             gasPrice = gasPrice_length + gasPrice_prefix;
-    //         };
-    //     };
-
-    //     let voting_data = vote + amount_hex + "0x00";
-    //     let data_length = voting_data.length / 2;
-    //     console.log(data_length);
-
-    //     console.log(voting_data);
-    //     let data;
-    //     if (data_length < 16) {
-    //         data = "0" + data_length.toString(16) + voting_data;
-    //         console.log(data);
-    //     };
-
-    //     if (data_length >= 16) {
-    //         data = data_length.toString(16) + voting_data;
-    //         console.log(data);
-    //     };
-
-    //     let byteArraygaseLimit = BigInteger(serializParams.gasLimit.toString()).toByteArray();
-    //     let gasLimit_hex = Buffer.from(byteArraygaseLimit, "hex").toString("hex");
-    //     let gasLimit_prefix = (gasLimit_hex.length) / 2;
-    //     let gasLimit;
-    //     if (gasLimit_prefix < 10) {
-    //         gasLimit = "0" + gasLimit_prefix + gasLimit_hex;
-    //     };
-    //     if (gasLimit_prefix >= 10) {
-    //         gasLimit = gasLimit_prefix.toString("hex") + gasLimit_hex;
-    //     };
-    //     return serializParams.version + serializParams.txType + from + to + amount + nonce + data + gasPrice + gasLimit + serializParams.executeTime;
-    // },
     produce_KeyStore(keyStoreParams) {
         let data = keyStoreParams.data;
         let bigArraypwd = BigInteger(keyStoreParams.key).toByteArray();

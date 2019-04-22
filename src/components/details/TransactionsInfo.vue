@@ -8,23 +8,23 @@
         <li class="row">
           <span class="col">
             TxHash:
-            <span class="clo col-lg-8">{{transactionInfoData.txHash}}</span>
+            <span class="clol col-lg-8">{{transactionInfoData.txHash}}</span>
           </span>
         </li>
         <li class="row">
           <span class="col">
-            TxReceipt Status:
-            <span class="clol col-lg-8">{{transactionInfoData.txReceiptStatus}}</span>
+            Status:
+            <span class="clol col-lg-8">{{transactionInfoData.txStatus}}</span>
           </span>
         </li>
         <li class="row">
           <span class="col">
             Block Height:
-            <span class="clol col-lg-8">
+            <span class="clol col-lg-8 changewidth">
               <router-link
                 to="/blocks/BlocksInfo"
                 @click.native="setHeightValue"
-              >{{transactionInfoData.blockHeight}}</router-link>
+              >{{transactionInfoData.blockHeight}}    {{transactionInfoData.heightDiff}} Block Confirmations</router-link>
             </span>
           </span>
         </li>
@@ -85,27 +85,55 @@
         <li class="row" v-if="transactionInfoData.gasLimit !== null">
           <span class="col">
             Gas Limit:
-            <span class="clol col-lg-8">{{transactionInfoData.gasLimit}}</span>
+            <span
+              class="clol col-lg-8"
+              style="
+    padding-left: 179px;
+"
+            >{{transactionInfoData.gasLimit}}</span>
+          </span>
+          <span class="col">
+            Gas Price:
+            <span
+              class="clol col-lg-8"
+              style="
+    padding-left: 100px;
+"
+            >{{transactionInfoData.gasPrice}}</span>
           </span>
         </li>
-        <li class="row">
+        <!-- <li class="row">
           <span class="col">
             Gas Price:
             <span class="clol col-lg-8">{{transactionInfoData.gasPrice}}</span>
           </span>
-        </li>
+        </li>-->
         <li class="row" v-if="transactionInfoData.gasUsed !== null ">
           <span class="col">
             Gas Used:
-            <span class="clol col-lg-8">{{transactionInfoData.gasUsed}}</span>
+            <span
+              class="clol col-lg-8"
+              style="
+    padding-left: 180px;
+"
+            >{{transactionInfoData.gasUsed}}</span>
+          </span>
+          <span class="col">
+            Transaction Fee:
+            <span
+              class="clol col-lg-8"
+              style="
+    padding-left: 100px;
+"
+            >{{transactionInfoData.fee}}</span>
           </span>
         </li>
-        <li class="row" v-if="transactionInfoData.fee !== null ">
+        <!-- <li class="row" v-if="transactionInfoData.fee !== null ">
           <span class="col">
             Transaction Fee:
             <span class="clol col-lg-8">{{transactionInfoData.fee}}</span>
           </span>
-        </li>
+        </li>-->
       </ul>
     </div>
   </div>
@@ -133,7 +161,7 @@ export default {
         txHash: null,
         blockHeight: null,
         timeStamp: null,
-        txReceiptStatus: null,
+        txStatus: null,
         from: null,
         to: null,
         amount: null,
@@ -142,7 +170,9 @@ export default {
         gasUsed: null,
         fee: null,
         nonce: null,
-        type: null
+        type: null,
+        newBlockHeight: null,
+        heightDiff: null
       },
       clickValue: {
         type: "height",
@@ -199,8 +229,11 @@ export default {
           .then(response => {
             let res = response.data.data;
             this.transactionInfoData.txHash = res.txHash;
-            this.transactionInfoData.txReceiptStatus = res.confirmed;
+            this.transactionInfoData.txStatus = res.status;
+            this.transactionInfoData.newBlockHeight = res.newBlockHeight;
             this.transactionInfoData.blockHeight = res.refBlockHeight;
+            this.transactionInfoData.heightDiff =
+              res.newBlockHeight - res.refBlockHeight;
             this.transactionInfoData.timeStamp = util.utilMethods.toUTCtime(
               res.refBlockTime
             );
