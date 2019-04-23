@@ -1,12 +1,19 @@
 <template>
   <div class="votingSupport">
-    <apex-title :title="title" class="title"/>
-    <apex-back-ground class="bg"/>
+    <apex-title
+      :title="title"
+      class="title"
+    />
+    <apex-back-ground class="bg" />
     <div class="flex-container">
       <div class="from">
         <div>From:</div>
         <div>Wallet</div>
-        <input v-model="apAddress" readonly="readonly" autocomplete="off">
+        <input
+          v-model="apAddress"
+          readonly="readonly"
+          autocomplete="off"
+        >
       </div>
 
       <div class="to">
@@ -49,7 +56,10 @@
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
           autocomplete="off"
         >
-        <p class="p1" @click="setAllAmount">
+        <p
+          class="p1"
+          @click="setAllAmount"
+        >
           <router-link to>All</router-link>
         </p>
         <p class="p2">CPX</p>
@@ -84,15 +94,28 @@
           onKeyUp="value=value.replace(/[\W]/g,'')"
           autocomplete="off"
         >
-        <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
+        <img
+          src="./../../../assets/images/hiddeneye.jpg"
+          @click="displayPwd"
+          ref="hiddenpwd"
+        >
         <div ref="checkPwd">Password Incorrect</div>
       </div>
-      <div class="send" @click="SendTransfer()">
+      <div
+        class="send"
+        @click="SendTransfer()"
+      >
         <router-link to>SEND</router-link>
       </div>
     </div>
-    <div class="dialog" ref="dialog">
-      <div class="confirm" ref="confirm">
+    <div
+      class="dialog"
+      ref="dialog"
+    >
+      <div
+        class="confirm"
+        ref="confirm"
+      >
         <div>Successful Broadcast</div>
         <div>
           <router-link to="/wallet">CONFIRM</router-link>
@@ -562,10 +585,10 @@ export default {
           outline: none;
         }
         /deep/ .select2-container--open {
-          /deep/ .select2-selection--single {
+          .select2-selection--single {
             outline: none;
-            /deep/ .select2-selection__arrow {
-              /deep/ b {
+            .select2-selection__arrow {
+              b {
                 left: 0;
                 margin-left: 0;
                 display: inline-block;
@@ -595,17 +618,17 @@ export default {
           border-radius: 0px;
           line-height: 33px;
           height: 33px;
-          /deep/ .select2-selection__rendered {
+          .select2-selection__rendered {
             color: #fff;
             line-height: 35px;
           }
-          /deep/ .select2-selection__arrow {
+          .select2-selection__arrow {
             height: 33px;
             position: absolute;
             top: 1px;
             right: 1px;
             width: 22px;
-            /deep/ b {
+             b {
               left: 0;
               margin-left: 0px;
               display: inline-block;

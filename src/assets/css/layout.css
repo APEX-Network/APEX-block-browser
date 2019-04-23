@@ -39,8 +39,10 @@ input:-ms-input-placeholder {
   zoom: 1;
 }
 body {
-  width: 100vw;
-  height: 100vh;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 1300px;
   box-sizing: border-box;
   background: url(../images/shared/moon.png) 105% 40% no-repeat, url(../images/shared/bg.png) right center no-repeat;
   background-size: 150px auto, cover;
@@ -71,8 +73,11 @@ body /deep/ .select2-container--open /deep/ .select2-dropdown /deep/ .select2-re
   background-color: #f26522;
 }
 #app {
-  height: 100%;
+  position: relative;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  min-width: 1260px;
 }
 #app .main-box {
   position: absolute;
@@ -96,7 +101,7 @@ body /deep/ .select2-container--open /deep/ .select2-dropdown /deep/ .select2-re
   -webkit-transform: translate(-50%, 0);
   transform: translate(-50%, 0);
   width: 100%;
-  height: 82%;
+  height: calc( 100% - 130px);
   z-index: -1;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -116,7 +121,7 @@ body /deep/ .select2-container--open /deep/ .select2-dropdown /deep/ .select2-re
 .apex-modul {
   position: relative;
   width: 49%;
-  height: 98%;
+  height: 100%;
   background-color: rgba(255, 255, 255, 0.1) !important;
   border-radius: 0px 0px 4px 4px;
 }
@@ -176,7 +181,7 @@ body /deep/ .select2-container--open /deep/ .select2-dropdown /deep/ .select2-re
   line-height: 24px;
   border-bottom: 1px solid #f26522;
   display: inline-block;
-  max-width: 476px;
+  max-width: 300px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -189,12 +194,6 @@ body /deep/ .select2-container--open /deep/ .select2-dropdown /deep/ .select2-re
   box-sizing: border-box;
   background: url(../images/shared/icon-fix.png) left 4px no-repeat;
 }
-.apex-modul.transactions .apex-list li .bottom a {
-  max-width: 300px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
 .apex-modul.overview ul {
   width: 100%;
   padding: 0 50px;
@@ -203,7 +202,7 @@ body /deep/ .select2-container--open /deep/ .select2-dropdown /deep/ .select2-re
 .apex-modul.overview ul li {
   width: 50%;
   float: left;
-  padding: 26px 0 10px 30px;
+  padding: 60px 0 10px 72px;
 }
 .apex-modul.overview ul li p {
   position: relative;
@@ -252,6 +251,7 @@ body /deep/ .select2-container--open /deep/ .select2-dropdown /deep/ .select2-re
   white-space: nowrap;
 }
 .data-table .table-ul > li > span a {
+  display: inline-block;
   color: #f26522;
   font-family: "SemiBold";
   text-overflow: ellipsis;

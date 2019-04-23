@@ -207,6 +207,7 @@ export default {
             this.APAddress.push(v.APAddress);
           });
         });
+        // console.log(!this.APAddress.length ? "/emptyWallet" : "/wallet")
       return !this.APAddress.length ? "/emptyWallet" : "/wallet";
     },
 

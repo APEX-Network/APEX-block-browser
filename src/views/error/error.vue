@@ -47,7 +47,6 @@ export default {
 };
 </script>
 <style lang='less' scoped>
-@import "./../../assets/css/layout";
 .error {
     background: url("../../assets/images/shared/yunshi.png") 25% 41% no-repeat;
 }

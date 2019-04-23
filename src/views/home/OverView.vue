@@ -64,7 +64,6 @@ export default {
 };
 </script>
 <style scoped lang="less">
-@import "./../../assets/css/layout";
 .home {
   width: 100%;
   height: 100%;

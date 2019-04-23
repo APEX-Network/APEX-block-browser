@@ -1,50 +1,49 @@
 <template>
   <div class="overview apex-modul wallet-modul">
     <p class="apex-title">Wallet</p>
-    <div class="flex-container1">
-      <div class="flex-item1">Address</div>
-      <!-- <input
-        class="flex-item2"
-        v-model="address"
-        readonly="readonly"
-        placeholder="Please create or import your wallet"
-        autocomplete="off"
-      >-->
-      <Select2
-        class="flex-item2"
-        readonly="readonly"
-        autocomplete="off"
-        placeholder="Please create or import your wallet"
-        v-model="address"
-        :options="APAddress"
-        :settings="{ settingOption: value, settingOption: value }"
-        @change="myChangeEvent($event)"
-        @select="mySelectEvent($event)"
-      />
-      <div class="flex-item3">CPX: {{CPX}}</div>
-    </div>
-    <div class="flex-container2">
-      <div class="flex-item1">
-        <router-link to="/wallet/NewWallet">NEW WALLET</router-link>
-        <!-- @click.native="modifyAddress('abc')" -->
+    <div class="clearboth">
+      <div class="wallet-flex-container fl">
+        <div class="clearboth">
+          <div class="flex-item1 fl">Address</div>
+          <Select2
+            class="flex-item2 fl"
+            readonly="readonly"
+            autocomplete="off"
+            placeholder="Please create or import your wallet"
+            v-model="address"
+            :options="APAddress"
+            :settings="{ settingOption: value, settingOption: value }"
+            @change="myChangeEvent($event)"
+            @select="mySelectEvent($event)"
+          />
+        </div>
+        <div class="btn-box btn-box-left">
+          <router-link to="/wallet/NewWallet">NEW WALLET</router-link>
+          <router-link to="/wallet/OpenWallet">IMPORT WALLET</router-link>
+          <!-- @click.native="modifyAddress('abc')" -->
+        </div>
       </div>
-      <div class="flex-item2">
-        <router-link to="/wallet/OpenWallet">IMPORT WALLET</router-link>
-      </div>
-      <div class="flex-item3">
-        <router-link to="/wallet/Transfer" @click.native="sendAddress">TRANSFER</router-link>
-      </div>
-      <div class="flex-item4">
-        <router-link to="/wallet/VotingSupport" @click.native="sendAddress">VOTE</router-link>
-      </div>
-      <div class="flex-item5">
-        <router-link to="/wallet/RefundVote" @click.native="sendAddress">REFUND</router-link>
+      <div class="wallet-flex-container fl">
+        <div class="cpx-number">CPX: {{CPX}}</div>
+        <div class="btn-box">
+          <router-link
+            to="/wallet/Transfer"
+            @click.native="sendAddress"
+          >TRANSFER</router-link>
+          <router-link
+            to="/wallet/VotingSupport"
+            @click.native="sendAddress"
+          >VOTE</router-link>
+          <router-link
+            to="/wallet/RefundVote"
+            @click.native="sendAddress"
+          >REFUND</router-link>
+        </div>
       </div>
     </div>
     <!-- <div class="flex-container3">
       <div class="flex-item1">CLOSE WALLET</div>
     </div>-->
-  </div>
 </template>
 
 <script>
@@ -147,7 +146,7 @@ export default {
           }
         });
     },
-   offListener() {
+    offListener() {
       Bus.$off("apAddress");
       Bus.$off("privKey");
     }
@@ -161,7 +160,6 @@ export default {
 };
 </script>
 <style lang='less' scoped>
-@import "../../../assets/css/layout";
   .wallet-modul {
   width: 100%;
   .apex-title {
@@ -169,21 +167,44 @@ export default {
   }
 }
 
-.flex-container1 {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
-  height: 30%;
+.wallet-flex-container {
+  width: 50%;
+  padding: 60px 0 0 30px;
+  .cpx-number {
+    height: 35px;
+    line-height: 35px;
+    text-align: left;
+    font-size: 22px;
+  }
+  .btn-box {
+    margin-top:60px;
+    a {
+      display: inline-block;
+      height: 30px;
+      font-size: 18px;
+      margin-right:30px;
+      color: #f26522;
+      line-height: 30px;
+      text-align: center;
+      border: 1px solid #f26522;
+      padding: 0 15px;
+      &:hover {
+        box-shadow: 2px 2px 8px 2px #f26522;
+      }
+    }
+    &.btn-box-left{
+      a{
+        &:first-of-type{
+          margin-left: 80px;
+        }
+      }
+    }
+  }
   .flex-item1 {
-    width: 120px;
-    height: 0px;
-    font-size: 18px;
-    margin: 50px 0 0 30px;
+    width:80px;
   }
 
   .flex-item2 {
-    margin-top: 50px;
     width: 340px !important;
     height: 35px !important;
     border: 1px solid #f26522;
@@ -261,94 +282,10 @@ export default {
   .flex-item2:hover {
     box-shadow: 2px 2px 8px 2px #f26522;
   }
-  .flex-item3 {
-    // width: 220px;
-    height: 35px;
-    margin: 50px 0 0 164px;
-    line-height: 35px;
-    text-align: center;
-    font-size: 22px;
-  }
+
+  
 }
-.flex-container2 {
-  width: 100%;
-  margin-top: 2%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  height: 30%;
-  // justify-content: space-between;
-  .flex-item1 {
-    width: 120px;
-    height: 35px;
-    line-height: 35px;
-    text-align: center;
-    border: 1px solid #f26522;
-    margin: 40px 0px 0px 152px;
-    a {
-      color: #f26522;
-    }
-    a:hover {
-      box-shadow: 2px 2px 8px 2px #f26522;
-    }
-  }
-  .flex-item2 {
-    width: 120px;
-    height: 35px;
-    line-height: 35px;
-    text-align: center;
-    border: 1px solid #f26522;
-    margin: 40px 0px 0px 96px;
-    a {
-      color: #f26522;
-    }
-    a:hover {
-      box-shadow: 2px 2px 8px 2px #f26522;
-    }
-  }
-  .flex-item3 {
-    width: 120px;
-    height: 35px;
-    line-height: 35px;
-    text-align: center;
-    border: 1px solid #f26522;
-    margin: 40px 20px 0px 47px;
-    a {
-      color: #f26522;
-    }
-    a:hover {
-      box-shadow: 2px 2px 8px 2px #f26522;
-    }
-  }
-  .flex-item4 {
-    width: 120px;
-    height: 35px;
-    line-height: 35px;
-    text-align: center;
-    border: 1px solid #f26522;
-    margin: 40px 20px 0px;
-    a {
-      color: #f26522;
-    }
-    a:hover {
-      box-shadow: 2px 2px 8px 2px #f26522;
-    }
-  }
-  .flex-item5 {
-    width: 120px;
-    height: 35px;
-    line-height: 35px;
-    text-align: center;
-    border: 1px solid #f26522;
-    margin: 40px 20px 0px;
-    a {
-      color: #f26522;
-    }
-    a:hover {
-      box-shadow: 2px 2px 8px 2px #f26522;
-    }
-  }
-}
+
 .flex-container3 {
   display: flex;
   flex-direction: row;
