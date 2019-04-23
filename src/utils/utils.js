@@ -87,10 +87,10 @@ const utilMethods = {
                     min = x;
                 }
                 if (seconds > 0) {
-                    return min + "    min  " + seconds + "    sec ago" + " " + "(" + utctime + "PM    +UTC" + ")";
+                    return min + "    min  " + seconds + "    sec ago   ";
                 }
                 if (seconds == 0) {
-                    return min + "    min ago  " + " " + "(" + utctime + "PM    +UTC" + ")";
+                    return min + "    min ago  ";
                 }
             }
             if (date == 3600) {
