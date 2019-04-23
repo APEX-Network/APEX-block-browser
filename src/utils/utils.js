@@ -23,17 +23,6 @@ const utilMethods = {
 
         let minute = dateTime.getUTCMinutes();
         let seconds = dateTime.getUTCSeconds();
-        //当前时间
-        // let now = Date.parse(new Date());  //typescript转换写法
-        // let milliseconds = 0;
-        // let timeSpanStr;
-        //计算时间差
-        // console.log(now);
-        // console.log(timespan);
-
-        // milliseconds = now - timespan;
-        // console.log(milliseconds);
-        //一分钟以内
         return hour + ":" + minute + ":" + seconds;
     },
     toUTCtime(timespan) {
@@ -50,7 +39,7 @@ const utilMethods = {
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 2) {
                 time = xhr.getResponseHeader("Date");
-                console.log(time); 
+                console.log(time);
                 let serverDate = new Date(time).getTime();
                 console.log(serverDate);
                 console.log(serverDate - timespan);
@@ -118,29 +107,30 @@ const utilMethods = {
             return datatime + " " + "seconds ago";
         }
     },
-    // getMin(data) {
-    //     var datatime = '';
-    //     if (data != null || data != undefined) {
-    //         timestampToTime(data);
-    //         function timestampToTime(timestamp) {
-    //             var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-    //             var Y = date.getFullYear() + '-';
-    //             var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-    //             var D;
-    //             if (date.getDate() < 10) {
-    //                 D = "0" + date.getDate() + " ";
-    //             } else {
-    //                 D = date.getDate() + " ";
-    //             }
-    //             var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
-    //             var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes());
-    //             var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds());
-    //             datatime = m;
-    //             return m;
-    //         }
-    //         return datatime;
-    //     }
-    // },
+    getMin(data) {
+        var datatime = '';
+        if (data != null || data != undefined) {
+            timestampToTime(data);
+            function timestampToTime(timestamp) {
+                var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+                var Y = date.getFullYear() + '-';
+                var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+                var D;
+                if (date.getDate() < 10) {
+                    D = "0" + date.getDate() + " ";
+                } else {
+                    D = date.getDate() + " ";
+                }
+                var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
+                var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes());
+                var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds());
+                datatime = m;
+                return m;
+            }
+            return datatime;
+        }
+    },
+
     produce_address(privKey, ap) {
         let privKeyToBuffer = Buffer.from(privKey, "hex");
         let privKeyToPub = ECPair.fromPrivateKey(privKeyToBuffer).publicKey;

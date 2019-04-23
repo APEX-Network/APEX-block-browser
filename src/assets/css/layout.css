@@ -203,7 +203,7 @@ body /deep/ .select2-container--open /deep/ .select2-dropdown /deep/ .select2-re
 .apex-modul.overview ul li {
   width: 50%;
   float: left;
-  padding: 30px 0 10px 30px;
+  padding: 26px 0 10px 30px;
 }
 .apex-modul.overview ul li p {
   position: relative;

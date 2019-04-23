@@ -214,6 +214,7 @@ export default {
         .post(this.minerBy_url, this.params)
         .then(response => {
           this.producer = response.data.data;
+          this.producerAddress = [];
           for (let i = 0; i < this.producer.length; i++) {
             const element = this.producer[i];
             this.producerAddress.push(element.address);

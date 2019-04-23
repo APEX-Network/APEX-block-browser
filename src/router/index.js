@@ -18,7 +18,9 @@ import SavePrivKey from '@/views/wallet/wallet/SavePrivKey'
 import Transfer from '@/views/wallet/wallet/Transfer'
 import VotingSupport from '@/views/wallet/wallet/VotingSupport';
 import RefundVote from '@/views/wallet/wallet/RefundVote';
+import emptyWallet from '@/views/wallet/wallet/emptyWallet';
 import error from '@/views/error/error';
+import useProtocol from '@/views/useProtocol/useProtocol';
 
 Vue.use(Router)
 
@@ -46,6 +48,11 @@ export default new Router({
       path: '/wallet',
       name: 'wallet',
       component: wallet,
+    },
+    {
+      path: '/emptyWallet',
+      name: 'emptyWallet',
+      component: emptyWallet,
     },
     {
       path: '/NewWallet',
@@ -144,6 +151,11 @@ export default new Router({
       path: '/error',
       name: 'error',
       component: error,
+    },
+    {
+      path: '/useProtocol',
+      alias: 'useProtocol',
+      component: useProtocol,
     },
   ]
 })

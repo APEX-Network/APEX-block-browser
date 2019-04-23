@@ -45,7 +45,7 @@
         <!-- <Pagination/> -->
         <div class="apex-pagination">
           <div class="pagination-content">
-            <a class="first" @click="getFirst()">First</a>
+            <a class="first" @click=" getFirst()">First</a>
             <img
               ref="left"
               class="prev"
@@ -134,11 +134,7 @@ export default {
       this.doCopy(getCopyText);
     },
     doCopy(val) {
-      this.$copyText(val).then(
-        function(e) {
-        },
-        function(e) {}
-      );
+      this.$copyText(val).then(function(e) {}, function(e) {});
     },
     getClickValue() {
       Bus.$on("accountValue", data => {
@@ -201,6 +197,11 @@ export default {
           .then(response => {
             let res = response.data.data.transactions;
             this.count = response.data.data.count;
+            if (this.count == 0) {
+              this.pageNumber = "1-1";
+              this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+              return;
+            }
             this.totalPage =
               this.count / this.accountTransaction_param.pageSize;
             if (this.totalPage >= 10) {
@@ -210,7 +211,7 @@ export default {
               this.point = this.totalPage.toString().indexOf(".");
               if (this.point > -1) {
                 this.totalPage =
-                  parseInt(this.totalPage.toString().split(".")[0]) + 1;                
+                  parseInt(this.totalPage.toString().split(".")[0]) + 1;
               }
               if (this.point == -1) {
                 this.totalPage = this.totalPage;
@@ -238,7 +239,7 @@ export default {
       }
     },
     getFirst() {
-      if (this.accountTransaction_param.address !== null) {
+      if (this.accountTransaction_param.address !== null && this.count !== 0) {
         this.isClick = true;
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
@@ -265,38 +266,12 @@ export default {
       }
     },
     getLast() {
-      this.isClick = true;
-      this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
-      this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
-      this.start = this.totalPage - 1;
-      this.pageNumber = this.totalPage + "-" + this.totalPage;
-      this.accountTransaction_param.start = this.start;
-      if (this.accountTransaction_param.address !== null) {
-        this.$axios
-          .post(this.accountTransaction_url, this.accountTransaction_param)
-          .then(response => {
-            let res = response.data.data.transactions;
-            this.transactions = res;
-            let time;
-            for (let i = 0; i < this.transactions.length; i++) {
-              let element = this.transactions[i];
-              time = util.utilMethods.Ftime(element.refBlockTime);
-              element.refBlockTime = time;
-            }
-          })
-          .catch(function(err) {
-            if (err.response) {
-              console.log(err.response);
-            }
-          });
-      }
-    },
-    getNext() {
-      if (this.start < this.totalPage) {
+      if (this.count !== 0) {
+        this.isClick = true;
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
-        this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
-        this.start++;
-        this.pageNumber = this.start + 1 + "-" + this.totalPage;
+        this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+        this.start = this.totalPage - 1;
+        this.pageNumber = this.totalPage + "-" + this.totalPage;
         this.accountTransaction_param.start = this.start;
         if (this.accountTransaction_param.address !== null) {
           this.$axios
@@ -317,44 +292,76 @@ export default {
               }
             });
         }
-        if (this.start == this.totalPage - 1) {
-          this.isClick = false;
-          this.start = this.totalPage - 1;
-          this.pageNumber = this.totalPage + "-" + this.totalPage;
-          this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
-          return;
+      }
+    },
+    getNext() {
+      if (this.count !== 0) {
+        if (this.start < this.totalPage) {
+          this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+          this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+          this.start++;
+          this.pageNumber = this.start + 1 + "-" + this.totalPage;
+          this.accountTransaction_param.start = this.start;
+          if (this.accountTransaction_param.address !== null) {
+            this.$axios
+              .post(this.accountTransaction_url, this.accountTransaction_param)
+              .then(response => {
+                let res = response.data.data.transactions;
+                this.transactions = res;
+                let time;
+                for (let i = 0; i < this.transactions.length; i++) {
+                  let element = this.transactions[i];
+                  time = util.utilMethods.Ftime(element.refBlockTime);
+                  element.refBlockTime = time;
+                }
+              })
+              .catch(function(err) {
+                if (err.response) {
+                  console.log(err.response);
+                }
+              });
+          }
+          if (this.start == this.totalPage - 1) {
+            this.isClick = false;
+            this.start = this.totalPage - 1;
+            this.pageNumber = this.totalPage + "-" + this.totalPage;
+            this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+            return;
+          }
         }
       }
     },
     getPrevious() {
-      this.isClick = true;
-      if (this.start > 0) {
-        this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
-        this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
-        this.start--;
-        this.pageNumber = this.start + 1 + "-" + this.totalPage;
-        this.accountTransaction_param.start = this.start;
-        if (this.accountTransaction_param.start == 0) {
-          this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
-        }
-        if (this.accountTransaction_param.address !== null) {
-          this.$axios
-            .post(this.accountTransaction_url, this.accountTransaction_param)
-            .then(response => {
-              let res = response.data.data.transactions;
-              this.transactions = res;
-              let time;
-              for (let i = 0; i < this.transactions.length; i++) {
-                let element = this.transactions[i];
-                time = util.utilMethods.toUTCtime(element.refBlockTime);
-                element.refBlockTime = time;
-              }
-            })
-            .catch(function(err) {
-              if (err.response) {
-                console.log(err.response);
-              }
-            });
+      if (this.count !== 0) {
+        this.isClick = true;
+        if (this.start > 0) {
+          this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+          this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+          this.start--;
+          this.pageNumber = this.start + 1 + "-" + this.totalPage;
+          this.accountTransaction_param.start = this.start;
+          if (this.accountTransaction_param.start == 0) {
+            this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
+          }
+          if (this.accountTransaction_param.address !== null) {
+            this.$axios
+              .post(this.accountTransaction_url, this.accountTransaction_param)
+              .then(response => {
+                let res = response.data.data.transactions;
+                this.transactions = res;
+                let time;
+                for (let i = 0; i < this.transactions.length; i++) {
+                  let element = this.transactions[i];
+                  time = util.utilMethods.toUTCtime(element.refBlockTime);
+                  element.refBlockTime = time;
+                }
+              })
+              .catch(function(err) {
+                if (err.response) {
+                  console.log(err.response);
+                }
+              });
+          }
         }
       }
     },

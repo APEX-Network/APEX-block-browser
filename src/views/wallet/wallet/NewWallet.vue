@@ -205,7 +205,7 @@ export default {
       }
     },
     privacyPolicy() {
-      // this.$router.push("/home");
+      this.$router.push("/useProtocol");
     },
     changeCheckBox() {
       if (

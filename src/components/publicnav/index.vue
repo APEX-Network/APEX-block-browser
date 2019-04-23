@@ -126,6 +126,8 @@
 </template>
 <script>
 import Bus from "./../../utils/bus";
+import db from "./../../utils/myDatabase";
+
 const Base58check = require("base58check");
 
 export default {
@@ -153,14 +155,17 @@ export default {
       searchBlock: {
         type: null,
         value: null
-      }
+      },
+      getAllAddress: null,
+      APAddress: []
     };
   },
   computed: {
     nav() {
+      let walletPath = this.checkDB();
       return [
         { title: this.$t("nav.home"), path: "/home" },
-        { title: this.$t("nav.wallet"), path: "/wallet" },
+        { title: this.$t("nav.wallet"), path: walletPath },
         { title: "", path: "/blocks" },
         { title: "", path: "/transactions" },
         { title: "", path: "/producer" }
@@ -171,6 +176,7 @@ export default {
     }
   },
   mounted() {
+    this.firstCheck();
     this.about = this.$refs.aboutUs;
     this.wrapDiv = this.$refs.wrapAboutUs;
     this.search = this.$refs.search;
@@ -183,6 +189,38 @@ export default {
     });
   },
   methods: {
+    firstCheck() {
+      let walletPath = this.checkDB();
+      return [
+        { title: this.$t("nav.home"), path: "/home" },
+        { title: this.$t("nav.wallet"), path: walletPath },
+        { title: "", path: "/blocks" },
+        { title: "", path: "/transactions" },
+        { title: "", path: "/producer" }
+      ];
+    },
+    checkDB() {
+      this.getAllAddress = db.APKStore.where("APAddress")
+        .above(0)
+        .toArray(APKStore => {
+          APKStore.forEach(v => {
+            this.APAddress.push(v.APAddress);
+          });
+        });
+      return !this.APAddress.length ? "/emptyWallet" : "/wallet";
+    },
+
+    checkIDB() {
+      this.getAllAddress = db.APKStore.where("APAddress")
+        .above(0)
+        .toArray(APKStore => {
+          APKStore.forEach(v => {
+            this.APAddress.push(v.APAddress);
+          });
+        });
+      this.nav[1].path = !this.APAddress.length ? "/emptyWallet" : "/wallet";
+    },
+
     getSearchValue() {
       this.about.style.visibility = "hidden";
       this.search = this.$refs.search.value;
@@ -200,33 +238,18 @@ export default {
             this.search.length == 35 &&
             this.search.slice(0, 2) == "AP"
           ) {
-            let account = Base58check.decode(this.search).data.toString("hex");
-            this.$axios
-              .post(this.url.accountInfo_url, {
-                address: this.search
-              })
-              .then(response => {
-                // if (response.data.data == null) {
-                //   this.$router.push("/error");
-                //   return;
-                // }
-                if (response.data.status == 200) {
-                  let res = response.data.data;
-                  // if (res.length !== 0) {
-                  setTimeout(() => {
-                    Bus.$emit("accountValue", this.search);
-                  });
-                  this.$router.push(
-                    "/transactions/TransactionsInfo/AccountInfo"
-                  );
-                }
-                // }
-              })
-              .catch(function(err) {
-                if (err.response) {
-                  console.log(err.response);
-                }
+            try {
+              let account = Base58check.decode(this.search).data.toString(
+                "hex"
+              );
+              setTimeout(() => {
+                Bus.$emit("accountValue", this.search);
               });
+              this.$router.push("/transactions/TransactionsInfo/AccountInfo");
+            } catch (error) {
+              this.$router.push("/error");
+              return;
+            }
           }
           if (!!this.search && Number.isInteger(Number(this.search)) == true) {
             this.$axios
@@ -335,6 +358,9 @@ export default {
       this.wrapDiv.style.height = "100vh";
     },
     hiddenAboutUs() {
+      if (this.nav[1].title == this.$t("nav.wallet")) {
+        this.checkIDB();
+      }
       this.about.style.height = "0px";
       this.wrapDiv.style.height = "0vh";
     },
