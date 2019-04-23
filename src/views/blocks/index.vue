@@ -108,18 +108,17 @@ export default {
       this.arrow.rightArrow = this.$refs.right;
     },
     getBlocks() {
-      this.getServerDate();
       if (!!this.params) {
         this.$axios
           .post(this.allBlockUrl, this.params)
           .then(response => {
             let res = response.data.data;
-            let seconds;
+            let serverTime = response.headers.date;
+            let time;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              let dateDiff = this.serverDate - item.timeStamp;
-              seconds = util.utilMethods.tierNoYear(dateDiff);
-              item.timeStamp = seconds;
+              time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
+              item.timeStamp = time;
             }
             this.dataList = res;
           })
@@ -129,26 +128,6 @@ export default {
             }
           });
       }
-    },
-    getServerDate() {
-      var xhr = null;
-      if (window.XMLHttpRequest) {
-        xhr = new window.XMLHttpRequest();
-      } else {
-        // ie
-        xhr = new ActiveObject("Microsoft");
-      }
-
-      xhr.open("GET", "/", true);
-      xhr.send(null);
-      xhr.onreadystatechange = function() {
-        var time, date;
-        if (xhr.readyState == 2) {
-          time = xhr.getResponseHeader("Date");
-          this.serverDate = new Date(time);
-          console.log(this.serverDate);
-        }
-      };
     },
     setHeightValue(e) {
       this.clickValue.type = "height";
@@ -174,11 +153,12 @@ export default {
           .post(this.allBlockUrl, this.params)
           .then(response => {
             let res = response.data.data;
-            let seconds;
+            let serverTime = response.headers.date;
+            let time;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              seconds = util.utilMethods.getSec(item.timeStamp);
-              item.timeStamp = seconds;
+              time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
+              item.timeStamp = time;
             }
             this.dataList = res;
           })
@@ -205,11 +185,12 @@ export default {
         .post(this.allBlockUrl, this.params)
         .then(response => {
           let res = response.data.data;
-          let seconds;
+          let serverTime = response.headers.date;
+          let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            seconds = util.utilMethods.getSec(item.timeStamp);
-            item.timeStamp = seconds;
+            time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
+            item.timeStamp = time;
           }
           this.dataList = res;
         })
@@ -229,11 +210,12 @@ export default {
         .post(this.allBlockUrl, this.params)
         .then(response => {
           let res = response.data.data;
-          let seconds;
+          let serverTime = response.headers.date;
+          let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            seconds = util.utilMethods.getSec(item.timeStamp);
-            item.timeStamp = seconds;
+            time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
+            item.timeStamp = time;
           }
           this.dataList = res;
         })
@@ -255,14 +237,14 @@ export default {
           .post(this.allBlockUrl, this.params)
           .then(response => {
             let res = response.data.data;
-            let seconds;
+            let serverTime = response.headers.date;
+            let time;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              seconds = util.utilMethods.getSec(item.timeStamp);
-              item.timeStamp = seconds;
+              time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
+              item.timeStamp = time;
             }
             this.dataList = res;
-            console.log(this.dataList);
           })
           .catch(function(err) {
             if (err.response) {

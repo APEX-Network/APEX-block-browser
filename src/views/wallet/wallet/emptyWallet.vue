@@ -10,10 +10,10 @@
             Warning:APEX neither holds any of your account infromation nor can it help you get your account back.
         </li>
        <li class="flex-item3">
-        <router-link to="/wallet/NewWallet">NEW WALLET</router-link>
+        <router-link to="/emptyWallet/NewWallet">NEW WALLET</router-link>
       </li>
       <li class="flex-item3">
-        <router-link to="/wallet/OpenWallet">OPEN WALLET</router-link>
+        <router-link to="/emptyWallet/OpenWallet">OPEN WALLET</router-link>
       </li>
       </ul>
     </div>
@@ -48,7 +48,7 @@ export default {
 <style lang='less' scoped>
 @import "./../../../assets/css/layout";
 .emptyWallet {
-    background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
+    background: url(./../../../assets/images/shared/yunshi.png) 34% 58% no-repeat
 }
 .data-table {
   height: calc(100vh - 210px);

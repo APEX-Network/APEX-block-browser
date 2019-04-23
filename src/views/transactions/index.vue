@@ -101,11 +101,12 @@ export default {
         .post(this.transaction_list_url, this.params)
         .then(response => {
           let res = response.data.data;
-          let minu;
+          let serverTime = response.headers.date;
+          let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            minu = util.utilMethods.Ftime(item.refBlockTime);
-            item.refBlockTime = minu;
+            time = util.utilMethods.listUTCtime(item.refBlockTime, serverTime);
+            item.refBlockTime = time;
           }
           this.transactions = res;
         })
@@ -125,11 +126,15 @@ export default {
           .post(this.transaction_list_url, this.params)
           .then(response => {
             let res = response.data.data;
-            let minu;
+            let serverTime = response.headers.date;
+            let time;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              minu = util.utilMethods.Ftime(item.refBlockTime);
-              item.refBlockTime = minu;
+              time = util.utilMethods.listUTCtime(
+                item.refBlockTime,
+                serverTime
+              );
+              item.refBlockTime = time;
             }
             this.transactions = res;
           })
@@ -157,11 +162,15 @@ export default {
           .post(this.transaction_list_url, this.params)
           .then(response => {
             let res = response.data.data;
-            let minu;
+                        let serverTime = response.headers.date;
+            let time;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              minu = util.utilMethods.Ftime(item.refBlockTime);
-              item.refBlockTime = minu;
+              time = util.utilMethods.listUTCtime(
+                item.refBlockTime,
+                serverTime
+              );
+              item.refBlockTime = time;
             }
             this.transactions = res;
           })
@@ -186,12 +195,16 @@ export default {
         .post(this.transaction_list_url, this.params)
         .then(response => {
           let res = response.data.data;
-          let minu;
+                      let serverTime = response.headers.date;
+
+          let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            minu = util.utilMethods.Ftime(item.refBlockTime);
-            console.log(minu);
-            item.refBlockTime = minu;
+            time = util.utilMethods.listUTCtime(
+                item.refBlockTime,
+                serverTime
+              );
+            item.refBlockTime = time;
           }
           this.transactions = res;
         })
@@ -211,11 +224,16 @@ export default {
         .post(this.transaction_list_url, this.params)
         .then(response => {
           let res = response.data.data;
-          let minu;
+                      let serverTime = response.headers.date;
+
+          let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            minu = util.utilMethods.Ftime(item.refBlockTime);
-            item.refBlockTime = minu;
+            time = util.utilMethods.listUTCtime(
+                item.refBlockTime,
+                serverTime
+              );;
+            item.refBlockTime = time;
           }
           this.transactions = res;
         })

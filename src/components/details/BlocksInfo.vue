@@ -118,11 +118,15 @@ export default {
               .get(this.url.blockHash_url + params)
               .then(response => {
                 let res = response.data.data;
+                let serverTime = response.headers.date;
                 this.height = res.height;
                 this.blockHash = res.blockHash;
-                this.timeStamp = util.utilMethods.Ftime(res.timeStamp);
+                this.timeStamp = util.utilMethods.toUTCtime(
+                  res.timeStamp,
+                  serverTime
+                );
                 this.transactions =
-                  res.txNum + " " + "transactions in this block";
+                  res.txNum + "   " + "transactions in this block";
                 this.parentHash = res.prevBlock;
                 this.minedBy = res.producer;
                 this.nonce = res.txNum;
@@ -136,10 +140,14 @@ export default {
               .get(this.url.blockHeight_url + params)
               .then(response => {
                 let res = response.data.data;
+                let serverTime = response.headers.date;
                 if (res !== "NotFound" && res.txNum !== null) {
                   this.height = res.height;
                   this.blockHash = res.blockHash;
-                  this.timeStamp = util.utilMethods.Ftime(res.timeStamp);
+                  this.timeStamp = util.utilMethods.toUTCtime(
+                    res.timeStamp,
+                    serverTime
+                  );
                   this.transactions =
                     res.txNum + " " + "transactions in this block";
                   this.parentHash = res.prevBlock;
@@ -163,8 +171,12 @@ export default {
           .get(this.url.blockHash_url + this.parentHash)
           .then(response => {
             let res = response.data.data;
+            let serverTime = response.headers.date;
             this.height = res.height;
-            this.timeStamp = util.utilMethods.Ftime(res.timeStamp);
+            this.timeStamp = util.utilMethods.toUTCtime(
+              res.timeStamp,
+              serverTime
+            );
             this.transactions = res.txNum + " " + "transactions in this block";
             this.blockHash = res.blockHash;
             this.parentHash = res.prevBlock;

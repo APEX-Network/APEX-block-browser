@@ -9,53 +9,189 @@ const bigdecimal = require("bigdecimal");
 
 
 const utilMethods = {
-    /**
- * Unix时间戳转换为当前时间多久之前
- * @param timespan  int         Unix时间戳
- * @return timeSpanStr  string      转换之后的前台需要的字符串
- */
-    Ftime(timespan) {
-        let dateTime = new Date(timespan);
-        let year = dateTime.getUTCFullYear();
-        let month = dateTime.getUTCMonth() + 1;
-        let day = dateTime.getUTCDate();
-        let hour = dateTime.getUTCHours();
-
-        let minute = dateTime.getUTCMinutes();
-        let seconds = dateTime.getUTCSeconds();
-        return hour + ":" + minute + ":" + seconds;
-    },
-    toUTCtime(timespan) {
-        let xhr = null;
-        let time, date;
-        if (window.XMLHttpRequest) {
-            xhr = new window.XMLHttpRequest();
-        } else {
-            // ie
-            xhr = new ActiveObject("Microsoft");
+    listUTCtime(timespan, serverTime) {
+        let serverDate = new Date(serverTime).getTime();
+        console.log(serverTime);
+        let diffTime = (serverDate - timespan) / 1000;
+        console.log(new Date(timespan));
+        console.log(diffTime);
+        let havePoint = diffTime.toString().indexOf(".");
+        let date;
+        if (havePoint > -1) {
+            date = diffTime.toString().split(".")[0];
+            console.log(date);
         }
-        xhr.open("GET", "/", true);
-        xhr.send(null);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 2) {
-                time = xhr.getResponseHeader("Date");
-                console.log(time);
-                let serverDate = new Date(time).getTime();
-                console.log(serverDate);
-                console.log(serverDate - timespan);
-                date = (serverDate - timespan) / 1000;
-                console.log(date);
+        if (havePoint == -1) {
+            date = diffTime
+            console.log(date);
+        }
+        let allTime = (new Date(timespan)).toUTCString();
+        let apM = new Date(timespan).getUTCHours();
+        let utc = allTime.split("GMT")[0];
+        let utctime = utc.split(",")[1];
+        if (apM <= 12) {
+            if (date == 60) {
+                return "1" + " min ago";
             }
-        };
+            if (date < 60) {
+                if (date == 0 || date < 0) {
+                    return "0.5 sec ago"
+                } else {
+                    return date + " sec ago";
+                }
+            }
+            if (date > 60 && date < 3600) {
+                let min;
+                let x = date / 60;
+                let seconds = date % 60;
+                let y = x.toString().indexOf(".");
+                if (y > -1) {
+                    min = x.toString().split(".")[0];
+                }
+                if (y == -1) {
+                    min = x;
+                }
+                if (seconds > 0) {
+                    return min + "    min  ago";
+                }
+                if (seconds == 0) {
+                    return min + "    min ago  ";
+                }
+            }
+            if (date == 3600) {
+                return "1" + "    hr ago";;
+            };
+        }
+        if (apM > 12) {
+            if (date == 60) {
+                return "1" + " min ago";
+            }
+            if (date < 60) {
+                if (date == 0 || date < 0) {
+                    return "0.5 sec ago"
+                } else {
+                    return date + " sec ago";
+                }
+            }
+            if (date > 60 && date < 3600) {
+                let min;
+                let x = date / 60;
+                console.log(x);
+                let seconds = date % 60;
+                let y = x.toString().indexOf(".");
+                console.log(y);
+                if (y > -1) {
+                    min = x.toString().split(".")[0];
+                }
+                if (y == -1) {
+                    min = x;
+                }
+                if (seconds > 0) {
+                    return min + "    min  " + seconds + "    sec ago" + " " + "(" + utctime + "PM    +UTC" + ")";
+                }
+                if (seconds == 0) {
+                    return min + "    min ago  " + " " + "(" + utctime + "PM    +UTC" + ")";
+                }
+            }
+            if (date == 3600) {
+                return "1" + "    hr ago";
+            };
+
+            // if (date > 3600 && date < 86400 ) {
+            //     let hour = Math.ceil( date / 3600 )
+            //     return hour + "     hr ago";
+            // }
+            // if (date == 86400 || date > 86400 ) {
+            //     let day = Math.ceil( date / 86400 )
+            //     return day + "     day ago";
+            // }
+        }
+    },
+    toUTCtime(timespan, serverTime) {
+        let serverDate = new Date(serverTime).getTime();
+        let diffTime = (serverDate - timespan) / 1000;
+        let havePoint = diffTime.toString().indexOf(".");
+        console.log(diffTime);
+        console.log(havePoint);
+        let date;
+        if (havePoint > -1) {
+            date = diffTime.toString().split(".")[0];
+        }
+        if (havePoint == -1) {
+            date = diffTime;
+        }
         let allTime = (new Date(timespan)).toUTCString();
         console.log(allTime);
-        let utctime = allTime.split("GMT")[0] + "UTC";
-        return "  " + "(" + utctime + ")";
-    },
-    tierNoYear(dateStr) {
-        let dateTime = new Date(dateStr);
-        let utcTime = dateTime.getUTCHours() + ":" + dateTime.getUTCMinutes() + ":" + dateTime.getUTCSeconds();
-        return utcTime;
+        let apM = new Date(timespan).getUTCHours();
+        let utc = allTime.split("GMT")[0];
+        let utctime = utc.split(",")[1];
+        if (apM <= 12) {
+            if (date == 60) {
+                return "1" + " min ago"
+                    + " " + "(" + utctime + "AM +UTC" + ")";
+            }
+            if (date < 60) {
+                return date + " sec ago"
+                    + " " + "(" + utctime + "AM +UTC" + ")";
+            }
+            if (date > 60 && date < 3600) {
+                let min;
+                let x = date / 60;
+                console.log(x);
+                let seconds = date % 60;
+                let y = x.toString().indexOf(".");
+                console.log(y);
+                if (y > -1) {
+                    min = x.toString().split(".")[0];
+                }
+                if (y == -1) {
+                    min = x;
+                }
+                if (seconds > 0) {
+                    return min + "    min  " + seconds + "    sec ago" + " " + "(" + utctime + "AM    +UTC" + ")";
+                }
+                if (seconds == 0) {
+                    return min + "    min ago  " + " " + "(" + utctime + "AM    +UTC" + ")";
+                }
+            }
+            if (date == 3600) {
+                return "1" + "    hour ago" + " " + "(" + utctime + "AM    +UTC" + ")";
+            };
+        }
+        if (apM > 12) {
+            if (date == 60) {
+                return "1" + " min ago"
+                    + " " + "(" + utctime + "PM +UTC" + ")";
+            }
+            if (date < 60) {
+                return date + " sec ago"
+                    + " " + "(" + utctime + "PM +UTC" + ")";
+            }
+            if (date > 60 && date < 3600) {
+                let min;
+                let x = date / 60;
+                console.log(x);
+                let seconds = date % 60;
+                let y = x.toString().indexOf(".");
+                console.log(y);
+                if (y > -1) {
+                    min = x.toString().split(".")[0];
+                }
+                if (y == -1) {
+                    min = x;
+                }
+                if (seconds > 0) {
+                    return min + "    min  " + seconds + "    sec ago" + " " + "(" + utctime + "PM    +UTC" + ")";
+                }
+                if (seconds == 0) {
+                    return min + "    min ago  " + " " + "(" + utctime + "PM    +UTC" + ")";
+                }
+            }
+            if (date == 3600) {
+                return "1" + "    hour ago" + " " + "(" + utctime + "PM    +UTC" + ")";
+            };
+
+        }
     },
     tierAllTime(data) {
         var datatime = '';
@@ -76,56 +212,6 @@ const utilMethods = {
                 var s = (date.getUTCSeconds() < 10 ? '0' + (date.getUTCSeconds()) : date.getUTCSeconds());
                 datatime = Y + M + D + h + m + s;
                 return Y + M + D + h + m + s;
-            }
-            return datatime;
-        }
-    },
-    getSec(data) {
-        let data_result = new Date() - data
-        let datatime = '';
-        if (data_result != null || data_result != undefined) {
-            timestampToTime(data_result);
-            function timestampToTime(timestamp) {
-                var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-                var Y = date.getFullYear() + '-';
-                var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-                var D;
-                if (date.getDate() < 10) {
-                    D = "0" + date.getDate() + " ";
-                } else {
-                    D = date.getDate() + " ";
-                }
-                var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
-                var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes()) + ':';
-                var s = (date.getSeconds() < 10 ? (date.getSeconds()) : date.getSeconds());
-                datatime = s;
-                return s;
-            }
-            if (datatime == 0) {
-                datatime = 0.5;
-            }
-            return datatime + " " + "seconds ago";
-        }
-    },
-    getMin(data) {
-        var datatime = '';
-        if (data != null || data != undefined) {
-            timestampToTime(data);
-            function timestampToTime(timestamp) {
-                var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-                var Y = date.getFullYear() + '-';
-                var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-                var D;
-                if (date.getDate() < 10) {
-                    D = "0" + date.getDate() + " ";
-                } else {
-                    D = date.getDate() + " ";
-                }
-                var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
-                var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes());
-                var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds());
-                datatime = m;
-                return m;
             }
             return datatime;
         }

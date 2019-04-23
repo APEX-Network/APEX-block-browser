@@ -199,6 +199,7 @@ export default {
         this.$axios
           .get(this.transactions_url + this.Hash)
           .then(response => {
+            let serverTime = response.headers.date;
             let res = response.data.data;
             this.transactionInfoData.txHash = res.txHash;
             this.transactionInfoData.txStatus = res.status;
@@ -207,7 +208,8 @@ export default {
             this.transactionInfoData.heightDiff =
               res.newBlockHeight - res.refBlockHeight;
             this.transactionInfoData.timeStamp = util.utilMethods.toUTCtime(
-              res.refBlockTime
+              res.refBlockTime,
+              serverTime
             );
             this.transactionInfoData.from = res.from;
             this.transactionInfoData.nonce = res.nonce;

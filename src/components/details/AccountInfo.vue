@@ -196,6 +196,7 @@ export default {
           .post(this.accountTransaction_url, this.accountTransaction_param)
           .then(response => {
             let res = response.data.data.transactions;
+            let serverTime = response.headers.date;
             this.count = response.data.data.count;
             if (this.count == 0) {
               this.pageNumber = "1-1";
@@ -227,7 +228,10 @@ export default {
             let time;
             for (let i = 0; i < this.transactions.length; i++) {
               let element = this.transactions[i];
-              time = util.utilMethods.Ftime(element.refBlockTime);
+              time = util.utilMethods.listUTCtime(
+                element.refBlockTime,
+                serverTime
+              );
               element.refBlockTime = time;
             }
           })
@@ -250,11 +254,15 @@ export default {
           .post(this.accountTransaction_url, this.accountTransaction_param)
           .then(response => {
             let res = response.data.data.transactions;
+            let serverTime = response.headers.date;
             this.transactions = res;
             let time;
             for (let i = 0; i < this.transactions.length; i++) {
               let element = this.transactions[i];
-              time = util.utilMethods.Ftime(element.refBlockTime);
+              time = util.utilMethods.listUTCtime(
+                element.refBlockTime,
+                serverTime
+              );
               element.refBlockTime = time;
             }
           })
@@ -278,11 +286,15 @@ export default {
             .post(this.accountTransaction_url, this.accountTransaction_param)
             .then(response => {
               let res = response.data.data.transactions;
+              let serverTime = response.headers.date;
               this.transactions = res;
               let time;
               for (let i = 0; i < this.transactions.length; i++) {
                 let element = this.transactions[i];
-                time = util.utilMethods.Ftime(element.refBlockTime);
+                time = util.utilMethods.listUTCtime(
+                  element.refBlockTime,
+                  serverTime
+                );
                 element.refBlockTime = time;
               }
             })
@@ -307,11 +319,15 @@ export default {
               .post(this.accountTransaction_url, this.accountTransaction_param)
               .then(response => {
                 let res = response.data.data.transactions;
+                let serverTime = response.headers.date;
                 this.transactions = res;
                 let time;
                 for (let i = 0; i < this.transactions.length; i++) {
                   let element = this.transactions[i];
-                  time = util.utilMethods.Ftime(element.refBlockTime);
+                  time = util.utilMethods.listUTCtime(
+                    element.refBlockTime,
+                    serverTime
+                  );
                   element.refBlockTime = time;
                 }
               })
@@ -348,11 +364,15 @@ export default {
               .post(this.accountTransaction_url, this.accountTransaction_param)
               .then(response => {
                 let res = response.data.data.transactions;
+                let serverTime = response.headers.date;
                 this.transactions = res;
                 let time;
                 for (let i = 0; i < this.transactions.length; i++) {
                   let element = this.transactions[i];
-                  time = util.utilMethods.toUTCtime(element.refBlockTime);
+                  time = util.utilMethods.listUTCtime(
+                    element.refBlockTime,
+                    serverTime
+                  );
                   element.refBlockTime = time;
                 }
               })

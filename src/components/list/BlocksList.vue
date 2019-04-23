@@ -62,12 +62,12 @@ export default {
         .post(this.block_list_url, this.params)
         .then(response => {
           let res = response.data.data;
-          let seconds;
+          let serverTime = response.headers.date;
+          let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            seconds = util.utilMethods.Ftime(item.timeStamp);
-            item.timeStamp = seconds;
-            this.lastBlock = res[0].height;
+            time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
+            item.timeStamp = time;
           }
           this.blocksList = res;
           Bus.$emit("lastBlock", this.lastBlock);

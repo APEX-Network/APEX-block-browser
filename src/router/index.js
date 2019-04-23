@@ -54,12 +54,21 @@ export default new Router({
       name: 'emptyWallet',
       component: emptyWallet,
     },
+
+    {
+      path: '/NewWallet',
+      alias: '/emptyWallet/NewWallet',
+      name: 'NewWallet',
+      component: NewWallet,
+    },
     {
       path: '/NewWallet',
       alias: '/wallet/NewWallet',
       name: 'NewWallet',
       component: NewWallet,
     },
+
+
     {
       path: '/CreatedKeystore',
       alias: '/wallet/NewWallet/CreatedKeystore',
@@ -67,10 +76,30 @@ export default new Router({
       component: CreatedKeystore,
     },
     {
+      path: '/CreatedKeystore',
+      alias: '/emptyWallet/NewWallet/CreatedKeystore',
+      name: 'CreatedKeystore',
+      component: CreatedKeystore,
+    },
+
+    {
       path: '/SavePrivKey',
       alias: '/wallet/NewWallet/CreatedKeystore/SavePrivKey',
       name: 'SavePrivKey',
       component: SavePrivKey,
+    },
+    {
+      path: '/SavePrivKey',
+      alias: '/emptyWallet/NewWallet/CreatedKeystore/SavePrivKey',
+      name: 'SavePrivKey',
+      component: SavePrivKey,
+    },
+
+    {
+      path: '/OpenWallet',
+      alias: '/emptyWallet/OpenWallet',
+      name: 'OpenWallet',
+      component: OpenWallet,
     },
     {
       path: '/OpenWallet',
@@ -78,18 +107,34 @@ export default new Router({
       name: 'OpenWallet',
       component: OpenWallet,
     },
+
     {
       path: '/OpenWallet/PrivateKey',
       alias: '/wallet/OpenWallet/PrivateKey',
       name: 'PrivateKey',
       component: PrivateKey,
     },
+
+    {
+      path: '/OpenWallet/PrivateKey',
+      alias: '/emptyWallet/OpenWallet/PrivateKey',
+      name: 'PrivateKey',
+      component: PrivateKey,
+    },
+
     {
       path: '/OpenWallet/KeyStore',
       alias: '/wallet/OpenWallet/KeyStore',
       name: 'KeyStore',
       component: KeyStore,
     },
+    {
+      path: '/OpenWallet/KeyStore',
+      alias: '/emptyWallet/OpenWallet/KeyStore',
+      name: 'KeyStore',
+      component: KeyStore,
+    },
+
     {
       path: '/Transfer',
       alias: '/wallet/Transfer',
