@@ -157,12 +157,13 @@ export default {
       });
     }
   },
-  destroyed() {},
+  destroyed() {
+    this.myChart.clear();
+  },
   computed: {}
 };
 </script>
 <style scoped lang="less">
-@import "./../../assets/css/layout";
 .home {
   width: 100%;
   height: 100%;

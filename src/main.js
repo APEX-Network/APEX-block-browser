@@ -39,9 +39,9 @@ Vue.use(vuescroll, {
     /** 当不做任何操作时滚动条自动消失的时间 */
     showDelay: 500,
     /** 是否只在滚动的时候现实滚动条 */
-    onlyShowBarOnScroll: true,
+    // onlyShowBarOnScroll: true,
     /** 是否保持显示*/
-    keepShow: false,
+    keepShow: true,
     /** 背景色*/
     background: "#c1c1c1",
     /**  透明度  */

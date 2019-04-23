@@ -261,7 +261,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-@import "./../../assets/css/layout";
 .producer {
   width: 100%;
   height: 100%;
@@ -272,7 +271,7 @@ export default {
     height: 93%;
     .apex-pagination {
       width: 100%;
-      height: 50px;
+      height: 40px;
       padding: 10px 35px;
       box-sizing: border-box;
       text-align: right;

@@ -1,4 +1,6 @@
 <template>
+<div>
+<vue-scroll :ops="ops">
   <div id="app">
     <publicnav/>
     <div class="main-box">
@@ -6,6 +8,8 @@
     </div>
     <publicfooter/>
   </div>
+  <vue-scroll>
+</div>
 </template>
 
 <script>

@@ -151,7 +151,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-@import "./../../assets/css/layout";
 .ProducerInfo {
   width: 100%;
   height: 100%;

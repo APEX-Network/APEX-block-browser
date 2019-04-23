@@ -15,5 +15,7 @@ export default {
 };
 </script>
 <style scoped lang="less">
-@import "./../../assets/css/layout";
+.apex-background {
+    height:  e("calc( 100% - 117px)") !important;
+}
 </style>

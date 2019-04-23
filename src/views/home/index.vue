@@ -33,7 +33,6 @@ export default {
 };
 </script>
 <style scoped lang="less">
-@import "./../../assets/css/layout";
 .home {
   width: 100%;
   height: 100%;
@@ -41,7 +40,10 @@ export default {
   .bottom-modul,
   .top-modul {
     height: 49%;
-    margin-bottom: 2%;
+    margin-bottom: 1.5%;
+  }
+  .bottom-modul{
+    margin-bottom: 0;
   }
 }
 </style>

@@ -136,7 +136,6 @@ export default {
 };
 </script>
 <style lang='less' scoped>
-@import "./../../../assets/css/layout";
 .privateKey {
   width: 100%;
   height: 100%;

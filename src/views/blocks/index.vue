@@ -287,7 +287,6 @@ export default {
 };
 </script>
 <style scoped lang="less">
-@import "./../../assets/css/layout";
 .Blocks {
   width: 100%;
   height: 100%;
@@ -307,7 +306,7 @@ export default {
     }
     .apex-pagination {
       width: 100%;
-      height: 50px;
+      height: 40px;
       padding: 0px 35px;
       box-sizing: border-box;
       text-align: right;
