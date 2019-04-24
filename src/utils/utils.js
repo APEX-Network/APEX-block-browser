@@ -11,21 +11,21 @@ const bigdecimal = require("bigdecimal");
 const utilMethods = {
     listUTCtime(timespan, serverTime) {
         let serverDate = new Date(serverTime).getTime();
-        console.log(serverTime);
+        // console.log(serverTime);
         let diffTime = (serverDate - timespan) / 1000;
         let formatterTime = new Date(serverDate - timespan);
-        console.log(formatterTime);
-        console.log(new Date(timespan));
-        console.log(diffTime);
+        // console.log(formatterTime);
+        // console.log(new Date(timespan));
+        // console.log(diffTime);
         let havePoint = diffTime.toString().indexOf(".");
         let date;
         if (havePoint > -1) {
             date = diffTime.toString().split(".")[0];
-            console.log(date);
+            // console.log(date);
         }
         if (havePoint == -1) {
             date = diffTime
-            console.log(date);
+            // console.log(date);
         }
         let allTime = (new Date(timespan)).toUTCString();
         let apM = new Date(timespan).getUTCHours();
@@ -111,11 +111,11 @@ const utilMethods = {
     },
     toUTCtime(timespan, serverTime) {
         let serverDate = new Date(serverTime).getTime();
-        console.log(new Date(serverTime));
+        // console.log(new Date(serverTime));
         let diffTime = (serverDate - timespan) / 1000;
         let havePoint = diffTime.toString().indexOf(".");
-        console.log(diffTime);
-        console.log(havePoint);
+        // console.log(diffTime);
+        // console.log(havePoint);
         let date;
         if (havePoint > -1) {
             date = diffTime.toString().split(".")[0];
@@ -124,7 +124,7 @@ const utilMethods = {
             date = diffTime;
         }
         let allTime = (new Date(timespan)).toUTCString();
-        console.log(allTime);
+        // console.log(allTime);
         let apM = new Date(timespan).getUTCHours();
         let utc = allTime.split("GMT")[0];
         let utctime = utc.split(",")[1];
@@ -140,10 +140,10 @@ const utilMethods = {
             if (date > 60 && date < 3600) {
                 let min;
                 let x = date / 60;
-                console.log(x);
+                // console.log(x);
                 let seconds = date % 60;
                 let y = x.toString().indexOf(".");
-                console.log(y);
+                // console.log(y);
                 if (y > -1) {
                     min = x.toString().split(".")[0];
                 }
@@ -173,10 +173,10 @@ const utilMethods = {
             if (date > 60 && date < 3600) {
                 let min;
                 let x = date / 60;
-                console.log(x);
+                // console.log(x);
                 let seconds = date % 60;
                 let y = x.toString().indexOf(".");
-                console.log(y);
+                // console.log(y);
                 if (y > -1) {
                     min = x.toString().split(".")[0];
                 }

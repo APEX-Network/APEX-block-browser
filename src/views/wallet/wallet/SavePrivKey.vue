@@ -22,7 +22,7 @@
           <i class="privkey">
             {{privKey}}
             <img
-              @click="Copy(index)"
+              @click=" privKey !== null && Copy(index)"
               style="cursor: pointer; padding-left: 10px;float: right; padding-bottom: 6px;"
               src="./../../../assets/images/copy.png"
               alt

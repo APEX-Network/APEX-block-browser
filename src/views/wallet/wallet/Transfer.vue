@@ -216,7 +216,19 @@ export default {
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
-      console.log(this.inputAmout);
+      let inputlength = this.inputAmout.toString().length;
+      console.log(inputlength);
+
+      if (inputlength >= 2) {
+        let errorinput = this.inputAmout.slice(0, 2);
+        if (errorinput.slice(0, 1) == 0 && errorinput.slice(1, 2) !== ".") {
+          this.$refs.inputAmout.value = null;
+          setTimeout(() => {
+            this.check.checkAmount.style.visibility = "visible";
+          });
+        }
+      }
+
       if (this.amount == 0 || this.inputAmout == 0) {
         this.check.checkAmount.style.visibility = "visible";
       }
@@ -236,6 +248,16 @@ export default {
     },
     getInputGasePrice() {
       this.inputGasePriceValue = this.$refs.inputGasePrice.value;
+      let inputlength = this.inputGasePriceValue.toString().length;
+      if (inputlength >= 2) {
+        let errorinput = this.inputGasePriceValue.slice(0, 2);
+        if (errorinput.slice(0, 1) == 0 && errorinput.slice(1, 2) !== ".") {
+          this.$refs.inputGasePrice.value = null;
+          setTimeout(() => {
+            this.check.checkGasPrice.style.visibility = "visible";
+          });
+        }
+      }
       if (
         this.inputGasePriceValue >= 0.01 &&
         this.inputGasePriceValue <= 1000000000
@@ -350,10 +372,9 @@ export default {
         this.pwd !== null
       ) {
         this.checkAddress();
-        this.$refs.dialog.style.display = "flex";
         let serializParams = {
-          version: "00000001", //不变
-          txType: "01", //交易
+          version: "00000001",
+          txType: "01",
           from: this.apAddress,
           to: this.toAddress,
           amount: new bigdecimal.BigDecimal(String(this.inputAmout)).subtract(
@@ -361,13 +382,13 @@ export default {
               String(Math.pow(10, -12) * String(this.inputGasePrice) * 21000)
             )
           ),
-          nonce: this.nonce, //从服务器获取该账户的nonce值
-          data: "00", //不变
+          nonce: this.nonce,
+          data: "00",
           gasPrice: new bigdecimal.BigDecimal(
             String(this.inputGasePrice)
           ).multiply(new bigdecimal.BigDecimal(String(Math.pow(10, 6)))),
-          gasLimit: "21000", //程序限制
-          executeTime: "0000000000000000" //不变
+          gasLimit: "21000",
+          executeTime: "0000000000000000"
         };
         if (this.inputAmout !== this.allamount) {
           serializParams.amount = new bigdecimal.BigDecimal(
@@ -379,11 +400,15 @@ export default {
           message: this.message,
           privKey: null
         };
-        if (this.KStore !== null && this.pwd !== null) {
-          signParams.privKey = util.utilMethods.produceKeyPriv(
-            this.KStore,
-            this.pwd
-          );
+        try {
+          if (this.KStore !== null && this.pwd !== null) {
+            signParams.privKey = util.utilMethods.produceKeyPriv(
+              this.KStore,
+              this.pwd
+            );
+          }
+        } catch (error) {
+          console.log("密码输入错误");
         }
         if (this.privKey !== null) {
           signParams.privKey = String(this.privKey);
@@ -398,21 +423,21 @@ export default {
       return;
     },
     checkAddress() {
-      this.privKey = util.utilMethods.produceKeyPriv(this.KStore, this.pwd);
-      this.walletAddress = util.utilMethods.keyStoreWallet(
-        this.KStore,
-        this.pwd
-      );
-      if (this.walletAddress == this.apAddress) {
-        this.check.checkPwd.style.visibility = "hidden";
-        return;
-      }
-      if (this.walletAddress !== this.apAddress) {
+      try {
+        this.privKey = util.utilMethods.produceKeyPriv(this.KStore, this.pwd);
+        this.walletAddress = util.utilMethods.keyStoreWallet(
+          this.KStore,
+          this.pwd
+        );
+        if (this.walletAddress == this.apAddress) {
+          this.$refs.dialog.style.display = "flex";
+          this.check.checkPwd.style.visibility = "hidden";
+          return;
+        }
+      } catch (error) {
+        this.$refs.dialog.style.display = "none";
         this.check.checkPwd.style.visibility = "visible";
-        this.$router.push("/wallet/Transfer");
-        return;
       }
-      return;
     },
     confirm() {
       this.$axios
@@ -424,8 +449,7 @@ export default {
           this.copyTxId = res.txId;
           let x = res.txId.slice(0, 6);
           let y = res.txId.slice(-6);
-          this.txId = x + "..." + y;
-          console.log(res.txId);
+          this.txId = x + "......" + y;
         })
         .catch(function(err) {
           if (err.response) {

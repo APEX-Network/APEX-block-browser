@@ -6,6 +6,7 @@
         <div class="clearboth">
           <div class="flex-item1 fl">Address</div>
           <Select2
+          ref="select2"
             class="flex-item2 fl"
             readonly="readonly"
             autocomplete="off"
@@ -30,14 +31,14 @@
             to="/wallet/Transfer"
             @click.native="sendAddress"
           >TRANSFER</router-link>
-          <router-link
+          <!-- <router-link
             to="/wallet/VotingSupport"
             @click.native="sendAddress"
           >VOTE</router-link>
           <router-link
             to="/wallet/RefundVote"
             @click.native="sendAddress"
-          >REFUND</router-link>
+          >REFUND</router-link> -->
         </div>
       </div>
     </div>
@@ -60,7 +61,8 @@ export default {
       APAddress: [],
       getAllAddress: null,
       accountInfo_url: "/api/v1.0/accounts/account",
-      CPX: 0
+      CPX: 0,
+      selected: null
     };
   },
 
@@ -69,6 +71,7 @@ export default {
   beforeMount() {},
 
   mounted() {
+    this.selected = this.$refs.select2;
     this.address = sessionStorage.getItem("apAddress");
     setTimeout(() => {
       if (this.address !== null) {
@@ -91,6 +94,9 @@ export default {
           this.APAddress.push(v.APAddress);
         });
       });
+      // if (this.APAddress.length == 0) {
+      //   sessionStorage.setItem("apAddress", null)
+      // }
   },
 
   methods: {
@@ -181,13 +187,13 @@ export default {
     a {
       display: inline-block;
       height: 30px;
-      font-size: 18px;
+      // font-size: 18px;
       margin-right:30px;
       color: #f26522;
       line-height: 30px;
       text-align: center;
       border: 1px solid #f26522;
-      padding: 0 15px;
+      padding: 0 30px;
       &:hover {
         box-shadow: 2px 2px 8px 2px #f26522;
       }

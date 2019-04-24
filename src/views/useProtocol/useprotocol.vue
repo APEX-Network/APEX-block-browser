@@ -452,7 +452,7 @@ export default {
     line-height: 33px;
     border: 1px solid #999;
     color: #999;
-    font-size: 14px;
+    // font-size: 14px;
     text-align: center;
     margin: 0 auto;
     transition: all 0.3s;

@@ -89,17 +89,25 @@ export default {
       }
     },
     keyStoreWallet() {
-      if (this.keyStore !== null && this.pwd !== null) {
-        let downKeyStore = this.keyStore;
-        let key = this.pwd;
-        this.walletAddress = util.utilMethods.keyStoreWallet(downKeyStore, key);
-        Bus.$emit("apAddress", this.walletAddress);
-        sessionStorage.setItem("apAddress", this.walletAddress);
-        db.APKStore.put({
-          APAddress: this.walletAddress,
-          KStore: this.keyStore
-        });
-        this.$router.push("/wallet");
+      try {
+        if (this.keyStore !== null && this.pwd !== null) {
+          let downKeyStore = this.keyStore;
+          let key = this.pwd;
+          this.walletAddress = util.utilMethods.keyStoreWallet(
+            downKeyStore,
+            key
+          );
+          Bus.$emit("apAddress", this.walletAddress);
+          sessionStorage.setItem("apAddress", this.walletAddress);
+          db.APKStore.put({
+            APAddress: this.walletAddress,
+            KStore: this.keyStore
+          });
+          this.$router.push("/wallet");
+        }
+      } catch (error) {
+        console.log
+        ("密码输入错误");
       }
     }
   },

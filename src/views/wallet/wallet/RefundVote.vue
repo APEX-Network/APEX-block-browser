@@ -182,7 +182,7 @@ export default {
   methods: {
     myChangeEvent(val) {
       this.toAddress = val;
-        this.check.checktoAddress.style.visibility = "hidden";
+      this.check.checktoAddress.style.visibility = "hidden";
       // sessionStorage.setItem("apAddress", this.address);
     },
     mySelectEvent({ id, text }) {
@@ -302,8 +302,17 @@ export default {
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
-      console.log(this.inputAmout);
-       if (this.amount == 0 || this.inputAmout == 0) {
+      let inputlength = this.inputAmout.toString().length;
+      if (inputlength >= 2) {
+        let errorinput = this.inputAmout.slice(0, 2);
+        if (errorinput.slice(0, 1) == 0 && errorinput.slice(1, 2) !== ".") {
+          this.$refs.inputAmout.value = null;
+          setTimeout(() => {
+            this.check.checkAmount.style.visibility = "visible";
+          });
+        }
+      }
+      if (this.amount == 0 || this.inputAmout == 0) {
         this.check.checkAmount.style.visibility = "visible";
       }
       if (this.inputAmout > 0 && this.inputAmout <= this.amount) {
@@ -321,6 +330,16 @@ export default {
     },
     getInputGasePrice() {
       this.inputGasePriceValue = this.$refs.inputGasePrice.value;
+      let inputlength = this.inputGasePriceValue.toString().length;
+      if (inputlength >= 2) {
+        let errorinput = this.inputGasePriceValue.slice(0, 2);
+        if (errorinput.slice(0, 1) == 0 && errorinput.slice(1, 2) !== ".") {
+          this.$refs.inputGasePrice.value = null;
+          setTimeout(() => {
+            this.check.checkGasPrice.style.visibility = "visible";
+          });
+        }
+      }
       if (
         this.inputGasePriceValue >= 0.01 &&
         this.inputGasePriceValue <= 1000000000
@@ -435,7 +454,6 @@ export default {
         this.pwd !== null
       ) {
         this.checkAddress();
-        this.$refs.dialog.style.display = "flex";
         let serializParams = {
           version: "00000001", //不变
           txType: "03", //不变
@@ -491,21 +509,21 @@ export default {
       return;
     },
     checkAddress() {
-      this.privKey = util.utilMethods.produceKeyPriv(this.KStore, this.pwd);
-      this.walletAddress = util.utilMethods.keyStoreWallet(
-        this.KStore,
-        this.pwd
-      );
-      if (this.walletAddress == this.apAddress) {
-        this.check.checkPwd.style.visibility = "hidden";
-        return;
-      }
-      if (this.walletAddress !== this.apAddress) {
+       try {
+        this.privKey = util.utilMethods.produceKeyPriv(this.KStore, this.pwd);
+        this.walletAddress = util.utilMethods.keyStoreWallet(
+          this.KStore,
+          this.pwd
+        );
+        if (this.walletAddress == this.apAddress) {
+          this.$refs.dialog.style.display = "flex";
+          this.check.checkPwd.style.visibility = "hidden";
+          return;
+        }
+      } catch (error) {
+        this.$refs.dialog.style.display = "none";
         this.check.checkPwd.style.visibility = "visible";
-        this.$router.push("/wallet/Transfer");
-        return;
       }
-      return;
     },
     confirm() {
       this.$axios

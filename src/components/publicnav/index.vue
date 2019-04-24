@@ -160,12 +160,14 @@ export default {
       APAddress: []
     };
   },
+  created() {
+  },
   computed: {
     nav() {
-      let walletPath = this.checkDB();
+      // let walletPath = this.checkDB();
       return [
         { title: this.$t("nav.home"), path: "/home" },
-        { title: this.$t("nav.wallet"), path: walletPath },
+        { title: this.$t("nav.wallet"), path: "/wallet" },
         { title: "", path: "/blocks" },
         { title: "", path: "/transactions" },
         { title: "", path: "/producer" }
@@ -207,7 +209,7 @@ export default {
             this.APAddress.push(v.APAddress);
           });
         });
-        // console.log(!this.APAddress.length ? "/emptyWallet" : "/wallet")
+      // console.log(!this.APAddress.length ? "/emptyWallet" : "/wallet")
       return !this.APAddress.length ? "/emptyWallet" : "/wallet";
     },
 
@@ -247,8 +249,10 @@ export default {
                 Bus.$emit("accountValue", this.search);
               });
               this.$router.push("/transactions/TransactionsInfo/AccountInfo");
+              this.$refs.search.value = null;
             } catch (error) {
               this.$router.push("/error");
+              this.$refs.search.value = null;
               return;
             }
           }
@@ -258,6 +262,7 @@ export default {
               .then(response => {
                 if (response.data.status == 404) {
                   this.$router.push("/error");
+                  this.$refs.search.value = null;
                   return;
                 }
                 if (response.data.status == 200) {
@@ -274,6 +279,7 @@ export default {
                       );
                     });
                     this.$router.push("/blocks/BlocksInfo");
+                    this.$refs.search.value = null;
                   }
                 }
               })
@@ -302,6 +308,8 @@ export default {
                       Bus.$emit("clickValue", JSON.stringify(this.searchBlock));
                     });
                     this.$router.push("/blocks/BlocksInfo");
+                    this.$refs.search.value = null;
+
                     return;
                   }
                 }
@@ -323,6 +331,7 @@ export default {
                       Bus.$emit("txHash", this.search);
                     });
                     this.$router.push("/transactions/TransactionsInfo");
+                    this.$refs.search.value = null;
                     return;
                   }
                 }
@@ -331,6 +340,8 @@ export default {
           }
         } else {
           this.$router.push("/error");
+          this.$refs.search.value = null;
+
           return;
         }
       }
