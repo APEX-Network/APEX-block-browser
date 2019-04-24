@@ -90,7 +90,7 @@
     </div>
     <div class="dialog" ref="dialog">
       <div class="confirm" ref="confirm">
-        <div>Successful Broadcast</div>
+        <div>Broadcast Successful</div>
         <div>
           <router-link to="/wallet">CONFIRM</router-link>
         </div>

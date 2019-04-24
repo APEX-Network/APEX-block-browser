@@ -68,6 +68,7 @@ export default {
             const item = res[i];
             time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
             item.timeStamp = time;
+            this.lastBlock = res[0].height;
           }
           this.blocksList = res;
           Bus.$emit("lastBlock", this.lastBlock);

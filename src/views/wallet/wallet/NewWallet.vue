@@ -89,7 +89,7 @@ export default {
       firstEye: null,
       secondEye: null,
       firstClick: 1,
-      ClickCheckBox: 1,
+      ClickCheckBox: 0,
       isClick: false,
       diffPwd: null
     };
@@ -214,6 +214,7 @@ export default {
         this.second != null
       ) {
         this.ClickCheckBox++;
+        console.log(this.ClickCheckBox);
         if (this.ClickCheckBox % 2 == 0) {
           this.isClick = false;
           this.nocheckbox.src = require("../../../assets/images/nocheckbox.jpg");

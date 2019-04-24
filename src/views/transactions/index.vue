@@ -162,7 +162,7 @@ export default {
           .post(this.transaction_list_url, this.params)
           .then(response => {
             let res = response.data.data;
-                        let serverTime = response.headers.date;
+            let serverTime = response.headers.date;
             let time;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
@@ -195,15 +195,12 @@ export default {
         .post(this.transaction_list_url, this.params)
         .then(response => {
           let res = response.data.data;
-                      let serverTime = response.headers.date;
+          let serverTime = response.headers.date;
 
           let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            time = util.utilMethods.listUTCtime(
-                item.refBlockTime,
-                serverTime
-              );
+            time = util.utilMethods.listUTCtime(item.refBlockTime, serverTime);
             item.refBlockTime = time;
           }
           this.transactions = res;
@@ -224,15 +221,11 @@ export default {
         .post(this.transaction_list_url, this.params)
         .then(response => {
           let res = response.data.data;
-                      let serverTime = response.headers.date;
-
+          let serverTime = response.headers.date;
           let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            time = util.utilMethods.listUTCtime(
-                item.refBlockTime,
-                serverTime
-              );;
+            time = util.utilMethods.listUTCtime(item.refBlockTime, serverTime);
             item.refBlockTime = time;
           }
           this.transactions = res;

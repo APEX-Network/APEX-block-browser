@@ -13,6 +13,8 @@ const utilMethods = {
         let serverDate = new Date(serverTime).getTime();
         console.log(serverTime);
         let diffTime = (serverDate - timespan) / 1000;
+        let formatterTime = new Date(serverDate - timespan);
+        console.log(formatterTime);
         console.log(new Date(timespan));
         console.log(diffTime);
         let havePoint = diffTime.toString().indexOf(".");
@@ -109,6 +111,7 @@ const utilMethods = {
     },
     toUTCtime(timespan, serverTime) {
         let serverDate = new Date(serverTime).getTime();
+        console.log(new Date(serverTime));
         let diffTime = (serverDate - timespan) / 1000;
         let havePoint = diffTime.toString().indexOf(".");
         console.log(diffTime);
