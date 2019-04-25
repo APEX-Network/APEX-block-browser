@@ -12,7 +12,7 @@
         <input
           v-model="apAddress"
           readonly="readonly"
-          autocomplete="off"
+          autocomplete="new-password"
         >
       </div>
 
@@ -29,8 +29,7 @@
         >-->
         <Select2
           class="flex-item2"
-          readonly="readonly"
-          autocomplete="off"
+          autocomplete="new-password"
           title="Please choose a Supported node address"
           v-model="toAddress"
           :options="producerAddress"
@@ -54,7 +53,7 @@
           @change="getInputAmout"
           placeholder="Transfer Amount"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
-          autocomplete="off"
+          autocomplete="new-password"
         >
         <p
           class="p1"
@@ -78,7 +77,7 @@
           @change="getInputGasePrice"
           placeholder="Please enter the  gas price"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
-          autocomplete="off"
+          autocomplete="new-password"
         >
         <div>Mp</div>
         <div ref="checkGasPrice">Please enter the correct gas price</div>
@@ -92,7 +91,7 @@
           v-model="pwd"
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
-          autocomplete="off"
+          autocomplete="new-password"
         >
         <img
           src="./../../../assets/images/hiddeneye.jpg"

@@ -19,7 +19,7 @@
           v-model="firstPwd"
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
-          autocomplete="off"
+          autocomplete="new-password"
         >
         <!-- <input type="text" ref="firstPwdCover" v-model="firstPwdCover" @change="coverFirstPwd"> -->
         <img src="../../../assets/images/hiddeneye.jpg" @click="displayFirstPwd" ref="firstEye">
@@ -33,7 +33,7 @@
             v-model="secondPwd"
             @change="getSecondPwd"
             onKeyUp="value=value.replace(/[\W]/g,'')"
-            autocomplete="off"
+            autocomplete="new-password"
           >
           <!-- <input type="text" ref="secondPwdCover" v-model="secondPwdCover" @change="coverSecondPwd"> -->
           <img src="../../../assets/images/hiddeneye.jpg" @click="displaySecondPwd" ref="secondEye">
@@ -91,7 +91,8 @@ export default {
       firstClick: 1,
       ClickCheckBox: 0,
       isClick: false,
-      diffPwd: null
+      diffPwd: null,
+      walletUrl: "/wallet"
     };
   },
 
@@ -156,7 +157,7 @@ export default {
           this.diffPwd.style.visibility = "hidden";
           let ap = "0548";
           let signParams = {
-            privKey: ECPair.makeRandom().privateKey.toString("hex")
+            privKey: util.utilMethods.producePrivKey()
           };
           this.apAddress = util.utilMethods.produce_address(
             signParams.privKey,
@@ -171,6 +172,7 @@ export default {
           setTimeout(() => {
             Bus.$emit("privKey", signParams.privKey);
             Bus.$emit("apAddress", this.apAddress);
+            // Bus.$emit("walletUrl", this.walletUrl);
             sessionStorage.setItem("apAddress", this.apAddress);
             Bus.$emit("keyStore", this.keyStore);
             db.APKStore.put({
@@ -232,6 +234,7 @@ export default {
       Bus.$off("apAddress");
       Bus.$off("privKey");
       Bus.$off("keyStore");
+      Bus.$off("walletUrl");
     }
   },
   beforeDestroy() {

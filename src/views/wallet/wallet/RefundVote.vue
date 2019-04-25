@@ -22,8 +22,7 @@
         >-->
         <Select2
           class="flex-item2"
-          readonly="readonly"
-          autocomplete="off"
+          autocomplete="new-password"
           title="Please choose a Refund node address"
           v-model="toAddress"
           :options="targetAddress"
@@ -46,7 +45,7 @@
           @keyup.enter="thInput($event)"
           @change="getInputAmout"
           placeholder="Transfer Amount"
-          autocomplete="off"
+          autocomplete="new-password"
         >
         <p class="p1" @click="setAllAmount">
           <router-link to>All</router-link>
@@ -66,7 +65,7 @@
           @keyup.enter="foInput($event)"
           @change="getInputGasePrice"
           placeholder="Please enter the  gas price"
-          autocomplete="off"
+          autocomplete="new-password"
         >
         <div>Mp</div>
         <div ref="checkGasPrice">Please enter the correct gas price</div>
@@ -74,6 +73,7 @@
       <div class="password">
         <div>Password</div>
         <input
+          autocomplete="new-password"
           spellcheck="false"
           type="password"
           ref="firstPwd"
@@ -159,7 +159,9 @@ export default {
         checkAmount: null,
         checkGasPrice: null,
         checkPwd: null
-      }
+      },
+      originValue: null,
+      txId: null
     };
   },
 
@@ -187,13 +189,30 @@ export default {
     },
     mySelectEvent({ id, text }) {
       this.targetAddressAmount.map(item => {
-        // console.log(item.key);
         if (item.key == { id, text }.id) {
-          this.amount = item.value;
-          // console.log(this.amount + this.toAddress);
+          this.originValue = item.value;
+           let result = this.originValue.toString().indexOf(".");
+              if (result > -1) {
+                let pointLength = this.originValue.toString().split(".")[1].length;
+                if (pointLength > 8) {
+                  this.amount =
+                    this.originValue.toString().split(".")[0] +
+                    "." +
+                    this.originValue
+                      .toString()
+                      .split(".")[1]
+                      .substring(0, 8);
+                }
+                if (pointLength <= 8) {
+                  this.amount = this.originValue;
+                }
+              }
+              if (result == -1) {
+                this.amount = this.originValue;
+              }
+          console.log(this.amount + this.toAddress);
           return this.amount;
         }
-        // console.log({ id, text });
       });
     },
     Copy(index) {
@@ -223,29 +242,9 @@ export default {
               let item = address_amount[i];
               address = address_amount[i].split("-")[0].replace(/\s/gi, "");
               amount = address_amount[i].split("-")[1].replace(/\s/gi, "");
-              // let result = amount.toString().indexOf(".");
-              // if (result > -1) {
-              //   let pointLength = amount.toString().split(".")[1].length;
-              //   if (pointLength > 8) {
-              //     this.Balance =
-              //       amount.toString().split(".")[0] +
-              //       "." +
-              //       amount
-              //         .toString()
-              //         .split(".")[1]
-              //         .substring(0, 8);
-              //   }
-              //   if (pointLength <= 8) {
-              //     this.Balance = amount;
-              //   }
-              // }
-              // if (result == -1) {
-              //   this.Balance = amount;
-              // }
               this.targetAddress.push(address);
               this.targetAddressAmount.push({ key: address, value: amount });
             }
-            // console.log(this.targetAddressAmount);
           })
           .catch(function(err) {
             if (err.response) {
@@ -300,7 +299,7 @@ export default {
         this.check.checktoAddress.style.visibility = "hidden";
       }
     },
-    getInputAmout() {
+     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
       let inputlength = this.inputAmout.toString().length;
       if (inputlength >= 2) {
@@ -317,7 +316,7 @@ export default {
       }
       if (this.inputAmout > 0 && this.inputAmout <= this.amount) {
         this.check.checkAmount.style.visibility = "hidden";
-        this.inputAmout = this.inputAmout;
+        this.inputAmout = this.amount;
       }
       if (this.inputAmout > this.amount) {
         this.check.checkAmount.style.visibility = "visible";
@@ -326,7 +325,7 @@ export default {
     setAllAmount() {
       this.$refs.inputAmout.value = this.amount;
       this.check.checkAmount.style.visibility = "hidden";
-      this.inputAmout = this.allamount;
+      this.inputAmout = this.originValue;
     },
     getInputGasePrice() {
       this.inputGasePriceValue = this.$refs.inputGasePrice.value;
@@ -393,26 +392,6 @@ export default {
         })
         .then(response => {
           let res = response.data.data;
-          // let result = res.balance.toString().indexOf(".");
-          // this.allamount = res.balance;
-          // if (result > -1) {
-          //   let pointLength = res.balance.toString().split(".")[1].length;
-          //   if (pointLength > 8) {
-          //     this.amount =
-          //       res.balance.toString().split(".")[0] +
-          //       "." +
-          //       res.balance
-          //         .toString()
-          //         .split(".")[1]
-          //         .substring(0, 8);
-          //   }
-          //   if (pointLength <= 8) {
-          //     this.amount = res.balance;
-          //   }
-          // }
-          // if (result == -1) {
-          //   this.amount = res.balance;
-          // }
           this.nonce = res.nextNonce;
         })
         .catch(function(err) {
@@ -455,8 +434,8 @@ export default {
       ) {
         this.checkAddress();
         let serializParams = {
-          version: "00000001", //不变
-          txType: "03", //不变
+          version: "00000001",
+          txType: "03",
           from: this.apAddress,
           to: "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU", //合约地址
           amount: new bigdecimal.BigDecimal(String(this.inputAmout)).subtract(
@@ -469,13 +448,13 @@ export default {
               )
             )
           ),
-          nonce: this.nonce, //从服务器获取该账户的nonce值
-          data: this.toAddress, //被赎回地址
+          nonce: this.nonce,
+          data: this.toAddress,
           gasPrice: new bigdecimal.BigDecimal(
             String(this.inputGasePrice)
           ).multiply(new bigdecimal.BigDecimal(String(Math.pow(10, 6)))),
-          gasLimit: "30000", //程序限制
-          executeTime: "0000000000000000", //不变
+          gasLimit: "30000",
+          executeTime: "0000000000000000",
           votingRefundType: "01"
         };
         if (this.inputAmout !== this.allamount) {
@@ -509,7 +488,7 @@ export default {
       return;
     },
     checkAddress() {
-       try {
+      try {
         this.privKey = util.utilMethods.produceKeyPriv(this.KStore, this.pwd);
         this.walletAddress = util.utilMethods.keyStoreWallet(
           this.KStore,
@@ -536,7 +515,7 @@ export default {
           let x = res.txId.slice(0, 6);
           let y = res.txId.slice(-6);
           this.txId = x + "..." + y;
-          console.log(res.txId);
+          console.log(this.txId);
         })
         .catch(function(err) {
           if (err.response) {

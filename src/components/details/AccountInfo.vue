@@ -10,6 +10,7 @@
             <i>
               {{accountTransaction_param.address}}
               <img
+                ref="img"
                 @click="Copy(index)"
                 style="cursor: pointer; padding-left: 10px;"
                 src="./../../assets/images/copy.png"
@@ -108,7 +109,8 @@ export default {
       flag: null,
       isClick: true,
       count: null,
-      point: null
+      point: null,
+      switchImg: null
     };
   },
   mounted() {
@@ -126,11 +128,13 @@ export default {
   },
   methods: {
     getInstance() {
+      this.switchImg = this.$refs.img;
       this.arrow.leftArrow = this.$refs.left;
       this.arrow.rightArrow = this.$refs.right;
     },
     Copy(index) {
       let getCopyText = this.accountTransaction_param.address;
+      this.switchImg.src = require("./../../assets/images/copied.png");
       this.doCopy(getCopyText);
     },
     doCopy(val) {

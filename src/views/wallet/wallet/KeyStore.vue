@@ -13,13 +13,13 @@
           v-model="keyStore"
           @change="getkeyStore"
           placeholder="Paste or type keystore"
-          autocomplete="off"
+          autocomplete="new-password"
         >
         <div class="repatpwd">
           <input
             spellcheck="false"
             type="password"
-            autocomplete="off"
+          autocomplete="new-password"
             ref="pwd"
             v-model="pwd"
             @change="getPwd"

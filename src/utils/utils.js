@@ -11,7 +11,9 @@ const bigdecimal = require("bigdecimal");
 const utilMethods = {
     listUTCtime(timespan, serverTime) {
         let serverDate = new Date(serverTime).getTime();
-        // console.log(serverTime);
+        // console.log(new Date(serverTime));
+        let serDay = new Date(serverTime).getUTCDate();
+        let timeDay = new Date(timespan).getUTCDate();
         let diffTime = (serverDate - timespan) / 1000;
         let formatterTime = new Date(serverDate - timespan);
         // console.log(formatterTime);
@@ -43,25 +45,16 @@ const utilMethods = {
                 }
             }
             if (date > 60 && date < 3600) {
-                let min;
-                let x = date / 60;
-                let seconds = date % 60;
-                let y = x.toString().indexOf(".");
-                if (y > -1) {
-                    min = x.toString().split(".")[0];
-                }
-                if (y == -1) {
-                    min = x;
-                }
-                if (seconds > 0) {
-                    return min + "    min  ago";
-                }
-                if (seconds == 0) {
-                    return min + "    min ago  ";
-                }
+                return formatterTime.getUTCMinutes() + "   min ago";
             }
-            if (date == 3600) {
-                return "1" + "    hr ago";;
+            if (date >= 3600 && date < 86400) {
+                return formatterTime.getUTCHours() + " hou ago";
+            };
+            if (date >= 86400) {
+                let diffDay = serDay - timeDay;
+                if (diffDay !== 0) {
+                    return diffDay + "  day ago";
+                }
             };
         }
         if (apM > 12) {
@@ -76,42 +69,25 @@ const utilMethods = {
                 }
             }
             if (date > 60 && date < 3600) {
-                let min;
-                let x = date / 60;
-                console.log(x);
-                let seconds = date % 60;
-                let y = x.toString().indexOf(".");
-                console.log(y);
-                if (y > -1) {
-                    min = x.toString().split(".")[0];
-                }
-                if (y == -1) {
-                    min = x;
-                }
-                if (seconds > 0) {
-                    return min + "    min  " + seconds + "    sec ago   ";
-                }
-                if (seconds == 0) {
-                    return min + "    min ago  ";
-                }
+                return formatterTime.getUTCMinutes() + "    min ago";
             }
-            if (date == 3600) {
-                return "1" + "    hr ago";
+            if (date >= 3600 && date < 86400) {
+                return formatterTime.getUTCHours() + " hou ago";
             };
-
-            // if (date > 3600 && date < 86400 ) {
-            //     let hour = Math.ceil( date / 3600 )
-            //     return hour + "     hr ago";
-            // }
-            // if (date == 86400 || date > 86400 ) {
-            //     let day = Math.ceil( date / 86400 )
-            //     return day + "     day ago";
-            // }
+            if (date >= 86400) {
+                let diffDay = serDay - timeDay;
+                if (diffDay !== 0) {
+                    return diffDay + "  day ago";
+                }
+            };
         }
     },
     toUTCtime(timespan, serverTime) {
         let serverDate = new Date(serverTime).getTime();
-        // console.log(new Date(serverTime));
+        // console.log(serverTime);
+        let serverDay = new Date(serverDate).getUTCDate();
+        let timeStampDay = new Date(timespan).getUTCDate();
+        let formatterTime = new Date(serverDate - timespan);
         let diffTime = (serverDate - timespan) / 1000;
         let havePoint = diffTime.toString().indexOf(".");
         // console.log(diffTime);
@@ -138,27 +114,16 @@ const utilMethods = {
                     + " " + "(" + utctime + "AM +UTC" + ")";
             }
             if (date > 60 && date < 3600) {
-                let min;
-                let x = date / 60;
-                // console.log(x);
-                let seconds = date % 60;
-                let y = x.toString().indexOf(".");
-                // console.log(y);
-                if (y > -1) {
-                    min = x.toString().split(".")[0];
-                }
-                if (y == -1) {
-                    min = x;
-                }
-                if (seconds > 0) {
-                    return min + "    min  " + seconds + "    sec ago" + " " + "(" + utctime + "AM    +UTC" + ")";
-                }
-                if (seconds == 0) {
-                    return min + "    min ago  " + " " + "(" + utctime + "AM    +UTC" + ")";
-                }
+                return formatterTime.getUTCMinutes() + "    min  " + formatterTime.getUTCSeconds() + "    sec ago" + " " + "(" + utctime + "AM    +UTC" + ")";
             }
-            if (date == 3600) {
-                return "1" + "    hour ago" + " " + "(" + utctime + "AM    +UTC" + ")";
+            if (date >= 3600 && date < 86400) {
+                return formatterTime.getUTCHours() + "   hou" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + " " + "(" + utctime + "AM    +UTC" + ")";
+            };
+            if (date >= 86400) {
+                let diffDay = serverDay - timeStampDay;
+                if (diffDay !== 0) {
+                    return diffDay + "   Day" + "  " + formatterTime.getUTCHours() + "   hou" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "PM    +UTC" + ")";
+                }
             };
         }
         if (apM > 12) {
@@ -171,27 +136,17 @@ const utilMethods = {
                     + " " + "(" + utctime + "PM +UTC" + ")";
             }
             if (date > 60 && date < 3600) {
-                let min;
-                let x = date / 60;
-                // console.log(x);
-                let seconds = date % 60;
-                let y = x.toString().indexOf(".");
-                // console.log(y);
-                if (y > -1) {
-                    min = x.toString().split(".")[0];
-                }
-                if (y == -1) {
-                    min = x;
-                }
-                if (seconds > 0) {
-                    return min + "    min  " + seconds + "    sec ago" + " " + "(" + utctime + "PM    +UTC" + ")";
-                }
-                if (seconds == 0) {
-                    return min + "    min ago  " + " " + "(" + utctime + "PM    +UTC" + ")";
-                }
+                return formatterTime.getUTCMinutes() + "    min  " + formatterTime.getUTCSeconds() + "    sec ago" + " " + "(" + utctime + "PM    +UTC" + ")";
+
             }
-            if (date == 3600) {
-                return "1" + "    hour ago" + " " + "(" + utctime + "PM    +UTC" + ")";
+            if (date >= 3600 && date < 86400) {
+                return formatterTime.getUTCHours() + "   hou" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + " " + "(" + utctime + "PM    +UTC" + ")";
+            };
+            if (date >= 86400) {
+                let diffDay = serverDay - timeStampDay;
+                if (diffDay !== 0) {
+                    return diffDay + "   Day" + "  " + formatterTime.getUTCHours() + "   hou" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "PM    +UTC" + ")";
+                }
             };
 
         }
@@ -219,7 +174,9 @@ const utilMethods = {
             return datatime;
         }
     },
-
+    producePrivKey() {
+        return ECPair.makeRandom().privateKey.toString("hex")
+    },
     produce_address(privKey, ap) {
         let privKeyToBuffer = Buffer.from(privKey, "hex");
         let privKeyToPub = ECPair.fromPrivateKey(privKeyToBuffer).publicKey;

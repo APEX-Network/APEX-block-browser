@@ -69,6 +69,8 @@ export default {
         },
         xAxis: {
           name: "UTC",
+          nameLocation: "center",
+          nameGap: -20,
           type: "category",
           boundaryGap: false,
           data: this.time.map(item => {

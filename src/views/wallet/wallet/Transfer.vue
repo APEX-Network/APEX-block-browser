@@ -18,7 +18,7 @@
           @change="getToAddress"
           type="text"
           placeholder="Please Input Address"
-          autocomplete="off"
+          autocomplete="new-password"
         >
         <div ref="checktoAddress">Please enter the correct wallet address</div>
       </div>
@@ -35,7 +35,7 @@
           @keyup.enter="thInput($event)"
           @change="getInputAmout"
           placeholder="Transfer Amount"
-          autocomplete="off"
+          autocomplete="new-password"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
         >
         <p class="p1" @click="setAllAmount">
@@ -52,7 +52,7 @@
           @keyup.enter="foInput($event)"
           @change="getInputGasePrice"
           placeholder="Please enter the  gas price"
-          autocomplete="off"
+          autocomplete="new-password"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
         >
         <div>Mp</div>
@@ -67,7 +67,7 @@
           v-model="pwd"
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
-          autocomplete="off"
+          autocomplete="new-password"
         >
         <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         <div ref="checkPwd">Password Incorrect</div>

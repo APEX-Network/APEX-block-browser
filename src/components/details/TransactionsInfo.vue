@@ -53,15 +53,15 @@
               <router-link
                 to="/transactions/TransactionsInfo/AccountInfo"
                 @click.native="setToValue"
-              >
-                {{transactionInfoData.from}}
-                <!-- <img
-                @click="Copy(index)"
-                style="cursor: pointer; padding-left: 10px;"
+              >{{transactionInfoData.from}}</router-link>
+              <img
+                ref="from"
+                @click="CopyFrom(indexone)"
+                style="cursor: pointer; padding-left: 10px;padding-top: 10px;
+    position: absolute;"
                 src="./../../assets/images/copy.png"
                 alt
-                >-->
-              </router-link>
+              >
             </span>
           </span>
         </li>
@@ -73,6 +73,14 @@
                 to="/transactions/TransactionsInfo/AccountInfo"
                 @click.native="setToValue"
               >{{transactionInfoData.to}}</router-link>
+              <img
+                ref="to"
+                @click="CopyTo(indextwo)"
+                style="cursor: pointer; padding-left: 10px;padding-top: 10px;
+    position: absolute;"
+                src="./../../assets/images/copy.png"
+                alt
+              >
             </span>
           </span>
         </li>
@@ -117,6 +125,7 @@ import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
+import { request } from "https";
 
 export default {
   name: "TransactionsInfo",
@@ -144,33 +153,44 @@ export default {
         nonce: null,
         type: null,
         newBlockHeight: null,
-        heightDiff: null
+        heightDiff: null,
       },
       clickValue: {
         type: "height",
         value: null
       },
       Hash: null,
-      flag: null
+      flag: null,
+      fAddress: null,
+      tAddress: null
     };
   },
   created() {},
   mounted() {
     window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
+    this.getInstances();
   },
   methods: {
-    Copy(index) {
-      let getCopyText = this.accountTransaction_param.address;
-      this.doCopy(getCopyText);
+    getInstances() {
+      this.fAddress = this.$refs.from;
+      this.tAddress = this.$refs.to;
+    },
+    CopyFrom(indexone) {
+      let getCopyFromText = this.transactionInfoData.from;
+      this.fAddress.src = require("./../../assets/images/copied.png");
+      this.doCopy(getCopyFromText);
+    },
+    CopyTo(indextwo) {
+      let getCopyToText = this.transactionInfoData.to;
+      this.tAddress.src = require("./../../assets/images/copied.png");
+      this.doToCopy(getCopyToText);
     },
     doCopy(val) {
-      this.$copyText(val).then(
-        function(e) {
-          alert("拷贝成功!");
-        },
-        function(e) {}
-      );
+      this.$copyText(val).then(function(e) {}, function(e) {});
+    },
+    doToCopy(vall) {
+      this.$copyText(vall).then(function(e) {}, function(e) {});
     },
     getClickValue() {
       Bus.$on("txHash", data => {

@@ -127,6 +127,7 @@
 <script>
 import Bus from "./../../utils/bus";
 import db from "./../../utils/myDatabase";
+import { setTimeout } from "timers";
 
 const Base58check = require("base58check");
 
@@ -160,14 +161,12 @@ export default {
       APAddress: []
     };
   },
-  created() {
-  },
+  created() {},
   computed: {
     nav() {
-      // let walletPath = this.checkDB();
       return [
         { title: this.$t("nav.home"), path: "/home" },
-        { title: this.$t("nav.wallet"), path: "/wallet" },
+        { title: this.$t("nav.wallet"), path: "/emptyWallet" },
         { title: "", path: "/blocks" },
         { title: "", path: "/transactions" },
         { title: "", path: "/producer" }
@@ -178,7 +177,13 @@ export default {
     }
   },
   mounted() {
-    this.firstCheck();
+    Bus.$on("walletUrl", data => {
+      setTimeout(() => {
+        this.walletUrl = data;
+        this.nav[1].path = this.walletUrl;
+        console.log(this.nav[1].path);
+      });
+    });
     this.about = this.$refs.aboutUs;
     this.wrapDiv = this.$refs.wrapAboutUs;
     this.search = this.$refs.search;
@@ -191,28 +196,6 @@ export default {
     });
   },
   methods: {
-    firstCheck() {
-      let walletPath = this.checkDB();
-      return [
-        { title: this.$t("nav.home"), path: "/home" },
-        { title: this.$t("nav.wallet"), path: walletPath },
-        { title: "", path: "/blocks" },
-        { title: "", path: "/transactions" },
-        { title: "", path: "/producer" }
-      ];
-    },
-    checkDB() {
-      this.getAllAddress = db.APKStore.where("APAddress")
-        .above(0)
-        .toArray(APKStore => {
-          APKStore.forEach(v => {
-            this.APAddress.push(v.APAddress);
-          });
-        });
-      // console.log(!this.APAddress.length ? "/emptyWallet" : "/wallet")
-      return !this.APAddress.length ? "/emptyWallet" : "/wallet";
-    },
-
     checkIDB() {
       this.getAllAddress = db.APKStore.where("APAddress")
         .above(0)
@@ -220,17 +203,22 @@ export default {
           APKStore.forEach(v => {
             this.APAddress.push(v.APAddress);
           });
+          setTimeout(() => {
+            this.nav[1].path = !this.APAddress.length
+              ? "/emptyWallet"
+              : "/wallet";
+            console.log(this.nav[1].path);
+          });
         });
-      this.nav[1].path = !this.APAddress.length ? "/emptyWallet" : "/wallet";
     },
-
     getSearchValue() {
-      this.about.style.visibility = "hidden";
+      this.about.style.height = "0px";
+      this.wrapDiv.style.height = "0vh";
       this.search = this.$refs.search.value;
     },
 
     startSearch() {
-      if (!!this.search) {
+      if (this.search !== null) {
         if (
           (this.search.length == 35 && this.search.slice(0, 2) == "AP") ||
           Number.isInteger(Number(this.search)) == true ||
@@ -348,6 +336,8 @@ export default {
     },
     enterSearch(ev) {
       if (ev.keyCode == 13) {
+        this.about.style.height = "0px";
+        this.wrapDiv.style.height = "0vh";
         this.startSearch();
       }
     },

@@ -22,6 +22,7 @@
           <i class="privkey">
             {{privKey}}
             <img
+              ref="img"
               @click=" privKey !== null && Copy(index)"
               style="cursor: pointer; padding-left: 10px;float: right; padding-bottom: 6px;"
               src="./../../../assets/images/copy.png"
@@ -56,7 +57,8 @@ export default {
       address: null,
       apAddress: null,
       privKey: null,
-      tip: null
+      tip: null,
+      switchImg: null
     };
   },
 
@@ -76,6 +78,7 @@ export default {
 
   methods: {
     getInstances() {
+      this.switchImg = this.$refs.img;
       this.tip = this.$refs.copyed;
     },
     getlastAddress() {
@@ -92,6 +95,7 @@ export default {
       Bus.$emit("apAddress", this.apAddress);
     },
     Copy(index) {
+      this.switchImg.src = require("../../../assets/images/copied.png")
       let getCopyText = this.privKey;
       this.doCopy(getCopyText);
       this.privKey = null;

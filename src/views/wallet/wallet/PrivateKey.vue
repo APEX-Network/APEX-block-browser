@@ -14,7 +14,7 @@
           v-model="inputPrivKey"
           @change="getprivKey"
           placeholder="please paste your private key"
-          autocomplete="off"
+          autocomplete="new-password"
         >
         <div class="repatpwd">
           <input
@@ -25,7 +25,7 @@
             @change="getPwd"
             placeholder="please set you password"
             onKeyUp="value=value.replace(/[\W]/g,'')"
-            autocomplete="off"
+            autocomplete="new-password"
           >
           <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         </div>
@@ -82,7 +82,10 @@ export default {
       this.inputPrivKey = this.$refs.privKey.value;
       let privLength = this.inputPrivKey.length;
       let firstByte = this.inputPrivKey.slice(0, 1);
-      if ((firstByte == "K" && privLength == 52) || (firstByte == "L" && privLength == 52)) {
+      if (
+        (firstByte == "K" && privLength == 52) ||
+        (firstByte == "L" && privLength == 52)
+      ) {
         let decode_privKey_Hex = Base58check.decode(
           this.inputPrivKey
         ).data.toString("hex");

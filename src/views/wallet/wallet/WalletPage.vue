@@ -8,8 +8,7 @@
           <Select2
           ref="select2"
             class="flex-item2 fl"
-            readonly="readonly"
-            autocomplete="off"
+           autocomplete="new-password"
             placeholder="Please create or import your wallet"
             v-model="address"
             :options="APAddress"
@@ -31,14 +30,14 @@
             to="/wallet/Transfer"
             @click.native="sendAddress"
           >TRANSFER</router-link>
-          <!-- <router-link
+          <router-link
             to="/wallet/VotingSupport"
             @click.native="sendAddress"
           >VOTE</router-link>
           <router-link
             to="/wallet/RefundVote"
             @click.native="sendAddress"
-          >REFUND</router-link> -->
+          >REFUND</router-link>
         </div>
       </div>
     </div>
@@ -105,7 +104,7 @@ export default {
       sessionStorage.setItem("apAddress", this.address);
     },
     mySelectEvent({ id, text }) {
-      console.log({ id, text });
+      // console.log({ id, text });
     },
     sendAddress() {
       Bus.$emit("apAddress", this.address);
