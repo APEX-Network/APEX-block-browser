@@ -98,7 +98,7 @@
           txId: {{txId}}
           <img
             @click="Copy()"
-            ref="txIdImg"
+            ref="copyId"
             style="cursor: pointer; padding-left: 16px;"
             src="./../../../assets/images/copy.png"
             alt
