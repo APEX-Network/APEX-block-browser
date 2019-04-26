@@ -1,19 +1,12 @@
 <template>
   <div class="votingSupport">
-    <apex-title
-      :title="title"
-      class="title"
-    />
-    <apex-back-ground class="bg" />
+    <apex-title :title="title" class="title"/>
+    <apex-back-ground class="bg"/>
     <div class="flex-container">
       <div class="from">
         <div>From:</div>
         <div>Wallet</div>
-        <input
-          v-model="apAddress"
-          readonly="readonly"
-          autocomplete="new-password"
-        >
+        <input v-model="apAddress" readonly="readonly" autocomplete="new-password">
       </div>
 
       <div class="to">
@@ -30,16 +23,15 @@
         <Select2
           class="flex-item2"
           autocomplete="new-password"
-          title="Please choose a Supported node address"
+          ref="vote"
           v-model="toAddress"
           :options="producerAddress"
-          :settings="{ settingOption: value, settingOption: value }"
           @change="myChangeEvent($event)"
           @select="mySelectEvent($event)"
         />
-        <div ref="checktoAddress">Please enter the correct wallet address</div>
+         <img @click="CopyTo()" ref="copy" style="margin-top: -25px;cursor: pointer;float: right;margin-right: -30px;" src="../../../assets/images/copy.png" alt="">
+        <div class="errorAddress" ref="checktoAddress">Please enter the correct wallet address</div>
       </div>
-
       <div class="amount">
         <div>
           Amount (Available:
@@ -55,10 +47,7 @@
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
           autocomplete="new-password"
         >
-        <p
-          class="p1"
-          @click="setAllAmount"
-        >
+        <p class="p1" @click="setAllAmount">
           <router-link to>All</router-link>
         </p>
         <p class="p2">CPX</p>
@@ -92,29 +81,17 @@
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
           autocomplete="new-password"
+          placeholder="Please enter the  password"
         >
-        <img
-          src="./../../../assets/images/hiddeneye.jpg"
-          @click="displayPwd"
-          ref="hiddenpwd"
-        >
+        <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         <div ref="checkPwd">Password Incorrect</div>
       </div>
-      <div
-        class="send"
-        @click="SendTransfer()"
-      >
+      <div class="send" @click="SendTransfer()">
         <router-link to>SEND</router-link>
       </div>
     </div>
-    <div
-      class="dialog"
-      ref="dialog"
-    >
-      <div
-        class="confirm"
-        ref="confirm"
-      >
+    <div class="dialog" ref="dialog">
+      <div class="confirm" ref="confirm">
         <div>Broadcast Successful</div>
         <div>
           <router-link to="/wallet">CONFIRM</router-link>
@@ -122,7 +99,8 @@
         <div>
           txId: {{txId}}
           <img
-            @click="Copy(index)"
+          ref="copyId"
+            @click="Copy()"
             style="cursor: pointer; padding-left: 16px;"
             src="./../../../assets/images/copy.png"
             alt
@@ -189,7 +167,10 @@ export default {
       params: {
         start: "0",
         pageSize: "10"
-      }
+      },
+      votingSupport: null,
+            copyImg: null,
+            txIdImg: null
     };
   },
 
@@ -199,27 +180,44 @@ export default {
   },
 
   computed: {},
-
   mounted() {
-    this.transferPwd = this.$refs.hiddenpwd;
     this.getAllInput();
     this.getAddress();
     this.getGasePrice();
     this.getProducerList();
     this.getAllInputInstances();
+    this.getInstances();
   },
 
   methods: {
+    getInstances() {
+      this.copyImg = this.$refs.copy;
+      this.txIdImg = this.$refs.copyId;
+      this.transferPwd = this.$refs.hiddenpwd;
+      this.votingSupport = this.$refs.vote;
+    },
     myChangeEvent(val) {
       this.toAddress = val;
-      this.check.checktoAddress.style.visibility = "hidden";
-
-      // sessionStorage.setItem("apAddress", this.address);
+      this.copyImg.src = require("../../../assets/images/copy.png");
     },
     mySelectEvent({ id, text }) {
       // console.log({ id, text });
     },
+    CopyTo(index) {
+      this.copyImg.src = require("../../../assets/images/copied.png");
+      let getCopyText = this.toAddress;
+      this.doToCopy(getCopyText);
+    },
+    doToCopy(val) {
+      this.$copyText(val).then(
+        function(e) {},
+        function(e) {
+          // console.log(e)
+        }
+      );
+    },
     Copy(index) {
+      this.txIdImg.src = require("../../../assets/images/copied.png");
       let getCopyText = this.copyTxId;
       this.doCopy(getCopyText);
     },
@@ -509,7 +507,7 @@ export default {
       return;
     },
     checkAddress() {
-       try {
+      try {
         this.privKey = util.utilMethods.produceKeyPriv(this.KStore, this.pwd);
         this.walletAddress = util.utilMethods.keyStoreWallet(
           this.KStore,
@@ -646,7 +644,7 @@ export default {
             top: 1px;
             right: 1px;
             width: 22px;
-             b {
+            b {
               left: 0;
               margin-left: 0px;
               display: inline-block;
@@ -674,7 +672,7 @@ export default {
         color: rgba(255, 255, 255, 0.5);
         margin: 0px 0px 5px 0px;
       }
-      div:nth-child(3) {
+      .errorAddress {
         margin-top: 8px;
         color: #f26522;
         visibility: hidden;

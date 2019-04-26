@@ -19,7 +19,7 @@
           <input
             spellcheck="false"
             type="password"
-          autocomplete="new-password"
+            autocomplete="new-password"
             ref="pwd"
             v-model="pwd"
             @change="getPwd"
@@ -91,6 +91,10 @@ export default {
     keyStoreWallet() {
       try {
         if (this.keyStore !== null && this.pwd !== null) {
+          let url = "/wallet";
+          setTimeout(() => {
+            sessionStorage.setItem("url", url);
+          });
           let downKeyStore = this.keyStore;
           let key = this.pwd;
           this.walletAddress = util.utilMethods.keyStoreWallet(
@@ -106,8 +110,7 @@ export default {
           this.$router.push("/wallet");
         }
       } catch (error) {
-        console.log
-        ("密码输入错误");
+        console.log("密码输入错误");
       }
     }
   },

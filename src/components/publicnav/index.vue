@@ -164,7 +164,7 @@ export default {
   created() {},
   computed: {
     nav() {
-      return [
+        return [
         { title: this.$t("nav.home"), path: "/home" },
         { title: this.$t("nav.wallet"), path: "/wallet" },
         { title: "", path: "/blocks" },
@@ -180,8 +180,9 @@ export default {
     Bus.$on("walletUrl", data => {
       setTimeout(() => {
         this.walletUrl = data;
-        this.nav[1].path = this.walletUrl;
+        sessionStorage.setItem("url", this.walletUrl);
         console.log(this.nav[1].path);
+        console.log(this.walletUrl);
       });
     });
     this.about = this.$refs.aboutUs;
@@ -196,21 +197,6 @@ export default {
     });
   },
   methods: {
-    checkIDB() {
-      this.getAllAddress = db.APKStore.where("APAddress")
-        .above(0)
-        .toArray(APKStore => {
-          APKStore.forEach(v => {
-            this.APAddress.push(v.APAddress);
-          });
-          setTimeout(() => {
-            this.nav[1].path = !this.APAddress.length
-              ? "/emptyWallet"
-              : "/wallet";
-            console.log(this.nav[1].path);
-          });
-        });
-    },
     getSearchValue() {
       this.about.style.height = "0px";
       this.wrapDiv.style.height = "0vh";
@@ -248,7 +234,7 @@ export default {
             this.$axios
               .get(this.url.blockHeight_url + this.search)
               .then(response => {
-                if (response.data.status == 404) {
+                if (response.data.data == "NotFound") {
                   this.$router.push("/error");
                   this.$refs.search.value = null;
                   return;
@@ -281,8 +267,8 @@ export default {
             this.$axios
               .get(this.url.blockHash_url + this.search)
               .then(response => {
-                if (response.data.status == 404) {
-                  // this.$router.push("/error");
+                if (response.data.data == "NotFound") {
+                  this.$router.push("/error");
                   return;
                 }
                 if (response.data.status == 200) {
@@ -308,8 +294,8 @@ export default {
             this.$axios
               .get(this.url.transactions_url + this.search)
               .then(response => {
-                if (response.data.status == 404) {
-                  // this.$router.push("/error");
+                if (response.data.data == "NotFound") {
+                  this.$router.push("/error");
                   return;
                 }
                 if (response.data.status == 200) {
@@ -361,7 +347,8 @@ export default {
     },
     hiddenAboutUs() {
       if (this.nav[1].title == this.$t("nav.wallet")) {
-        this.checkIDB();
+        this.nav[1].path = sessionStorage.getItem("url");
+        console.log(this.nav[1].path); 
       }
       this.about.style.height = "0px";
       this.wrapDiv.style.height = "0vh";

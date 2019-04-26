@@ -29,7 +29,7 @@
             spellcheck="false"
             type="password"
             ref="secondPwd"
-            @keyup.enter="prevInput($event)"
+            @keyup.enter="nextInput($event)"
             v-model="secondPwd"
             @change="getSecondPwd"
             onKeyUp="value=value.replace(/[\W]/g,'')"

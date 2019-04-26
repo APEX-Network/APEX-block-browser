@@ -56,7 +56,7 @@
               >{{transactionInfoData.from}}</router-link>
               <img
                 ref="from"
-                @click="CopyFrom(indexone)"
+                @click="Copy(1)"
                 style="cursor: pointer; padding-left: 10px;padding-top: 10px;
     position: absolute;"
                 src="./../../assets/images/copy.png"
@@ -65,7 +65,7 @@
             </span>
           </span>
         </li>
-        <li class="row">
+        <li class="row" v-if="transactionInfoData.to !== ''">
           <span class="col">
             To:
             <span class="clol col-lg-8">
@@ -74,8 +74,8 @@
                 @click.native="setToValue"
               >{{transactionInfoData.to}}</router-link>
               <img
-                ref="to"
-                @click="CopyTo(indextwo)"
+                ref="copy"
+                @click="Copy(2)"
                 style="cursor: pointer; padding-left: 10px;padding-top: 10px;
     position: absolute;"
                 src="./../../assets/images/copy.png"
@@ -153,7 +153,7 @@ export default {
         nonce: null,
         type: null,
         newBlockHeight: null,
-        heightDiff: null,
+        heightDiff: null
       },
       clickValue: {
         type: "height",
@@ -167,30 +167,31 @@ export default {
   },
   created() {},
   mounted() {
+    this.getInstances();
     window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
-    this.getInstances();
   },
   methods: {
     getInstances() {
       this.fAddress = this.$refs.from;
-      this.tAddress = this.$refs.to;
+      this.tAddress = this.$refs.copy;
+      console.log(this.fAddress);
+      console.log(this.tAddress);
     },
-    CopyFrom(indexone) {
-      let getCopyFromText = this.transactionInfoData.from;
-      this.fAddress.src = require("./../../assets/images/copied.png");
-      this.doCopy(getCopyFromText);
-    },
-    CopyTo(indextwo) {
-      let getCopyToText = this.transactionInfoData.to;
-      this.tAddress.src = require("./../../assets/images/copied.png");
-      this.doToCopy(getCopyToText);
+    Copy(index) {
+      if (index == 1) {
+        this.fAddress.src = require("./../../assets/images/copied.png");
+        let getCopyText = this.transactionInfoData.from;
+        this.doCopy(getCopyText);
+      }
+      if (index == 2) {
+        this.tAddress.src = require("./../../assets/images/copied.png");
+        let getCopyText = this.transactionInfoData.to;
+        this.doCopy(getCopyText);
+      }
     },
     doCopy(val) {
-      this.$copyText(val).then(function(e) {}, function(e) {});
-    },
-    doToCopy(vall) {
-      this.$copyText(vall).then(function(e) {}, function(e) {});
+      this.$copyText(val).then(() => {});
     },
     getClickValue() {
       Bus.$on("txHash", data => {

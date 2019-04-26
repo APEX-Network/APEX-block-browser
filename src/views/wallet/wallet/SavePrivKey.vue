@@ -23,7 +23,7 @@
             {{privKey}}
             <img
               ref="img"
-              @click=" privKey !== null && Copy(index)"
+              @click=" privKey !== null && Copy()"
               style="cursor: pointer; padding-left: 10px;float: right; padding-bottom: 6px;"
               src="./../../../assets/images/copy.png"
               alt
@@ -92,6 +92,10 @@ export default {
       });
     },
     getAddress() {
+      let url = "/wallet";
+      setTimeout(() => {
+        sessionStorage.setItem("url", url);        
+      }, );
       Bus.$emit("apAddress", this.apAddress);
     },
     Copy(index) {

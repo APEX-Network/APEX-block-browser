@@ -57,7 +57,8 @@ export default {
       privKeyStore: null,
       hiddenpwd: null,
       firstClick: 1,
-      inputPrivKey: null
+      inputPrivKey: null,
+      firstPwd: null
     };
   },
 
@@ -114,6 +115,10 @@ export default {
     },
     privKeyAddress() {
       if (this.privKey !== null && this.pwd !== null) {
+        let url = "/wallet";
+        setTimeout(() => {
+          sessionStorage.setItem("url", url);
+        });
         Bus.$emit("privKey", this.privKey);
         let userPrivKey = this.privKey;
         let key = this.pwd;

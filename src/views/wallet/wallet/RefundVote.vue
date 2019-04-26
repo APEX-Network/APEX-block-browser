@@ -26,16 +26,15 @@
           title="Please choose a Refund node address"
           v-model="toAddress"
           :options="targetAddress"
-          :settings="{ settingOption: value, settingOption: value }"
           @change="myChangeEvent($event)"
           @select="mySelectEvent($event)"
         />
-        <div ref="checktoAddress">Please enter the correct wallet address</div>
+         <img @click="CopyTo()" ref="copy" style="margin-top: -25px;cursor: pointer;float: right;margin-right: -30px;" src="../../../assets/images/copy.png" alt="">
+        <div class="errorAddress" ref="checktoAddress">Please enter the correct wallet address</div>
       </div>
 
       <div class="amount">
-        <div>
-          Amount (Available:
+        <div>Refund Amount (Available:
           <span>{{amount}}</span>)
         </div>
         <input
@@ -80,6 +79,7 @@
           v-model="pwd"
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
+          placeholder="Please enter the  password"
         >
         <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         <div ref="checkPwd">Password Incorrect</div>
@@ -97,7 +97,8 @@
         <div>
           txId: {{txId}}
           <img
-            @click="Copy(index)"
+            @click="Copy()"
+            ref="txIdImg"
             style="cursor: pointer; padding-left: 16px;"
             src="./../../../assets/images/copy.png"
             alt
@@ -161,7 +162,9 @@ export default {
         checkPwd: null
       },
       originValue: null,
-      txId: null
+      txId: null,
+      copyImg: null,
+      txIdImg: null
     };
   },
 
@@ -183,6 +186,7 @@ export default {
 
   methods: {
     myChangeEvent(val) {
+      this.copyImg.src = require("../../../assets/images/copy.png");
       this.toAddress = val;
       this.check.checktoAddress.style.visibility = "hidden";
       // sessionStorage.setItem("apAddress", this.address);
@@ -210,12 +214,25 @@ export default {
               if (result == -1) {
                 this.amount = this.originValue;
               }
-          console.log(this.amount + this.toAddress);
           return this.amount;
         }
       });
     },
+     CopyTo(index) {
+      this.copyImg.src = require("../../../assets/images/copied.png");
+      let getCopyText = this.toAddress;
+      this.doToCopy(getCopyText);
+    },
+    doToCopy(val) {
+      this.$copyText(val).then(
+        function(e) {},
+        function(e) {
+          // console.log(e)
+        }
+      );
+    },
     Copy(index) {
+      this.txIdImg.src = require("../../../assets/images/copied.png");
       let getCopyText = this.copyTxId;
       this.doCopy(getCopyText);
     },
@@ -227,6 +244,8 @@ export default {
       this.check.checkAmount = this.$refs.checkAmount;
       this.check.checkGasPrice = this.$refs.checkGasPrice;
       this.check.checkPwd = this.$refs.checkPwd;
+      this.copyImg = this.$refs.copy;
+      this.txIdImg = this.$refs.copyId;
     },
     getVoter() {
       if (this.voter_params.address !== null) {
@@ -645,7 +664,7 @@ export default {
         color: rgba(255, 255, 255, 0.5);
         margin: 0px 0px 5px 0px;
       }
-      div:nth-child(3) {
+      .errorAddress {
         margin-top: 8px;
         color: #f26522;
         visibility: hidden;

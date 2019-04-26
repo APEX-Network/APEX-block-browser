@@ -1,6 +1,6 @@
 <template>
 <div>
-<vue-scroll :ops="ops">
+<!-- <vue-scroll :ops="ops"> -->
   <div id="app">
     <publicnav />
     <div class="main-box">
@@ -54,7 +54,7 @@ export default {
           setTimeout(() => {
              Bus.$emit("walletUrl", this.walletUrl);
                 console.log(this.APAddress.length);
-        console.log(this.walletUrl);            
+                console.log(this.walletUrl);            
           }, );
         }
         if (this.APAddress.length != 0) {
@@ -62,7 +62,7 @@ export default {
           setTimeout(() => {
               Bus.$emit("walletUrl", this.walletUrl);
                  console.log(this.APAddress.length);
-        console.log(this.walletUrl);            
+                 console.log(this.walletUrl);            
           }, );
           }
         });

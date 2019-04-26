@@ -48,7 +48,7 @@ const utilMethods = {
                 return formatterTime.getUTCMinutes() + "   min ago";
             }
             if (date >= 3600 && date < 86400) {
-                return formatterTime.getUTCHours() + " hou ago";
+                return formatterTime.getUTCHours() + " hour ago";
             };
             if (date >= 86400) {
                 let diffDay = serDay - timeDay;
@@ -72,7 +72,7 @@ const utilMethods = {
                 return formatterTime.getUTCMinutes() + "    min ago";
             }
             if (date >= 3600 && date < 86400) {
-                return formatterTime.getUTCHours() + " hou ago";
+                return formatterTime.getUTCHours() + " hour ago";
             };
             if (date >= 86400) {
                 let diffDay = serDay - timeDay;
@@ -117,12 +117,12 @@ const utilMethods = {
                 return formatterTime.getUTCMinutes() + "    min  " + formatterTime.getUTCSeconds() + "    sec ago" + " " + "(" + utctime + "AM    +UTC" + ")";
             }
             if (date >= 3600 && date < 86400) {
-                return formatterTime.getUTCHours() + "   hou" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + " " + "(" + utctime + "AM    +UTC" + ")";
+                return formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + " " + "(" + utctime + "AM    +UTC" + ")";
             };
             if (date >= 86400) {
                 let diffDay = serverDay - timeStampDay;
                 if (diffDay !== 0) {
-                    return diffDay + "   Day" + "  " + formatterTime.getUTCHours() + "   hou" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "PM    +UTC" + ")";
+                    return diffDay + "   Day" + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "PM    +UTC" + ")";
                 }
             };
         }
@@ -140,12 +140,12 @@ const utilMethods = {
 
             }
             if (date >= 3600 && date < 86400) {
-                return formatterTime.getUTCHours() + "   hou" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + " " + "(" + utctime + "PM    +UTC" + ")";
+                return formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + " " + "(" + utctime + "PM    +UTC" + ")";
             };
             if (date >= 86400) {
                 let diffDay = serverDay - timeStampDay;
                 if (diffDay !== 0) {
-                    return diffDay + "   Day" + "  " + formatterTime.getUTCHours() + "   hou" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "PM    +UTC" + ")";
+                    return diffDay + "   Day" + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "PM    +UTC" + ")";
                 }
             };
 

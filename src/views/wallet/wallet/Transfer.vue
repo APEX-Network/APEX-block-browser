@@ -67,6 +67,7 @@
           v-model="pwd"
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
+          placeholder="Please enter the  password"
           autocomplete="new-password"
         >
         <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
@@ -85,7 +86,8 @@
         <div>
           txId: {{txId}}
           <img
-            @click="Copy(index)"
+            ref="copyId"
+            @click="Copy()"
             style="cursor: pointer; padding-left: 16px;"
             src="./../../../assets/images/copy.png"
             alt
@@ -142,7 +144,8 @@ export default {
         checkPwd: null
       },
       txId: null,
-      copyTxId: null
+      copyTxId: null,
+      txIdImg: null
     };
   },
 
@@ -163,6 +166,7 @@ export default {
   methods: {
     Copy(index) {
       let getCopyText = this.copyTxId;
+      this.txIdImg.src = require("../../../assets/images/copied.png");
       this.doCopy(getCopyText);
     },
     doCopy(val) {
@@ -178,6 +182,7 @@ export default {
       this.check.checkAmount = this.$refs.checkAmount;
       this.check.checkGasPrice = this.$refs.checkGasPrice;
       this.check.checkPwd = this.$refs.checkPwd;
+      this.txIdImg = this.$refs.copyId;
     },
     getAddress() {
       Bus.$on("apAddress", data => {

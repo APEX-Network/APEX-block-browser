@@ -59,6 +59,15 @@ export default {
     drawCharts() {
       // 绘制图表
       this.myChart.setOption({
+        title: {
+          text: "UTC",
+          textStyle: {
+            color: "#fff",
+            fontSize: "10"
+          },
+          left: '90.5%',
+          top: '85%'
+        },
         color: ["#1AC8FF"],
         grid: {
           left: -48,
@@ -68,9 +77,6 @@ export default {
           containLabel: true
         },
         xAxis: {
-          name: "UTC",
-          nameLocation: "center",
-          nameGap: -20,
           type: "category",
           boundaryGap: false,
           data: this.time.map(item => {

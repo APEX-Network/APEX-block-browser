@@ -9,13 +9,12 @@
           ref="select2"
             class="flex-item2 fl"
            autocomplete="new-password"
-            placeholder="Please create or import your wallet"
             v-model="address"
             :options="APAddress"
-            :settings="{ settingOption: value, settingOption: value }"
             @change="myChangeEvent($event)"
             @select="mySelectEvent($event)"
           />
+          <img @click="Copy()" ref="copy" style=" margin-top: 10px;cursor: pointer;margin-left: 12px;" src="../../../assets/images/copy.png" alt="">
         </div>
         <div class="btn-box btn-box-left">
           <router-link to="/wallet/NewWallet">NEW WALLET</router-link>
@@ -61,7 +60,8 @@ export default {
       getAllAddress: null,
       accountInfo_url: "/api/v1.0/accounts/account",
       CPX: 0,
-      selected: null
+      selected: null,
+      copyImg: null
     };
   },
 
@@ -70,7 +70,7 @@ export default {
   beforeMount() {},
 
   mounted() {
-    this.selected = this.$refs.select2;
+    this.getInstances();
     this.address = sessionStorage.getItem("apAddress");
     setTimeout(() => {
       if (this.address !== null) {
@@ -99,8 +99,26 @@ export default {
   },
 
   methods: {
+    Copy(index) {
+      this.copyImg.src = require("../../../assets/images/copied.png");
+      let getCopyText = this.address;
+      this.doCopy(getCopyText);
+    },
+    doCopy(val) {
+      this.$copyText(val).then(
+        function(e) {},
+        function(e) {
+          // console.log(e)
+        }
+      );
+    },
+    getInstances() {
+    this.selected = this.$refs.select2;
+    this.copyImg = this.$refs.copy;
+    },
     myChangeEvent(val) {
       this.address = val;
+      this.copyImg.src = require("../../../assets/images/copy.png");
       sessionStorage.setItem("apAddress", this.address);
     },
     mySelectEvent({ id, text }) {
