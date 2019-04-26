@@ -11,7 +11,7 @@
               {{accountTransaction_param.address}}
               <img
                 ref="img"
-                @click="Copy(index)"
+                @click="Copy()"
                 style="cursor: pointer; padding-left: 10px;"
                 src="./../../assets/images/copy.png"
                 alt
@@ -41,6 +41,7 @@
               </div>
             </span>
             <span class="col">{{ list.refBlockTime }}</span>
+            <!-- <span class="col col-lg-10" v-if="count == 0">There are no matching entries</span> -->
           </li>
         </ul>
         <!-- <Pagination/> -->

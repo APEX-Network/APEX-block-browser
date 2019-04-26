@@ -30,7 +30,7 @@
         <li
           v-for="(item, index) in nav"
           :key="index"
-          :class=" ((item.path === defaultNav) || ( defaultNav === '/' &&  index == '0')) ? 'active' : ''"
+          :class=" ((item.path === defaultNav) || ( defaultNav === '/' &&  index == 0)) ? 'active' : ''"
         >
           <router-link :to="item.path" @click.native="hiddenAboutUs"></router-link>
         </li>
@@ -166,7 +166,7 @@ export default {
     nav() {
       return [
         { title: this.$t("nav.home"), path: "/home" },
-        { title: this.$t("nav.wallet"), path: "/emptyWallet" },
+        { title: this.$t("nav.wallet"), path: "/wallet" },
         { title: "", path: "/blocks" },
         { title: "", path: "/transactions" },
         { title: "", path: "/producer" }
