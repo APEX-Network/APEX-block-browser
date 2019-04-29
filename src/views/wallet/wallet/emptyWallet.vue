@@ -14,12 +14,6 @@
           <router-link to="/emptyWallet/NewWallet">NEW WALLET</router-link>
           <router-link to="/emptyWallet/OpenWallet">OPEN WALLET</router-link>
         </li>
-       <!-- <li class="flex-item3">
-        <router-link to="/emptyWallet/NewWallet">NEW WALLET</router-link>
-      </li>
-      <li class="flex-item3">
-        <router-link to="/emptyWallet/OpenWallet">OPEN WALLET</router-link>
-      </li> -->
       </ul>
     </div>
   </div>

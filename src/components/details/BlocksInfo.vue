@@ -7,7 +7,7 @@
         <li class="row">
           <span class="col">
             Height:
-            <span class="clol col-lg-8">{{height}}</span>
+            <span class="clol col-lg-8 height" @click="goTxBlock">{{height}}</span>
           </span>
         </li>
         <li class="row">
@@ -55,6 +55,7 @@ import ApexBackGround from "@/components/public/ApexBackGround.vue";
 // import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
+import { setTimeout } from "timers";
 
 export default {
   name: "BlocksInfo",
@@ -86,6 +87,12 @@ export default {
     this.getClickValue();
   },
   methods: {
+    goTxBlock() {
+      this.$router.push("/blocks/BlocksInfo/TxFBlock");
+      setTimeout(() => {
+        Bus.$emit("bHeight", this.height);
+      });
+    },
     getClickValue() {
       Bus.$on("clickValue", data => {
         this.result = JSON.parse(data);
@@ -189,6 +196,7 @@ export default {
     },
     offListener() {
       Bus.$off("minerBy");
+      Bus.$off("bHeight");
     },
     beforeunloadHandler(e) {
       this.flag = 1;
@@ -210,7 +218,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-
 .BlocksInfo {
   width: 100%;
   height: 100%;
@@ -224,6 +231,10 @@ export default {
           span {
             margin-right: 10%;
             float: right;
+          }
+          .height {
+            cursor: pointer;
+            color: #f26522;
           }
         }
       }

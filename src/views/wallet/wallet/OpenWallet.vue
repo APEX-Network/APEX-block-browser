@@ -7,10 +7,10 @@
         <p>How would like to access your wallet?</p>
       </div>
       <div class="privateKey">
-        <router-link to="/wallet/OpenWallet/PrivateKey">PRIVATE KEY</router-link>
+        <router-link to @click.native="goPrivKey">PRIVATE KEY</router-link>
       </div>
       <div class="keyStore">
-        <router-link to="/wallet/OpenWallet/KeyStore">KEYSTOER</router-link>
+        <router-link to @click.native="goKeyStore">KEYSTOER</router-link>
       </div>
     </div>
   </div>
@@ -25,7 +25,8 @@ export default {
   props: [""],
   data() {
     return {
-      title: "ImportWallet"
+      title: "ImportWallet",
+      walletUrl: null
     };
   },
 
@@ -38,9 +39,36 @@ export default {
 
   beforeMount() {},
 
-  mounted() {},
+  mounted() {
+    this.walletUrl = sessionStorage.getItem("walletUrl", this.walletUrl);
+  },
 
-  methods: {},
+  methods: {
+    goPrivKey() {
+      switch (this.walletUrl) {
+        case "/wallet":
+          this.$router.push("/wallet/OpenWallet/PrivateKey");
+          break;
+        case "/emptyWallet":
+          this.$router.push("/emptyWallet/OpenWallet/PrivateKey");
+          break;
+        default:
+          break;
+      }
+    },
+    goKeyStore() {
+      switch (this.walletUrl) {
+        case "/wallet":
+          this.$router.push("/wallet/OpenWallet/KeyStore");
+          break;
+        case "/emptyWallet":
+          this.$router.push("/emptyWallet/OpenWallet/KeyStore");
+          break;
+        default:
+          break;
+      }
+    }
+  },
 
   watch: {}
 };

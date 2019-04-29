@@ -17,10 +17,23 @@
             <span class="clo col-lg-8">{{producerInfo.Miner}}</span>
           </span>
         </li>
+        <li class="row">
+          <span class="col" v-if="producerInfo.Name !== ''">
+            Name:
+            <span class="clo col-lg-8">{{producerInfo.Name}}</span>
+          </span>
+        </li>
+
         <li class="row" v-if="producerInfo.Area !== ''">
           <span class="col">
             Area:
             <span class="clo col-lg-8">{{producerInfo.Area}}</span>
+          </span>
+        </li>
+        <li class="row" v-if="producerInfo.MAddress !== ''">
+          <span class="col">
+            Mailing Address:
+            <span class="clo col-lg-8">{{producerInfo.MAddress}}</span>
           </span>
         </li>
         <li class="row">
@@ -37,7 +50,7 @@
             </span>
           </span>
         </li>
-        <li class="row" v-if="producerInfo.Description !== null">
+        <li class="row" v-if="producerInfo.Description !== ''">
           <span class="col">
             Description:
             <span class="clo col-lg-8">{{producerInfo.Description}}</span>
@@ -79,6 +92,8 @@ export default {
         Website: null,
         Description: null,
         block: null,
+        MAddress: null,
+        Name: null,
         flag: null
       },
       producer: []
@@ -112,7 +127,7 @@ export default {
       if (!!this.minerBy) {
         for (let i = 0; i < this.producer.length; i++) {
           let item = this.producer[i];
-          if (item.address == this.minerBy) {
+          if (item.addr == this.minerBy) {
             this.producerInfo.CurrentRank = item.Rank;
           }
         }
@@ -120,9 +135,10 @@ export default {
           .get(this.minerBy_url + this.minerBy)
           .then(response => {
             let res = response.data.data;
-            this.producerInfo.Miner = res.address;
+            this.producerInfo.Miner = res.addr;
+            this.producerInfo.Name = res.name;
             this.producerInfo.Area = res.zone;
-            // this.producerInfo.CurrentRank = res.votes;
+            this.producerInfo.MAddress = res.address;
             this.producerInfo.block = res.blockCount;
             this.producerInfo.Website = res.webSite;
             this.producerInfo.Description = res.describe;

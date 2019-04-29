@@ -14,6 +14,8 @@
           @change="getkeyStore"
           placeholder="Paste or type keystore"
           autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <div class="repatpwd">
           <input
@@ -25,6 +27,8 @@
             @change="getPwd"
             placeholder="Enter the password corresponding to this keystore"
             onKeyUp="value=value.replace(/[\W]/g,'')"
+            readonly
+            onfocus="this.removeAttribute('readonly');"
           >
           <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenPwd">
         </div>
@@ -93,7 +97,7 @@ export default {
         if (this.keyStore !== null && this.pwd !== null) {
           let url = "/wallet";
           setTimeout(() => {
-            sessionStorage.setItem("url", url);
+            sessionStorage.setItem("walletUrl", url);
           });
           let downKeyStore = this.keyStore;
           let key = this.pwd;

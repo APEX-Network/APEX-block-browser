@@ -66,7 +66,11 @@ export default {
       Bus.$emit("txHash", e.target.innerHTML);
     },
     goAccountInfo() {
-      Bus.$emit("accountValue", sessionStorage.getItem("apAddress"));
+      let TransactionList =  {
+        type:  "Transaction",
+        accountValue: sessionStorage.getItem("apAddress")
+      }
+      Bus.$emit("accountValue", TransactionList.accountValue);
     },
     getTransactionsList() {
       if (this.accountTransaction_param.address !== null) {
@@ -75,7 +79,13 @@ export default {
           .then(response => {
             let res = response.data.data.transactions;
             let serverTime = response.headers.date;
-            this.transactions = res;
+            this.transactions = [];
+            for (let i = 0; i < res.length; i++) {
+              const element = res[i];
+              if (element.type !== "Transfer") {
+                this.transactions.push(element);
+              }
+            }
             let time;
             for (let i = 0; i < this.transactions.length; i++) {
               let element = this.transactions[i];

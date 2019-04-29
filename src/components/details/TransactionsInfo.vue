@@ -175,8 +175,6 @@ export default {
     getInstances() {
       this.fAddress = this.$refs.from;
       this.tAddress = this.$refs.copy;
-      console.log(this.fAddress);
-      console.log(this.tAddress);
     },
     Copy(index) {
       if (index == 1) {

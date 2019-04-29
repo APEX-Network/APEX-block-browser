@@ -15,6 +15,8 @@
           @change="getprivKey"
           placeholder="please paste your private key"
           autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <div class="repatpwd">
           <input
@@ -26,6 +28,8 @@
             placeholder="please set you password"
             onKeyUp="value=value.replace(/[\W]/g,'')"
             autocomplete="new-password"
+            readonly
+            onfocus="this.removeAttribute('readonly');"
           >
           <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         </div>
@@ -117,7 +121,7 @@ export default {
       if (this.privKey !== null && this.pwd !== null) {
         let url = "/wallet";
         setTimeout(() => {
-          sessionStorage.setItem("url", url);
+          sessionStorage.setItem("walletUrl", url);
         });
         Bus.$emit("privKey", this.privKey);
         let userPrivKey = this.privKey;

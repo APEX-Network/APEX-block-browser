@@ -32,11 +32,8 @@
           <span ref="copyed" class="s2">Copy Successed</span>
         </p>
       </div>
-      <!-- <div class="create1">
-        <router-link to="/wallet/NewWallet/CreatedKeystore">DOWNLOAD ENCRYPTED KEY</router-link>
-      </div>-->
       <div class="create2">
-        <router-link to="/wallet" @click.native="getAddress">CONTINUE</router-link>
+        <router-link to @click.native="getAddress">CONTINUE</router-link>
       </div>
     </div>
   </div>
@@ -94,12 +91,13 @@ export default {
     getAddress() {
       let url = "/wallet";
       setTimeout(() => {
-        sessionStorage.setItem("url", url);        
-      }, );
-      Bus.$emit("apAddress", this.apAddress);
+        sessionStorage.setItem("walletUrl", url);
+        Bus.$emit("apAddress", this.apAddress);
+        this.$router.push("/wallet");
+      });
     },
     Copy(index) {
-      this.switchImg.src = require("../../../assets/images/copied.png")
+      this.switchImg.src = require("../../../assets/images/copied.png");
       let getCopyText = this.privKey;
       this.doCopy(getCopyText);
       this.privKey = null;

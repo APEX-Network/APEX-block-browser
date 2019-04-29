@@ -8,7 +8,9 @@
           <Select2
           ref="select2"
             class="flex-item2 fl"
-           autocomplete="new-password"
+            autocomplete="new-password"
+            readonly
+            onfocus="this.removeAttribute('readonly');"
             v-model="address"
             :options="APAddress"
             @change="myChangeEvent($event)"
@@ -40,9 +42,7 @@
         </div>
       </div>
     </div>
-    <!-- <div class="flex-container3">
-      <div class="flex-item1">CLOSE WALLET</div>
-    </div>-->
+  </div>
 </template>
 
 <script>

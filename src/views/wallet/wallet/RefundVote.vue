@@ -11,18 +11,11 @@
 
       <div class="to">
         <div>Refund node address</div>
-        <!-- <input
-          spellcheck="false"
-          ref="to"
-          @keyup.enter="seInput($event)"
-          @change="getToAddress"
-          type="text"
-          placeholder="Please Input Address"
-          autocomplete="off"
-        >-->
         <Select2
           class="flex-item2"
           autocomplete="new-password"
+           readonly
+          onfocus="this.removeAttribute('readonly');"
           title="Please choose a Refund node address"
           v-model="toAddress"
           :options="targetAddress"
@@ -35,7 +28,7 @@
 
       <div class="amount">
         <div>Refund Amount (Available:
-          <span>{{amount}}</span>)
+          <span  @click="setAllAmount">{{amount}}</span>)
         </div>
         <input
           spellcheck="false"
@@ -45,17 +38,19 @@
           @change="getInputAmout"
           placeholder="Transfer Amount"
           autocomplete="new-password"
+           readonly
+          onfocus="this.removeAttribute('readonly');"
         >
-        <p class="p1" @click="setAllAmount">
-          <router-link to>All</router-link>
+        <p class="p1">
+          <router-link to></router-link>
         </p>
         <p class="p2">CPX</p>
-        <div ref="checkAmount">Please enter the correct transfer amount</div>
+        <div ref="checkAmount">Please enter the correct Refund amount</div>
       </div>
       <div class="gasPrice">
         <div class="recommend">
           Recommended:
-          <span>{{gasePrice}} Mp</span>
+          <span @click="setAllGPrice">{{gasePrice}} Mp</span>
         </div>
         <input
           spellcheck="false"
@@ -65,6 +60,8 @@
           @change="getInputGasePrice"
           placeholder="Please enter the  gas price"
           autocomplete="new-password"
+           readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <div>Mp</div>
         <div ref="checkGasPrice">Please enter the correct gas price</div>
@@ -80,6 +77,8 @@
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
           placeholder="Please enter the  password"
+           readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         <div ref="checkPwd">Password Incorrect</div>
@@ -185,6 +184,11 @@ export default {
   },
 
   methods: {
+     setAllGPrice() {
+      this.$refs.inputGasePrice.value = this.gasePrice;
+      this.check.checkGasPrice.style.visibility = "hidden";
+      this.inputGasePrice = this.gasePrice;
+    },
     myChangeEvent(val) {
       this.copyImg.src = require("../../../assets/images/copy.png");
       this.toAddress = val;
@@ -676,6 +680,7 @@ export default {
         margin: 0% 5% 0 2%;
         position: relative;
         span {
+          cursor: pointer;
           color: #f26522;
         }
       }
@@ -690,8 +695,9 @@ export default {
       }
       .p1 {
         display: inline-block;
-        margin-left: 25px;
+        margin-left: 45px;
         a {
+          cursor: pointer;
           color: #f26522;
         }
       }
@@ -731,6 +737,7 @@ export default {
         margin: 0% 5% 0 2%;
         position: relative;
         span {
+          cursor: pointer;
           color: #f26522;
         }
       }
@@ -750,16 +757,12 @@ export default {
       div:nth-child(3) {
         display: inline;
         position: absolute;
-        margin-left: 4%;
+        margin-left: 23%;
         margin-top: 1.4%;
         z-index: 1;
         a {
           color: #f26522;
         }
-      }
-      div:nth-child(3) {
-        margin-top: 8px;
-        margin-left: 30px;
       }
       div:nth-child(4) {
         color: #f26522;

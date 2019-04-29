@@ -11,31 +11,30 @@
 
       <div class="to">
         <div>Supported node address</div>
-        <!-- <input
-          spellcheck="false"
-          ref="to"
-          @keyup.enter="seInput($event)"
-          @change="getToAddress"
-          type="text"
-          placeholder="Please Input Address"
-          autocomplete="off"
-        >-->
         <Select2
           class="flex-item2"
           autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
           ref="vote"
           v-model="toAddress"
           :options="producerAddress"
           @change="myChangeEvent($event)"
           @select="mySelectEvent($event)"
         />
-         <img @click="CopyTo()" ref="copy" style="margin-top: -25px;cursor: pointer;float: right;margin-right: -30px;" src="../../../assets/images/copy.png" alt="">
+        <img
+          @click="CopyTo()"
+          ref="copy"
+          style="margin-top: -25px;cursor: pointer;float: right;margin-right: -30px;"
+          src="../../../assets/images/copy.png"
+          alt
+        >
         <div class="errorAddress" ref="checktoAddress">Please enter the correct wallet address</div>
       </div>
       <div class="amount">
         <div>
           Amount (Available:
-          <span>{{amount}}</span>)
+          <span @click="setAllAmount">{{amount}}</span>)
         </div>
         <input
           spellcheck="false"
@@ -46,17 +45,19 @@
           placeholder="Transfer Amount"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
           autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
-        <p class="p1" @click="setAllAmount">
-          <router-link to>All</router-link>
+        <p class="p1">
+          <router-link to></router-link>
         </p>
         <p class="p2">CPX</p>
-        <div ref="checkAmount">Please enter the correct transfer amount</div>
+        <div ref="checkAmount">Please enter the correct vote amount</div>
       </div>
       <div class="gasPrice">
         <div class="recommend">
           Recommended:
-          <span>{{gasePrice}} Mp</span>
+          <span @click="setAllGPrice">{{gasePrice}} Mp</span>
         </div>
         <input
           spellcheck="false"
@@ -67,6 +68,8 @@
           placeholder="Please enter the  gas price"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
           autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <div>Mp</div>
         <div ref="checkGasPrice">Please enter the correct gas price</div>
@@ -82,6 +85,8 @@
           onKeyUp="value=value.replace(/[\W]/g,'')"
           autocomplete="new-password"
           placeholder="Please enter the  password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         <div ref="checkPwd">Password Incorrect</div>
@@ -99,7 +104,7 @@
         <div>
           txId: {{txId}}
           <img
-          ref="copyId"
+            ref="copyId"
             @click="Copy()"
             style="cursor: pointer; padding-left: 16px;"
             src="./../../../assets/images/copy.png"
@@ -169,8 +174,8 @@ export default {
         pageSize: "10"
       },
       votingSupport: null,
-            copyImg: null,
-            txIdImg: null
+      copyImg: null,
+      txIdImg: null
     };
   },
 
@@ -190,6 +195,11 @@ export default {
   },
 
   methods: {
+     setAllGPrice() {
+      this.$refs.inputGasePrice.value = this.gasePrice;
+      this.check.checkGasPrice.style.visibility = "hidden";
+      this.inputGasePrice = this.gasePrice;
+    },
     getInstances() {
       this.copyImg = this.$refs.copy;
       this.txIdImg = this.$refs.copyId;
@@ -237,7 +247,7 @@ export default {
           this.producerAddress = [];
           for (let i = 0; i < this.producer.length; i++) {
             const element = this.producer[i];
-            this.producerAddress.push(element.address);
+            this.producerAddress.push(element.addr);
           }
         })
         .catch(function(err) {
@@ -685,6 +695,7 @@ export default {
         margin: 0% 5% 0 2%;
         position: relative;
         span {
+          cursor: pointer;
           color: #f26522;
         }
       }
@@ -706,7 +717,7 @@ export default {
       }
       .p2 {
         display: inline-block;
-        margin-left: 25px;
+        margin-left: 50px;
       }
       div:nth-child(2) {
         margin-left: 5%;
@@ -741,6 +752,7 @@ export default {
         margin: 0% 5% 0 2%;
         position: relative;
         span {
+          cursor: pointer;
           color: #f26522;
         }
       }
@@ -761,16 +773,12 @@ export default {
       div:nth-child(3) {
         display: inline;
         position: absolute;
-        margin-left: 4%;
+        margin-left: 23%;
         margin-top: 1.4%;
         z-index: 1;
         a {
           color: #f26522;
         }
-      }
-      div:nth-child(3) {
-        margin-top: 8px;
-        margin-left: 30px;
       }
       div:nth-child(4) {
         color: #f26522;

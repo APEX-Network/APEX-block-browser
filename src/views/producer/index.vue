@@ -16,7 +16,7 @@
             <router-link
               to="/producer/ProducerInfo"
               @click.native.self="setClickValue"
-            >{{item.address}}</router-link>
+            >{{item.addr}}</router-link>
           </span>
           <span class="col">{{item.votes}}</span>
           <span class="col">{{item.blockCount}}</span>

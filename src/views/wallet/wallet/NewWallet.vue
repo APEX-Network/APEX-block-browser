@@ -20,6 +20,8 @@
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
           autocomplete="new-password"
+           readonly
+            onfocus="this.removeAttribute('readonly');"
         >
         <!-- <input type="text" ref="firstPwdCover" v-model="firstPwdCover" @change="coverFirstPwd"> -->
         <img src="../../../assets/images/hiddeneye.jpg" @click="displayFirstPwd" ref="firstEye">
@@ -34,6 +36,8 @@
             @change="getSecondPwd"
             onKeyUp="value=value.replace(/[\W]/g,'')"
             autocomplete="new-password"
+             readonly
+            onfocus="this.removeAttribute('readonly');"
           >
           <!-- <input type="text" ref="secondPwdCover" v-model="secondPwdCover" @change="coverSecondPwd"> -->
           <img src="../../../assets/images/hiddeneye.jpg" @click="displaySecondPwd" ref="secondEye">
@@ -92,7 +96,7 @@ export default {
       ClickCheckBox: 0,
       isClick: false,
       diffPwd: null,
-      walletUrl: "/wallet"
+      walletUrl: null
     };
   },
 
@@ -111,6 +115,7 @@ export default {
 
   methods: {
     getInstances() {
+      this.walletUrl = sessionStorage.getItem("walletUrl", this.walletUrl);
       this.diffPwd = this.$refs.epd;
       this.firstInput = this.$refs.firstPwd;
       this.secondInput = this.$refs.secondPwd;
@@ -172,15 +177,19 @@ export default {
           setTimeout(() => {
             Bus.$emit("privKey", signParams.privKey);
             Bus.$emit("apAddress", this.apAddress);
-            // Bus.$emit("walletUrl", this.walletUrl);
             sessionStorage.setItem("apAddress", this.apAddress);
+            // sessionStorage.setItem("walletUrl", this.walletUrl);
             Bus.$emit("keyStore", this.keyStore);
             db.APKStore.put({
               APAddress: this.apAddress,
               KStore: this.keyStore
             });
           });
-          this.$router.push("/wallet/NewWallet/CreatedKeystore");
+          if (this.walletUrl == "/emptyWallet") {
+            this.$router.push("/emptyWallet/NewWallet/CreatedKeystore");
+          } else {
+            this.$router.push("/wallet/NewWallet/CreatedKeystore");
+          }
         }
       }
     },

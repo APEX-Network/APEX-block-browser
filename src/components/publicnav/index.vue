@@ -127,7 +127,6 @@
 <script>
 import Bus from "./../../utils/bus";
 import db from "./../../utils/myDatabase";
-import { setTimeout } from "timers";
 
 const Base58check = require("base58check");
 
@@ -158,15 +157,23 @@ export default {
         value: null
       },
       getAllAddress: null,
-      APAddress: []
+      APAddress: [],
+      walletUrl: null,
+      newwalletUrl: null
     };
   },
-  created() {},
+  created() {
+    setTimeout(() => {
+      this.walletUrl = sessionStorage.getItem("walletUrl");
+      this.nav[1].path = this.walletUrl;
+    });
+  },
   computed: {
     nav() {
-        return [
+      let walletUrl = this.walletUrl;
+      return [
         { title: this.$t("nav.home"), path: "/home" },
-        { title: this.$t("nav.wallet"), path: "/wallet" },
+        { title: this.$t("nav.wallet"), path:  walletUrl},
         { title: "", path: "/blocks" },
         { title: "", path: "/transactions" },
         { title: "", path: "/producer" }
@@ -177,14 +184,7 @@ export default {
     }
   },
   mounted() {
-    Bus.$on("walletUrl", data => {
-      setTimeout(() => {
-        this.walletUrl = data;
-        sessionStorage.setItem("url", this.walletUrl);
-        console.log(this.nav[1].path);
-        console.log(this.walletUrl);
-      });
-    });
+    console.log(this.nav[1].path);
     this.about = this.$refs.aboutUs;
     this.wrapDiv = this.$refs.wrapAboutUs;
     this.search = this.$refs.search;
@@ -347,8 +347,11 @@ export default {
     },
     hiddenAboutUs() {
       if (this.nav[1].title == this.$t("nav.wallet")) {
-        this.nav[1].path = sessionStorage.getItem("url");
-        console.log(this.nav[1].path); 
+        setTimeout(() => {
+          this.newwalletUrl = sessionStorage.getItem("walletUrl");
+          this.nav[1].path = this.newwalletUrl;
+        });
+        console.log(this.nav[1].path);
       }
       this.about.style.height = "0px";
       this.wrapDiv.style.height = "0vh";
@@ -357,6 +360,7 @@ export default {
       Bus.$off("accountValue");
       Bus.$off("clickValue");
       Bus.$off("txHash");
+      // Bus.$off("walletUrl");
     }
   },
   beforeDestroy() {

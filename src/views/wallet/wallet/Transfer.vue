@@ -19,6 +19,8 @@
           type="text"
           placeholder="Please Input Address"
           autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <div ref="checktoAddress">Please enter the correct wallet address</div>
       </div>
@@ -26,7 +28,7 @@
       <div class="amount">
         <div>
           Amount (Available:
-          <span>{{amount}}</span>)
+          <span @click="setAllAmount">{{amount}}</span>)
         </div>
         <input
           spellcheck="false"
@@ -37,14 +39,20 @@
           placeholder="Transfer Amount"
           autocomplete="new-password"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
-        <p class="p1" @click="setAllAmount">
-          <router-link to>All</router-link>
+        <p class="p1">
+          <router-link to></router-link>
         </p>
         <p class="p2">CPX</p>
         <div ref="checkAmount">Please enter the correct transfer amount</div>
       </div>
       <div class="gasPrice">
+        <div class="recommend">
+          Recommended:
+          <span @click="setAllGPrice">{{gasePrice}} Mp</span>
+        </div>
         <input
           spellcheck="false"
           type="text"
@@ -54,6 +62,8 @@
           placeholder="Please enter the  gas price"
           autocomplete="new-password"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <div>Mp</div>
         <div ref="checkGasPrice">Please enter the correct gas price</div>
@@ -69,6 +79,8 @@
           onKeyUp="value=value.replace(/[\W]/g,'')"
           placeholder="Please enter the  password"
           autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         <div ref="checkPwd">Password Incorrect</div>
@@ -115,6 +127,7 @@ export default {
       serialized_transaction: null,
       url: {
         accountInfo_url: "/api/v1.0/accounts/account",
+        gasePrice_url: "/api/v1.0/getAverageGasPrice",
         transfer_url: "/api/v1.0/transactions/trading"
       },
       signature: null,
@@ -145,7 +158,8 @@ export default {
       },
       txId: null,
       copyTxId: null,
-      txIdImg: null
+      txIdImg: null,
+      gasePrice: null
     };
   },
 
@@ -161,9 +175,15 @@ export default {
     this.getAllInput();
     this.getAddress();
     this.getAllInputInstances();
+    this.getGasePrice();
   },
 
   methods: {
+    setAllGPrice() {
+      this.$refs.inputGasePrice.value = this.gasePrice;
+      this.check.checkGasPrice.style.visibility = "hidden";
+      this.inputGasePrice = this.gasePrice;
+    },
     Copy(index) {
       let getCopyText = this.copyTxId;
       this.txIdImg.src = require("../../../assets/images/copied.png");
@@ -183,6 +203,22 @@ export default {
       this.check.checkGasPrice = this.$refs.checkGasPrice;
       this.check.checkPwd = this.$refs.checkPwd;
       this.txIdImg = this.$refs.copyId;
+    },
+    getGasePrice() {
+      this.$axios
+        .post(this.url.gasePrice_url)
+        .then(response => {
+          let res = response.data.data;
+          if (res < 1.0) {
+            this.gasePrice = 1.0;
+          }
+          if (res > 1) {
+            this.gasePrice = res;
+          }
+        })
+        .catch(function(response) {
+          console.log(response);
+        });
     },
     getAddress() {
       Bus.$on("apAddress", data => {
@@ -526,6 +562,7 @@ export default {
         margin: 0% 5% 0 2%;
         position: relative;
         span {
+          cursor: pointer;
           color: #f26522;
         }
       }
@@ -547,7 +584,7 @@ export default {
       }
       .p2 {
         display: inline-block;
-        margin-left: 25px;
+        margin-left: 43px;
       }
       div:nth-child(2) {
         margin-left: 5%;
@@ -575,8 +612,17 @@ export default {
         // visibility:visible;
       }
     }
-    .gasPrice {
-      // margin: 1% 0 0 -14%;
+      .gasPrice {
+      width: 340px;
+      position: relative;
+      .recommend {
+        margin: 0% 5% 0 2%;
+        position: relative;
+        span {
+          cursor: pointer;
+          color: #f26522;
+        }
+      }
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
@@ -588,31 +634,27 @@ export default {
       }
       div:nth-child(2) {
         // margin-left: 5%;
+        padding-left: 25px;
         display: inline-block;
-        padding-left: 26px;
-        display: inline-block;
-        padding-right: 52px;
       }
       div:nth-child(3) {
         display: inline;
         position: absolute;
-        margin-left: 4%;
+        margin-left: 23%;
         margin-top: 1.4%;
         z-index: 1;
         a {
           color: #f26522;
         }
       }
-      div:nth-child(3) {
+      div:nth-child(4) {
         color: #f26522;
         margin-top: 8px;
-        margin-left: -1px;
         visibility: hidden;
-        // visibility:visible;
       }
     }
     .password {
-      margin: 7% 0 0 0%;
+      margin: 0% 0 0 0%;
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;

@@ -66,7 +66,7 @@ export default {
             fontSize: "10"
           },
           left: '90.5%',
-          top: '85%'
+          top: '82%'
         },
         color: ["#1AC8FF"],
         grid: {

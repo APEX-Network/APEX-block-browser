@@ -1,22 +1,22 @@
 <template>
-<div>
-<!-- <vue-scroll :ops="ops"> -->
-  <div id="app">
-    <publicnav />
-    <div class="main-box">
-      <router-view :key="key"></router-view>
+  <div>
+    <vue-scroll :ops="ops"/>
+    <div id="app">
+      <publicnav/>
+      <div class="main-box">
+        <router-view :key="key"></router-view>
+      </div>
+      <publicfooter/>
     </div>
-    <publicfooter/>
+    <vue-scroll/>
   </div>
-  <vue-scroll>
-</div>
 </template>
 
 <script>
 import publicnav from "@/components/publicnav/index.vue";
 import publicfooter from "@/components/publicfooter/index.vue";
-import db from './../src/utils/myDatabase';
-import Bus from './../src/utils/bus';
+import db from "./../src/utils/myDatabase";
+import Bus from "./../src/utils/bus";
 
 export default {
   name: "App",
@@ -24,12 +24,15 @@ export default {
     publicnav,
     publicfooter
   },
-   data() {
+  data() {
     return {
       walletUrl: null,
       APAddress: [],
       getAllAddress: null
     };
+  },
+  created() {
+    this.checkDB();
   },
   computed: {
     key() {
@@ -39,10 +42,10 @@ export default {
     }
   },
   mounted() {
-    this.checkDB();
+    // this.checkDB();
   },
   methods: {
-     checkDB() {
+    checkDB() {
       this.getAllAddress = db.APKStore.where("APAddress")
         .above(0)
         .toArray(APKStore => {
@@ -50,25 +53,17 @@ export default {
             this.APAddress.push(v.APAddress);
           });
           if (this.APAddress.length == 0) {
-          this.walletUrl = "/emptyWallet";
-          setTimeout(() => {
-             Bus.$emit("walletUrl", this.walletUrl);
-                console.log(this.APAddress.length);
-                console.log(this.walletUrl);            
-          }, );
-        }
-        if (this.APAddress.length != 0) {
-          this.walletUrl = "/wallet";
-          setTimeout(() => {
-              Bus.$emit("walletUrl", this.walletUrl);
-                 console.log(this.APAddress.length);
-                 console.log(this.walletUrl);            
-          }, );
+            this.walletUrl = "/emptyWallet";
+            sessionStorage.setItem("walletUrl", this.walletUrl);
+          }
+          if (this.APAddress.length != 0) {
+            this.walletUrl = "/wallet";
+            sessionStorage.setItem("walletUrl", this.walletUrl);
           }
         });
     },
     offListener() {
-      Bus.$off("walletUrl");
+      // Bus.$off("walletUrl");
     }
   },
   beforeDestroy() {

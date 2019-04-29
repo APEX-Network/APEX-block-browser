@@ -8,20 +8,16 @@
           <span class="col">Height</span>
           <span class="col col-lg-6">Hash</span>
           <span class="col">Age</span>
-          <!-- <span class="col">Txn</span> -->
           <span class="col">Miner</span>
         </li>
         <li v-for="(item,index) in dataList" :key="index" class="row">
           <span class="col height">
             <router-link to="/blocks/BlocksInfo" @click.native="setHeightValue">{{item.height}}</router-link>
-            <!-- {{item.height}} -->
           </span>
           <span class="col col-lg-6">
             <router-link to="/blocks/BlocksInfo" @click.native="setHashValue">{{item.blockHash}}</router-link>
           </span>
           <span class="col">{{item.timeStamp}}</span>
-          <!-- <span class="col txn">{{item.txNum}}</span> -->
-          <!-- <span class="col">{{item.producer}}</span> -->
           <span class="col">
             <router-link
               to="/producer/ProducerInfo"

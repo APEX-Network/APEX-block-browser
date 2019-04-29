@@ -1,24 +1,20 @@
 <template>
-  <div class="block apex-modul fr">
+  <div class="transactions apex-modul fr">
     <p class="apex-title">
       Transfers
-      <!-- <router-link to="/transactions"> -->
-      <router-link to="">
+      <router-link to="/transactions/TransactionsInfo/AccountInfo" @click.native="goAccountInfo">
         <span>ALL</span>
       </router-link>
     </p>
     <ul class="apex-list">
       <vue-scroll :ops="ops">
-        <li v-for="(item,index) in blocks" :key="index">
-          <div>
-            <div class="top">
-              <p>Block {{item.height}}</p>
-              <span>{{item.size}} Bytes</span>
-            </div>
-            <div class="bottom">
-              <router-link to="/transactions/TransactionsInfo">{{item.hash}}</router-link>
-              <span>{{item.age}}</span>
-            </div>
+        <li v-for="(item,index) in transactions" :key="index">
+          <div class="bottom">
+            <router-link
+              to="/transactions/TransactionsInfo"
+              @click.native="setClickValue"
+            >{{item.txHash}}</router-link>
+            <span>{{item.refBlockTime}}</span>
           </div>
         </li>
       </vue-scroll>
@@ -27,119 +23,109 @@
 </template>
 
 <script>
+import Pagination from "@/components/public/Pagination.vue";
+import Bus from "./../../utils/bus";
+import util from "./../../utils/utils";
 export default {
-  name: "TransfersList",
+  name: "transactionsList",
+  components: {
+    Pagination
+  },
   data() {
     return {
       ops: {},
-      blocks: [
-        // {
-        //   height: 6353170,
-        //   age: "13 secs ago",
-        //   size: 61,
-        //   hash:
-        //     "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        // },
-        // {
-        //   height: 6353170,
-        //   age: "13 secs ago",
-        //   size: 61,
-        //   hash:
-        //     "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        // },
-        // {
-        //   height: 6353170,
-        //   age: "13 secs ago",
-        //   size: 61,
-        //   hash:
-        //     "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        // },
-        // {
-        //   height: 6353170,
-        //   age: "13 secs ago",
-        //   size: 61,
-        //   hash:
-        //     "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        // },
-        // {
-        //   height: 6353170,
-        //   age: "13 secs ago",
-        //   size: 61,
-        //   hash:
-        //     "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        // },
-        // {
-        //   height: 6353170,
-        //   age: "13 secs ago",
-        //   size: 61,
-        //   hash:
-        //     "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        // },
-        // {
-        //   height: 6353170,
-        //   age: "13 secs ago",
-        //   size: 61,
-        //   hash:
-        //     "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        // },
-        // {
-        //   height: 6353170,
-        //   age: "13 secs ago",
-        //   size: 61,
-        //   hash:
-        //     "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        // },
-        // {
-        //   height: 6353170,
-        //   age: "13 secs ago",
-        //   size: 61,
-        //   hash:
-        //     "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        // },
-        // {
-        //   height: 6353170,
-        //   age: "13 secs ago",
-        //   size: 61,
-        //   hash:
-        //     "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        // },
-        // {
-        //   height: 6353170,
-        //   age: "13 secs ago",
-        //   size: 61,
-        //   hash:
-        //     "0x5ead841ac2c08e14ae45492ff3976160c3d7af7ae004cb557678df4bfcaacd25"
-        // }
-      ]
+      transactions: [],
+      clickValue: null,
+      accountTransaction_url: "/api/v1.0/transactions/account/transactionList",
+      accountTransaction_param: {
+        start: 0,
+        pageSize: 10,
+        address: null
+      }
     };
   },
-
-  components: {},
-
-  computed: {},
-
-  beforeMount() {},
-
-  mounted() {},
-
-  methods: {},
-
-  watch: {}
+  mounted() {
+    setTimeout(() => {
+      this.accountTransaction_param.address = sessionStorage.getItem(
+        "apAddress"
+      );
+      this.getTransactionsList();
+    });
+    const timer = setInterval(() => {
+      this.accountTransaction_param.address = sessionStorage.getItem(
+        "apAddress"
+      );
+      this.getTransactionsList();
+    }, 1500);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer);
+    });
+  },
+  methods: {
+    setClickValue(e) {
+      Bus.$emit("txHash", e.target.innerHTML);
+    },
+    goAccountInfo() {
+      let TransferList =  {
+        type:  "Transfer",
+        accountValue: sessionStorage.getItem("apAddress")
+      }
+      Bus.$emit("accountValue", TransferList.accountValue);
+    },
+    getTransactionsList() {
+      if (this.accountTransaction_param.address !== null) {
+        this.$axios
+          .post(this.accountTransaction_url, this.accountTransaction_param)
+          .then(response => {
+            let res = response.data.data.transactions;
+            let serverTime = response.headers.date;
+            this.transactions = [];
+            for (let i = 0; i < res.length; i++) {
+              const element = res[i];
+              if (element.type == "Transfer") {
+                this.transactions.push(element);
+              }
+            }
+            let time;
+            for (let i = 0; i < this.transactions.length; i++) {
+              let element = this.transactions[i];
+              time = util.utilMethods.listUTCtime(
+                element.refBlockTime,
+                serverTime
+              );
+              element.refBlockTime = time;
+            }
+          })
+          .catch(function(err) {
+            if (err.response) {
+              console.log(err.response);
+            }
+          });
+      }
+    },
+    offListener() {
+      Bus.$off("txHash");
+      Bus.$off("accountValue");
+    }
+  },
+  beforeDestroy() {
+    this.offListener();
+  }
 };
 </script>
-<style lang='less' scoped>
-.bottom-modul {
-  .apex-modul {
-    .apex-title {
-      a {
-        display: inline;
-        span {
-          color: #f26522;
-        }
+
+<style scoped lang="less">
+.apex-modul {
+  .apex-title {
+    height: 43px;
+    a {
+      display: inline;
+      span {
+        color: #f26522;
       }
-      span:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
-      }
+    }
+    span:hover {
+      box-shadow: 2px 2px 8px 2px #f26522;
     }
   }
 }
