@@ -32,7 +32,7 @@
           :key="index"
           :class=" ((item.path === defaultNav) || ( defaultNav === '/' &&  index == 0)) ? 'active' : ''"
         >
-          <router-link :to="item.path" @click.native="hiddenAboutUs"></router-link>
+          <router-link :to="item.path" @click.native="switchWalletUrl"></router-link>
         </li>
       </ul>
       <ul class="fl about">
@@ -162,18 +162,13 @@ export default {
       newwalletUrl: null
     };
   },
-  created() {
-    setTimeout(() => {
-      this.walletUrl = sessionStorage.getItem("walletUrl");
-      this.nav[1].path = this.walletUrl;
-    });
-  },
+  created() {},
   computed: {
     nav() {
-      let walletUrl = this.walletUrl;
+      // let walletUrl = this.walletUrl;
       return [
         { title: this.$t("nav.home"), path: "/home" },
-        { title: this.$t("nav.wallet"), path:  walletUrl},
+        { title: this.$t("nav.wallet"), path: "/emptyWallet" },
         { title: "", path: "/blocks" },
         { title: "", path: "/transactions" },
         { title: "", path: "/producer" }
@@ -184,7 +179,11 @@ export default {
     }
   },
   mounted() {
-    console.log(this.nav[1].path);
+    setTimeout(() => {
+      this.walletUrl = sessionStorage.getItem("walletUrl");
+      this.nav[1].path = this.walletUrl;
+      console.log(this.nav[1].path);
+    }, 500);
     this.about = this.$refs.aboutUs;
     this.wrapDiv = this.$refs.wrapAboutUs;
     this.search = this.$refs.search;
@@ -235,7 +234,7 @@ export default {
               .get(this.url.blockHeight_url + this.search)
               .then(response => {
                 if (response.data.data == "NotFound") {
-                  this.$router.push("/error");
+                  // this.$router.push("/error");
                   this.$refs.search.value = null;
                   return;
                 }
@@ -268,7 +267,7 @@ export default {
               .get(this.url.blockHash_url + this.search)
               .then(response => {
                 if (response.data.data == "NotFound") {
-                  this.$router.push("/error");
+                  // this.$router.push("/error");
                   return;
                 }
                 if (response.data.status == 200) {
@@ -283,7 +282,6 @@ export default {
                     });
                     this.$router.push("/blocks/BlocksInfo");
                     this.$refs.search.value = null;
-
                     return;
                   }
                 }
@@ -295,7 +293,7 @@ export default {
               .get(this.url.transactions_url + this.search)
               .then(response => {
                 if (response.data.data == "NotFound") {
-                  this.$router.push("/error");
+                  // this.$router.push("/error");
                   return;
                 }
                 if (response.data.status == 200) {
@@ -345,7 +343,7 @@ export default {
       this.about.style.height = "240px";
       this.wrapDiv.style.height = "100vh";
     },
-    hiddenAboutUs() {
+    switchWalletUrl() {
       if (this.nav[1].title == this.$t("nav.wallet")) {
         setTimeout(() => {
           this.newwalletUrl = sessionStorage.getItem("walletUrl");
@@ -353,6 +351,8 @@ export default {
         });
         console.log(this.nav[1].path);
       }
+    },
+    hiddenAboutUs() {
       this.about.style.height = "0px";
       this.wrapDiv.style.height = "0vh";
     },

@@ -375,7 +375,6 @@ export default {
     },
     getPwd() {
       this.pwd = this.$refs.firstPwd.value;
-      console.log(this.pwd);
     },
     getAllInput() {
       this.secondInput = this.$refs.inputAmout;
@@ -505,8 +504,6 @@ export default {
           this.signature
         );
         this.confirm();
-
-        console.log(this.serialized_transaction);
       }
       return;
     },
@@ -538,7 +535,6 @@ export default {
           let x = res.txId.slice(0, 6);
           let y = res.txId.slice(-6);
           this.txId = x + "..." + y;
-          console.log(this.txId);
         })
         .catch(function(err) {
           if (err.response) {

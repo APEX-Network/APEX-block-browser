@@ -12,7 +12,11 @@
 </head>
 
 <body>
-  <div class="logo-left" id="logo"></div>
+  <div class="logo-left" id="logo">
+    <div class="float-logo" id="floatlogo">
+    </div>
+
+  </div>
   <div id="app"></div>
   <!-- built files will be auto injected -->
 </body>
@@ -21,7 +25,7 @@
   // window.addEventListener("popstate", function (e) {
   //   history.pushState(null, null, document.URL);
   // }, false);
-  let logo = document.getElementById("logo");
+  let logo = document.getElementById("floatlogo");
   logo.addEventListener("click", () => {
     window.location.href = "";
   })

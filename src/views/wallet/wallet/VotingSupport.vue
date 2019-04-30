@@ -360,7 +360,6 @@ export default {
     },
     getPwd() {
       this.pwd = this.$refs.firstPwd.value;
-      console.log(this.pwd);
     },
     getAllInput() {
       this.secondInput = this.$refs.inputAmout;
@@ -485,8 +484,6 @@ export default {
           executeTime: "0000000000000000", //不变
           votingRefundType: "00"
         };
-        console.log(serializParams.data);
-
         if (this.inputAmout !== this.allamount) {
           serializParams.amount = new bigdecimal.BigDecimal(
             String(this.inputAmout)
@@ -511,7 +508,6 @@ export default {
           this.message,
           this.signature
         );
-        console.log(this.serialized_transaction);
         this.confirm();
       }
       return;
@@ -544,7 +540,6 @@ export default {
           let x = res.txId.slice(0, 6);
           let y = res.txId.slice(-6);
           this.txId = x + "..." + y;
-          console.log(res.txId);
         })
         .catch(function(err) {
           if (err.response) {

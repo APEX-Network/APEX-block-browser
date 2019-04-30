@@ -1,5 +1,8 @@
 <template>
   <div class="TxFBlock">
+    <p class="bheight">
+      <router-link to="/blocks/BlocksInfo" @click.native="setHeightValue">{{blockHeight}}</router-link>
+    </p>
     <apex-title :title="title" class="title"/>
     <apex-back-ground class="bg"/>
     <div class="data-table">
@@ -17,10 +20,16 @@
             <router-link to="/blocks/BlocksInfo" @click.native="setHashValue">{{item.txHash}}</router-link>
           </span>
           <span class="col from">
-            <router-link to="/producer/ProducerInfo" @click.native="setMinerByValue">{{item.from}}</router-link>
+            <router-link
+              to="/transactions/TransactionsInfo/AccountInfo"
+              @click.native="setMinerByValue(item.from)"
+            >{{getaddress(item.from)}}</router-link>
           </span>
           <span class="col to">
-            <router-link to="/producer/ProducerInfo" @click.native="setMinerByValue">{{item.to}}</router-link>
+            <router-link
+              to="/transactions/TransactionsInfo/AccountInfo"
+              @click.native="setMinerByValue(item.to)"
+            >{{getaddress(item.to)}}</router-link>
           </span>
           <span class="col amount">{{item.amount}} CPX</span>
         </li>
@@ -63,7 +72,7 @@ export default {
   },
   data() {
     return {
-      title: "Transactions For Block    " + 76415,
+      title: "Transactions For Block    ",
       dataList: [],
       start: 0,
       blockHeight_url: "/api/v1.0/blocks/blockHeight/",
@@ -81,27 +90,39 @@ export default {
       blockHeight: null,
       index: 0,
       flag: null,
-      empthData: null
+      clickValue: {
+        type: "height",
+        value: null
+      }
     };
   },
   mounted() {
     this.getInstance();
     window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     Bus.$on("bHeight", data => {
-    //   this.empthData = data;
       sessionStorage.setItem("refresh", data);
       this.getTxFBlock(data);
-      this.title = "Transactions For Block    " + data;
+      this.blockHeight = data;
+      this.clickValue.value = this.blockHeight;
       return;
     });
     this.flag = sessionStorage.getItem("flag");
     if (this.flag == 1) {
       let refreshdata = sessionStorage.getItem("refresh");
+      this.blockHeight = refreshdata;
       this.getTxFBlock(refreshdata);
       return;
     }
   },
   methods: {
+    getaddress(address) {
+      let x = address.slice(0, 8);
+      let y = address.slice(-8);
+      return !address ? "Miner Reward" : x + "..." + y;
+    },
+    setHeightValue() {
+      Bus.$emit("clickValue", this.clickValue);
+    },
     getInstance() {
       this.arrow.leftArrow = this.$refs.left;
       this.arrow.rightArrow = this.$refs.right;
@@ -117,13 +138,9 @@ export default {
             let amount = element.amount;
             let faddress = element.from;
             let taddress = element.to;
+            this.getaddress(faddress);
+            this.getaddress(taddress);
             let result = amount.toString().indexOf(".");
-            let x = faddress.slice(0, 8);
-            let y = faddress.slice(-8);
-            element["from"] = !element.from ? "Miner Reward" : x + "..." + y;
-            let a = taddress.slice(0, 8);
-            let b = taddress.slice(-8);
-            element["to"] = a + "..." + b;
             element["index"] = this.index++;
             if (result > -1) {
               let pointLength = amount.toString().split(".")[1].length;
@@ -159,8 +176,8 @@ export default {
       this.clickValue.value = e.target.innerHTML;
       Bus.$emit("clickValue", JSON.stringify(this.clickValue));
     },
-    setMinerByValue(e) {
-      Bus.$emit("minerBy", e.target.innerHTML);
+    setMinerByValue(data) {
+      Bus.$emit("accountValue", data);
     },
     getNext() {
       if (this.start < 10) {
@@ -180,12 +197,8 @@ export default {
               let faddress = element.from;
               let taddress = element.to;
               let result = amount.toString().indexOf(".");
-              let x = faddress.slice(0, 8);
-              let y = faddress.slice(-8);
-              element["from"] = !element.from ? "Miner Reward" : x + "..." + y;
-              let a = taddress.slice(0, 8);
-              let b = taddress.slice(-8);
-              element["to"] = a + "..." + b;
+              this.getaddress(faddress);
+              this.getaddress(taddress);
               element["index"] = this.index++;
               if (result > -1) {
                 let pointLength = amount.toString().split(".")[1].length;
@@ -237,12 +250,8 @@ export default {
             let faddress = element.from;
             let taddress = element.to;
             let result = amount.toString().indexOf(".");
-            let x = faddress.slice(0, 8);
-            let y = faddress.slice(-8);
-            element["from"] = !element.from ? "Miner Reward" : x + "..." + y;
-            let a = taddress.slice(0, 8);
-            let b = taddress.slice(-8);
-            element["to"] = a + "..." + b;
+            this.getaddress(faddress);
+            this.getaddress(taddress);
             element["index"] = this.index++;
             if (result > -1) {
               let pointLength = amount.toString().split(".")[1].length;
@@ -287,12 +296,8 @@ export default {
             let faddress = element.from;
             let taddress = element.to;
             let result = amount.toString().indexOf(".");
-            let x = faddress.slice(0, 8);
-            let y = faddress.slice(-8);
-            element["from"] = !element.from ? "Miner Reward" : x + "..." + y;
-            let a = taddress.slice(0, 8);
-            let b = taddress.slice(-8);
-            element["to"] = a + "..." + b;
+            this.getaddress(faddress);
+            this.getaddress(taddress);
             element["index"] = this.index++;
             if (result > -1) {
               let pointLength = amount.toString().split(".")[1].length;
@@ -339,12 +344,8 @@ export default {
               let faddress = element.from;
               let taddress = element.to;
               let result = amount.toString().indexOf(".");
-              let x = faddress.slice(0, 8);
-              let y = faddress.slice(-8);
-              element["from"] = !element.from ? "Miner Reward" : x + "..." + y;
-              let a = taddress.slice(0, 8);
-              let b = taddress.slice(-8);
-              element["to"] = a + "..." + b;
+              this.getaddress(faddress);
+              this.getaddress(taddress);
               element["index"] = this.index++;
               if (result > -1) {
                 let pointLength = amount.toString().split(".")[1].length;
@@ -380,7 +381,8 @@ export default {
     },
     offListener() {
       Bus.$off("clickValue");
-      Bus.$off("minerBy");
+      Bus.$off("accountValue");
+      Bus.$off("txFHeight");
     },
     beforeunloadHandler(e) {
       this.flag = 1;
@@ -403,6 +405,15 @@ export default {
 .TxFBlock {
   width: 100%;
   height: 100%;
+  .bheight {
+    position: absolute;
+    padding-top: 11px;
+    padding-left: 180px;
+    a {
+      cursor: pointer;
+      color: #f26522;
+    }
+  }
   /deep/ .title {
     .apex-title {
       p {

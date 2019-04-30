@@ -13,7 +13,7 @@
               >{{list.txHash}}</router-link>
             </div>
           </span>
-          <span class="col">{{list.refBlockTime }}</span>
+          <span class="col time">{{list.refBlockTime }}</span>
         </li>
       </ul>
       <!-- <Pagination ref="pagInation" /> -->
@@ -65,7 +65,7 @@ export default {
       start: 0,
       params: {
         start: "0",
-        pageSize: "11"
+        pageSize: "10"
       },
       pageNumber: "1-10",
       arrow: {
@@ -262,8 +262,12 @@ export default {
     overflow-y: auto;
     .table-ul {
       width: 100%;
+      padding-top: 20px;
       max-width: 100%;
       & > li {
+        .time {
+          padding-left: 60px;
+        }
         &.row {
           margin: 0;
           color: #ebebeb;
@@ -303,7 +307,7 @@ export default {
     .apex-pagination {
       width: 100%;
       height: 50px;
-      padding: 0px 35px;
+      padding: 20px 35px 0 35px;
       box-sizing: border-box;
       text-align: right;
       font-size: 12px;

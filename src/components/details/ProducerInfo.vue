@@ -124,13 +124,7 @@ export default {
       }
     },
     getProduceInfo() {
-      if (!!this.minerBy) {
-        for (let i = 0; i < this.producer.length; i++) {
-          let item = this.producer[i];
-          if (item.addr == this.minerBy) {
-            this.producerInfo.CurrentRank = item.Rank;
-          }
-        }
+      if (this.minerBy !== null) {
         this.$axios
           .get(this.minerBy_url + this.minerBy)
           .then(response => {
@@ -142,6 +136,12 @@ export default {
             this.producerInfo.block = res.blockCount;
             this.producerInfo.Website = res.webSite;
             this.producerInfo.Description = res.describe;
+            for (let i = 0; i < this.producer.length; i++) {
+              let item = this.producer[i];
+              if (item.addr == this.minerBy) {
+                this.producerInfo.CurrentRank = item.Rank;
+              }
+            }
           })
           .catch(function(response) {
             console.log(response);

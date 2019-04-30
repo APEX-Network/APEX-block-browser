@@ -45,21 +45,21 @@
               <div class="bottom">
                 <router-link
                   to="/transactions/TransactionsInfo"
-                  @click.native="setRefBlockHash"
+                  @click.native="setTxHash"
                 >{{list.txHash}}</router-link>
               </div>
             </span>
             <span class="col from">
               <router-link
-                to="/transactions/TransactionsInfo"
-                @click.native="setRefBlockHash"
-              >{{list.from}}</router-link>
+                to="/transactions/TransactionsInfo/AccountInfo"
+                @click.native="currentAccountInfo(list.from)"
+              >{{getaddress(list.from)}}</router-link>
             </span>
             <span class="col to">
               <router-link
-                to="/transactions/TransactionsInfo"
-                @click.native="setRefBlockHash"
-              >{{list.to}}</router-link>
+                to="/transactions/TransactionsInfo/AccountInfo"
+                @click.native="currentAccountInfo(list.to)"
+              >{{getaddress(list.to)}}</router-link>
             </span>
             <span class="col amount">
               <router-link to>{{list.amount}} CPX</router-link>
@@ -152,6 +152,14 @@ export default {
     });
   },
   methods: {
+    currentAccountInfo(data) {
+      Bus.$emit("accountValue", data);
+    },
+    getaddress(address) {
+      let x = address.slice(0, 8);
+      let y = address.slice(-8);
+      return !address ? "Miner Reward" : x + "..." + y;
+    },
     getInstance() {
       this.switchImg = this.$refs.img;
       this.arrow.leftArrow = this.$refs.left;
@@ -166,14 +174,6 @@ export default {
       this.$copyText(val).then(function(e) {}, function(e) {});
     },
     getClickValue() {
-      // Bus.$on("accountValue", data => {
-      //   this.accountTransaction_param.address = JSON.parse(data).accountValue;
-      //   this.Type = JSON.parse(data).type;
-      //   sessionStorage.setItem("refresh",data);
-      //   this.getAccountInfo();
-      //   this.getAccountTransactionInfo();
-      //   return;
-      // });
       Bus.$on("accountValue", data => {
         this.accountTransaction_param.address = data;
         sessionStorage.setItem("refresh", data);
@@ -190,15 +190,6 @@ export default {
         this.getAccountTransactionInfo();
         return;
       }
-      // if (this.accountTransaction_param.address == null && this.flag == 1) {
-      //   this.accountTransaction_param.address = JSON.parse(sessionStorage.getItem(
-      //     "refresh")).accountValue;
-      //   this.Type = JSON.parse(sessionStorage.getItem(
-      //     "refresh")).type;
-      //   this.getAccountInfo();
-      //   this.getAccountTransactionInfo();
-      //   return;
-      // }
     },
     getAccountInfo() {
       if (this.accountTransaction_param.address !== null) {
@@ -251,16 +242,12 @@ export default {
               let faddress = element.from;
               let taddress = element.to;
               let result = amount.toString().indexOf(".");
-              let x = faddress.slice(0, 8);
-              let y = faddress.slice(-8);
-              this.transactions[i]["from"] = x + "..." + y;
-              let a = taddress.slice(0, 8);
-              let b = taddress.slice(-8);
-              this.transactions[i]["to"] = a + "..." + b;
+              this.getaddress(faddress);
+              this.getaddress(taddress);
               if (result > -1) {
                 let pointLength = amount.toString().split(".")[1].length;
                 if (pointLength > 2) {
-                  this.transactions[i]["amount"] =
+                  element["amount"] =
                     amount.toString().split(".")[0] +
                     "." +
                     amount
@@ -269,39 +256,14 @@ export default {
                       .substring(0, 2);
                 }
                 if (pointLength <= 2) {
-                  this.transactions[i]["amount"] = amount;
+                  element["amount"] = amount;
                 }
               }
               if (result == -1) {
-                this.transactions[i]["amount"] = amount;
+                element["amount"] = amount;
               }
             }
-            console.log(this.transactions);
             this.count = response.data.data.count;
-            // this.transactions = [];
-            // for (let i = 0; i < res.length; i++) {
-            //   let element = res[i];
-            //   switch (this.Type) {
-            //     case "Transfer":
-            //       if (element.type == "Transfer") {
-            //         this.transactions.push(element);
-            //       }
-            //       break;
-
-            //     case "Transaction":
-            //       if (element.type !== "Transfer") {
-            //         this.transactions.push(element);
-            //       }
-            //       break;
-
-            //     default:
-            //       break;
-            //   }
-            // }
-            // this.count = [];
-            // this.count = this.transactions.length;
-            // console.log(this.count);
-
             let time;
             for (let i = 0; i < this.transactions.length; i++) {
               let element = this.transactions[i];
@@ -369,16 +331,12 @@ export default {
               let faddress = element.from;
               let taddress = element.to;
               let result = amount.toString().indexOf(".");
-              let x = faddress.slice(0, 8);
-              let y = faddress.slice(-8);
-              this.transactions[i]["from"] = x + "..." + y;
-              let a = taddress.slice(0, 8);
-              let b = taddress.slice(-8);
-              this.transactions[i]["to"] = a + "..." + b;
+              this.getaddress(faddress);
+              this.getaddress(taddress);
               if (result > -1) {
                 let pointLength = amount.toString().split(".")[1].length;
                 if (pointLength > 2) {
-                  this.transactions[i]["amount"] =
+                  element["amount"] =
                     amount.toString().split(".")[0] +
                     "." +
                     amount
@@ -387,32 +345,13 @@ export default {
                       .substring(0, 2);
                 }
                 if (pointLength <= 2) {
-                  this.transactions[i]["amount"] = amount;
+                  element["amount"] = amount;
                 }
               }
               if (result == -1) {
-                this.transactions[i]["amount"] = amount;
+                element["amount"] = amount;
               }
             }
-            // for (let i = 0; i < res.length; i++) {
-            //   const element = res[i];
-            //   switch (this.Type) {
-            //     case "Transfer":
-            //       if (element.type == "Transfer") {
-            //         this.transactions.push(element);
-            //       }
-            //       break;
-
-            //     case "Transaction":
-            //       if (element.type !== "Transfer") {
-            //         this.transactions.push(element);
-            //       }
-            //       break;
-
-            //     default:
-            //       break;
-            //   }
-            // }
             let time;
             for (let i = 0; i < this.transactions.length; i++) {
               let element = this.transactions[i];
@@ -452,17 +391,12 @@ export default {
                 let faddress = element.from;
                 let taddress = element.to;
                 let result = amount.toString().indexOf(".");
-                let x = faddress.slice(0, 8);
-                let y = faddress.slice(-8);
-                this.transactions[i]["from"] = x + "..." + y;
-                let a = taddress.slice(0, 8);
-                let b = taddress.slice(-8);
-                this.transactions[i]["to"] = a + "..." + b;
-
+                this.getaddress(faddress);
+                this.getaddress(taddress);
                 if (result > -1) {
                   let pointLength = amount.toString().split(".")[1].length;
                   if (pointLength > 2) {
-                    this.transactions[i]["amount"] =
+                    element["amount"] =
                       amount.toString().split(".")[0] +
                       "." +
                       amount
@@ -471,33 +405,13 @@ export default {
                         .substring(0, 2);
                   }
                   if (pointLength <= 2) {
-                    this.transactions[i]["amount"] = amount;
+                    element["amount"] = amount;
                   }
                 }
                 if (result == -1) {
-                  this.transactions[i]["amount"] = amount;
+                  element["amount"] = amount;
                 }
               }
-              // this.transactions = [];
-              // for (let i = 0; i < res.length; i++) {
-              //   const element = res[i];
-              //   switch (this.Type) {
-              //     case "Transfer":
-              //       if (element.type == "Transfer") {
-              //         this.transactions.push(element);
-              //       }
-              //       break;
-
-              //     case "Transaction":
-              //       if (element.type !== "Transfer") {
-              //         this.transactions.push(element);
-              //       }
-              //       break;
-
-              //     default:
-              //       break;
-              //   }
-              // }
               let time;
               for (let i = 0; i < this.transactions.length; i++) {
                 let element = this.transactions[i];
@@ -538,17 +452,12 @@ export default {
                   let faddress = element.from;
                   let taddress = element.to;
                   let result = amount.toString().indexOf(".");
-                  let x = faddress.slice(0, 8);
-                  let y = faddress.slice(-8);
-                  this.transactions[i]["from"] = x + "..." + y;
-                  let a = taddress.slice(0, 8);
-                  let b = taddress.slice(-8);
-                  this.transactions[i]["to"] = a + "..." + b;
-
+                  this.getaddress(faddress);
+                  this.getaddress(taddress);
                   if (result > -1) {
                     let pointLength = amount.toString().split(".")[1].length;
                     if (pointLength > 2) {
-                      this.transactions[i]["amount"] =
+                      element["amount"] =
                         amount.toString().split(".")[0] +
                         "." +
                         amount
@@ -557,33 +466,13 @@ export default {
                           .substring(0, 2);
                     }
                     if (pointLength <= 2) {
-                      this.transactions[i]["amount"] = amount;
+                      element["amount"] = amount;
                     }
                   }
                   if (result == -1) {
-                    this.transactions[i]["amount"] = amount;
+                    element["amount"] = amount;
                   }
                 }
-                // this.transactions = [];
-                // for (let i = 0; i < res.length; i++) {
-                //   const element = res[i];
-                //   switch (this.Type) {
-                //     case "Transfer":
-                //       if (element.type == "Transfer") {
-                //         this.transactions.push(element);
-                //       }
-                //       break;
-
-                //     case "Transaction":
-                //       if (element.type !== "Transfer") {
-                //         this.transactions.push(element);
-                //       }
-                //       break;
-
-                //     default:
-                //       break;
-                //   }
-                // }
                 let time;
                 for (let i = 0; i < this.transactions.length; i++) {
                   let element = this.transactions[i];
@@ -636,17 +525,12 @@ export default {
                   let faddress = element.from;
                   let taddress = element.to;
                   let result = amount.toString().indexOf(".");
-                  let x = faddress.slice(0, 8);
-                  let y = faddress.slice(-8);
-                  this.transactions[i]["from"] = x + "..." + y;
-                  let a = taddress.slice(0, 8);
-                  let b = taddress.slice(-8);
-                  this.transactions[i]["to"] = a + "..." + b;
-
+                  this.getaddress(faddress);
+                  this.getaddress(taddress);
                   if (result > -1) {
                     let pointLength = amount.toString().split(".")[1].length;
                     if (pointLength > 2) {
-                      this.transactions[i]["amount"] =
+                      element["amount"] =
                         amount.toString().split(".")[0] +
                         "." +
                         amount
@@ -655,33 +539,13 @@ export default {
                           .substring(0, 2);
                     }
                     if (pointLength <= 2) {
-                      this.transactions[i]["amount"] = amount;
+                      element["amount"] = amount;
                     }
                   }
                   if (result == -1) {
-                    this.transactions[i]["amount"] = amount;
+                    element["amount"] = amount;
                   }
                 }
-                // this.transactions = [];
-                // for (let i = 0; i < res.length; i++) {
-                //   const element = res[i];
-                //   switch (this.Type) {
-                //     case "Transfer":
-                //       if (element.type == "Transfer") {
-                //         this.transactions.push(element);
-                //       }
-                //       break;
-
-                //     case "Transaction":
-                //       if (element.type !== "Transfer") {
-                //         this.transactions.push(element);
-                //       }
-                //       break;
-
-                //     default:
-                //       break;
-                //   }
-                // }
                 let time;
                 for (let i = 0; i < this.transactions.length; i++) {
                   let element = this.transactions[i];
@@ -701,7 +565,7 @@ export default {
         }
       }
     },
-    setRefBlockHash(e) {
+    setTxHash(e) {
       Bus.$emit("txHash", e.target.innerHTML);
     },
     offListener() {

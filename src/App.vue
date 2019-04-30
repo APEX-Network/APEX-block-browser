@@ -2,7 +2,7 @@
   <div>
     <vue-scroll :ops="ops"/>
     <div id="app">
-      <publicnav/>
+      <publicnav />
       <div class="main-box">
         <router-view :key="key"></router-view>
       </div>
@@ -46,21 +46,27 @@ export default {
   },
   methods: {
     checkDB() {
-      this.getAllAddress = db.APKStore.where("APAddress")
+      try {
+        this.getAllAddress = db.APKStore.where("APAddress")
         .above(0)
         .toArray(APKStore => {
           APKStore.forEach(v => {
             this.APAddress.push(v.APAddress);
           });
-          if (this.APAddress.length == 0) {
-            this.walletUrl = "/emptyWallet";
-            sessionStorage.setItem("walletUrl", this.walletUrl);
-          }
-          if (this.APAddress.length != 0) {
-            this.walletUrl = "/wallet";
-            sessionStorage.setItem("walletUrl", this.walletUrl);
-          }
+          setTimeout(() => {
+            if (this.APAddress.length == 0) {
+              this.walletUrl = "/emptyWallet";
+              sessionStorage.setItem("walletUrl", this.walletUrl);
+            }
+            if (this.APAddress.length !== 0) {
+              this.walletUrl = "/wallet";
+              sessionStorage.setItem("walletUrl", this.walletUrl);
+            }
+          });
         });
+      } catch (error) {
+        console.log(error);
+      }
     },
     offListener() {
       // Bus.$off("walletUrl");
