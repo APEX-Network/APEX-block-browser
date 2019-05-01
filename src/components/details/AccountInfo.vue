@@ -6,7 +6,7 @@
       <ul class="table-ul">
         <li class="row">
           <span class="col">Address</span>
-          <span class="col col-lg-8" ref="address">
+          <span class="col col-lg-8 adressCPX" ref="address">
             <i>
               {{accountTransaction_param.address}}
               <img
@@ -21,7 +21,7 @@
         </li>
         <li class="row">
           <span class="col">Balance</span>
-          <span class="col col-lg-8">{{Balance}} CPX</span>
+          <span class="col col-lg-8 adressCPX">{{Balance}} CPX</span>
         </li>
       </ul>
     </div>
@@ -49,17 +49,14 @@
                 >{{list.txHash}}</router-link>
               </div>
             </span>
-            <span class="col from">
+            <span class="col" :class="objectClass">
               <router-link
-                to="/transactions/TransactionsInfo/AccountInfo"
+                to
                 @click.native="currentAccountInfo(list.from)"
               >{{getaddress(list.from)}}</router-link>
             </span>
             <span class="col to">
-              <router-link
-                to="/transactions/TransactionsInfo/AccountInfo"
-                @click.native="currentAccountInfo(list.to)"
-              >{{getaddress(list.to)}}</router-link>
+              <router-link to @click.native="currentAccountInfo(list.to)">{{getaddress(list.to)}}</router-link>
             </span>
             <span class="col amount">
               <router-link to>{{list.amount}} CPX</router-link>
@@ -135,7 +132,11 @@ export default {
       point: null,
       switchImg: null,
       Type: null,
-      noTransactions: null
+      noTransactions: null,
+      objectClass: {
+        from: true,
+        emptyFrom: false
+      }
     };
   },
   mounted() {
@@ -153,9 +154,15 @@ export default {
   },
   methods: {
     currentAccountInfo(data) {
-      Bus.$emit("accountValue", data);
+      if (data !== "") {
+        this.$router.push("/transactions/TransactionsInfo/AccountInfo");
+        setTimeout(() => {
+          Bus.$emit("accountValue", data);
+        });
+      }
     },
     getaddress(address) {
+      // !address ? this.objectClass.emptyFrom = true : this.objectClass.emptyFrom = false;
       let x = address.slice(0, 8);
       let y = address.slice(-8);
       return !address ? "Miner Reward" : x + "..." + y;
@@ -242,6 +249,10 @@ export default {
               let faddress = element.from;
               let taddress = element.to;
               let result = amount.toString().indexOf(".");
+              if (faddress == "") {
+                this.objectClass.emptyFrom = true;
+                this.objectClass.from = false;
+              }
               this.getaddress(faddress);
               this.getaddress(taddress);
               if (result > -1) {
@@ -264,15 +275,15 @@ export default {
               }
             }
             this.count = response.data.data.count;
-            let time;
-            for (let i = 0; i < this.transactions.length; i++) {
-              let element = this.transactions[i];
-              time = util.utilMethods.listUTCtime(
-                element.refBlockTime,
-                serverTime
-              );
-              element.refBlockTime = time;
-            }
+            // let time;
+            // for (let i = 0; i < this.transactions.length; i++) {
+            //   let element = this.transactions[i];
+            //   time = util.utilMethods.listUTCtime(
+            //     element.refBlockTime,
+            //     serverTime
+            //   );
+            //   element.refBlockTime = time;
+            // }
             if (this.count == 0) {
               this.noTransactions = "There are no matching entries";
               this.pageNumber = "1-1";
@@ -281,10 +292,10 @@ export default {
             }
             this.totalPage =
               this.count / this.accountTransaction_param.pageSize;
-            if (this.totalPage >= 10) {
-              this.totalPage = 10;
+            if (this.totalPage >= 100) {
+              this.totalPage = 100;
             }
-            if (this.totalPage < 10) {
+            if (this.totalPage < 100) {
               this.point = this.totalPage.toString().indexOf(".");
               if (this.point > -1) {
                 this.totalPage =
@@ -596,6 +607,13 @@ export default {
   height: 100%;
   .transactions-details {
     padding-top: 30px;
+    .table-ul {
+      .adressCPX {
+        .row {
+          padding: 0 8px 0 69px;
+        }
+      }
+    }
   }
   .bg {
     background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
@@ -613,7 +631,6 @@ export default {
       .table-ul {
         width: 100%;
         max-width: 100%;
-        // margin-top: 20px;
         border-top: #0000 2px solid;
         & > li {
           .ttHash {
@@ -627,13 +644,21 @@ export default {
             padding-left: 20px;
             max-width: 232px;
           }
+          .emptyFrom {
+            padding-left: 20px;
+            max-width: 232px;
+            a {
+              color: #ebebeb;
+              cursor: default;
+            }
+          }
           .to {
             max-width: 232px;
-            padding-left: 20px;
+            padding-left: 50px;
           }
           .amount {
             max-width: 200px;
-            padding-left: 70px;
+            padding-left: 90px;
 
             a {
               color: #ebebeb;

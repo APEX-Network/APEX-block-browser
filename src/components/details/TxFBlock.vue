@@ -17,19 +17,13 @@
         <li v-for="(item,index) in dataList" :key="index" class="row">
           <span class="col height">{{item.index}}</span>
           <span class="col col-lg-6 txHash">
-            <router-link to="/blocks/BlocksInfo" @click.native="setHashValue">{{item.txHash}}</router-link>
+            <router-link to @click.native="setHashValue(item.txHash)">{{item.txHash}}</router-link>
           </span>
-          <span class="col from">
-            <router-link
-              to="/transactions/TransactionsInfo/AccountInfo"
-              @click.native="setMinerByValue(item.from)"
-            >{{getaddress(item.from)}}</router-link>
+          <span class="col" :class="objectClass">
+            <router-link to @click.native="setMinerByValue(item.from)">{{getaddress(item.from)}}</router-link>
           </span>
           <span class="col to">
-            <router-link
-              to="/transactions/TransactionsInfo/AccountInfo"
-              @click.native="setMinerByValue(item.to)"
-            >{{getaddress(item.to)}}</router-link>
+            <router-link to @click.native="setMinerByValue(item.to)">{{getaddress(item.to)}}</router-link>
           </span>
           <span class="col amount">{{item.amount}} CPX</span>
         </li>
@@ -90,9 +84,14 @@ export default {
       blockHeight: null,
       index: 0,
       flag: null,
+      count: null,
       clickValue: {
         type: "height",
         value: null
+      },
+      objectClass: {
+        from: true,
+        emptyFrom: false
       }
     };
   },
@@ -132,12 +131,48 @@ export default {
         .get(this.blockHeight_url + data)
         .then(response => {
           let res = response.data.data.txs;
-          this.dataList = res;
+          this.totalNumber = res;
+          this.count = res.length;
+          if (this.count == 0) {
+            this.noTransactions = "There are no matching entries";
+            this.pageNumber = "1-1";
+            this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+            return;
+          }
+          this.totalPage = this.count / 10;
+          if (this.totalPage >= 100) {
+            this.totalPage = 100;
+          }
+          if (this.totalPage < 100) {
+            this.point = this.totalPage.toString().indexOf(".");
+            if (this.point > -1) {
+              this.totalPage =
+                parseInt(this.totalPage.toString().split(".")[0]) + 1;
+            }
+            if (this.point == -1) {
+              this.totalPage = this.totalPage;
+            }
+
+            if (this.totalPage == 1) {
+              this.isClick = false;
+              this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+            }
+          }
+          this.pageNumber = this.start + 1 + "-" + this.totalPage;
+          this.dataList = this.totalNumber.slice(0, 10);
           for (let i = 0; i < this.dataList.length; i++) {
             const element = this.dataList[i];
             let amount = element.amount;
             let faddress = element.from;
             let taddress = element.to;
+            if (faddress == "") {
+              this.objectClass.emptyFrom = true;
+              this.objectClass.from = false;
+            }
+            if (faddress !== "") {
+              this.objectClass.emptyFrom = false;
+              this.objectClass.from = true;
+            }
             this.getaddress(faddress);
             this.getaddress(taddress);
             let result = amount.toString().indexOf(".");
@@ -171,13 +206,19 @@ export default {
       this.clickValue.value = e.target.innerHTML;
       Bus.$emit("clickValue", JSON.stringify(this.clickValue));
     },
-    setHashValue(e) {
-      this.clickValue.type = "hash";
-      this.clickValue.value = e.target.innerHTML;
-      Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+    setHashValue(txHash) {
+      this.$router.push("/transactions/TransactionsInfo");
+      setTimeout(() => {
+        Bus.$emit("txHash", txHash);
+      });
     },
     setMinerByValue(data) {
-      Bus.$emit("accountValue", data);
+      if (data !== "") {
+        this.$router.push("/transactions/TransactionsInfo/AccountInfo");
+        setTimeout(() => {
+          Bus.$emit("accountValue", data);
+        });
+      }
     },
     getNext() {
       if (this.start < 10) {
@@ -383,6 +424,7 @@ export default {
       Bus.$off("clickValue");
       Bus.$off("accountValue");
       Bus.$off("txFHeight");
+      Bus.$off("txHash");
     },
     beforeunloadHandler(e) {
       this.flag = 1;
@@ -434,18 +476,30 @@ export default {
         }
         .height {
           max-width: 82px;
+          padding-left: 36px;
         }
         .txHash {
           max-width: 250px;
         }
         .from {
           max-width: 250px;
+          padding-left: 80px;
+        }
+        .emptyFrom {
+          max-width: 250px;
+          padding-left: 80px;
+          a {
+            color: #ebebeb;
+            cursor: default;
+          }
         }
         .to {
           max-width: 250px;
+          padding-left: 55px;
         }
         .amount {
-          max-width: 100px;
+          padding-left: 5%;
+          max-width: 165px;
         }
         & > span {
           a:hover {

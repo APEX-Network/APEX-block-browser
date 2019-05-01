@@ -155,6 +155,8 @@ export default {
                     res.timeStamp,
                     serverTime
                   );
+                  console.log(this.timeStamp);
+                  
                   this.transactions =
                     res.txNum + " " + "transactions in this block";
                   this.parentHash = res.prevBlock;
