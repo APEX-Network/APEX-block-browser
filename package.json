@@ -1,8 +1,8 @@
 {
-  "name": "apex-block-browser",
+  "name": "apex-blockchain-explorer",
   "version": "1.0.0",
-  "description": "A Vue.js project",
-  "author": "Mia <952481706@qq.com>",
+  "description": "apex-blockchain-explorer",
+  "author": "Jack",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",

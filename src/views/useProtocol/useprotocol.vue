@@ -2,7 +2,7 @@
   <div class="apex-modul">
     <p class="apex-title">Apex Wallet Service Agreement</p>
     <div class="useProtocol">
-      <vue-scroll :ops="ops" />
+      <vue-scroll :ops="ops">
         <div class="disclaimer-box">
           <h3>Apex Wallet Service Agreement</h3>
           <p>The Apex Wallet Service Agreement (hereinafter referred to as "this Agreement") is made between Chinapex (Shanghai) Data Technology Co., Ltd. (hereinafter referred to as " Chinapex Technology" or "we") and the User (hereinafter referred to as "you" or "user"), and this Agreement shall be legally binding upon you and Chinapex Technology.
@@ -401,7 +401,7 @@
 
             </p>
         </div>
-        <vue-scroll />
+        </vue-scroll>
     </div>
     <div class="btn-box">
       <router-link to="/wallet/NewWallet">I AGREE</router-link>
@@ -452,7 +452,7 @@ export default {
     line-height: 33px;
     border: 1px solid #f26522;
     color: #f26522;
-    // font-size: 14px;
+    font-size: 14px;
     text-align: center;
     margin: 0 auto;
     transition: all 0.3s;
@@ -464,5 +464,7 @@ export default {
   }
 }
 </style>
+
+
 
 
