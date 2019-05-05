@@ -75,7 +75,6 @@ const utilMethods = {
           console.log(date);
           return "0.5 sec ago"
         } else {
-          console.log(date);
           return date + " sec ago";
         }
       }
