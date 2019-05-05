@@ -275,15 +275,6 @@ export default {
               }
             }
             this.count = response.data.data.count;
-            // let time;
-            // for (let i = 0; i < this.transactions.length; i++) {
-            //   let element = this.transactions[i];
-            //   time = util.utilMethods.listUTCtime(
-            //     element.refBlockTime,
-            //     serverTime
-            //   );
-            //   element.refBlockTime = time;
-            // }
             if (this.count == 0) {
               this.noTransactions = "There are no matching entries";
               this.pageNumber = "1-1";

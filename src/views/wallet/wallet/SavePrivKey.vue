@@ -42,7 +42,7 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import Bus from "./../../../utils/bus";
+import Bus from "@/utils/bus";
 const ECPair = require("bitcoinjs-lib/src/ecpair");
 
 export default {
@@ -89,9 +89,9 @@ export default {
       });
     },
     getAddress() {
-      let url = "/wallet";
+      // let url = "/wallet";
       setTimeout(() => {
-        sessionStorage.setItem("walletUrl", url);
+        // sessionStorage.setItem("walletUrl", url);
         Bus.$emit("apAddress", this.apAddress);
         this.$router.push("/wallet");
       });

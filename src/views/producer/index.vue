@@ -55,7 +55,6 @@ import ApexBackGround from "@/components/public/ApexBackGround.vue";
 // import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import utils from "./../../utils/utils";
-import { setTimeout } from "timers";
 export default {
   name: "Producer",
   components: {
@@ -91,12 +90,15 @@ export default {
   mounted() {
     this.getInstance();
     this.getProducerList();
-    // const timer = setInterval(() => {
-    //   this.getProducerList();
-    // }, 1500);
-    // this.$once("hook:beforeDestroy", () => {
-    //   clearInterval(timer);
-    // });
+    const timer = setInterval(() => {
+      this.getProducerList();
+    }, 1500);
+    const timer2 = setInterval(() => {
+      clearInterval(timer);
+    }, 60000);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer,timer2);
+    });
   },
   methods: {
     getInstance() {
@@ -107,9 +109,10 @@ export default {
       this.$axios
         .post(this.minerBy_url, this.params)
         .then(response => {
+          this.producer = [];
+          this.Rank = 1;
           this.producer = response.data.data;
           this.count = this.producer.length / this.params.pageSize;
-          console.log(this.count);
           if (this.count >= 10) {
             this.totalPage = 10;
             this.pageNumber = "1-" + this.totalPage;
@@ -118,13 +121,11 @@ export default {
             this.point = this.count.toString().indexOf(".");
             if (this.point > -1) {
               this.totalPage = parseInt(this.count.toString().split(".")[0]) + 1;
-              console.log(this.totalPage);
             }
             if (this.point == -1) {
               this.totalPage = this.count;
             }
             this.pageNumber = "1-" + this.totalPage;
-            console.log(this.pageNumber);
             if (this.totalPage == 1) {
               this.isClick = false;
               this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");

@@ -113,7 +113,7 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import util from "../../../utils/utils";
+import util from "@/utils/utils";
 import Bus from "./../../../utils/bus";
 import db from "./../../../utils/myDatabase";
 const bigdecimal = require("bigdecimal");

@@ -26,7 +26,7 @@ import TxFBlock from '@/components/details/TxFBlock';
 Vue.use(Router)
 
 export default new Router({
-  // mode: 'history',
+  mode: 'history',
   routes: [{
     path: '/',
     name: 'default',
@@ -50,18 +50,18 @@ export default new Router({
     name: 'wallet',
     component: wallet,
   },
-  {
-    path: '/emptyWallet',
-    name: 'emptyWallet',
-    component: emptyWallet,
-  },
+  // {
+  //   path: '/emptyWallet',
+  //   name: 'emptyWallet',
+  //   component: emptyWallet,
+  // },
 
-  {
-    path: '/NewWallet',
-    alias: '/emptyWallet/NewWallet',
-    name: 'NewWallet',
-    component: NewWallet,
-  },
+  // {
+  //   path: '/NewWallet',
+  //   alias: '/emptyWallet/NewWallet',
+  //   name: 'NewWallet',
+  //   component: NewWallet,
+  // },
   {
     path: '/NewWallet',
     alias: '/wallet/NewWallet',
@@ -76,12 +76,12 @@ export default new Router({
     name: 'CreatedKeystore',
     component: CreatedKeystore,
   },
-  {
-    path: '/CreatedKeystore',
-    alias: '/emptyWallet/NewWallet/CreatedKeystore',
-    name: 'CreatedKeystore',
-    component: CreatedKeystore,
-  },
+  // {
+  //   path: '/CreatedKeystore',
+  //   alias: '/emptyWallet/NewWallet/CreatedKeystore',
+  //   name: 'CreatedKeystore',
+  //   component: CreatedKeystore,
+  // },
 
   {
     path: '/SavePrivKey',
@@ -89,19 +89,19 @@ export default new Router({
     name: 'SavePrivKey',
     component: SavePrivKey,
   },
-  {
-    path: '/SavePrivKey',
-    alias: '/emptyWallet/NewWallet/CreatedKeystore/SavePrivKey',
-    name: 'SavePrivKey',
-    component: SavePrivKey,
-  },
+  // {
+  //   path: '/SavePrivKey',
+  //   alias: '/emptyWallet/NewWallet/CreatedKeystore/SavePrivKey',
+  //   name: 'SavePrivKey',
+  //   component: SavePrivKey,
+  // },
 
-  {
-    path: '/OpenWallet',
-    alias: '/emptyWallet/OpenWallet',
-    name: 'OpenWallet',
-    component: OpenWallet,
-  },
+  // {
+  //   path: '/OpenWallet',
+  //   alias: '/emptyWallet/OpenWallet',
+  //   name: 'OpenWallet',
+  //   component: OpenWallet,
+  // },
   {
     path: '/OpenWallet',
     alias: '/wallet/OpenWallet',
@@ -116,12 +116,12 @@ export default new Router({
     component: PrivateKey,
   },
 
-  {
-    path: '/OpenWallet/PrivateKey',
-    alias: '/emptyWallet/OpenWallet/PrivateKey',
-    name: 'PrivateKey',
-    component: PrivateKey,
-  },
+  // {
+  //   path: '/OpenWallet/PrivateKey',
+  //   alias: '/emptyWallet/OpenWallet/PrivateKey',
+  //   name: 'PrivateKey',
+  //   component: PrivateKey,
+  // },
 
   {
     path: '/OpenWallet/KeyStore',
@@ -129,12 +129,12 @@ export default new Router({
     name: 'KeyStore',
     component: KeyStore,
   },
-  {
-    path: '/OpenWallet/KeyStore',
-    alias: '/emptyWallet/OpenWallet/KeyStore',
-    name: 'KeyStore',
-    component: KeyStore,
-  },
+  // {
+  //   path: '/OpenWallet/KeyStore',
+  //   alias: '/emptyWallet/OpenWallet/KeyStore',
+  //   name: 'KeyStore',
+  //   component: KeyStore,
+  // },
 
   {
     path: '/Transfer',
@@ -166,19 +166,13 @@ export default new Router({
     path: "/BlocksInfo",
     alias: '/blocks/BlocksInfo',
     name: "BlocksInfo",
-    component: BlocksInfo,
-    meta: {
-      keepAlive: true, // 此组件需要被缓存
-    }
+    component: BlocksInfo
   },
   {
     path: "/TxFBlock",
     alias: '/blocks/BlocksInfo/TxFBlock',
     name: "TxFBlock",
-    component: TxFBlock,
-    meta: {
-      keepAlive: true, // 此组件需要被缓存
-    }
+    component: TxFBlock
   },
   {
     path: '/transactions',

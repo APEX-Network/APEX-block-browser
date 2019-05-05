@@ -32,7 +32,7 @@
           :key="index"
           :class=" ((item.path === defaultNav) || ( defaultNav === '/' &&  index == 0)) ? 'active' : ''"
         >
-          <router-link :to="item.path" @click.native="switchWalletUrl"></router-link>
+          <router-link :to="item.path"></router-link>
         </li>
       </ul>
       <ul class="fl about">
@@ -165,10 +165,9 @@ export default {
   created() {},
   computed: {
     nav() {
-      // let walletUrl = this.walletUrl;
       return [
         { title: this.$t("nav.home"), path: "/home" },
-        { title: this.$t("nav.wallet"), path: "/emptyWallet" },
+        { title: this.$t("nav.wallet"), path: "/wallet" },
         { title: "", path: "/blocks" },
         { title: "", path: "/transactions" },
         { title: "", path: "/producer" }
@@ -179,11 +178,11 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => {
-      this.walletUrl = sessionStorage.getItem("walletUrl");
-      this.nav[1].path = this.walletUrl;
-      console.log(this.nav[1].path);
-    }, 500);
+    // setTimeout(() => {
+    //   this.walletUrl = sessionStorage.getItem("walletUrl");
+    //   this.nav[1].path = this.walletUrl;
+    //   console.log(this.nav[1].path);
+    // }, 500);
     this.about = this.$refs.aboutUs;
     this.wrapDiv = this.$refs.wrapAboutUs;
     this.search = this.$refs.search;

@@ -29,8 +29,8 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import Bus from "./../../../utils/bus";
-import util from "./../../../utils/utils";
+import Bus from "@/utils/bus";
+import util from "@/utils/utils";
 
 export default {
   name: "CreatedKeystore",
@@ -78,11 +78,11 @@ export default {
         Bus.$emit("apAddress", this.apAddress);
         Bus.$emit("privKey", this.privKey);
       });
-      if (this.walletUrl == "/emptyWallet") {
-        this.$router.push("/emptyWallet/NewWallet/CreatedKeystore/SavePrivKey");
-      } else {
+      // if (this.walletUrl == "/emptyWallet") {
+      //   this.$router.push("/emptyWallet/NewWallet/CreatedKeystore/SavePrivKey");
+      // } else {
         this.$router.push("/wallet/NewWallet/CreatedKeystore/SavePrivKey");
-      }
+      // }
     },
     downloadKeyStore() {
       let link = document.createElement("a");

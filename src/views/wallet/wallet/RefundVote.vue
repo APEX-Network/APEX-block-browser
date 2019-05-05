@@ -14,7 +14,7 @@
         <Select2
           class="flex-item2"
           autocomplete="new-password"
-           readonly
+          readonly
           onfocus="this.removeAttribute('readonly');"
           title="Please choose a Refund node address"
           v-model="toAddress"
@@ -22,13 +22,20 @@
           @change="myChangeEvent($event)"
           @select="mySelectEvent($event)"
         />
-         <img @click="CopyTo()" ref="copy" style="margin-top: -25px;cursor: pointer;float: right;margin-right: -30px;" src="../../../assets/images/copy.png" alt="">
+        <img
+          @click="CopyTo()"
+          ref="copy"
+          style="margin-top: -25px;cursor: pointer;float: right;margin-right: -30px;"
+          src="../../../assets/images/copy.png"
+          alt
+        >
         <div class="errorAddress" ref="checktoAddress">Please enter the correct wallet address</div>
       </div>
 
       <div class="amount">
-        <div>Refund Amount (Available:
-          <span  @click="setAllAmount">{{amount}}</span>)
+        <div>
+          Refund Amount (Available:
+          <span @click="setAllAmount">{{amount}}</span>)
         </div>
         <input
           spellcheck="false"
@@ -38,14 +45,14 @@
           @change="getInputAmout"
           placeholder="Transfer Amount"
           autocomplete="new-password"
-           readonly
+          readonly
           onfocus="this.removeAttribute('readonly');"
         >
         <p class="p1">
           <router-link to></router-link>
         </p>
         <p class="p2">CPX</p>
-        <div ref="checkAmount">Please enter the correct Refund amount</div>
+        <div ref="checkAmount">{{errorAmount}}</div>
       </div>
       <div class="gasPrice">
         <div class="recommend">
@@ -60,7 +67,7 @@
           @change="getInputGasePrice"
           placeholder="Please enter the  gas price"
           autocomplete="new-password"
-           readonly
+          readonly
           onfocus="this.removeAttribute('readonly');"
         >
         <div>Mp</div>
@@ -77,7 +84,7 @@
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
           placeholder="Please enter the  password"
-           readonly
+          readonly
           onfocus="this.removeAttribute('readonly');"
         >
         <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
@@ -111,9 +118,9 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import util from "../../../utils/utils";
-import Bus from "./../../../utils/bus";
-import db from "./../../../utils/myDatabase";
+import util from "@/utils/utils";
+import Bus from "@/utils/bus";
+import db from "@/utils/myDatabase";
 const bigdecimal = require("bigdecimal");
 
 export default {
@@ -123,11 +130,12 @@ export default {
     return {
       title: "Refund vote",
       serialized_transaction: null,
+      errorAmount: "Please enter the correct Refund amount",
       url: {
         accountInfo_url: "/api/v1.0/accounts/account",
         transfer_url: "/api/v1.0/transactions/trading",
         gasePrice_url: "/api/v1.0/getAverageGasPrice",
-        voter_url: "/api/v1.0/vote/getVote" //getVote接口
+        voter_url: "/api/v1.0/vote/getVote"
       },
       voter_params: { address: null },
       signature: null,
@@ -184,7 +192,7 @@ export default {
   },
 
   methods: {
-     setAllGPrice() {
+    setAllGPrice() {
       this.$refs.inputGasePrice.value = this.gasePrice;
       this.check.checkGasPrice.style.visibility = "hidden";
       this.inputGasePrice = this.gasePrice;
@@ -199,30 +207,30 @@ export default {
       this.targetAddressAmount.map(item => {
         if (item.key == { id, text }.id) {
           this.originValue = item.value;
-           let result = this.originValue.toString().indexOf(".");
-              if (result > -1) {
-                let pointLength = this.originValue.toString().split(".")[1].length;
-                if (pointLength > 8) {
-                  this.amount =
-                    this.originValue.toString().split(".")[0] +
-                    "." +
-                    this.originValue
-                      .toString()
-                      .split(".")[1]
-                      .substring(0, 8);
-                }
-                if (pointLength <= 8) {
-                  this.amount = this.originValue;
-                }
-              }
-              if (result == -1) {
-                this.amount = this.originValue;
-              }
+          let result = this.originValue.toString().indexOf(".");
+          if (result > -1) {
+            let pointLength = this.originValue.toString().split(".")[1].length;
+            if (pointLength > 8) {
+              this.amount =
+                this.originValue.toString().split(".")[0] +
+                "." +
+                this.originValue
+                  .toString()
+                  .split(".")[1]
+                  .substring(0, 8);
+            }
+            if (pointLength <= 8) {
+              this.amount = this.originValue;
+            }
+          }
+          if (result == -1) {
+            this.amount = this.originValue;
+          }
           return this.amount;
         }
       });
     },
-     CopyTo(index) {
+    CopyTo(index) {
       this.copyImg.src = require("../../../assets/images/copied.png");
       let getCopyText = this.toAddress;
       this.doToCopy(getCopyText);
@@ -322,7 +330,7 @@ export default {
         this.check.checktoAddress.style.visibility = "hidden";
       }
     },
-     getInputAmout() {
+    getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
       let inputlength = this.inputAmout.toString().length;
       if (inputlength >= 2) {
@@ -346,6 +354,12 @@ export default {
       }
     },
     setAllAmount() {
+      //计算手续费不足的情况
+      let fee = this.originValue - this.inputAmout;
+      if (fee <= 0) {
+        this.errorAmount = "Insufficient fee";
+        this.check.checkAmount.style.visibility = "visible";
+      }
       this.$refs.inputAmout.value = this.amount;
       this.check.checkAmount.style.visibility = "hidden";
       this.inputAmout = this.originValue;

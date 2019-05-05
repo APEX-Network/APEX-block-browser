@@ -72,8 +72,8 @@ import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "../../../utils/utils";
 import ECPair from "bitcoinjs-lib/src/ecpair";
-import Bus from "./../../../utils/bus";
-import db from "./../../../utils/myDatabase";
+import Bus from "@/utils/bus";
+import db from "@/utils/myDatabase";
 
 export default {
   name: "NewWallet",
@@ -185,11 +185,11 @@ export default {
               KStore: this.keyStore
             });
           });
-          if (this.walletUrl == "/emptyWallet") {
-            this.$router.push("/emptyWallet/NewWallet/CreatedKeystore");
-          } else {
+          // if (this.walletUrl == "/emptyWallet") {
+          //   this.$router.push("/emptyWallet/NewWallet/CreatedKeystore");
+          // } else {
             this.$router.push("/wallet/NewWallet/CreatedKeystore");
-          }
+          // }
         }
       }
     },

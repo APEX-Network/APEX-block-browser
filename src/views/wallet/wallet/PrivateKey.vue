@@ -44,9 +44,9 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import util from "./../../../utils/utils";
-import Bus from "./../../../utils/bus";
-import db from "./../../../utils/myDatabase";
+import util from "@/utils/utils";
+import Bus from "@/utils/bus";
+import db from "@/utils/myDatabase";
 const Base58check = require("base58check");
 
 export default {
@@ -119,10 +119,10 @@ export default {
     },
     privKeyAddress() {
       if (this.privKey !== null && this.pwd !== null) {
-        let url = "/wallet";
-        setTimeout(() => {
-          sessionStorage.setItem("walletUrl", url);
-        });
+        // let url = "/wallet";
+        // setTimeout(() => {
+        //   sessionStorage.setItem("walletUrl", url);
+        // });
         Bus.$emit("privKey", this.privKey);
         let userPrivKey = this.privKey;
         let key = this.pwd;

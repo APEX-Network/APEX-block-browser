@@ -15,8 +15,8 @@
 <script>
 import publicnav from "@/components/publicnav/index.vue";
 import publicfooter from "@/components/publicfooter/index.vue";
-import db from "./../src/utils/myDatabase";
-import Bus from "./../src/utils/bus";
+import db from "@/utils/myDatabase";
+import Bus from "@/utils/bus";
 
 export default {
   name: "App",
@@ -26,13 +26,14 @@ export default {
   },
   data() {
     return {
+      ops: {},
       walletUrl: null,
       APAddress: [],
       getAllAddress: null
     };
   },
   created() {
-    this.checkDB();
+    // this.checkDB();
   },
   computed: {
     key() {

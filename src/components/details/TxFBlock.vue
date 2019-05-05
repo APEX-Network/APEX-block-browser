@@ -98,13 +98,17 @@ export default {
   mounted() {
     this.getInstance();
     window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
-    Bus.$on("bHeight", data => {
-      sessionStorage.setItem("refresh", data);
-      this.getTxFBlock(data);
-      this.blockHeight = data;
-      this.clickValue.value = this.blockHeight;
-      return;
-    });
+    // Bus.$on("bHeight", data => {
+    //   sessionStorage.setItem("refresh", data);
+    //   this.getTxFBlock(data);
+    //   this.blockHeight = data;
+    //   this.clickValue.value = this.blockHeight;
+    //   return;
+    // });
+    this.blockHeight = this.$route.query.clickValue;
+    this.clickValue.value = this.blockHeight;
+    this.getTxFBlock(this.blockHeight);
+    sessionStorage.setItem("refresh", this.blockHeight);
     this.flag = sessionStorage.getItem("flag");
     if (this.flag == 1) {
       let refreshdata = sessionStorage.getItem("refresh");

@@ -35,6 +35,7 @@ export default {
     return {
       title: "Transactions",
       transactions: [],
+      ops: {},
       clickValue: null,
       transaction_list_url: "/api/v1.0/transactions/transactionList",
       parmas: {

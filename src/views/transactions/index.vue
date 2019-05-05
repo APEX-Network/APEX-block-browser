@@ -7,10 +7,7 @@
         <li v-for="(list,index) in transactions" :key="index" class="row">
           <span class="col col-lg-10">
             <div class="bottom">
-              <router-link
-                to="/transactions/TransactionsInfo"
-                @click.native="setClickValue"
-              >{{list.txHash}}</router-link>
+              <router-link to @click.native="setClickValue">{{list.txHash}}</router-link>
             </div>
           </span>
           <span class="col time">{{list.refBlockTime }}</span>
@@ -82,8 +79,11 @@ export default {
     const timer = setInterval(() => {
       this.getAllTransactions();
     }, 1500);
-    this.$once("hook:beforeDestroy", () => {
+    const timer2 = setInterval(() => {
       clearInterval(timer);
+    }, 60000);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer, timer2);
     });
   },
   methods: {
@@ -93,7 +93,14 @@ export default {
     },
     setClickValue(e) {
       if (e.target.innerHTML !== null) {
-        Bus.$emit("txHash", e.target.innerHTML);
+        this.clickValue = e.target.innerHTML;
+        this.$router.push({
+          path: "/transactions/TransactionsInfo",
+          query: {
+            clickValue: this.clickValue
+          }
+        });
+        // Bus.$emit("txHash", e.target.innerHTML);
       }
     },
     getAllTransactions() {

@@ -11,7 +11,7 @@
             autocomplete="new-password"
             readonly
             onfocus="this.removeAttribute('readonly');"
-            v-model="address"
+            v-model="currentAddress"
             :options="APAddress"
             @change="myChangeEvent($event)"
             @select="mySelectEvent($event)"
@@ -61,7 +61,9 @@ export default {
       accountInfo_url: "/api/v1.0/accounts/account",
       CPX: 0,
       selected: null,
-      copyImg: null
+      copyImg: null,
+      currentAddress: this.address,
+      currentPrivKey: this.privKey
     };
   },
 
@@ -71,16 +73,16 @@ export default {
 
   mounted() {
     this.getInstances();
-    this.address = sessionStorage.getItem("apAddress");
+    this.currentAddress = sessionStorage.getItem("apAddress");
     setTimeout(() => {
-      if (this.address !== null) {
-        this.getCPX(this.address);
+      if (this.currentAddress !== null) {
+        this.getCPX(this.currentAddress);
       }
     });
     const timer = setInterval(() => {
-      this.address = sessionStorage.getItem("apAddress");
-      if (this.address !== null) {
-        this.getCPX(this.address);
+      this.currentAddress = sessionStorage.getItem("apAddress");
+      if (this.currentAddress !== null) {
+        this.getCPX(this.currentAddress);
       }
     }, 1500);
     this.$once("hook:beforeDestroy", () => {
@@ -101,7 +103,7 @@ export default {
   methods: {
     Copy(index) {
       this.copyImg.src = require("../../../assets/images/copied.png");
-      let getCopyText = this.address;
+      let getCopyText = this.currentAddress;
       this.doCopy(getCopyText);
     },
     doCopy(val) {
@@ -117,23 +119,23 @@ export default {
     this.copyImg = this.$refs.copy;
     },
     myChangeEvent(val) {
-      this.address = val;
+      this.currentAddress = val;
       this.copyImg.src = require("../../../assets/images/copy.png");
-      sessionStorage.setItem("apAddress", this.address);
+      sessionStorage.setItem("apAddress", this.currentAddress);
     },
     mySelectEvent({ id, text }) {
       // console.log({ id, text });
     },
     sendAddress() {
-      Bus.$emit("apAddress", this.address);
+      Bus.$emit("apAddress", this.currentAddress);
       setTimeout(() => {
-        Bus.$emit("privKey", this.privKey);
+        Bus.$emit("privKey", this.currentPrivKey);
       });
     },
-    getCPX(address) {
+    getCPX(currentAddress) {
       this.$axios
         .post(this.accountInfo_url, {
-          address: address
+          address: currentAddress
         })
         .then(response => {
           let res = response.data.data;

@@ -22,9 +22,10 @@
             Block Height:
             <span class="clol col-lg-8 changewidth">
               <router-link
-                to="/blocks/BlocksInfo"
-                @click.native="setHeightValue"
+                to
+                @click.native="setHeightValue(transactionInfoData.blockHeight)"
               >{{transactionInfoData.blockHeight}}</router-link>
+              <span>{{transactionInfoData.heightDiff}} Block Confirmations</span>
             </span>
           </span>
         </li>
@@ -55,7 +56,7 @@
                 @click.native="setToValue"
               >{{transactionInfoData.from}}</router-link>
               <img
-                ref="from"
+                ref="fromAddress"
                 @click="Copy(1)"
                 style="cursor: pointer; padding-left: 10px;padding-top: 10px;
     position: absolute;"
@@ -74,7 +75,7 @@
                 @click.native="setToValue"
               >{{transactionInfoData.to}}</router-link>
               <img
-                ref="copy"
+                ref="toAddress"
                 @click="Copy(2)"
                 style="cursor: pointer; padding-left: 10px;padding-top: 10px;
     position: absolute;"
@@ -125,7 +126,6 @@ import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
-import { request } from "https";
 
 export default {
   name: "TransactionsInfo",
@@ -167,37 +167,42 @@ export default {
   },
   created() {},
   mounted() {
-    this.getInstances();
     window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
   },
   methods: {
     getInstances() {
-      this.fAddress = this.$refs.from;
-      this.tAddress = this.$refs.copy;
+      this.fAddress = this.$refs.fromAddress;
+      this.tAddress = this.$refs.toAddress;
     },
     Copy(index) {
+      this.getInstances();
       if (index == 1) {
         this.fAddress.src = require("./../../assets/images/copied.png");
         let getCopyText = this.transactionInfoData.from;
         this.doCopy(getCopyText);
+        return;
       }
       if (index == 2) {
         this.tAddress.src = require("./../../assets/images/copied.png");
         let getCopyText = this.transactionInfoData.to;
         this.doCopy(getCopyText);
+        return;
       }
     },
     doCopy(val) {
       this.$copyText(val).then(() => {});
     },
     getClickValue() {
-      Bus.$on("txHash", data => {
-        this.Hash = data;
-        sessionStorage.setItem("refresh", data);
-        this.getTransactionsInfo();
-        return;
-      });
+      this.Hash = this.$route.query.clickValue;
+      sessionStorage.setItem("refresh", this.Hash);
+      this.getTransactionsInfo();
+      // Bus.$on("txHash", data => {
+      //   this.Hash = data;
+      //   sessionStorage.setItem("refresh", data);
+      //   this.getTransactionsInfo();
+      //   return;
+      // });
       this.flag = sessionStorage.getItem("flag");
       if (this.Hash == null && this.flag == 1) {
         this.Hash = sessionStorage.getItem("refresh");
@@ -205,10 +210,16 @@ export default {
         return;
       }
     },
-    setHeightValue(e) {
+    setHeightValue(data) {
       this.clickValue.type = "height";
-      this.clickValue.value = e.target.innerHTML;
-      Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+      this.clickValue.value = data;
+      // Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+        this.$router.push({
+          path: "/blocks/BlocksInfo",
+          query: {
+            clickValue: this.clickValue.value
+          }
+        });
     },
     setToValue(e) {
       Bus.$emit("accountValue", e.target.innerHTML);
@@ -250,7 +261,6 @@ export default {
     beforeunloadHandler(e) {
       this.flag = 1;
       sessionStorage.setItem("flag", this.flag);
-      console.log(this.flag);
     }
   },
   beforeDestroy() {
@@ -281,6 +291,9 @@ export default {
             float: right;
             a {
               // width: 50%;
+            }
+            span {
+              padding-right: 46%;
             }
           }
         }

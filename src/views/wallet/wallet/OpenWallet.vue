@@ -10,7 +10,7 @@
         <router-link to @click.native="goPrivKey">PRIVATE KEY</router-link>
       </div>
       <div class="keyStore">
-        <router-link to @click.native="goKeyStore">KEYSTOER</router-link>
+        <router-link to @click.native="goKeyStore">KEYSTORE</router-link>
       </div>
     </div>
   </div>
@@ -45,28 +45,30 @@ export default {
 
   methods: {
     goPrivKey() {
-      switch (this.walletUrl) {
-        case "/wallet":
-          this.$router.push("/wallet/OpenWallet/PrivateKey");
-          break;
-        case "/emptyWallet":
-          this.$router.push("/emptyWallet/OpenWallet/PrivateKey");
-          break;
-        default:
-          break;
-      }
+      this.$router.push("/wallet/OpenWallet/PrivateKey");
+      // switch (this.walletUrl) {
+      //   case "/wallet":
+      //     this.$router.push("/wallet/OpenWallet/PrivateKey");
+      //     break;
+      //   case "/emptyWallet":
+      //     this.$router.push("/emptyWallet/OpenWallet/PrivateKey");
+      //     break;
+      //   default:
+      //     break;
+      // }
     },
     goKeyStore() {
-      switch (this.walletUrl) {
-        case "/wallet":
-          this.$router.push("/wallet/OpenWallet/KeyStore");
-          break;
-        case "/emptyWallet":
-          this.$router.push("/emptyWallet/OpenWallet/KeyStore");
-          break;
-        default:
-          break;
-      }
+      this.$router.push("/wallet/OpenWallet/KeyStore");
+      // switch (this.walletUrl) {
+      //   case "/wallet":
+      //     this.$router.push("/wallet/OpenWallet/KeyStore");
+      //     break;
+      //   case "/emptyWallet":
+      //     this.$router.push("/emptyWallet/OpenWallet/KeyStore");
+      //     break;
+      //   default:
+      //     break;
+      // }
     }
   },
 

@@ -12,10 +12,10 @@
         </li>
         <li v-for="(item,index) in dataList" :key="index" class="row">
           <span class="col height">
-            <router-link to="/blocks/BlocksInfo" @click.native="setHeightValue">{{item.height}}</router-link>
+            <router-link to @click.native="setHeightValue(item.height)">{{item.height}}</router-link>
           </span>
           <span class="col col-lg-6">
-            <router-link to="/blocks/BlocksInfo" @click.native="setHashValue">{{item.blockHash}}</router-link>
+            <router-link to @click.native="setHashValue(item.blockHash)">{{item.blockHash}}</router-link>
           </span>
           <span class="col">{{item.timeStamp}}</span>
           <span class="col">
@@ -54,8 +54,8 @@
 // import Pagination from "@/components/public/Pagination.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import ApexTitle from "@/components/public/ApexTitle.vue";
-import Bus from "./../../utils/bus";
-import util from "./../../utils/utils";
+import Bus from "@/utils/bus";
+import util from "@/utils/utils";
 
 export default {
   name: "blocks",
@@ -95,8 +95,11 @@ export default {
       this.getBlocks();
     }, 1500);
     this.$once("hook:beforeDestroy", () => {
-      clearInterval(timer);
+      clearInterval(timer, timer2);
     });
+    const timer2 = setInterval(() => {
+      clearInterval(timer);
+    }, 60000);
   },
   methods: {
     getInstance() {
@@ -125,15 +128,27 @@ export default {
           });
       }
     },
-    setHeightValue(e) {
-      this.clickValue.type = "height";
-      this.clickValue.value = e.target.innerHTML;
-      Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+    setHeightValue(data) {
+      // this.clickValue.type = "height";
+      // this.clickValue.value = data;
+      this.$router.push({
+          path: "/blocks/BlocksInfo",
+          query: {
+            clickValue: data
+          }
+        });
+      // Bus.$emit("clickValue", JSON.stringify(this.clickValue));
     },
-    setHashValue(e) {
-      this.clickValue.type = "hash";
-      this.clickValue.value = e.target.innerHTML;
-      Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+    setHashValue(data) {
+      // this.clickValue.type = "hash";
+      // this.clickValue.value = e.target.innerHTML;
+      // Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+      this.$router.push({
+          path: "/blocks/BlocksInfo",
+          query: {
+            clickValue: data
+          }
+        });
     },
     setMinerByValue(e) {
       Bus.$emit("minerBy", e.target.innerHTML);
