@@ -1,6 +1,6 @@
-# apex-block-browser
+# apex-blockchain-browser
 
-> A Vue.js project
+> https://tracker.apexnetwork.io
 
 ## Build Setup
 
