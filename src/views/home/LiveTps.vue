@@ -140,22 +140,24 @@ export default {
             symbol: "circle", //设定为实心点
             symbolSize: 6,
             itemStyle: {
-              color: "rgba(242, 101, 34, .8)"
+              color: "rgba(242, 101, 34, .2)"
             },
             lineStyle: {
               color: "#f26522"
             },
             areaStyle: {
+              opacity: 0.1,
+              // color:'#fff'
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 {
                   offset: 0,
-                  color: "rgb(255,255,255,.2)"
+                  color: "#ccc",
                 },
                 {
                   offset: 1,
-                  color: "rgb(255,255,255,0)"
+                  color: "#000",
                 }
-              ])
+              ]),
             }
           }
         ]

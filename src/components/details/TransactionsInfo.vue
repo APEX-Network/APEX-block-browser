@@ -236,6 +236,15 @@ export default {
       }
     }
   }
+  // beforeDestroy() {
+  //   sessionStorage.setItem("flag", null);
+  //   this.offListener();
+  // },
+  // destroyed() {
+  //   window.removeEventListener("beforeunload", e =>
+  //     this.beforeunloadHandler(e)
+  //   );
+  // }
 };
 </script>
 
