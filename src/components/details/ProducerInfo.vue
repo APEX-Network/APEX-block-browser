@@ -101,7 +101,7 @@ export default {
   },
   created() {},
   mounted() {
-    window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
+    // window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
     this.producer = JSON.parse(sessionStorage.getItem("producer"));
   },
@@ -110,18 +110,19 @@ export default {
       window.location.href = "https://www.apexnetwork.io/";
     },
     getClickValue() {
-      Bus.$on("minerBy", data => {
-        this.minerBy = data;
-        sessionStorage.setItem("refresh", data);
+      this.minerBy = this.$route.query.id;
+      // Bus.$on("minerBy", data => {
+      //   this.minerBy = data;
+      //   sessionStorage.setItem("refresh", data);
         this.getProduceInfo();
-        return;
-      });
-      this.flag = sessionStorage.getItem("flag");
-      if (this.minerBy == null && this.flag == 1) {
-        this.minerBy = sessionStorage.getItem("refresh");
-        this.getProduceInfo();
-        return;
-      }
+      //   return;
+      // });
+      // this.flag = sessionStorage.getItem("flag");
+      // if (this.minerBy == null && this.flag == 1) {
+      //   this.minerBy = sessionStorage.getItem("refresh");
+      //   this.getProduceInfo();
+      //   return;
+      // }
     },
     getProduceInfo() {
       if (this.minerBy !== null) {

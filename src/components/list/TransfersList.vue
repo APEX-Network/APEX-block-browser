@@ -2,7 +2,7 @@
   <div class="transactions apex-modul fr">
     <p class="apex-title">
       Transfers
-      <router-link to="/transactions/TransactionsInfo/AccountInfo" @click.native="goAccountInfo">
+      <router-link to @click.native="goAccountInfo">
         <span>ALL</span>
       </router-link>
     </p>
@@ -10,10 +10,7 @@
       <vue-scroll :ops="ops">
         <li v-for="(item,index) in transactions" :key="index">
           <div class="bottom">
-            <router-link
-              to="/transactions/TransactionsInfo"
-              @click.native="setClickValue"
-            >{{item.txHash}}</router-link>
+            <router-link to @click.native="setClickValue(item.txHash)">{{item.txHash}}</router-link>
             <span>{{item.refBlockTime}}</span>
           </div>
         </li>
@@ -62,15 +59,22 @@ export default {
     });
   },
   methods: {
-    setClickValue(e) {
-      Bus.$emit("txHash", e.target.innerHTML);
+    setClickValue(data) {
+      this.$router.push({
+        path: "/transactions/TransactionsInfo",
+        query: {
+          id: data
+        }
+      });
     },
     goAccountInfo() {
-      let TransferList =  {
-        type:  "Transfer",
-        accountValue: sessionStorage.getItem("apAddress")
-      }
-      Bus.$emit("accountValue", TransferList.accountValue);
+      let accountValue = sessionStorage.getItem("apAddress");
+      this.$router.push({
+        path: "/transactions/TransactionsInfo/AccountInfo",
+        query: {
+          id: accountValue
+        }
+      });
     },
     getTransactionsList() {
       if (this.accountTransaction_param.address !== null) {

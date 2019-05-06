@@ -44,20 +44,17 @@
             <span class="col ttHash">
               <div class="bottom">
                 <router-link
-                  to="/transactions/TransactionsInfo"
-                  @click.native="setTxHash"
+                  to
+                  @click.native="setTxHash(list.txHash)"
                 >{{list.txHash}}</router-link>
               </div>
             </span>
-            <span class="col" :class="objectClass">
-              <router-link
-                to
-                @click.native="currentAccountInfo(list.from)"
-              >{{getaddress(list.from)}}</router-link>
-            </span>
-            <span class="col to">
-              <router-link to @click.native="currentAccountInfo(list.to)">{{getaddress(list.to)}}</router-link>
-            </span>
+            <span
+              class="col"
+              :class="objectClass"
+              @click="currentAccountInfo(list.from)"
+            >{{getaddress(list.from)}}</span>
+            <span class="col to" @click="currentAccountInfo(list.to)">{{getaddress(list.to)}}</span>
             <span class="col amount">
               <router-link to>{{list.amount}} CPX</router-link>
             </span>
@@ -141,7 +138,7 @@ export default {
   },
   mounted() {
     this.getInstance();
-    window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
+    // window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
     this.getAccountTransactionInfo();
     const timer = setInterval(() => {
@@ -155,10 +152,13 @@ export default {
   methods: {
     currentAccountInfo(data) {
       if (data !== "") {
-        this.$router.push("/transactions/TransactionsInfo/AccountInfo");
-        setTimeout(() => {
-          Bus.$emit("accountValue", data);
-        });
+        // this.$router.push("/transactions/TransactionsInfo/AccountInfo");
+        // setTimeout(() => {
+        //   Bus.$emit("accountValue", data);
+        // });
+        this.accountTransaction_param.address = data;
+        this.getAccountInfo();
+        this.getAccountTransactionInfo();
       }
     },
     getaddress(address) {
@@ -181,22 +181,25 @@ export default {
       this.$copyText(val).then(function(e) {}, function(e) {});
     },
     getClickValue() {
-      Bus.$on("accountValue", data => {
-        this.accountTransaction_param.address = data;
-        sessionStorage.setItem("refresh", data);
-        this.getAccountInfo();
-        this.getAccountTransactionInfo();
-        return;
-      });
-      this.flag = sessionStorage.getItem("flag");
-      if (this.accountTransaction_param.address == null && this.flag == 1) {
-        this.accountTransaction_param.address = sessionStorage.getItem(
-          "refresh"
-        );
-        this.getAccountInfo();
-        this.getAccountTransactionInfo();
-        return;
-      }
+      // Bus.$on("accountValue", data => {
+      //   this.accountTransaction_param.address = data;
+      //   sessionStorage.setItem("refresh", data);
+      //   this.getAccountInfo();
+      //   this.getAccountTransactionInfo();
+      //   return;
+      // });
+      this.accountTransaction_param.address = this.$route.query.id;
+      this.getAccountInfo();
+      this.getAccountTransactionInfo();
+      // this.flag = sessionStorage.getItem("flag");
+      // if (this.accountTransaction_param.address == null && this.flag == 1) {
+      //   this.accountTransaction_param.address = sessionStorage.getItem(
+      //     "refresh"
+      //   );
+      //   this.getAccountInfo();
+      //   this.getAccountTransactionInfo();
+      //   return;
+      // }
     },
     getAccountInfo() {
       if (this.accountTransaction_param.address !== null) {
@@ -567,8 +570,16 @@ export default {
         }
       }
     },
-    setTxHash(e) {
-      Bus.$emit("txHash", e.target.innerHTML);
+    setTxHash(data) {
+      // Bus.$emit("txHash", e.target.innerHTML);
+      // "/transactions/TransactionsInfo"
+      this.$router.push({
+        path: "/transactions/TransactionsInfo",
+        query: {
+          id: data
+        }
+      });
+
     },
     offListener() {
       Bus.$off("txHash");
@@ -634,18 +645,20 @@ export default {
           .from {
             padding-left: 20px;
             max-width: 232px;
+            color: #f26522;
+            cursor: pointer;
           }
           .emptyFrom {
             padding-left: 20px;
             max-width: 232px;
-            a {
-              color: #ebebeb;
-              cursor: default;
-            }
+            color: #ebebeb;
+            cursor: default;
           }
           .to {
             max-width: 232px;
             padding-left: 50px;
+            color: #f26522;
+            cursor: pointer;
           }
           .amount {
             max-width: 200px;

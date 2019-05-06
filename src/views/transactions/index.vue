@@ -7,7 +7,7 @@
         <li v-for="(list,index) in transactions" :key="index" class="row">
           <span class="col col-lg-10">
             <div class="bottom">
-              <router-link to @click.native="setClickValue">{{list.txHash}}</router-link>
+              <router-link to @click.native="setClickValue(list.txHash)">{{list.txHash}}</router-link>
             </div>
           </span>
           <span class="col time">{{list.refBlockTime }}</span>
@@ -91,13 +91,12 @@ export default {
       this.arrow.leftArrow = this.$refs.left;
       this.arrow.rightArrow = this.$refs.right;
     },
-    setClickValue(e) {
-      if (e.target.innerHTML !== null) {
-        this.clickValue = e.target.innerHTML;
+    setClickValue(data) {
+      if (data !== null) {
         this.$router.push({
           path: "/transactions/TransactionsInfo",
           query: {
-            clickValue: this.clickValue
+            id: data
           }
         });
         // Bus.$emit("txHash", e.target.innerHTML);
