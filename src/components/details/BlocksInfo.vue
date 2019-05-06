@@ -108,20 +108,6 @@ export default {
         } catch (error) {
           this.result.type = "height";
         }
-        // let paramsType = typeof this.result.value;
-        // console.log(paramsType);
-        // console.log(this.result.value);
-        // //刷新有问题
-        // switch (paramsType) {
-        //   case "number":
-        //     this.result.type = "height";
-        //     break;
-        //   case "string":
-        //     this.result.type = "hash";
-        //     break;
-        //   default:
-        //     break;
-        // }
         this.getBlocksInfo();
         return;
       }
