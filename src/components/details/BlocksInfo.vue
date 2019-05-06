@@ -55,6 +55,7 @@ import ApexBackGround from "@/components/public/ApexBackGround.vue";
 // import Pagination from "@/components/public/Pagination.vue";
 import Bus from "@/utils/bus";
 import util from "@/utils/utils";
+const Base58check = require("base58check");
 
 export default {
   name: "BlocksInfo",
@@ -76,7 +77,10 @@ export default {
       blockHash: null,
       parentHash: null,
       minedBy: null,
-      result: null,
+      result: {
+        type: null,
+        value: null
+      },
       flag: null
     };
   },
@@ -90,27 +94,35 @@ export default {
       this.$router.push({
         path: "/blocks/BlocksInfo/TxFBlock",
         query: {
-          clickValue: data
+          id: data
         }
       });
     },
     getClickValue() {
-      this.result = this.$route.query.clickValue;
-      if (this.result !== null) {
-        let paramsType = typeof this.result.value;
-        console.log(paramsType);
-        console.log(this.result.type);
-        //刷新有问题
-        switch (paramsType) {
-          case "height":
-            this.result.type = "height";
-            break;
-          case "string":
-            this.result.type = "hash";
-            break;
-          default:
-            break;
+      this.result.value = this.$route.query.id;
+      console.log(this.result.value);
+      if (this.result.value !== null) {
+        try {
+          Base58check.encode(this.result.value);
+          this.result.type = "hash";
+        } catch (error) {
+          this.result.type = "height";
+          console.log(error);
         }
+        // let paramsType = typeof this.result.value;
+        // console.log(paramsType);
+        // console.log(this.result.value);
+        // //刷新有问题
+        // switch (paramsType) {
+        //   case "number":
+        //     this.result.type = "height";
+        //     break;
+        //   case "string":
+        //     this.result.type = "hash";
+        //     break;
+        //   default:
+        //     break;
+        // }
         this.getBlocksInfo();
         return;
       }
@@ -184,7 +196,7 @@ export default {
       if (!!this.parentHash) {
         this.$router.push({
           query: {
-            clickValue: data
+            id: data
           }
         });
         this.$axios

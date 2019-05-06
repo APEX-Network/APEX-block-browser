@@ -18,11 +18,8 @@
             <router-link to @click.native="setHashValue(item.blockHash)">{{item.blockHash}}</router-link>
           </span>
           <span class="col">{{item.timeStamp}}</span>
-          <span class="col">
-            <router-link
-              to="/producer/ProducerInfo"
-              @click.native="setMinerByValue"
-            >{{item.producer}}</router-link>
+          <span class="col producer" @click="setMinerByValue(item.producer)">
+            {{item.producer}}
           </span>
         </li>
       </ul>
@@ -132,7 +129,7 @@ export default {
       this.$router.push({
           path: "/blocks/BlocksInfo",
           query: {
-            clickValue: data
+            id: data
           }
         });
     },
@@ -140,12 +137,17 @@ export default {
       this.$router.push({
           path: "/blocks/BlocksInfo",
           query: {
-            clickValue: data
+            id: data
           }
         });
     },
-    setMinerByValue(e) {
-      Bus.$emit("minerBy", e.target.innerHTML);
+    setMinerByValue(data) {
+      this.$router.push({
+          path: "/producer/ProducerInfo",
+          query: {
+            id: data
+          }
+        });
     },
     getNext() {
       if (this.start < 10) {
@@ -284,6 +286,10 @@ export default {
     height: 93%;
     .table-ul {
       & > li {
+        .producer {
+          cursor: pointer;
+          color: #f26522;
+        }
         & > span {
           a:hover {
             color: #f26522;

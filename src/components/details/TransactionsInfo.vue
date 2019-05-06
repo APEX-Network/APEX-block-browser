@@ -52,8 +52,8 @@
             From:
             <span class="clol col-lg-8">
               <router-link
-                to="/transactions/TransactionsInfo/AccountInfo"
-                @click.native="setToValue"
+                to
+                @click.native="setToValue(transactionInfoData.from)"
               >{{transactionInfoData.from}}</router-link>
               <img
                 ref="fromAddress"
@@ -71,8 +71,8 @@
             To:
             <span class="clol col-lg-8">
               <router-link
-                to="/transactions/TransactionsInfo/AccountInfo"
-                @click.native="setToValue"
+                to
+                @click.native="setToValue(transactionInfoData.to)"
               >{{transactionInfoData.to}}</router-link>
               <img
                 ref="toAddress"
@@ -167,7 +167,7 @@ export default {
   },
   created() {},
   mounted() {
-    window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
+    // window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
   },
   methods: {
@@ -194,28 +194,24 @@ export default {
       this.$copyText(val).then(() => {});
     },
     getClickValue() {
-      this.Hash = this.$route.query.clickValue;
-      sessionStorage.setItem("refresh", this.Hash);
+      this.Hash = this.$route.query.id;
       this.getTransactionsInfo();
-      this.flag = sessionStorage.getItem("flag");
-      if (this.Hash == null && this.flag == 1) {
-        this.Hash = sessionStorage.getItem("refresh");
-        this.getTransactionsInfo();
-        return;
-      }
     },
     setHeightValue(data) {
-      this.clickValue.type = "height";
-      this.clickValue.value = data;
-        this.$router.push({
-          path: "/blocks/BlocksInfo",
-          query: {
-            clickValue: this.clickValue.value
-          }
-        });
+      this.$router.push({
+        path: "/blocks/BlocksInfo",
+        query: {
+          id: data
+        }
+      });
     },
-    setToValue(e) {
-      Bus.$emit("accountValue", e.target.innerHTML);
+    setToValue(data) {
+      this.$router.push({
+        path: "/transactions/TransactionsInfo/AccountInfo",
+        query: {
+          id: data
+        }
+      });
     },
     getTransactionsInfo() {
       if (this.Hash !== null) {
@@ -246,25 +242,25 @@ export default {
           })
           .catch(function(response) {});
       }
-    },
-    offListener() {
-      Bus.$off("clickValue");
-      Bus.$off("accountValue");
-    },
-    beforeunloadHandler(e) {
-      this.flag = 1;
-      sessionStorage.setItem("flag", this.flag);
     }
-  },
-  beforeDestroy() {
-    sessionStorage.setItem("flag", null);
-    this.offListener();
-  },
-  destroyed() {
-    window.removeEventListener("beforeunload", e =>
-      this.beforeunloadHandler(e)
-    );
+    // offListener() {
+    //   Bus.$off("clickValue");
+    //   Bus.$off("accountValue");
+    // },
+    // beforeunloadHandler(e) {
+    //   this.flag = 1;
+    //   sessionStorage.setItem("flag", this.flag);
+    // }
   }
+  // beforeDestroy() {
+  //   sessionStorage.setItem("flag", null);
+  //   this.offListener();
+  // },
+  // destroyed() {
+  //   window.removeEventListener("beforeunload", e =>
+  //     this.beforeunloadHandler(e)
+  //   );
+  // }
 };
 </script>
 

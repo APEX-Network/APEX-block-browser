@@ -10,8 +10,8 @@
         <li class="row">
           <span class="col index">Tx index</span>
           <span class="col col-lg-6 txHash">TX Hash</span>
-          <span class="col from">From</span>
-          <span class="col to">To</span>
+          <span class="col fromtitle">From</span>
+          <span class="col totitle">To</span>
           <span class="col amount">Amount</span>
         </li>
         <li v-for="(item,index) in dataList" :key="index" class="row">
@@ -19,12 +19,12 @@
           <span class="col col-lg-6 txHash">
             <router-link to @click.native="setHashValue(item.txHash)">{{item.txHash}}</router-link>
           </span>
-          <span class="col" :class="objectClass">
-            <router-link to @click.native="setMinerByValue(item.from)">{{getaddress(item.from)}}</router-link>
-          </span>
-          <span class="col to">
-            <router-link to @click.native="setMinerByValue(item.to)">{{getaddress(item.to)}}</router-link>
-          </span>
+          <span
+            class="col"
+            :class="objectClass"
+            @click="setMinerByValue(item.from)"
+          >{{getaddress(item.from)}}</span>
+          <span class="col to" @click="setMinerByValue(item.to)">{{getaddress(item.to)}}</span>
           <span class="col amount">{{item.amount}} CPX</span>
         </li>
       </ul>
@@ -97,18 +97,8 @@ export default {
   },
   mounted() {
     this.getInstance();
-    window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
-    this.blockHeight = this.$route.query.clickValue;
-    this.clickValue.value = this.blockHeight;
+    this.blockHeight = this.$route.query.id;
     this.getTxFBlock(this.blockHeight);
-    sessionStorage.setItem("refresh", this.blockHeight);
-    this.flag = sessionStorage.getItem("flag");
-    if (this.flag == 1) {
-      let refreshdata = sessionStorage.getItem("refresh");
-      this.blockHeight = refreshdata;
-      this.getTxFBlock(refreshdata);
-      return;
-    }
   },
   methods: {
     getaddress(address) {
@@ -197,26 +187,27 @@ export default {
     },
     setHeightValue(data) {
       this.$router.push({
-          path: "/blocks/BlocksInfo",
-          query: {
-            clickValue: data
-          }
-        });
+        path: "/blocks/BlocksInfo",
+        query: {
+          id: data
+        }
+      });
     },
-    setHashValue(txHash) {
+    setHashValue(data) {
       this.$router.push({
-          path: "/transactions/TransactionsInfo",
-          query: {
-            clickValue: txHash
-          }
-        });
-
+        path: "/transactions/TransactionsInfo",
+        query: {
+          id: data
+        }
+      });
     },
     setMinerByValue(data) {
       if (data !== "") {
-        this.$router.push("/transactions/TransactionsInfo/AccountInfo");
-        setTimeout(() => {
-          Bus.$emit("accountValue", data);
+        this.$router.push({
+          path: "/transactions/TransactionsInfo/AccountInfo",
+          query: {
+            id: data
+          }
         });
       }
     },
@@ -484,16 +475,26 @@ export default {
         .from {
           max-width: 250px;
           padding-left: 80px;
+          cursor: pointer;
+          color: #f26522;
+        }
+        .fromtitle {
+          max-width: 250px;
+          padding-left: 80px;
         }
         .emptyFrom {
           max-width: 250px;
           padding-left: 80px;
-          a {
-            color: #ebebeb;
-            cursor: default;
-          }
+          color: #ebebeb;
+          cursor: default;
         }
         .to {
+          max-width: 250px;
+          padding-left: 55px;
+          cursor: pointer;
+          color: #f26522;
+        }
+        .totitle {
           max-width: 250px;
           padding-left: 55px;
         }

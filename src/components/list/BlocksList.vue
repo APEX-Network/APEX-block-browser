@@ -15,7 +15,7 @@
               <!-- <span>{{item.size}} Bytes</span> -->
             </div>
             <div class="bottom">
-              <router-link to="/blocks/BlocksInfo" @click.native="setClickValue">{{item.blockHash}}</router-link>
+              <router-link to @click.native="setClickValue(item.blockHash)">{{item.blockHash}}</router-link>
               <span>{{item.timeStamp}}</span>
             </div>
           </div>
@@ -79,9 +79,13 @@ export default {
           }
         });
     },
-    setClickValue(e) {
-      this.clickValue.value = e.target.innerHTML;
-      Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+    setClickValue(data) {
+      this.$router.push({
+          path: "/blocks/BlocksInfo",
+          query: {
+            id: data
+          }
+        });
     },
     offListener() {
       Bus.$off("clickValue");

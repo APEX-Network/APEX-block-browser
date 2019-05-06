@@ -257,9 +257,8 @@ export default {
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
+      console.log(this.inputAmout);
       let inputlength = this.inputAmout.toString().length;
-      console.log(inputlength);
-
       if (inputlength >= 2) {
         let errorinput = this.inputAmout.slice(0, 2);
         if (errorinput.slice(0, 1) == 0 && errorinput.slice(1, 2) !== ".") {
