@@ -100,7 +100,7 @@ export default {
       });
     },
     getClickValue() {
-      this.result.value = this.$route.query.id;
+      this.result.value = this.$route.query.id; 
       if (this.result.value !== null) {
         try {
           Base58check.encode(this.result.value);
@@ -114,10 +114,6 @@ export default {
     },
     setClickValue(data) {
       if (this.height !== 0 && this.height !== null) {
-        // setTimeout(() => {
-        //   Bus.$emit("minerBy", e.target.innerHTML);
-        // });
-        // this.$router.push("/producer/ProducerInfo");
         this.$router.push({
         path: "/producer/ProducerInfo",
         query: {
