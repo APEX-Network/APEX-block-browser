@@ -93,15 +93,13 @@ export default {
         Description: null,
         block: null,
         MAddress: null,
-        Name: null,
-        flag: null
+        Name: null
       },
       producer: []
     };
   },
   created() {},
   mounted() {
-    // window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
     this.producer = JSON.parse(sessionStorage.getItem("producer"));
   },
@@ -111,18 +109,7 @@ export default {
     },
     getClickValue() {
       this.minerBy = this.$route.query.id;
-      // Bus.$on("minerBy", data => {
-      //   this.minerBy = data;
-      //   sessionStorage.setItem("refresh", data);
-        this.getProduceInfo();
-      //   return;
-      // });
-      // this.flag = sessionStorage.getItem("flag");
-      // if (this.minerBy == null && this.flag == 1) {
-      //   this.minerBy = sessionStorage.getItem("refresh");
-      //   this.getProduceInfo();
-      //   return;
-      // }
+      this.getProduceInfo();
     },
     getProduceInfo() {
       if (this.minerBy !== null) {
@@ -148,20 +135,7 @@ export default {
             console.log(response);
           });
       }
-    },
-    beforeunloadHandler(e) {
-      this.flag = 1;
-      sessionStorage.setItem("flag", this.flag);
     }
-  },
-  beforeDestroy() {
-    sessionStorage.setItem("refresh", null);
-    sessionStorage.setItem("flag", null);
-  },
-  destroyed() {
-    window.removeEventListener("beforeunload", e =>
-      this.beforeunloadHandler(e)
-    );
   }
 };
 </script>

@@ -83,7 +83,6 @@ export default {
       serverDate: null,
       blockHeight: null,
       index: 0,
-      flag: null,
       count: null,
       clickValue: {
         type: "height",
@@ -410,27 +409,7 @@ export default {
           return;
         }
       }
-    },
-    offListener() {
-      Bus.$off("clickValue");
-      Bus.$off("accountValue");
-      Bus.$off("txFHeight");
-      Bus.$off("txHash");
-    },
-    beforeunloadHandler(e) {
-      this.flag = 1;
-      sessionStorage.setItem("flag", this.flag);
     }
-  },
-  beforeDestroy() {
-    sessionStorage.setItem("refresh", null);
-    sessionStorage.setItem("flag", null);
-    this.offListener();
-  },
-  destroyed() {
-    window.removeEventListener("beforeunload", e =>
-      this.beforeunloadHandler(e)
-    );
   }
 };
 </script>

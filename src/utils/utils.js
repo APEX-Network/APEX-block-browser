@@ -17,7 +17,7 @@ const utilMethods = {
     let diffTime = Math.abs((serverDate - timespan) / 1000);
     let formatterTime = new Date(serverDate - timespan);
     let havePoint = diffTime.toString().indexOf(".");
-    let date;
+    let date;    
     if (havePoint > -1) {
       date = diffTime.toString().split(".")[0];
     }
@@ -33,7 +33,7 @@ const utilMethods = {
         return "1" + " min ago";
       }
       if (date < 60) {
-        if (date == 0 || date < 0) {
+        if ( date == 0) {
           return "0.5 sec ago"
         } else {
           return date + " sec ago";
