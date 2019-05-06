@@ -13,20 +13,20 @@ function resolve(dir) {
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: ["babel-polyfill", "./src/main.js"]
+    app: ["babel-polyfill", "./src/main.js"]  //入口文件
   },
   output: {
-    path: config.build.assetsRoot,
+    path: config.build.assetsRoot,  //输出目录的绝对路径，在项目的根目录下新建dist文件
     filename: '[name].js',
     publicPath: process.env.NODE_ENV === 'production' ?
       './' + config.build.assetsPublicPath :
       './' + config.dev.assetsPublicPath
   },
-  resolve: {
+  resolve: {  //设置模块如何被解析
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src'),
+      '@': resolve('src'), //@ 起到了 resolve('src')路径的作用了
     }
   },
   module: {

@@ -18,7 +18,9 @@
           @change="getToAddress"
           type="text"
           placeholder="Please Input Address"
-          autocomplete="off"
+          autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <div ref="checktoAddress">Please enter the correct wallet address</div>
       </div>
@@ -26,7 +28,7 @@
       <div class="amount">
         <div>
           Amount (Available:
-          <span>{{amount}}</span>)
+          <span @click="setAllAmount">{{amount}}</span>)
         </div>
         <input
           spellcheck="false"
@@ -35,16 +37,22 @@
           @keyup.enter="thInput($event)"
           @change="getInputAmout"
           placeholder="Transfer Amount"
-          autocomplete="off"
+          autocomplete="new-password"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
-        <p class="p1" @click="setAllAmount">
-          <router-link to>All</router-link>
+        <p class="p1">
+          <router-link to></router-link>
         </p>
         <p class="p2">CPX</p>
         <div ref="checkAmount">Please enter the correct transfer amount</div>
       </div>
       <div class="gasPrice">
+        <div class="recommend">
+          Recommended:
+          <span @click="setAllGPrice">{{gasePrice}} Mp</span>
+        </div>
         <input
           spellcheck="false"
           type="text"
@@ -52,8 +60,10 @@
           @keyup.enter="foInput($event)"
           @change="getInputGasePrice"
           placeholder="Please enter the  gas price"
-          autocomplete="off"
+          autocomplete="new-password"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <div>Mp</div>
         <div ref="checkGasPrice">Please enter the correct gas price</div>
@@ -67,7 +77,10 @@
           v-model="pwd"
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
-          autocomplete="off"
+          placeholder="Please enter the  password"
+          autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         <div ref="checkPwd">Password Incorrect</div>
@@ -78,14 +91,15 @@
     </div>
     <div class="dialog" ref="dialog">
       <div class="confirm" ref="confirm">
-        <div>Successful Broadcast</div>
+        <div>Broadcast Successful</div>
         <div>
           <router-link to="/wallet">CONFIRM</router-link>
         </div>
         <div>
           txId: {{txId}}
           <img
-            @click="Copy(index)"
+            ref="copyId"
+            @click="Copy()"
             style="cursor: pointer; padding-left: 16px;"
             src="./../../../assets/images/copy.png"
             alt
@@ -99,7 +113,7 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import util from "../../../utils/utils";
+import util from "@/utils/utils";
 import Bus from "./../../../utils/bus";
 import db from "./../../../utils/myDatabase";
 const bigdecimal = require("bigdecimal");
@@ -113,6 +127,7 @@ export default {
       serialized_transaction: null,
       url: {
         accountInfo_url: "/api/v1.0/accounts/account",
+        gasePrice_url: "/api/v1.0/getAverageGasPrice",
         transfer_url: "/api/v1.0/transactions/trading"
       },
       signature: null,
@@ -142,7 +157,9 @@ export default {
         checkPwd: null
       },
       txId: null,
-      copyTxId: null
+      copyTxId: null,
+      txIdImg: null,
+      gasePrice: null
     };
   },
 
@@ -158,11 +175,18 @@ export default {
     this.getAllInput();
     this.getAddress();
     this.getAllInputInstances();
+    this.getGasePrice();
   },
 
   methods: {
+    setAllGPrice() {
+      this.$refs.inputGasePrice.value = this.gasePrice;
+      this.check.checkGasPrice.style.visibility = "hidden";
+      this.inputGasePrice = this.gasePrice;
+    },
     Copy(index) {
       let getCopyText = this.copyTxId;
+      this.txIdImg.src = require("../../../assets/images/copied.png");
       this.doCopy(getCopyText);
     },
     doCopy(val) {
@@ -178,6 +202,23 @@ export default {
       this.check.checkAmount = this.$refs.checkAmount;
       this.check.checkGasPrice = this.$refs.checkGasPrice;
       this.check.checkPwd = this.$refs.checkPwd;
+      this.txIdImg = this.$refs.copyId;
+    },
+    getGasePrice() {
+      this.$axios
+        .post(this.url.gasePrice_url)
+        .then(response => {
+          let res = response.data.data;
+          if (res < 1.0) {
+            this.gasePrice = 1.0;
+          }
+          if (res > 1) {
+            this.gasePrice = res;
+          }
+        })
+        .catch(function(response) {
+          console.log(response);
+        });
     },
     getAddress() {
       Bus.$on("apAddress", data => {
@@ -216,7 +257,19 @@ export default {
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
-      console.log(this.inputAmout);
+      let inputlength = this.inputAmout.toString().length;
+      console.log(inputlength);
+
+      if (inputlength >= 2) {
+        let errorinput = this.inputAmout.slice(0, 2);
+        if (errorinput.slice(0, 1) == 0 && errorinput.slice(1, 2) !== ".") {
+          this.$refs.inputAmout.value = null;
+          setTimeout(() => {
+            this.check.checkAmount.style.visibility = "visible";
+          });
+        }
+      }
+
       if (this.amount == 0 || this.inputAmout == 0) {
         this.check.checkAmount.style.visibility = "visible";
       }
@@ -236,6 +289,16 @@ export default {
     },
     getInputGasePrice() {
       this.inputGasePriceValue = this.$refs.inputGasePrice.value;
+      let inputlength = this.inputGasePriceValue.toString().length;
+      if (inputlength >= 2) {
+        let errorinput = this.inputGasePriceValue.slice(0, 2);
+        if (errorinput.slice(0, 1) == 0 && errorinput.slice(1, 2) !== ".") {
+          this.$refs.inputGasePrice.value = null;
+          setTimeout(() => {
+            this.check.checkGasPrice.style.visibility = "visible";
+          });
+        }
+      }
       if (
         this.inputGasePriceValue >= 0.01 &&
         this.inputGasePriceValue <= 1000000000
@@ -350,10 +413,9 @@ export default {
         this.pwd !== null
       ) {
         this.checkAddress();
-        this.$refs.dialog.style.display = "flex";
         let serializParams = {
-          version: "00000001", //不变
-          txType: "01", //交易
+          version: "00000001",
+          txType: "01",
           from: this.apAddress,
           to: this.toAddress,
           amount: new bigdecimal.BigDecimal(String(this.inputAmout)).subtract(
@@ -361,13 +423,13 @@ export default {
               String(Math.pow(10, -12) * String(this.inputGasePrice) * 21000)
             )
           ),
-          nonce: this.nonce, //从服务器获取该账户的nonce值
-          data: "00", //不变
+          nonce: this.nonce,
+          data: "00",
           gasPrice: new bigdecimal.BigDecimal(
             String(this.inputGasePrice)
           ).multiply(new bigdecimal.BigDecimal(String(Math.pow(10, 6)))),
-          gasLimit: "21000", //程序限制
-          executeTime: "0000000000000000" //不变
+          gasLimit: "21000",
+          executeTime: "0000000000000000"
         };
         if (this.inputAmout !== this.allamount) {
           serializParams.amount = new bigdecimal.BigDecimal(
@@ -379,11 +441,15 @@ export default {
           message: this.message,
           privKey: null
         };
-        if (this.KStore !== null && this.pwd !== null) {
-          signParams.privKey = util.utilMethods.produceKeyPriv(
-            this.KStore,
-            this.pwd
-          );
+        try {
+          if (this.KStore !== null && this.pwd !== null) {
+            signParams.privKey = util.utilMethods.produceKeyPriv(
+              this.KStore,
+              this.pwd
+            );
+          }
+        } catch (error) {
+          console.log("密码输入错误");
         }
         if (this.privKey !== null) {
           signParams.privKey = String(this.privKey);
@@ -398,21 +464,21 @@ export default {
       return;
     },
     checkAddress() {
-      this.privKey = util.utilMethods.produceKeyPriv(this.KStore, this.pwd);
-      this.walletAddress = util.utilMethods.keyStoreWallet(
-        this.KStore,
-        this.pwd
-      );
-      if (this.walletAddress == this.apAddress) {
-        this.check.checkPwd.style.visibility = "hidden";
-        return;
-      }
-      if (this.walletAddress !== this.apAddress) {
+      try {
+        this.privKey = util.utilMethods.produceKeyPriv(this.KStore, this.pwd);
+        this.walletAddress = util.utilMethods.keyStoreWallet(
+          this.KStore,
+          this.pwd
+        );
+        if (this.walletAddress == this.apAddress) {
+          this.$refs.dialog.style.display = "flex";
+          this.check.checkPwd.style.visibility = "hidden";
+          return;
+        }
+      } catch (error) {
+        this.$refs.dialog.style.display = "none";
         this.check.checkPwd.style.visibility = "visible";
-        this.$router.push("/wallet/Transfer");
-        return;
       }
-      return;
     },
     confirm() {
       this.$axios
@@ -424,8 +490,7 @@ export default {
           this.copyTxId = res.txId;
           let x = res.txId.slice(0, 6);
           let y = res.txId.slice(-6);
-          this.txId = x + "..." + y;
-          console.log(res.txId);
+          this.txId = x + "......" + y;
         })
         .catch(function(err) {
           if (err.response) {
@@ -497,6 +562,7 @@ export default {
         margin: 0% 5% 0 2%;
         position: relative;
         span {
+          cursor: pointer;
           color: #f26522;
         }
       }
@@ -518,7 +584,7 @@ export default {
       }
       .p2 {
         display: inline-block;
-        margin-left: 25px;
+        margin-left: 43px;
       }
       div:nth-child(2) {
         margin-left: 5%;
@@ -546,8 +612,17 @@ export default {
         // visibility:visible;
       }
     }
-    .gasPrice {
-      // margin: 1% 0 0 -14%;
+      .gasPrice {
+      width: 340px;
+      position: relative;
+      .recommend {
+        margin: 0% 5% 0 2%;
+        position: relative;
+        span {
+          cursor: pointer;
+          color: #f26522;
+        }
+      }
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;
@@ -559,31 +634,27 @@ export default {
       }
       div:nth-child(2) {
         // margin-left: 5%;
+        padding-left: 25px;
         display: inline-block;
-        padding-left: 26px;
-        display: inline-block;
-        padding-right: 52px;
       }
       div:nth-child(3) {
         display: inline;
         position: absolute;
-        margin-left: 4%;
+        margin-left: 23%;
         margin-top: 1.4%;
         z-index: 1;
         a {
           color: #f26522;
         }
       }
-      div:nth-child(3) {
+      div:nth-child(4) {
         color: #f26522;
         margin-top: 8px;
-        margin-left: -1px;
         visibility: hidden;
-        // visibility:visible;
       }
     }
     .password {
-      margin: 7% 0 0 0%;
+      margin: 0% 0 0 0%;
       input {
         background: rgba(255, 255, 255, 0.001);
         border: 1px solid #f26522;

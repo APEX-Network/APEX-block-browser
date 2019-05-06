@@ -19,7 +19,9 @@
           v-model="firstPwd"
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
-          autocomplete="off"
+          autocomplete="new-password"
+           readonly
+            onfocus="this.removeAttribute('readonly');"
         >
         <!-- <input type="text" ref="firstPwdCover" v-model="firstPwdCover" @change="coverFirstPwd"> -->
         <img src="../../../assets/images/hiddeneye.jpg" @click="displayFirstPwd" ref="firstEye">
@@ -29,11 +31,13 @@
             spellcheck="false"
             type="password"
             ref="secondPwd"
-            @keyup.enter="prevInput($event)"
+            @keyup.enter="nextInput($event)"
             v-model="secondPwd"
             @change="getSecondPwd"
             onKeyUp="value=value.replace(/[\W]/g,'')"
-            autocomplete="off"
+            autocomplete="new-password"
+             readonly
+            onfocus="this.removeAttribute('readonly');"
           >
           <!-- <input type="text" ref="secondPwdCover" v-model="secondPwdCover" @change="coverSecondPwd"> -->
           <img src="../../../assets/images/hiddeneye.jpg" @click="displaySecondPwd" ref="secondEye">
@@ -68,8 +72,8 @@ import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "../../../utils/utils";
 import ECPair from "bitcoinjs-lib/src/ecpair";
-import Bus from "./../../../utils/bus";
-import db from "./../../../utils/myDatabase";
+import Bus from "@/utils/bus";
+import db from "@/utils/myDatabase";
 
 export default {
   name: "NewWallet",
@@ -89,9 +93,10 @@ export default {
       firstEye: null,
       secondEye: null,
       firstClick: 1,
-      ClickCheckBox: 1,
+      ClickCheckBox: 0,
       isClick: false,
-      diffPwd: null
+      diffPwd: null,
+      walletUrl: null
     };
   },
 
@@ -110,6 +115,7 @@ export default {
 
   methods: {
     getInstances() {
+      this.walletUrl = sessionStorage.getItem("walletUrl", this.walletUrl);
       this.diffPwd = this.$refs.epd;
       this.firstInput = this.$refs.firstPwd;
       this.secondInput = this.$refs.secondPwd;
@@ -156,7 +162,7 @@ export default {
           this.diffPwd.style.visibility = "hidden";
           let ap = "0548";
           let signParams = {
-            privKey: ECPair.makeRandom().privateKey.toString("hex")
+            privKey: util.utilMethods.producePrivKey()
           };
           this.apAddress = util.utilMethods.produce_address(
             signParams.privKey,
@@ -172,13 +178,18 @@ export default {
             Bus.$emit("privKey", signParams.privKey);
             Bus.$emit("apAddress", this.apAddress);
             sessionStorage.setItem("apAddress", this.apAddress);
+            // sessionStorage.setItem("walletUrl", this.walletUrl);
             Bus.$emit("keyStore", this.keyStore);
             db.APKStore.put({
               APAddress: this.apAddress,
               KStore: this.keyStore
             });
           });
-          this.$router.push("/wallet/NewWallet/CreatedKeystore");
+          // if (this.walletUrl == "/emptyWallet") {
+          //   this.$router.push("/emptyWallet/NewWallet/CreatedKeystore");
+          // } else {
+            this.$router.push("/wallet/NewWallet/CreatedKeystore");
+          // }
         }
       }
     },
@@ -214,6 +225,7 @@ export default {
         this.second != null
       ) {
         this.ClickCheckBox++;
+        console.log(this.ClickCheckBox);
         if (this.ClickCheckBox % 2 == 0) {
           this.isClick = false;
           this.nocheckbox.src = require("../../../assets/images/nocheckbox.jpg");
@@ -231,6 +243,7 @@ export default {
       Bus.$off("apAddress");
       Bus.$off("privKey");
       Bus.$off("keyStore");
+      Bus.$off("walletUrl");
     }
   },
   beforeDestroy() {

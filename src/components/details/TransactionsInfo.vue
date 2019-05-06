@@ -22,9 +22,10 @@
             Block Height:
             <span class="clol col-lg-8 changewidth">
               <router-link
-                to="/blocks/BlocksInfo"
-                @click.native="setHeightValue"
+                to
+                @click.native="setHeightValue(transactionInfoData.blockHeight)"
               >{{transactionInfoData.blockHeight}}</router-link>
+              <span>{{transactionInfoData.heightDiff}} Block Confirmations</span>
             </span>
           </span>
         </li>
@@ -53,19 +54,19 @@
               <router-link
                 to="/transactions/TransactionsInfo/AccountInfo"
                 @click.native="setToValue"
-              >
-                {{transactionInfoData.from}}
-                <!-- <img
-                @click="Copy(index)"
-                style="cursor: pointer; padding-left: 10px;"
+              >{{transactionInfoData.from}}</router-link>
+              <img
+                ref="fromAddress"
+                @click="Copy(1)"
+                style="cursor: pointer; padding-left: 10px;padding-top: 10px;
+    position: absolute;"
                 src="./../../assets/images/copy.png"
                 alt
-                >-->
-              </router-link>
+              >
             </span>
           </span>
         </li>
-        <li class="row">
+        <li class="row" v-if="transactionInfoData.to !== ''">
           <span class="col">
             To:
             <span class="clol col-lg-8">
@@ -73,6 +74,14 @@
                 to="/transactions/TransactionsInfo/AccountInfo"
                 @click.native="setToValue"
               >{{transactionInfoData.to}}</router-link>
+              <img
+                ref="toAddress"
+                @click="Copy(2)"
+                style="cursor: pointer; padding-left: 10px;padding-top: 10px;
+    position: absolute;"
+                src="./../../assets/images/copy.png"
+                alt
+              >
             </span>
           </span>
         </li>
@@ -151,7 +160,9 @@ export default {
         value: null
       },
       Hash: null,
-      flag: null
+      flag: null,
+      fAddress: null,
+      tAddress: null
     };
   },
   created() {},
@@ -160,25 +171,32 @@ export default {
     this.getClickValue();
   },
   methods: {
+    getInstances() {
+      this.fAddress = this.$refs.fromAddress;
+      this.tAddress = this.$refs.toAddress;
+    },
     Copy(index) {
-      let getCopyText = this.accountTransaction_param.address;
-      this.doCopy(getCopyText);
+      this.getInstances();
+      if (index == 1) {
+        this.fAddress.src = require("./../../assets/images/copied.png");
+        let getCopyText = this.transactionInfoData.from;
+        this.doCopy(getCopyText);
+        return;
+      }
+      if (index == 2) {
+        this.tAddress.src = require("./../../assets/images/copied.png");
+        let getCopyText = this.transactionInfoData.to;
+        this.doCopy(getCopyText);
+        return;
+      }
     },
     doCopy(val) {
-      this.$copyText(val).then(
-        function(e) {
-          alert("拷贝成功!");
-        },
-        function(e) {}
-      );
+      this.$copyText(val).then(() => {});
     },
     getClickValue() {
-      Bus.$on("txHash", data => {
-        this.Hash = data;
-        sessionStorage.setItem("refresh", data);
-        this.getTransactionsInfo();
-        return;
-      });
+      this.Hash = this.$route.query.clickValue;
+      sessionStorage.setItem("refresh", this.Hash);
+      this.getTransactionsInfo();
       this.flag = sessionStorage.getItem("flag");
       if (this.Hash == null && this.flag == 1) {
         this.Hash = sessionStorage.getItem("refresh");
@@ -186,10 +204,15 @@ export default {
         return;
       }
     },
-    setHeightValue(e) {
+    setHeightValue(data) {
       this.clickValue.type = "height";
-      this.clickValue.value = e.target.innerHTML;
-      Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+      this.clickValue.value = data;
+        this.$router.push({
+          path: "/blocks/BlocksInfo",
+          query: {
+            clickValue: this.clickValue.value
+          }
+        });
     },
     setToValue(e) {
       Bus.$emit("accountValue", e.target.innerHTML);
@@ -199,6 +222,7 @@ export default {
         this.$axios
           .get(this.transactions_url + this.Hash)
           .then(response => {
+            let serverTime = response.headers.date;
             let res = response.data.data;
             this.transactionInfoData.txHash = res.txHash;
             this.transactionInfoData.txStatus = res.status;
@@ -207,7 +231,8 @@ export default {
             this.transactionInfoData.heightDiff =
               res.newBlockHeight - res.refBlockHeight;
             this.transactionInfoData.timeStamp = util.utilMethods.toUTCtime(
-              res.refBlockTime
+              res.refBlockTime,
+              serverTime
             );
             this.transactionInfoData.from = res.from;
             this.transactionInfoData.nonce = res.nonce;
@@ -229,7 +254,6 @@ export default {
     beforeunloadHandler(e) {
       this.flag = 1;
       sessionStorage.setItem("flag", this.flag);
-      console.log(this.flag);
     }
   },
   beforeDestroy() {
@@ -260,6 +284,9 @@ export default {
             float: right;
             a {
               // width: 50%;
+            }
+            span {
+              padding-right: 46%;
             }
           }
         }

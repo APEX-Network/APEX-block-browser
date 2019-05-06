@@ -22,7 +22,8 @@
           <i class="privkey">
             {{privKey}}
             <img
-              @click="Copy(index)"
+              ref="img"
+              @click=" privKey !== null && Copy()"
               style="cursor: pointer; padding-left: 10px;float: right; padding-bottom: 6px;"
               src="./../../../assets/images/copy.png"
               alt
@@ -31,11 +32,8 @@
           <span ref="copyed" class="s2">Copy Successed</span>
         </p>
       </div>
-      <!-- <div class="create1">
-        <router-link to="/wallet/NewWallet/CreatedKeystore">DOWNLOAD ENCRYPTED KEY</router-link>
-      </div>-->
       <div class="create2">
-        <router-link to="/wallet" @click.native="getAddress">CONTINUE</router-link>
+        <router-link to @click.native="getAddress">CONTINUE</router-link>
       </div>
     </div>
   </div>
@@ -44,7 +42,7 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import Bus from "./../../../utils/bus";
+import Bus from "@/utils/bus";
 const ECPair = require("bitcoinjs-lib/src/ecpair");
 
 export default {
@@ -56,7 +54,8 @@ export default {
       address: null,
       apAddress: null,
       privKey: null,
-      tip: null
+      tip: null,
+      switchImg: null
     };
   },
 
@@ -76,6 +75,7 @@ export default {
 
   methods: {
     getInstances() {
+      this.switchImg = this.$refs.img;
       this.tip = this.$refs.copyed;
     },
     getlastAddress() {
@@ -89,9 +89,15 @@ export default {
       });
     },
     getAddress() {
-      Bus.$emit("apAddress", this.apAddress);
+      // let url = "/wallet";
+      setTimeout(() => {
+        // sessionStorage.setItem("walletUrl", url);
+        Bus.$emit("apAddress", this.apAddress);
+        this.$router.push("/wallet");
+      });
     },
     Copy(index) {
+      this.switchImg.src = require("../../../assets/images/copied.png");
       let getCopyText = this.privKey;
       this.doCopy(getCopyText);
       this.privKey = null;

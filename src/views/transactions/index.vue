@@ -7,13 +7,10 @@
         <li v-for="(list,index) in transactions" :key="index" class="row">
           <span class="col col-lg-10">
             <div class="bottom">
-              <router-link
-                to="/transactions/TransactionsInfo"
-                @click.native="setClickValue"
-              >{{list.txHash}}</router-link>
+              <router-link to @click.native="setClickValue">{{list.txHash}}</router-link>
             </div>
           </span>
-          <span class="col">{{list.refBlockTime }}</span>
+          <span class="col time">{{list.refBlockTime }}</span>
         </li>
       </ul>
       <!-- <Pagination ref="pagInation" /> -->
@@ -65,7 +62,7 @@ export default {
       start: 0,
       params: {
         start: "0",
-        pageSize: "11"
+        pageSize: "10"
       },
       pageNumber: "1-10",
       arrow: {
@@ -82,8 +79,11 @@ export default {
     const timer = setInterval(() => {
       this.getAllTransactions();
     }, 1500);
-    this.$once("hook:beforeDestroy", () => {
+    const timer2 = setInterval(() => {
       clearInterval(timer);
+    }, 60000);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer, timer2);
     });
   },
   methods: {
@@ -93,7 +93,14 @@ export default {
     },
     setClickValue(e) {
       if (e.target.innerHTML !== null) {
-        Bus.$emit("txHash", e.target.innerHTML);
+        this.clickValue = e.target.innerHTML;
+        this.$router.push({
+          path: "/transactions/TransactionsInfo",
+          query: {
+            clickValue: this.clickValue
+          }
+        });
+        // Bus.$emit("txHash", e.target.innerHTML);
       }
     },
     getAllTransactions() {
@@ -101,11 +108,12 @@ export default {
         .post(this.transaction_list_url, this.params)
         .then(response => {
           let res = response.data.data;
-          let minu;
+          let serverTime = response.headers.date;
+          let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            minu = util.utilMethods.Ftime(item.refBlockTime);
-            item.refBlockTime = minu;
+            time = util.utilMethods.listUTCtime(item.refBlockTime, serverTime);
+            item.refBlockTime = time;
           }
           this.transactions = res;
         })
@@ -125,11 +133,15 @@ export default {
           .post(this.transaction_list_url, this.params)
           .then(response => {
             let res = response.data.data;
-            let minu;
+            let serverTime = response.headers.date;
+            let time;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              minu = util.utilMethods.Ftime(item.refBlockTime);
-              item.refBlockTime = minu;
+              time = util.utilMethods.listUTCtime(
+                item.refBlockTime,
+                serverTime
+              );
+              item.refBlockTime = time;
             }
             this.transactions = res;
           })
@@ -157,11 +169,15 @@ export default {
           .post(this.transaction_list_url, this.params)
           .then(response => {
             let res = response.data.data;
-            let minu;
+            let serverTime = response.headers.date;
+            let time;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              minu = util.utilMethods.Ftime(item.refBlockTime);
-              item.refBlockTime = minu;
+              time = util.utilMethods.listUTCtime(
+                item.refBlockTime,
+                serverTime
+              );
+              item.refBlockTime = time;
             }
             this.transactions = res;
           })
@@ -186,12 +202,13 @@ export default {
         .post(this.transaction_list_url, this.params)
         .then(response => {
           let res = response.data.data;
-          let minu;
+          let serverTime = response.headers.date;
+
+          let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            minu = util.utilMethods.Ftime(item.refBlockTime);
-            console.log(minu);
-            item.refBlockTime = minu;
+            time = util.utilMethods.listUTCtime(item.refBlockTime, serverTime);
+            item.refBlockTime = time;
           }
           this.transactions = res;
         })
@@ -211,11 +228,12 @@ export default {
         .post(this.transaction_list_url, this.params)
         .then(response => {
           let res = response.data.data;
-          let minu;
+          let serverTime = response.headers.date;
+          let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            minu = util.utilMethods.Ftime(item.refBlockTime);
-            item.refBlockTime = minu;
+            time = util.utilMethods.listUTCtime(item.refBlockTime, serverTime);
+            item.refBlockTime = time;
           }
           this.transactions = res;
         })
@@ -251,8 +269,12 @@ export default {
     overflow-y: auto;
     .table-ul {
       width: 100%;
+      padding-top: 20px;
       max-width: 100%;
       & > li {
+        .time {
+          padding-left: 60px;
+        }
         &.row {
           margin: 0;
           color: #ebebeb;
@@ -292,7 +314,7 @@ export default {
     .apex-pagination {
       width: 100%;
       height: 50px;
-      padding: 0px 35px;
+      padding: 20px 35px 0 35px;
       box-sizing: border-box;
       text-align: right;
       font-size: 12px;

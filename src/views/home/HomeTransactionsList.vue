@@ -35,6 +35,7 @@ export default {
     return {
       title: "Transactions",
       transactions: [],
+      ops: {},
       clickValue: null,
       transaction_list_url: "/api/v1.0/transactions/transactionList",
       parmas: {
@@ -59,11 +60,12 @@ export default {
         .post(this.transaction_list_url, this.parmas)
         .then(response => {
           let res = response.data.data;
-          let minu;
+          let serverTime = response.headers.date;
+          let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            minu = util.utilMethods.getSec(item.refBlockTime);
-            item.refBlockTime = minu;
+            time = util.utilMethods.listUTCtime(item.refBlockTime, serverTime);
+            item.refBlockTime = time;
           }
           this.transactions = res;
         })

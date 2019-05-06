@@ -81,6 +81,7 @@ body {
     background-color: #000;
 
     .logo-left {
+        // cursor: pointer !important;
         z-index: 999;
         position: absolute;
         top: -86px;
@@ -89,7 +90,15 @@ body {
         height: 400px;
         background: url(../images/shared/logo-left.png) center no-repeat,
     }
-
+    .float-logo {
+        cursor: pointer !important;
+        z-index: 1000;
+        position: absolute;
+        top: -86px;
+        left: -95px;
+        width: 350px;
+        height: 350px;
+    }
 
     /deep/ .select2-container--default .select2-results__option[aria-selected=true] {
         background-color: #f26522;
@@ -282,7 +291,7 @@ body {
             li {
                 width: 50%;
                 float: left;
-                padding: 60px 0 10px 72px;
+                padding: 22px 0 10px 45px;
 
                 p {
                     position: relative;
@@ -388,6 +397,7 @@ body {
         .logo-left {
             width: 300px;
             height: 300px;
+            cursor: pointer !important;
         }
     }
 

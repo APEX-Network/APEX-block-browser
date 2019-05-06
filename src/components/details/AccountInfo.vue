@@ -6,11 +6,12 @@
       <ul class="table-ul">
         <li class="row">
           <span class="col">Address</span>
-          <span class="col col-lg-8" ref="address">
+          <span class="col col-lg-8 adressCPX" ref="address">
             <i>
               {{accountTransaction_param.address}}
               <img
-                @click="Copy(index)"
+                ref="img"
+                @click="Copy()"
                 style="cursor: pointer; padding-left: 10px;"
                 src="./../../assets/images/copy.png"
                 alt
@@ -20,7 +21,7 @@
         </li>
         <li class="row">
           <span class="col">Balance</span>
-          <span class="col col-lg-8">{{Balance}} CPX</span>
+          <span class="col col-lg-8 adressCPX">{{Balance}} CPX</span>
         </li>
       </ul>
     </div>
@@ -30,16 +31,36 @@
       </div>
       <div class="data-table transactions-table">
         <ul class="table-ul">
+          <li class="row">
+            <span class="col tHash">TX hash</span>
+            <span class="col col-lg-6 from">From</span>
+            <span class="col to">To</span>
+            <span class="col amount">Amount</span>
+          </li>
+          <!-- <li class="row">
+            <span class="col col-lg-10" v-if="count == 0">{{noTransactions}}</span>
+          </li>-->
           <li v-for="(list,index) in transactions" :key="index" class="row">
-            <span class="col col-lg-10">
+            <span class="col ttHash">
               <div class="bottom">
                 <router-link
                   to="/transactions/TransactionsInfo"
-                  @click.native="setRefBlockHash"
+                  @click.native="setTxHash"
                 >{{list.txHash}}</router-link>
               </div>
             </span>
-            <span class="col">{{ list.refBlockTime }}</span>
+            <span class="col" :class="objectClass">
+              <router-link
+                to
+                @click.native="currentAccountInfo(list.from)"
+              >{{getaddress(list.from)}}</router-link>
+            </span>
+            <span class="col to">
+              <router-link to @click.native="currentAccountInfo(list.to)">{{getaddress(list.to)}}</router-link>
+            </span>
+            <span class="col amount">
+              <router-link to>{{list.amount}} CPX</router-link>
+            </span>
           </li>
         </ul>
         <!-- <Pagination/> -->
@@ -108,7 +129,14 @@ export default {
       flag: null,
       isClick: true,
       count: null,
-      point: null
+      point: null,
+      switchImg: null,
+      Type: null,
+      noTransactions: null,
+      objectClass: {
+        from: true,
+        emptyFrom: false
+      }
     };
   },
   mounted() {
@@ -125,12 +153,28 @@ export default {
     });
   },
   methods: {
+    currentAccountInfo(data) {
+      if (data !== "") {
+        this.$router.push("/transactions/TransactionsInfo/AccountInfo");
+        setTimeout(() => {
+          Bus.$emit("accountValue", data);
+        });
+      }
+    },
+    getaddress(address) {
+      // !address ? this.objectClass.emptyFrom = true : this.objectClass.emptyFrom = false;
+      let x = address.slice(0, 8);
+      let y = address.slice(-8);
+      return !address ? "Miner Reward" : x + "..." + y;
+    },
     getInstance() {
+      this.switchImg = this.$refs.img;
       this.arrow.leftArrow = this.$refs.left;
       this.arrow.rightArrow = this.$refs.right;
     },
     Copy(index) {
       let getCopyText = this.accountTransaction_param.address;
+      this.switchImg.src = require("./../../assets/images/copied.png");
       this.doCopy(getCopyText);
     },
     doCopy(val) {
@@ -196,18 +240,53 @@ export default {
           .post(this.accountTransaction_url, this.accountTransaction_param)
           .then(response => {
             let res = response.data.data.transactions;
+            let serverTime = response.headers.date;
+            this.transactions = [];
+            this.transactions = res;
+            for (let i = 0; i < this.transactions.length; i++) {
+              const element = this.transactions[i];
+              let amount = element.amount;
+              let faddress = element.from;
+              let taddress = element.to;
+              let result = amount.toString().indexOf(".");
+              if (faddress == "") {
+                this.objectClass.emptyFrom = true;
+                this.objectClass.from = false;
+              }
+              this.getaddress(faddress);
+              this.getaddress(taddress);
+              if (result > -1) {
+                let pointLength = amount.toString().split(".")[1].length;
+                if (pointLength > 2) {
+                  element["amount"] =
+                    amount.toString().split(".")[0] +
+                    "." +
+                    amount
+                      .toString()
+                      .split(".")[1]
+                      .substring(0, 2);
+                }
+                if (pointLength <= 2) {
+                  element["amount"] = amount;
+                }
+              }
+              if (result == -1) {
+                element["amount"] = amount;
+              }
+            }
             this.count = response.data.data.count;
             if (this.count == 0) {
+              this.noTransactions = "There are no matching entries";
               this.pageNumber = "1-1";
               this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
               return;
             }
             this.totalPage =
               this.count / this.accountTransaction_param.pageSize;
-            if (this.totalPage >= 10) {
-              this.totalPage = 10;
+            if (this.totalPage >= 100) {
+              this.totalPage = 100;
             }
-            if (this.totalPage < 10) {
+            if (this.totalPage < 100) {
               this.point = this.totalPage.toString().indexOf(".");
               if (this.point > -1) {
                 this.totalPage =
@@ -223,13 +302,6 @@ export default {
               }
             }
             this.pageNumber = this.start + 1 + "-" + this.totalPage;
-            this.transactions = res;
-            let time;
-            for (let i = 0; i < this.transactions.length; i++) {
-              let element = this.transactions[i];
-              time = util.utilMethods.Ftime(element.refBlockTime);
-              element.refBlockTime = time;
-            }
           })
           .catch(function(err) {
             if (err.response) {
@@ -242,7 +314,9 @@ export default {
       if (this.accountTransaction_param.address !== null && this.count !== 0) {
         this.isClick = true;
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
-        this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+        if (this.totalPage !== 1) {
+          this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+        }
         this.start = 0;
         this.pageNumber = this.start + 1 + "-" + this.totalPage;
         this.accountTransaction_param.start = this.start;
@@ -250,11 +324,43 @@ export default {
           .post(this.accountTransaction_url, this.accountTransaction_param)
           .then(response => {
             let res = response.data.data.transactions;
+            let serverTime = response.headers.date;
+            this.transactions = [];
             this.transactions = res;
+            for (let i = 0; i < this.transactions.length; i++) {
+              const element = this.transactions[i];
+              let amount = element.amount;
+              let faddress = element.from;
+              let taddress = element.to;
+              let result = amount.toString().indexOf(".");
+              this.getaddress(faddress);
+              this.getaddress(taddress);
+              if (result > -1) {
+                let pointLength = amount.toString().split(".")[1].length;
+                if (pointLength > 2) {
+                  element["amount"] =
+                    amount.toString().split(".")[0] +
+                    "." +
+                    amount
+                      .toString()
+                      .split(".")[1]
+                      .substring(0, 2);
+                }
+                if (pointLength <= 2) {
+                  element["amount"] = amount;
+                }
+              }
+              if (result == -1) {
+                element["amount"] = amount;
+              }
+            }
             let time;
             for (let i = 0; i < this.transactions.length; i++) {
               let element = this.transactions[i];
-              time = util.utilMethods.Ftime(element.refBlockTime);
+              time = util.utilMethods.listUTCtime(
+                element.refBlockTime,
+                serverTime
+              );
               element.refBlockTime = time;
             }
           })
@@ -278,11 +384,43 @@ export default {
             .post(this.accountTransaction_url, this.accountTransaction_param)
             .then(response => {
               let res = response.data.data.transactions;
+              let serverTime = response.headers.date;
+              this.transactions = [];
               this.transactions = res;
+              for (let i = 0; i < this.transactions.length; i++) {
+                const element = this.transactions[i];
+                let amount = element.amount;
+                let faddress = element.from;
+                let taddress = element.to;
+                let result = amount.toString().indexOf(".");
+                this.getaddress(faddress);
+                this.getaddress(taddress);
+                if (result > -1) {
+                  let pointLength = amount.toString().split(".")[1].length;
+                  if (pointLength > 2) {
+                    element["amount"] =
+                      amount.toString().split(".")[0] +
+                      "." +
+                      amount
+                        .toString()
+                        .split(".")[1]
+                        .substring(0, 2);
+                  }
+                  if (pointLength <= 2) {
+                    element["amount"] = amount;
+                  }
+                }
+                if (result == -1) {
+                  element["amount"] = amount;
+                }
+              }
               let time;
               for (let i = 0; i < this.transactions.length; i++) {
                 let element = this.transactions[i];
-                time = util.utilMethods.Ftime(element.refBlockTime);
+                time = util.utilMethods.listUTCtime(
+                  element.refBlockTime,
+                  serverTime
+                );
                 element.refBlockTime = time;
               }
             })
@@ -307,11 +445,43 @@ export default {
               .post(this.accountTransaction_url, this.accountTransaction_param)
               .then(response => {
                 let res = response.data.data.transactions;
+                let serverTime = response.headers.date;
+                this.transactions = [];
                 this.transactions = res;
+                for (let i = 0; i < this.transactions.length; i++) {
+                  const element = this.transactions[i];
+                  let amount = element.amount;
+                  let faddress = element.from;
+                  let taddress = element.to;
+                  let result = amount.toString().indexOf(".");
+                  this.getaddress(faddress);
+                  this.getaddress(taddress);
+                  if (result > -1) {
+                    let pointLength = amount.toString().split(".")[1].length;
+                    if (pointLength > 2) {
+                      element["amount"] =
+                        amount.toString().split(".")[0] +
+                        "." +
+                        amount
+                          .toString()
+                          .split(".")[1]
+                          .substring(0, 2);
+                    }
+                    if (pointLength <= 2) {
+                      element["amount"] = amount;
+                    }
+                  }
+                  if (result == -1) {
+                    element["amount"] = amount;
+                  }
+                }
                 let time;
                 for (let i = 0; i < this.transactions.length; i++) {
                   let element = this.transactions[i];
-                  time = util.utilMethods.Ftime(element.refBlockTime);
+                  time = util.utilMethods.listUTCtime(
+                    element.refBlockTime,
+                    serverTime
+                  );
                   element.refBlockTime = time;
                 }
               })
@@ -348,11 +518,43 @@ export default {
               .post(this.accountTransaction_url, this.accountTransaction_param)
               .then(response => {
                 let res = response.data.data.transactions;
+                let serverTime = response.headers.date;
+                this.transactions = [];
                 this.transactions = res;
+                for (let i = 0; i < this.transactions.length; i++) {
+                  const element = this.transactions[i];
+                  let amount = element.amount;
+                  let faddress = element.from;
+                  let taddress = element.to;
+                  let result = amount.toString().indexOf(".");
+                  this.getaddress(faddress);
+                  this.getaddress(taddress);
+                  if (result > -1) {
+                    let pointLength = amount.toString().split(".")[1].length;
+                    if (pointLength > 2) {
+                      element["amount"] =
+                        amount.toString().split(".")[0] +
+                        "." +
+                        amount
+                          .toString()
+                          .split(".")[1]
+                          .substring(0, 2);
+                    }
+                    if (pointLength <= 2) {
+                      element["amount"] = amount;
+                    }
+                  }
+                  if (result == -1) {
+                    element["amount"] = amount;
+                  }
+                }
                 let time;
                 for (let i = 0; i < this.transactions.length; i++) {
                   let element = this.transactions[i];
-                  time = util.utilMethods.toUTCtime(element.refBlockTime);
+                  time = util.utilMethods.listUTCtime(
+                    element.refBlockTime,
+                    serverTime
+                  );
                   element.refBlockTime = time;
                 }
               })
@@ -365,7 +567,7 @@ export default {
         }
       }
     },
-    setRefBlockHash(e) {
+    setTxHash(e) {
       Bus.$emit("txHash", e.target.innerHTML);
     },
     offListener() {
@@ -394,27 +596,65 @@ export default {
 .AccountInfo {
   width: 100%;
   height: 100%;
+  .transactions-details {
+    padding-top: 30px;
+    .table-ul {
+      .adressCPX {
+        .row {
+          padding: 0 8px 0 69px;
+        }
+      }
+    }
+  }
   .bg {
     background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
   }
   .apex-box {
-    // background-color: rgba(255, 255, 255, 0.1);
-    padding-top: 80px;
     .apex-title {
       padding-left: 30px;
+      padding-top: 25px;
     }
     .data-table {
-      // background-color: rgba(255, 255, 255, 0.1);
       width: 100%;
-      padding: 0px 12px 0px;
+      padding: 0px 0px 0px 12px;
       box-sizing: border-box;
       overflow-y: auto;
       .table-ul {
         width: 100%;
         max-width: 100%;
-        margin-top: 20px;
         border-top: #0000 2px solid;
         & > li {
+          .ttHash {
+            max-width: 335px;
+          }
+          .tHash {
+            padding-left: 20px;
+            max-width: 335px;
+          }
+          .from {
+            padding-left: 20px;
+            max-width: 232px;
+          }
+          .emptyFrom {
+            padding-left: 20px;
+            max-width: 232px;
+            a {
+              color: #ebebeb;
+              cursor: default;
+            }
+          }
+          .to {
+            max-width: 232px;
+            padding-left: 50px;
+          }
+          .amount {
+            max-width: 200px;
+            padding-left: 90px;
+
+            a {
+              color: #ebebeb;
+            }
+          }
           &.row {
             margin: 0;
             color: #ebebeb;
@@ -437,9 +677,9 @@ export default {
               background: url(./../../assets/images/shared/icon-fix.png) left
                 5px no-repeat;
               a {
-                // max-width: 300px;
-                // overflow: hidden;
-                // white-space: nowrap;
+                overflow: hidden;
+                white-space: nowrap;
+                max-width: 232px;
                 color: #f26522;
                 margin-top: 5px;
               }

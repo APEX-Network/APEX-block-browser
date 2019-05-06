@@ -59,6 +59,15 @@ export default {
     drawCharts() {
       // 绘制图表
       this.myChart.setOption({
+        title: {
+          text: "UTC",
+          textStyle: {
+            color: "#fff",
+            fontSize: "10"
+          },
+          left: '90.5%',
+          top: '79%'
+        },
         color: ["#1AC8FF"],
         grid: {
           left: -48,

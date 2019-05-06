@@ -6,16 +6,17 @@
         <div class="clearboth">
           <div class="flex-item1 fl">Address</div>
           <Select2
+          ref="select2"
             class="flex-item2 fl"
-            readonly="readonly"
-            autocomplete="off"
-            placeholder="Please create or import your wallet"
-            v-model="address"
+            autocomplete="new-password"
+            readonly
+            onfocus="this.removeAttribute('readonly');"
+            v-model="currentAddress"
             :options="APAddress"
-            :settings="{ settingOption: value, settingOption: value }"
             @change="myChangeEvent($event)"
             @select="mySelectEvent($event)"
           />
+          <img @click="Copy()" ref="copy" style=" margin-top: 10px;cursor: pointer;margin-left: 12px;" src="../../../assets/images/copy.png" alt="">
         </div>
         <div class="btn-box btn-box-left">
           <router-link to="/wallet/NewWallet">NEW WALLET</router-link>
@@ -41,9 +42,7 @@
         </div>
       </div>
     </div>
-    <!-- <div class="flex-container3">
-      <div class="flex-item1">CLOSE WALLET</div>
-    </div>-->
+  </div>
 </template>
 
 <script>
@@ -60,7 +59,11 @@ export default {
       APAddress: [],
       getAllAddress: null,
       accountInfo_url: "/api/v1.0/accounts/account",
-      CPX: 0
+      CPX: 0,
+      selected: null,
+      copyImg: null,
+      currentAddress: this.address,
+      currentPrivKey: this.privKey
     };
   },
 
@@ -69,16 +72,17 @@ export default {
   beforeMount() {},
 
   mounted() {
-    this.address = sessionStorage.getItem("apAddress");
+    this.getInstances();
+    this.currentAddress = sessionStorage.getItem("apAddress");
     setTimeout(() => {
-      if (this.address !== null) {
-        this.getCPX(this.address);
+      if (this.currentAddress !== null) {
+        this.getCPX(this.currentAddress);
       }
     });
     const timer = setInterval(() => {
-      this.address = sessionStorage.getItem("apAddress");
-      if (this.address !== null) {
-        this.getCPX(this.address);
+      this.currentAddress = sessionStorage.getItem("apAddress");
+      if (this.currentAddress !== null) {
+        this.getCPX(this.currentAddress);
       }
     }, 1500);
     this.$once("hook:beforeDestroy", () => {
@@ -91,26 +95,47 @@ export default {
           this.APAddress.push(v.APAddress);
         });
       });
+      // if (this.APAddress.length == 0) {
+      //   sessionStorage.setItem("apAddress", null)
+      // }
   },
 
   methods: {
+    Copy(index) {
+      this.copyImg.src = require("../../../assets/images/copied.png");
+      let getCopyText = this.currentAddress;
+      this.doCopy(getCopyText);
+    },
+    doCopy(val) {
+      this.$copyText(val).then(
+        function(e) {},
+        function(e) {
+          // console.log(e)
+        }
+      );
+    },
+    getInstances() {
+    this.selected = this.$refs.select2;
+    this.copyImg = this.$refs.copy;
+    },
     myChangeEvent(val) {
-      this.address = val;
-      sessionStorage.setItem("apAddress", this.address);
+      this.currentAddress = val;
+      this.copyImg.src = require("../../../assets/images/copy.png");
+      sessionStorage.setItem("apAddress", this.currentAddress);
     },
     mySelectEvent({ id, text }) {
-      console.log({ id, text });
+      // console.log({ id, text });
     },
     sendAddress() {
-      Bus.$emit("apAddress", this.address);
+      Bus.$emit("apAddress", this.currentAddress);
       setTimeout(() => {
-        Bus.$emit("privKey", this.privKey);
+        Bus.$emit("privKey", this.currentPrivKey);
       });
     },
-    getCPX(address) {
+    getCPX(currentAddress) {
       this.$axios
         .post(this.accountInfo_url, {
-          address: address
+          address: currentAddress
         })
         .then(response => {
           let res = response.data.data;
@@ -181,13 +206,13 @@ export default {
     a {
       display: inline-block;
       height: 30px;
-      font-size: 18px;
+      // font-size: 18px;
       margin-right:30px;
       color: #f26522;
       line-height: 30px;
       text-align: center;
       border: 1px solid #f26522;
-      padding: 0 15px;
+      padding: 0 30px;
       &:hover {
         box-shadow: 2px 2px 8px 2px #f26522;
       }

@@ -30,7 +30,7 @@ export default {
     return {
       overView_url: "/api/v1.0/state/blockStateInfo",
       overView_data: {
-        lastBlock: null,
+        // lastBlock: null,
         tps: null,
         dailyTxs: null,
         dailyActiveAccounts: null
@@ -81,11 +81,11 @@ export default {
     }
   }
 }
-@media screen and(max-width:1366px) {
-  .home {
-    .clearboth {
-      padding-top: 65px;
-    }
-  }
-}
+// @media screen and(max-width:1366px) {
+//   .home {
+//     .clearboth {
+//       padding-top: 65px;
+//     }
+//   }
+// }
 </style>

@@ -7,7 +7,7 @@
         <li class="row">
           <span class="col">
             Height:
-            <span class="clol col-lg-8">{{height}}</span>
+            <span class="clol col-lg-8 height" @click="goTxBlock(height)">{{height}}</span>
           </span>
         </li>
         <li class="row">
@@ -32,7 +32,7 @@
           <span class="col">
             Parent Hash:
             <span class="clol col-lg-8">
-              <router-link to="/blocks/BlocksInfo" @click.native="getParentBlock">{{parentHash}}</router-link>
+              <span @click="getParentBlock(parentHash)">{{parentHash}}</span>
             </span>
           </span>
         </li>
@@ -53,8 +53,8 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 // import Pagination from "@/components/public/Pagination.vue";
-import Bus from "./../../utils/bus";
-import util from "./../../utils/utils";
+import Bus from "@/utils/bus";
+import util from "@/utils/utils";
 
 export default {
   name: "BlocksInfo",
@@ -82,20 +82,35 @@ export default {
   },
   created() {},
   mounted() {
-    window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
+    // window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
   },
   methods: {
-    getClickValue() {
-      Bus.$on("clickValue", data => {
-        this.result = JSON.parse(data);
-        sessionStorage.setItem("refresh", data);
-        this.getBlocksInfo();
-        return;
+    goTxBlock(data) {
+      this.$router.push({
+        path: "/blocks/BlocksInfo/TxFBlock",
+        query: {
+          clickValue: data
+        }
       });
-      this.flag = sessionStorage.getItem("flag");
-      if (this.result == null && this.flag == 1) {
-        this.result = JSON.parse(sessionStorage.getItem("refresh"));
+    },
+    getClickValue() {
+      this.result = this.$route.query.clickValue;
+      if (this.result !== null) {
+        let paramsType = typeof this.result.value;
+        console.log(paramsType);
+        console.log(this.result.type);
+        //刷新有问题
+        switch (paramsType) {
+          case "height":
+            this.result.type = "height";
+            break;
+          case "string":
+            this.result.type = "hash";
+            break;
+          default:
+            break;
+        }
         this.getBlocksInfo();
         return;
       }
@@ -118,11 +133,15 @@ export default {
               .get(this.url.blockHash_url + params)
               .then(response => {
                 let res = response.data.data;
+                let serverTime = response.headers.date;
                 this.height = res.height;
                 this.blockHash = res.blockHash;
-                this.timeStamp = util.utilMethods.Ftime(res.timeStamp);
+                this.timeStamp = util.utilMethods.toUTCtime(
+                  res.timeStamp,
+                  serverTime
+                );
                 this.transactions =
-                  res.txNum + " " + "transactions in this block";
+                  res.txNum + "   " + "transactions in this block";
                 this.parentHash = res.prevBlock;
                 this.minedBy = res.producer;
                 this.nonce = res.txNum;
@@ -136,10 +155,14 @@ export default {
               .get(this.url.blockHeight_url + params)
               .then(response => {
                 let res = response.data.data;
+                let serverTime = response.headers.date;
                 if (res !== "NotFound" && res.txNum !== null) {
                   this.height = res.height;
                   this.blockHash = res.blockHash;
-                  this.timeStamp = util.utilMethods.Ftime(res.timeStamp);
+                  this.timeStamp = util.utilMethods.toUTCtime(
+                    res.timeStamp,
+                    serverTime
+                  );
                   this.transactions =
                     res.txNum + " " + "transactions in this block";
                   this.parentHash = res.prevBlock;
@@ -154,17 +177,26 @@ export default {
         }
       }
     },
-    getParentBlock(e) {
+    getParentBlock(data) {
       if (this.height == 0) {
         return;
       }
       if (!!this.parentHash) {
+        this.$router.push({
+          query: {
+            clickValue: data
+          }
+        });
         this.$axios
           .get(this.url.blockHash_url + this.parentHash)
           .then(response => {
             let res = response.data.data;
+            let serverTime = response.headers.date;
             this.height = res.height;
-            this.timeStamp = util.utilMethods.Ftime(res.timeStamp);
+            this.timeStamp = util.utilMethods.toUTCtime(
+              res.timeStamp,
+              serverTime
+            );
             this.transactions = res.txNum + " " + "transactions in this block";
             this.blockHash = res.blockHash;
             this.parentHash = res.prevBlock;
@@ -177,6 +209,7 @@ export default {
     },
     offListener() {
       Bus.$off("minerBy");
+      Bus.$off("bHeight");
     },
     beforeunloadHandler(e) {
       this.flag = 1;
@@ -198,7 +231,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-
 .BlocksInfo {
   width: 100%;
   height: 100%;
@@ -212,6 +244,15 @@ export default {
           span {
             margin-right: 10%;
             float: right;
+            span {
+              cursor: pointer;
+              color: #f26522;
+              float: left;
+            }
+          }
+          .height {
+            cursor: pointer;
+            color: #f26522;
           }
         }
       }

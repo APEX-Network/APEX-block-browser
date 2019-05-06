@@ -13,18 +13,22 @@
           v-model="keyStore"
           @change="getkeyStore"
           placeholder="Paste or type keystore"
-          autocomplete="off"
+          autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <div class="repatpwd">
           <input
             spellcheck="false"
             type="password"
-            autocomplete="off"
+            autocomplete="new-password"
             ref="pwd"
             v-model="pwd"
             @change="getPwd"
             placeholder="Enter the password corresponding to this keystore"
             onKeyUp="value=value.replace(/[\W]/g,'')"
+            readonly
+            onfocus="this.removeAttribute('readonly');"
           >
           <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenPwd">
         </div>
@@ -39,9 +43,9 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import util from "./../../../utils/utils";
-import Bus from "./../../../utils/bus";
-import db from "./../../../utils/myDatabase";
+import util from "@/utils/utils";
+import Bus from "@/utils/bus";
+import db from "@/utils/myDatabase";
 
 export default {
   name: "KeyStore",
@@ -89,17 +93,28 @@ export default {
       }
     },
     keyStoreWallet() {
-      if (this.keyStore !== null && this.pwd !== null) {
-        let downKeyStore = this.keyStore;
-        let key = this.pwd;
-        this.walletAddress = util.utilMethods.keyStoreWallet(downKeyStore, key);
-        Bus.$emit("apAddress", this.walletAddress);
-        sessionStorage.setItem("apAddress", this.walletAddress);
-        db.APKStore.put({
-          APAddress: this.walletAddress,
-          KStore: this.keyStore
-        });
-        this.$router.push("/wallet");
+      try {
+        if (this.keyStore !== null && this.pwd !== null) {
+          // let url = "/wallet";
+          // setTimeout(() => {
+          //   sessionStorage.setItem("walletUrl", url);
+          // });
+          let downKeyStore = this.keyStore;
+          let key = this.pwd;
+          this.walletAddress = util.utilMethods.keyStoreWallet(
+            downKeyStore,
+            key
+          );
+          Bus.$emit("apAddress", this.walletAddress);
+          sessionStorage.setItem("apAddress", this.walletAddress);
+          db.APKStore.put({
+            APAddress: this.walletAddress,
+            KStore: this.keyStore
+          });
+          this.$router.push("/wallet");
+        }
+      } catch (error) {
+        console.log("密码输入错误");
       }
     }
   },

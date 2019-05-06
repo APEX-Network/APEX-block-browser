@@ -11,8 +11,8 @@
           Warning:APEX neither holds any of your account infromation nor can it help you get your account back.
         </li>
         <li class="flex-btn">
-          <router-link to="/wallet/NewWallet">NEW WALLET</router-link>
-          <router-link to="/wallet/OpenWallet">OPEN WALLET</router-link>
+          <router-link to="/emptyWallet/NewWallet">NEW WALLET</router-link>
+          <router-link to="/emptyWallet/OpenWallet">OPEN WALLET</router-link>
         </li>
       </ul>
     </div>

@@ -401,7 +401,7 @@
 
             </p>
         </div>
-        <vue-scroll>
+        </vue-scroll>
     </div>
     <div class="btn-box">
       <router-link to="/wallet/NewWallet">I AGREE</router-link>
@@ -450,18 +450,21 @@ export default {
     width: 156px;
     height: 33px;
     line-height: 33px;
-    border: 1px solid #999;
-    color: #999;
+    border: 1px solid #f26522;
+    color: #f26522;
     font-size: 14px;
     text-align: center;
     margin: 0 auto;
     transition: all 0.3s;
     &:hover {
-      color: #fff;
-      border-color: #fff;
+      color: #f26522;
+      border-color: #f26522;
+      box-shadow: 2px 2px 8px 2px #f26522;
     }
   }
 }
 </style>
+
+
 
 

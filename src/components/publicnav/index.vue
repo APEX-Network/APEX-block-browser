@@ -30,9 +30,9 @@
         <li
           v-for="(item, index) in nav"
           :key="index"
-          :class=" ((item.path === defaultNav) || ( defaultNav === '/' &&  index == '0')) ? 'active' : ''"
+          :class=" ((item.path === defaultNav) || ( defaultNav === '/' &&  index == 0)) ? 'active' : ''"
         >
-          <router-link :to="item.path" @click.native="hiddenAboutUs"></router-link>
+          <router-link :to="item.path"></router-link>
         </li>
       </ul>
       <ul class="fl about">
@@ -157,15 +157,17 @@ export default {
         value: null
       },
       getAllAddress: null,
-      APAddress: []
+      APAddress: [],
+      walletUrl: null,
+      newwalletUrl: null
     };
   },
+  created() {},
   computed: {
     nav() {
-      let walletPath = this.checkDB();
       return [
         { title: this.$t("nav.home"), path: "/home" },
-        { title: this.$t("nav.wallet"), path: walletPath },
+        { title: this.$t("nav.wallet"), path: "/wallet" },
         { title: "", path: "/blocks" },
         { title: "", path: "/transactions" },
         { title: "", path: "/producer" }
@@ -176,7 +178,11 @@ export default {
     }
   },
   mounted() {
-    this.firstCheck();
+    // setTimeout(() => {
+    //   this.walletUrl = sessionStorage.getItem("walletUrl");
+    //   this.nav[1].path = this.walletUrl;
+    //   console.log(this.nav[1].path);
+    // }, 500);
     this.about = this.$refs.aboutUs;
     this.wrapDiv = this.$refs.wrapAboutUs;
     this.search = this.$refs.search;
@@ -189,46 +195,14 @@ export default {
     });
   },
   methods: {
-    firstCheck() {
-      let walletPath = this.checkDB();
-      return [
-        { title: this.$t("nav.home"), path: "/home" },
-        { title: this.$t("nav.wallet"), path: walletPath },
-        { title: "", path: "/blocks" },
-        { title: "", path: "/transactions" },
-        { title: "", path: "/producer" }
-      ];
-    },
-    checkDB() {
-      this.getAllAddress = db.APKStore.where("APAddress")
-        .above(0)
-        .toArray(APKStore => {
-          APKStore.forEach(v => {
-            this.APAddress.push(v.APAddress);
-          });
-        });
-        // console.log(!this.APAddress.length ? "/emptyWallet" : "/wallet")
-      return !this.APAddress.length ? "/emptyWallet" : "/wallet";
-    },
-
-    checkIDB() {
-      this.getAllAddress = db.APKStore.where("APAddress")
-        .above(0)
-        .toArray(APKStore => {
-          APKStore.forEach(v => {
-            this.APAddress.push(v.APAddress);
-          });
-        });
-      this.nav[1].path = !this.APAddress.length ? "/emptyWallet" : "/wallet";
-    },
-
     getSearchValue() {
-      this.about.style.visibility = "hidden";
+      this.about.style.height = "0px";
+      this.wrapDiv.style.height = "0vh";
       this.search = this.$refs.search.value;
     },
 
     startSearch() {
-      if (!!this.search) {
+      if (this.search !== null) {
         if (
           (this.search.length == 35 && this.search.slice(0, 2) == "AP") ||
           Number.isInteger(Number(this.search)) == true ||
@@ -247,8 +221,10 @@ export default {
                 Bus.$emit("accountValue", this.search);
               });
               this.$router.push("/transactions/TransactionsInfo/AccountInfo");
+              this.$refs.search.value = null;
             } catch (error) {
               this.$router.push("/error");
+              this.$refs.search.value = null;
               return;
             }
           }
@@ -256,8 +232,9 @@ export default {
             this.$axios
               .get(this.url.blockHeight_url + this.search)
               .then(response => {
-                if (response.data.status == 404) {
-                  this.$router.push("/error");
+                if (response.data.data == "NotFound") {
+                  // this.$router.push("/error");
+                  this.$refs.search.value = null;
                   return;
                 }
                 if (response.data.status == 200) {
@@ -274,6 +251,7 @@ export default {
                       );
                     });
                     this.$router.push("/blocks/BlocksInfo");
+                    this.$refs.search.value = null;
                   }
                 }
               })
@@ -287,7 +265,7 @@ export default {
             this.$axios
               .get(this.url.blockHash_url + this.search)
               .then(response => {
-                if (response.data.status == 404) {
+                if (response.data.data == "NotFound") {
                   // this.$router.push("/error");
                   return;
                 }
@@ -302,6 +280,7 @@ export default {
                       Bus.$emit("clickValue", JSON.stringify(this.searchBlock));
                     });
                     this.$router.push("/blocks/BlocksInfo");
+                    this.$refs.search.value = null;
                     return;
                   }
                 }
@@ -312,7 +291,7 @@ export default {
             this.$axios
               .get(this.url.transactions_url + this.search)
               .then(response => {
-                if (response.data.status == 404) {
+                if (response.data.data == "NotFound") {
                   // this.$router.push("/error");
                   return;
                 }
@@ -323,6 +302,7 @@ export default {
                       Bus.$emit("txHash", this.search);
                     });
                     this.$router.push("/transactions/TransactionsInfo");
+                    this.$refs.search.value = null;
                     return;
                   }
                 }
@@ -331,12 +311,16 @@ export default {
           }
         } else {
           this.$router.push("/error");
+          this.$refs.search.value = null;
+
           return;
         }
       }
     },
     enterSearch(ev) {
       if (ev.keyCode == 13) {
+        this.about.style.height = "0px";
+        this.wrapDiv.style.height = "0vh";
         this.startSearch();
       }
     },
@@ -358,10 +342,16 @@ export default {
       this.about.style.height = "240px";
       this.wrapDiv.style.height = "100vh";
     },
-    hiddenAboutUs() {
+    switchWalletUrl() {
       if (this.nav[1].title == this.$t("nav.wallet")) {
-        this.checkIDB();
+        setTimeout(() => {
+          this.newwalletUrl = sessionStorage.getItem("walletUrl");
+          this.nav[1].path = this.newwalletUrl;
+        });
+        console.log(this.nav[1].path);
       }
+    },
+    hiddenAboutUs() {
       this.about.style.height = "0px";
       this.wrapDiv.style.height = "0vh";
     },
@@ -369,6 +359,7 @@ export default {
       Bus.$off("accountValue");
       Bus.$off("clickValue");
       Bus.$off("txHash");
+      // Bus.$off("walletUrl");
     }
   },
   beforeDestroy() {
@@ -542,7 +533,7 @@ export default {
   .nav-bar {
     z-index: 9999;
     position: fixed;
-    bottom: 25%;
+    bottom: 20%;
     left: 106px;
     width: 30px;
     height: 350px;

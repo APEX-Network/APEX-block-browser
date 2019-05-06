@@ -8,20 +8,16 @@
           <span class="col">Height</span>
           <span class="col col-lg-6">Hash</span>
           <span class="col">Age</span>
-          <!-- <span class="col">Txn</span> -->
           <span class="col">Miner</span>
         </li>
         <li v-for="(item,index) in dataList" :key="index" class="row">
           <span class="col height">
-            <router-link to="/blocks/BlocksInfo" @click.native="setHeightValue">{{item.height}}</router-link>
-            <!-- {{item.height}} -->
+            <router-link to @click.native="setHeightValue(item.height)">{{item.height}}</router-link>
           </span>
           <span class="col col-lg-6">
-            <router-link to="/blocks/BlocksInfo" @click.native="setHashValue">{{item.blockHash}}</router-link>
+            <router-link to @click.native="setHashValue(item.blockHash)">{{item.blockHash}}</router-link>
           </span>
           <span class="col">{{item.timeStamp}}</span>
-          <!-- <span class="col txn">{{item.txNum}}</span> -->
-          <!-- <span class="col">{{item.producer}}</span> -->
           <span class="col">
             <router-link
               to="/producer/ProducerInfo"
@@ -58,8 +54,8 @@
 // import Pagination from "@/components/public/Pagination.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import ApexTitle from "@/components/public/ApexTitle.vue";
-import Bus from "./../../utils/bus";
-import util from "./../../utils/utils";
+import Bus from "@/utils/bus";
+import util from "@/utils/utils";
 
 export default {
   name: "blocks",
@@ -99,8 +95,11 @@ export default {
       this.getBlocks();
     }, 1500);
     this.$once("hook:beforeDestroy", () => {
-      clearInterval(timer);
+      clearInterval(timer, timer2);
     });
+    const timer2 = setInterval(() => {
+      clearInterval(timer);
+    }, 60000);
   },
   methods: {
     getInstance() {
@@ -108,18 +107,17 @@ export default {
       this.arrow.rightArrow = this.$refs.right;
     },
     getBlocks() {
-      this.getServerDate();
       if (!!this.params) {
         this.$axios
           .post(this.allBlockUrl, this.params)
           .then(response => {
             let res = response.data.data;
-            let seconds;
+            let serverTime = response.headers.date;
+            let time;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              let dateDiff = this.serverDate - item.timeStamp;
-              seconds = util.utilMethods.tierNoYear(dateDiff);
-              item.timeStamp = seconds;
+              time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
+              item.timeStamp = time;
             }
             this.dataList = res;
           })
@@ -130,35 +128,21 @@ export default {
           });
       }
     },
-    getServerDate() {
-      var xhr = null;
-      if (window.XMLHttpRequest) {
-        xhr = new window.XMLHttpRequest();
-      } else {
-        // ie
-        xhr = new ActiveObject("Microsoft");
-      }
-
-      xhr.open("GET", "/", true);
-      xhr.send(null);
-      xhr.onreadystatechange = function() {
-        var time, date;
-        if (xhr.readyState == 2) {
-          time = xhr.getResponseHeader("Date");
-          this.serverDate = new Date(time);
-          console.log(this.serverDate);
-        }
-      };
+    setHeightValue(data) {
+      this.$router.push({
+          path: "/blocks/BlocksInfo",
+          query: {
+            clickValue: data
+          }
+        });
     },
-    setHeightValue(e) {
-      this.clickValue.type = "height";
-      this.clickValue.value = e.target.innerHTML;
-      Bus.$emit("clickValue", JSON.stringify(this.clickValue));
-    },
-    setHashValue(e) {
-      this.clickValue.type = "hash";
-      this.clickValue.value = e.target.innerHTML;
-      Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+    setHashValue(data) {
+      this.$router.push({
+          path: "/blocks/BlocksInfo",
+          query: {
+            clickValue: data
+          }
+        });
     },
     setMinerByValue(e) {
       Bus.$emit("minerBy", e.target.innerHTML);
@@ -174,11 +158,12 @@ export default {
           .post(this.allBlockUrl, this.params)
           .then(response => {
             let res = response.data.data;
-            let seconds;
+            let serverTime = response.headers.date;
+            let time;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              seconds = util.utilMethods.getSec(item.timeStamp);
-              item.timeStamp = seconds;
+              time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
+              item.timeStamp = time;
             }
             this.dataList = res;
           })
@@ -205,11 +190,12 @@ export default {
         .post(this.allBlockUrl, this.params)
         .then(response => {
           let res = response.data.data;
-          let seconds;
+          let serverTime = response.headers.date;
+          let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            seconds = util.utilMethods.getSec(item.timeStamp);
-            item.timeStamp = seconds;
+            time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
+            item.timeStamp = time;
           }
           this.dataList = res;
         })
@@ -229,11 +215,12 @@ export default {
         .post(this.allBlockUrl, this.params)
         .then(response => {
           let res = response.data.data;
-          let seconds;
+          let serverTime = response.headers.date;
+          let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
-            seconds = util.utilMethods.getSec(item.timeStamp);
-            item.timeStamp = seconds;
+            time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
+            item.timeStamp = time;
           }
           this.dataList = res;
         })
@@ -255,14 +242,14 @@ export default {
           .post(this.allBlockUrl, this.params)
           .then(response => {
             let res = response.data.data;
-            let seconds;
+            let serverTime = response.headers.date;
+            let time;
             for (let i = 0; i < res.length; i++) {
               const item = res[i];
-              seconds = util.utilMethods.getSec(item.timeStamp);
-              item.timeStamp = seconds;
+              time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
+              item.timeStamp = time;
             }
             this.dataList = res;
-            console.log(this.dataList);
           })
           .catch(function(err) {
             if (err.response) {

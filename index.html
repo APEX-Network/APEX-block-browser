@@ -5,21 +5,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>block-browser</title>
+
+  <title>APEX-BlockChain-Explorer</title>
   <link rel="shortcut icon" type="image/x-icon" href="static/favicon.ico">
-  
 </head>
+
 <body>
-  <div class="logo-left"></div>
+  <div class="logo-left" id="logo">
+    <div class="float-logo" id="floatlogo">
+    </div>
+
+  </div>
   <div id="app"></div>
   <!-- built files will be auto injected -->
 </body>
 <script language="javascript">
-  // 防止页面后退
-  history.pushState(null, null, document.URL);
-  window.addEventListener("popstate", function (e) {
-    history.pushState(null, null, document.URL);
-  }, false);
+  let logo = document.getElementById("floatlogo");
+  logo.addEventListener("click", () => {
+    window.location.href = "";
+  })
 </script>
 
 </html>

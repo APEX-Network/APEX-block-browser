@@ -14,7 +14,9 @@
           v-model="inputPrivKey"
           @change="getprivKey"
           placeholder="please paste your private key"
-          autocomplete="off"
+          autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <div class="repatpwd">
           <input
@@ -25,7 +27,9 @@
             @change="getPwd"
             placeholder="please set you password"
             onKeyUp="value=value.replace(/[\W]/g,'')"
-            autocomplete="off"
+            autocomplete="new-password"
+            readonly
+            onfocus="this.removeAttribute('readonly');"
           >
           <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         </div>
@@ -40,9 +44,9 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import util from "./../../../utils/utils";
-import Bus from "./../../../utils/bus";
-import db from "./../../../utils/myDatabase";
+import util from "@/utils/utils";
+import Bus from "@/utils/bus";
+import db from "@/utils/myDatabase";
 const Base58check = require("base58check");
 
 export default {
@@ -57,7 +61,8 @@ export default {
       privKeyStore: null,
       hiddenpwd: null,
       firstClick: 1,
-      inputPrivKey: null
+      inputPrivKey: null,
+      firstPwd: null
     };
   },
 
@@ -82,7 +87,10 @@ export default {
       this.inputPrivKey = this.$refs.privKey.value;
       let privLength = this.inputPrivKey.length;
       let firstByte = this.inputPrivKey.slice(0, 1);
-      if ((firstByte == "K" && privLength == 52) || (firstByte == "L" && privLength == 52)) {
+      if (
+        (firstByte == "K" && privLength == 52) ||
+        (firstByte == "L" && privLength == 52)
+      ) {
         let decode_privKey_Hex = Base58check.decode(
           this.inputPrivKey
         ).data.toString("hex");
@@ -111,6 +119,10 @@ export default {
     },
     privKeyAddress() {
       if (this.privKey !== null && this.pwd !== null) {
+        // let url = "/wallet";
+        // setTimeout(() => {
+        //   sessionStorage.setItem("walletUrl", url);
+        // });
         Bus.$emit("privKey", this.privKey);
         let userPrivKey = this.privKey;
         let key = this.pwd;

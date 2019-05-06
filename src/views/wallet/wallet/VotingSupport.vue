@@ -1,50 +1,40 @@
 <template>
   <div class="votingSupport">
-    <apex-title
-      :title="title"
-      class="title"
-    />
-    <apex-back-ground class="bg" />
+    <apex-title :title="title" class="title"/>
+    <apex-back-ground class="bg"/>
     <div class="flex-container">
       <div class="from">
         <div>From:</div>
         <div>Wallet</div>
-        <input
-          v-model="apAddress"
-          readonly="readonly"
-          autocomplete="off"
-        >
+        <input v-model="apAddress" readonly="readonly" autocomplete="new-password">
       </div>
 
       <div class="to">
         <div>Supported node address</div>
-        <!-- <input
-          spellcheck="false"
-          ref="to"
-          @keyup.enter="seInput($event)"
-          @change="getToAddress"
-          type="text"
-          placeholder="Please Input Address"
-          autocomplete="off"
-        >-->
         <Select2
           class="flex-item2"
-          readonly="readonly"
-          autocomplete="off"
-          title="Please choose a Supported node address"
+          autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
+          ref="vote"
           v-model="toAddress"
           :options="producerAddress"
-          :settings="{ settingOption: value, settingOption: value }"
           @change="myChangeEvent($event)"
           @select="mySelectEvent($event)"
         />
-        <div ref="checktoAddress">Please enter the correct wallet address</div>
+        <img
+          @click="CopyTo()"
+          ref="copy"
+          style="margin-top: -25px;cursor: pointer;float: right;margin-right: -30px;"
+          src="../../../assets/images/copy.png"
+          alt
+        >
+        <div class="errorAddress" ref="checktoAddress">Please enter the correct wallet address</div>
       </div>
-
       <div class="amount">
         <div>
           Amount (Available:
-          <span>{{amount}}</span>)
+          <span @click="setAllAmount">{{amount}}</span>)
         </div>
         <input
           spellcheck="false"
@@ -54,21 +44,20 @@
           @change="getInputAmout"
           placeholder="Transfer Amount"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
-          autocomplete="off"
+          autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
-        <p
-          class="p1"
-          @click="setAllAmount"
-        >
-          <router-link to>All</router-link>
+        <p class="p1">
+          <router-link to></router-link>
         </p>
         <p class="p2">CPX</p>
-        <div ref="checkAmount">Please enter the correct transfer amount</div>
+        <div ref="checkAmount">Please enter the correct vote amount</div>
       </div>
       <div class="gasPrice">
         <div class="recommend">
           Recommended:
-          <span>{{gasePrice}} Mp</span>
+          <span @click="setAllGPrice">{{gasePrice}} Mp</span>
         </div>
         <input
           spellcheck="false"
@@ -78,7 +67,9 @@
           @change="getInputGasePrice"
           placeholder="Please enter the  gas price"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
-          autocomplete="off"
+          autocomplete="new-password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <div>Mp</div>
         <div ref="checkGasPrice">Please enter the correct gas price</div>
@@ -92,38 +83,29 @@
           v-model="pwd"
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
-          autocomplete="off"
+          autocomplete="new-password"
+          placeholder="Please enter the  password"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
-        <img
-          src="./../../../assets/images/hiddeneye.jpg"
-          @click="displayPwd"
-          ref="hiddenpwd"
-        >
+        <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         <div ref="checkPwd">Password Incorrect</div>
       </div>
-      <div
-        class="send"
-        @click="SendTransfer()"
-      >
+      <div class="send" @click="SendTransfer()">
         <router-link to>SEND</router-link>
       </div>
     </div>
-    <div
-      class="dialog"
-      ref="dialog"
-    >
-      <div
-        class="confirm"
-        ref="confirm"
-      >
-        <div>Successful Broadcast</div>
+    <div class="dialog" ref="dialog">
+      <div class="confirm" ref="confirm">
+        <div>Broadcast Successful</div>
         <div>
           <router-link to="/wallet">CONFIRM</router-link>
         </div>
         <div>
           txId: {{txId}}
           <img
-            @click="Copy(index)"
+            ref="copyId"
+            @click="Copy()"
             style="cursor: pointer; padding-left: 16px;"
             src="./../../../assets/images/copy.png"
             alt
@@ -190,7 +172,10 @@ export default {
       params: {
         start: "0",
         pageSize: "10"
-      }
+      },
+      votingSupport: null,
+      copyImg: null,
+      txIdImg: null
     };
   },
 
@@ -200,27 +185,49 @@ export default {
   },
 
   computed: {},
-
   mounted() {
-    this.transferPwd = this.$refs.hiddenpwd;
     this.getAllInput();
     this.getAddress();
     this.getGasePrice();
     this.getProducerList();
     this.getAllInputInstances();
+    this.getInstances();
   },
 
   methods: {
+     setAllGPrice() {
+      this.$refs.inputGasePrice.value = this.gasePrice;
+      this.check.checkGasPrice.style.visibility = "hidden";
+      this.inputGasePrice = this.gasePrice;
+    },
+    getInstances() {
+      this.copyImg = this.$refs.copy;
+      this.txIdImg = this.$refs.copyId;
+      this.transferPwd = this.$refs.hiddenpwd;
+      this.votingSupport = this.$refs.vote;
+    },
     myChangeEvent(val) {
       this.toAddress = val;
-      this.check.checktoAddress.style.visibility = "hidden";
-
-      // sessionStorage.setItem("apAddress", this.address);
+      this.copyImg.src = require("../../../assets/images/copy.png");
     },
     mySelectEvent({ id, text }) {
       // console.log({ id, text });
     },
+    CopyTo(index) {
+      this.copyImg.src = require("../../../assets/images/copied.png");
+      let getCopyText = this.toAddress;
+      this.doToCopy(getCopyText);
+    },
+    doToCopy(val) {
+      this.$copyText(val).then(
+        function(e) {},
+        function(e) {
+          // console.log(e)
+        }
+      );
+    },
     Copy(index) {
+      this.txIdImg.src = require("../../../assets/images/copied.png");
       let getCopyText = this.copyTxId;
       this.doCopy(getCopyText);
     },
@@ -240,7 +247,7 @@ export default {
           this.producerAddress = [];
           for (let i = 0; i < this.producer.length; i++) {
             const element = this.producer[i];
-            this.producerAddress.push(element.address);
+            this.producerAddress.push(element.addr);
           }
         })
         .catch(function(err) {
@@ -302,6 +309,16 @@ export default {
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
+      let inputlength = this.inputAmout.toString().length;
+      if (inputlength >= 2) {
+        let errorinput = this.inputAmout.slice(0, 2);
+        if (errorinput.slice(0, 1) == 0 && errorinput.slice(1, 2) !== ".") {
+          this.$refs.inputAmout.value = null;
+          setTimeout(() => {
+            this.check.checkAmount.style.visibility = "visible";
+          });
+        }
+      }
       if (this.amount == 0 || this.inputAmout == 0) {
         this.check.checkAmount.style.visibility = "visible";
       }
@@ -320,6 +337,16 @@ export default {
     },
     getInputGasePrice() {
       this.inputGasePriceValue = this.$refs.inputGasePrice.value;
+      let inputlength = this.inputGasePriceValue.toString().length;
+      if (inputlength >= 2) {
+        let errorinput = this.inputGasePriceValue.slice(0, 2);
+        if (errorinput.slice(0, 1) == 0 && errorinput.slice(1, 2) !== ".") {
+          this.$refs.inputGasePrice.value = null;
+          setTimeout(() => {
+            this.check.checkGasPrice.style.visibility = "visible";
+          });
+        }
+      }
       if (
         this.inputGasePriceValue >= 0.01 &&
         this.inputGasePriceValue <= 1000000000
@@ -333,7 +360,6 @@ export default {
     },
     getPwd() {
       this.pwd = this.$refs.firstPwd.value;
-      console.log(this.pwd);
     },
     getAllInput() {
       this.secondInput = this.$refs.inputAmout;
@@ -434,7 +460,6 @@ export default {
         this.pwd !== null
       ) {
         this.checkAddress();
-        this.$refs.dialog.style.display = "flex";
         let serializParams = {
           version: "00000001", //不变
           txType: "03", //不变
@@ -459,8 +484,6 @@ export default {
           executeTime: "0000000000000000", //不变
           votingRefundType: "00"
         };
-        console.log(serializParams.data);
-
         if (this.inputAmout !== this.allamount) {
           serializParams.amount = new bigdecimal.BigDecimal(
             String(this.inputAmout)
@@ -485,27 +508,26 @@ export default {
           this.message,
           this.signature
         );
-        console.log(this.serialized_transaction);
         this.confirm();
       }
       return;
     },
     checkAddress() {
-      this.privKey = util.utilMethods.produceKeyPriv(this.KStore, this.pwd);
-      this.walletAddress = util.utilMethods.keyStoreWallet(
-        this.KStore,
-        this.pwd
-      );
-      if (this.walletAddress == this.apAddress) {
-        this.check.checkPwd.style.visibility = "hidden";
-        return;
-      }
-      if (this.walletAddress !== this.apAddress) {
+      try {
+        this.privKey = util.utilMethods.produceKeyPriv(this.KStore, this.pwd);
+        this.walletAddress = util.utilMethods.keyStoreWallet(
+          this.KStore,
+          this.pwd
+        );
+        if (this.walletAddress == this.apAddress) {
+          this.$refs.dialog.style.display = "flex";
+          this.check.checkPwd.style.visibility = "hidden";
+          return;
+        }
+      } catch (error) {
+        this.$refs.dialog.style.display = "none";
         this.check.checkPwd.style.visibility = "visible";
-        this.$router.push("/wallet/Transfer");
-        return;
       }
-      return;
     },
     confirm() {
       this.$axios
@@ -518,7 +540,6 @@ export default {
           let x = res.txId.slice(0, 6);
           let y = res.txId.slice(-6);
           this.txId = x + "..." + y;
-          console.log(res.txId);
         })
         .catch(function(err) {
           if (err.response) {
@@ -628,7 +649,7 @@ export default {
             top: 1px;
             right: 1px;
             width: 22px;
-             b {
+            b {
               left: 0;
               margin-left: 0px;
               display: inline-block;
@@ -656,7 +677,7 @@ export default {
         color: rgba(255, 255, 255, 0.5);
         margin: 0px 0px 5px 0px;
       }
-      div:nth-child(3) {
+      .errorAddress {
         margin-top: 8px;
         color: #f26522;
         visibility: hidden;
@@ -669,6 +690,7 @@ export default {
         margin: 0% 5% 0 2%;
         position: relative;
         span {
+          cursor: pointer;
           color: #f26522;
         }
       }
@@ -690,7 +712,7 @@ export default {
       }
       .p2 {
         display: inline-block;
-        margin-left: 25px;
+        margin-left: 50px;
       }
       div:nth-child(2) {
         margin-left: 5%;
@@ -725,6 +747,7 @@ export default {
         margin: 0% 5% 0 2%;
         position: relative;
         span {
+          cursor: pointer;
           color: #f26522;
         }
       }
@@ -745,16 +768,12 @@ export default {
       div:nth-child(3) {
         display: inline;
         position: absolute;
-        margin-left: 4%;
+        margin-left: 23%;
         margin-top: 1.4%;
         z-index: 1;
         a {
           color: #f26522;
         }
-      }
-      div:nth-child(3) {
-        margin-top: 8px;
-        margin-left: 30px;
       }
       div:nth-child(4) {
         color: #f26522;

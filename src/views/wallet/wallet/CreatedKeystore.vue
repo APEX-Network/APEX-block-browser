@@ -20,10 +20,7 @@
       </div>
       <div class="create1" @click="downloadKeyStore">DOWNLOAD ENCRYPTED KEY</div>
       <div class="create2">
-        <router-link
-          to="/wallet/NewWallet/CreatedKeystore/SavePrivKey"
-          @click.native="getAddress"
-        >CONTINUE</router-link>
+        <router-link to @click.native="getAddress">CONTINUE</router-link>
       </div>
     </div>
   </div>
@@ -32,8 +29,8 @@
 <script>
 import ApexTitle from "@/components/public/ApexTitle";
 import ApexBackGround from "@/components/public/ApexBackGround";
-import Bus from "./../../../utils/bus";
-import util from "./../../../utils/utils";
+import Bus from "@/utils/bus";
+import util from "@/utils/utils";
 
 export default {
   name: "CreatedKeystore",
@@ -44,7 +41,8 @@ export default {
       address: null,
       apAddress: null,
       privKey: null,
-      keyStore: null
+      keyStore: null,
+      walletUrl: null
     };
   },
 
@@ -63,6 +61,8 @@ export default {
 
   methods: {
     getKeyStoreAndlastAddress() {
+      this.walletUrl = sessionStorage.getItem("walletUrl", this.walletUrl);
+      console.log(this.walletUrl);
       Bus.$on("apAddress", data => {
         this.apAddress = data;
       });
@@ -74,8 +74,15 @@ export default {
       });
     },
     getAddress() {
-      Bus.$emit("apAddress", this.apAddress);
-      Bus.$emit("privKey", this.privKey);
+      setTimeout(() => {
+        Bus.$emit("apAddress", this.apAddress);
+        Bus.$emit("privKey", this.privKey);
+      });
+      // if (this.walletUrl == "/emptyWallet") {
+      //   this.$router.push("/emptyWallet/NewWallet/CreatedKeystore/SavePrivKey");
+      // } else {
+        this.$router.push("/wallet/NewWallet/CreatedKeystore/SavePrivKey");
+      // }
     },
     downloadKeyStore() {
       let link = document.createElement("a");
