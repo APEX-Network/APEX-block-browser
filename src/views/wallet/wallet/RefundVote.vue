@@ -330,7 +330,7 @@ export default {
         this.check.checktoAddress.style.visibility = "hidden";
       }
     },
-    getInputAmout() {
+     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
       let inputlength = this.inputAmout.toString().length;
       if (inputlength >= 2) {
@@ -342,14 +342,16 @@ export default {
           });
         }
       }
+
       if (this.amount == 0 || this.inputAmout == 0) {
         this.check.checkAmount.style.visibility = "visible";
       }
       if (this.inputAmout > 0 && this.inputAmout <= this.amount) {
         this.check.checkAmount.style.visibility = "hidden";
-        this.inputAmout = this.amount;
+        this.inputAmout = this.inputAmout;
       }
-      if (this.inputAmout > this.amount) {
+      if (parseFloat(this.inputAmout) > parseFloat(this.amount)) {
+        this.inputAmout = null;
         this.check.checkAmount.style.visibility = "visible";
       }
     },

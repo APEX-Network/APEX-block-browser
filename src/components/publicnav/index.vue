@@ -54,7 +54,7 @@
               </p>
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a href="https://t.me/APEXcommunityCN" target="_blank">
               <div class="img-box">
                 <img src="../../assets/bottom/logo-1.png" alt>
@@ -64,7 +64,7 @@
                 (China)
               </p>
             </a>
-          </li>
+          </li> -->
           <li class="wechat">
             <a href="javascript:;">
               <div class="img-box">
@@ -246,21 +246,10 @@ export default {
                 if (response.data.status == 200) {
                   let res = response.data.data;
                   if (res.length !== 0) {
-                    // this.searchHeight = {
-                    //   type: "height",
-                    //   value: this.search
-                    // };
-                    // setTimeout(() => {
-                    //   Bus.$emit(
-                    //     "clickValue",
-                    //     JSON.stringify(this.searchHeight)
-                    //   );
-                    // });
-                    // this.$router.push("/blocks/BlocksInfo");
                     this.$router.push({
                       path: "/blocks/BlocksInfo",
                       query: {
-                        id: this.search
+                        id: Number(this.search)
                       }
                     });
                     this.$refs.search.value = null;
@@ -284,14 +273,6 @@ export default {
                 if (response.data.status == 200) {
                   let res = response.data.data;
                   if (res.length !== 0) {
-                    // this.searchBlock = {
-                    //   type: "hash",
-                    //   value: this.search
-                    // };
-                    // setTimeout(() => {
-                    //   Bus.$emit("clickValue", JSON.stringify(this.searchBlock));
-                    // });
-                    // this.$router.push("/blocks/BlocksInfo");
                     this.$router.push({
                       path: "/blocks/BlocksInfo",
                       query: {
@@ -323,7 +304,7 @@ export default {
                     this.$router.push({
                       path: "/transactions/TransactionsInfo",
                       query: {
-                        clickValue: this.search
+                        id: this.search
                       }
                     });
                     this.$refs.search.value = null;

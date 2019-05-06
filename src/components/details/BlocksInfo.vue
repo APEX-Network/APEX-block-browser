@@ -7,7 +7,7 @@
         <li class="row">
           <span class="col">
             Height:
-            <span class="clol col-lg-8 height" @click="goTxBlock(height)">{{height}}</span>
+            <span class="clol col-lg-8">{{height}}</span>
           </span>
         </li>
         <li class="row">
@@ -19,7 +19,10 @@
         <li class="row">
           <span class="col">
             Transactions:
-            <span class="clol col-lg-8">{{transactions}}</span>
+            <span
+              class="clol col-lg-8 transactions"
+              @click="goTxBlock(height)"
+            >{{transactions}}</span>
           </span>
         </li>
         <li class="row">
@@ -40,7 +43,7 @@
           <span class="col">
             Mined By:
             <span class="clol col-lg-8">
-              <router-link to @click.native="setClickValue">{{minedBy}}</router-link>
+              <router-link to @click.native="setClickValue(minedBy)">{{minedBy}}</router-link>
             </span>
           </span>
         </li>
@@ -80,13 +83,11 @@ export default {
       result: {
         type: null,
         value: null
-      },
-      flag: null
+      }
     };
   },
   created() {},
   mounted() {
-    // window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
   },
   methods: {
@@ -100,39 +101,30 @@ export default {
     },
     getClickValue() {
       this.result.value = this.$route.query.id;
-      console.log(this.result.value);
       if (this.result.value !== null) {
         try {
           Base58check.encode(this.result.value);
           this.result.type = "hash";
         } catch (error) {
           this.result.type = "height";
-          console.log(error);
         }
-        // let paramsType = typeof this.result.value;
-        // console.log(paramsType);
-        // console.log(this.result.value);
-        // //刷新有问题
-        // switch (paramsType) {
-        //   case "number":
-        //     this.result.type = "height";
-        //     break;
-        //   case "string":
-        //     this.result.type = "hash";
-        //     break;
-        //   default:
-        //     break;
-        // }
         this.getBlocksInfo();
         return;
       }
     },
-    setClickValue(e) {
+    setClickValue(data) {
       if (this.height !== 0 && this.height !== null) {
-        setTimeout(() => {
-          Bus.$emit("minerBy", e.target.innerHTML);
-        });
-        this.$router.push("/producer/ProducerInfo");
+        // setTimeout(() => {
+        //   Bus.$emit("minerBy", e.target.innerHTML);
+        // });
+        // this.$router.push("/producer/ProducerInfo");
+        this.$router.push({
+        path: "/producer/ProducerInfo",
+        query: {
+          id: data
+        }
+      });
+
       }
     },
     getBlocksInfo() {
@@ -218,25 +210,7 @@ export default {
             console.log(response);
           });
       }
-    },
-    offListener() {
-      Bus.$off("minerBy");
-      Bus.$off("bHeight");
-    },
-    beforeunloadHandler(e) {
-      this.flag = 1;
-      sessionStorage.setItem("flag", this.flag);
     }
-  },
-  beforeDestroy() {
-    sessionStorage.setItem("refresh", null);
-    sessionStorage.setItem("flag", null);
-    this.offListener();
-  },
-  destroyed() {
-    window.removeEventListener("beforeunload", e =>
-      this.beforeunloadHandler(e)
-    );
   }
 };
 </script>
@@ -262,7 +236,7 @@ export default {
               float: left;
             }
           }
-          .height {
+          .transactions {
             cursor: pointer;
             color: #f26522;
           }

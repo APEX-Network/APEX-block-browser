@@ -12,11 +12,8 @@
         </li>
         <li v-for="(item,index) in producer" :key="index" class="row">
           <span class="col">{{item.Rank}}</span>
-          <span class="col col-lg-8">
-            <router-link
-              to="/producer/ProducerInfo"
-              @click.native.self="setClickValue"
-            >{{item.addr}}</router-link>
+          <span class="col col-lg-8 addr"  @click="setClickValue(item.addr)">
+          {{item.addr}}
           </span>
           <span class="col">{{item.votes}}</span>
           <span class="col">{{item.blockCount}}</span>
@@ -247,15 +244,14 @@ export default {
         });
       return;
     },
-    setClickValue(e) {
-      Bus.$emit("minerBy", e.target.innerHTML);
-    },
-    offListener() {
-      Bus.$off("minerBy");
+    setClickValue(data) {
+      this.$router.push({
+        path: "/producer/ProducerInfo",
+        query: {
+          id: data
+        }
+      });
     }
-  },
-  beforeDestroy() {
-    this.offListener();
   }
 };
 </script>
@@ -270,6 +266,14 @@ export default {
   }
   .data-table {
     height: 93%;
+    .table-ul {
+      li {
+        .addr {
+          cursor: pointer;
+          color: #f26522;
+        }
+      }
+    }
     .apex-pagination {
       width: 100%;
       height: 40px;

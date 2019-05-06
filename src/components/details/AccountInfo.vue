@@ -123,7 +123,6 @@ export default {
       transactions: [],
       refBlockTime: null,
       Balance: 0,
-      flag: null,
       isClick: true,
       count: null,
       point: null,
@@ -138,7 +137,6 @@ export default {
   },
   mounted() {
     this.getInstance();
-    // window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
     this.getAccountTransactionInfo();
     const timer = setInterval(() => {
@@ -152,10 +150,6 @@ export default {
   methods: {
     currentAccountInfo(data) {
       if (data !== "") {
-        // this.$router.push("/transactions/TransactionsInfo/AccountInfo");
-        // setTimeout(() => {
-        //   Bus.$emit("accountValue", data);
-        // });
         this.accountTransaction_param.address = data;
         this.getAccountInfo();
         this.getAccountTransactionInfo();
@@ -181,25 +175,9 @@ export default {
       this.$copyText(val).then(function(e) {}, function(e) {});
     },
     getClickValue() {
-      // Bus.$on("accountValue", data => {
-      //   this.accountTransaction_param.address = data;
-      //   sessionStorage.setItem("refresh", data);
-      //   this.getAccountInfo();
-      //   this.getAccountTransactionInfo();
-      //   return;
-      // });
       this.accountTransaction_param.address = this.$route.query.id;
       this.getAccountInfo();
       this.getAccountTransactionInfo();
-      // this.flag = sessionStorage.getItem("flag");
-      // if (this.accountTransaction_param.address == null && this.flag == 1) {
-      //   this.accountTransaction_param.address = sessionStorage.getItem(
-      //     "refresh"
-      //   );
-      //   this.getAccountInfo();
-      //   this.getAccountTransactionInfo();
-      //   return;
-      // }
     },
     getAccountInfo() {
       if (this.accountTransaction_param.address !== null) {
@@ -571,33 +549,13 @@ export default {
       }
     },
     setTxHash(data) {
-      // Bus.$emit("txHash", e.target.innerHTML);
-      // "/transactions/TransactionsInfo"
       this.$router.push({
         path: "/transactions/TransactionsInfo",
         query: {
           id: data
         }
       });
-
-    },
-    offListener() {
-      Bus.$off("txHash");
-    },
-    beforeunloadHandler(e) {
-      this.flag = 1;
-      sessionStorage.setItem("flag", this.flag);
     }
-  },
-  beforeDestroy() {
-    sessionStorage.setItem("refresh", null);
-    sessionStorage.setItem("flag", null);
-    this.offListener();
-  },
-  destroyed() {
-    window.removeEventListener("beforeunload", e =>
-      this.beforeunloadHandler(e)
-    );
   }
 };
 </script>

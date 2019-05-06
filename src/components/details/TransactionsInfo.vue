@@ -109,12 +109,6 @@
             <span class="clol col-lg-8">{{transactionInfoData.gasUsed}}</span>
           </span>
         </li>
-        <!-- <li class="row" v-if="transactionInfoData.fee !== null ">
-          <span class="col">
-            Transaction Fee:
-            <span class="clol col-lg-8">{{transactionInfoData.fee}}</span>
-          </span>
-        </li>-->
       </ul>
     </div>
   </div>
@@ -160,14 +154,12 @@ export default {
         value: null
       },
       Hash: null,
-      flag: null,
       fAddress: null,
       tAddress: null
     };
   },
   created() {},
   mounted() {
-    // window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
   },
   methods: {
@@ -243,24 +235,7 @@ export default {
           .catch(function(response) {});
       }
     }
-    // offListener() {
-    //   Bus.$off("clickValue");
-    //   Bus.$off("accountValue");
-    // },
-    // beforeunloadHandler(e) {
-    //   this.flag = 1;
-    //   sessionStorage.setItem("flag", this.flag);
-    // }
   }
-  // beforeDestroy() {
-  //   sessionStorage.setItem("flag", null);
-  //   this.offListener();
-  // },
-  // destroyed() {
-  //   window.removeEventListener("beforeunload", e =>
-  //     this.beforeunloadHandler(e)
-  //   );
-  // }
 };
 </script>
 

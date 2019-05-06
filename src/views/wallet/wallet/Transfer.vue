@@ -257,7 +257,6 @@ export default {
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
-      console.log(this.inputAmout);
       let inputlength = this.inputAmout.toString().length;
       if (inputlength >= 2) {
         let errorinput = this.inputAmout.slice(0, 2);
@@ -276,7 +275,7 @@ export default {
         this.check.checkAmount.style.visibility = "hidden";
         this.inputAmout = this.inputAmout;
       }
-      if (this.inputAmout > this.amount) {
+      if (parseFloat(this.inputAmout) > parseFloat(this.amount)) {
         this.inputAmout = null;
         this.check.checkAmount.style.visibility = "visible";
       }
@@ -306,7 +305,6 @@ export default {
         this.inputGasePrice = this.inputGasePriceValue;
       } else {
         this.$refs.inputGasePrice.value = null;
-        this.inputGasePrice = null;
         this.check.checkGasPrice.style.visibility = "visible";
       }
     },
