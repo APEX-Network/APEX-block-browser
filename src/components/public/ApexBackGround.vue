@@ -15,7 +15,7 @@ export default {
 };
 </script>
 <style scoped lang="less">
-.apex-background {
-    height:  e("calc( 100% - 117px)") !important;
-}
+// .apex-background {
+//     height:  e("calc( 100% - 83px)") !important;
+// }
 </style>

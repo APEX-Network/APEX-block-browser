@@ -1,9 +1,9 @@
 <template>
   <div class="BlocksInfo">
-    <apex-title :title="title" class="title"/>
     <apex-back-ground class="bg"/>
     <div class="data-table">
       <ul class="table-ul">
+        <li class="row title">Blocks Information</li>
         <li class="row">
           <span class="col">
             Height:
@@ -100,7 +100,7 @@ export default {
       });
     },
     getClickValue() {
-      this.result.value = this.$route.query.id; 
+      this.result.value = this.$route.query.id;
       if (this.result.value !== null) {
         try {
           Base58check.encode(this.result.value);
@@ -115,12 +115,11 @@ export default {
     setClickValue(data) {
       if (this.height !== 0 && this.height !== null) {
         this.$router.push({
-        path: "/producer/ProducerInfo",
-        query: {
-          id: data
-        }
-      });
-
+          path: "/producer/ProducerInfo",
+          query: {
+            id: data
+          }
+        });
       }
     },
     getBlocksInfo() {
@@ -221,6 +220,11 @@ export default {
   }
   .data-table {
     .table-ul {
+      .title {
+        padding-left: 18px;
+        padding-top: 10px;
+        border-bottom: 2px solid #000;
+      }
       li {
         span {
           span {

@@ -3,10 +3,10 @@
     <p class="bheight">
       <router-link to @click.native="setHeightValue(blockHeight)">{{blockHeight}}</router-link>
     </p>
-    <apex-title :title="title" class="title"/>
     <apex-back-ground class="bg"/>
     <div class="data-table">
       <ul class="table-ul">
+        <li class="row title">{{title}}</li>
         <li class="row">
           <span class="col index">Tx index</span>
           <span class="col col-lg-6 txHash">TX Hash</span>
@@ -438,8 +438,13 @@ export default {
     background: url(./../../assets/images/shared/yunshi.png) 55% 67% no-repeat;
   }
   .data-table {
-    height: 93%;
+    height: 100%;
     .table-ul {
+      .title {
+        padding-left: 18px;
+        padding-top: 10px;
+        border-bottom: 2px solid #000;
+      }
       & > li {
         .index {
           max-width: 82px;

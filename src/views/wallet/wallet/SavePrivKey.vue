@@ -1,6 +1,7 @@
 <template>
   <div class="SavePrivKey">
-    <apex-title :title="title" class="title"/>
+    <!-- <apex-title :title="title" class="title"/> -->
+    <p class="title">{{title}}</p>
     <apex-back-ground class="bg"/>
     <div class="flex-container">
       <div class="text">
@@ -123,6 +124,15 @@ export default {
   .bg {
     background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
       no-repeat;
+    height: calc(100% - 113px);
+
+  }
+  .title {
+    padding-left: 18px;
+    padding-left: 23px;
+    padding-top: 10px;
+    padding-bottom: 9px;
+    background-color: rgba(255, 255, 255, 0.1) !important;
   }
   .flex-container {
     display: flex;

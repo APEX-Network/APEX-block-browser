@@ -1,6 +1,6 @@
 <template>
   <div class="transfer">
-    <apex-title :title="title" class="title"/>
+    <p class="title">{{title}}</p>
     <apex-back-ground class="bg"/>
     <div class="flex-container">
       <div class="from">
@@ -505,9 +505,17 @@ export default {
 .transfer {
   width: 100%;
   height: 100%;
+  .title {
+    padding-left: 18px;
+    padding-left: 23px;
+    padding-top: 10px;
+    padding-bottom: 9px;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
   .bg {
     background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
       no-repeat;
+    height: calc(100% - 113px);
   }
   .flex-container {
     position: absolute;
@@ -517,7 +525,7 @@ export default {
     margin-left: 30%;
     flex-direction: column;
     .from {
-      margin: 5% 0 0 0%;
+      margin: 0% 0 0 0%;
       div:nth-child(1) {
         color: rgba(255, 255, 255, 0.5);
         margin: 0px 0px 0px 0px;
@@ -557,7 +565,6 @@ export default {
     .amount {
       position: relative;
       div {
-        margin: 0% 5% 0 2%;
         position: relative;
         span {
           cursor: pointer;
@@ -610,11 +617,10 @@ export default {
         // visibility:visible;
       }
     }
-      .gasPrice {
+    .gasPrice {
       width: 340px;
       position: relative;
       .recommend {
-        margin: 0% 5% 0 2%;
         position: relative;
         span {
           cursor: pointer;

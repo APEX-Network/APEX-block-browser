@@ -29,7 +29,14 @@ export default {
       ops: {},
       walletUrl: null,
       APAddress: [],
-      getAllAddress: null
+      getAllAddress: null,
+      minerBy_url: "/api/v1.0/minerInfo/minerList",
+      params: {
+        start: "0",
+        pageSize: "10"
+      },
+      producer: [],
+      Rank: 0
     };
   },
   created() {
@@ -44,8 +51,27 @@ export default {
   },
   mounted() {
     // this.checkDB();
+    this.getProducerList();
   },
   methods: {
+    getProducerList() {
+      this.$axios
+        .post(this.minerBy_url, this.params)
+        .then(response => {
+          this.producer = [];
+          this.Rank = 1;
+          this.producer = response.data.data;
+          for (let i = 0; i < this.producer.length; i++) {
+            this.producer[i]["Rank"] = this.Rank++;
+          }
+          sessionStorage.setItem("producer", JSON.stringify(this.producer));
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
+    },
     checkDB() {
       try {
         this.getAllAddress = db.APKStore.where("APAddress")

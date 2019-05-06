@@ -1,9 +1,9 @@
 <template>
   <div class="transactions">
-    <apex-title :title="title" class="title"/>
     <apex-back-ground class="bg"/>
     <div class="data-table transactions-table">
       <ul class="table-ul">
+        <li class="row title">Transactions</li>
         <li v-for="(list,index) in transactions" :key="index" class="row">
           <span class="col col-lg-10">
             <div class="bottom">
@@ -261,7 +261,7 @@ export default {
     background: url(./../../assets/images/shared/yunshi.png) 68% 89% no-repeat;
   }
   .data-table {
-    height: 93%;
+    height: 100%;
     width: 100%;
     padding: 0px 12px 0px;
     box-sizing: border-box;
@@ -270,6 +270,10 @@ export default {
       width: 100%;
       padding-top: 20px;
       max-width: 100%;
+      .title {
+        padding-left: 18px;
+        border-bottom: 2px solid #000;
+      }
       & > li {
         .time {
           padding-left: 60px;

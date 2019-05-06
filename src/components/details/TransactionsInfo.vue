@@ -1,10 +1,11 @@
 
 <template>
   <div class="TransactionsInfo">
-    <apex-title :title="title" class="title"/>
+    <!-- <apex-title :title="title" class="title"/> -->
     <apex-back-ground class="bg"/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
+        <li class="row title">TransactionsInfo</li>
         <li class="row">
           <span class="col">
             TxHash:
@@ -255,9 +256,15 @@ export default {
   height: 100%;
   .bg {
     background: url(./../../assets/images/shared/yunshi.png) 68% 89% no-repeat;
+    height: calc( 100% - 72px);
   }
   .data-table {
     .table-ul {
+      .title {
+        padding-left: 18px;
+        padding-top: 10px;
+        border-bottom: 2px solid #000;
+      }
       li {
         span {
           span {

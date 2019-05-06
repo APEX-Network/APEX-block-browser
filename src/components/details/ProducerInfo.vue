@@ -1,16 +1,9 @@
 <template>
   <div class="ProducerInfo">
-    <apex-title :title="title" class="title"/>
     <apex-back-ground class="bg"/>
     <div class="data-table">
       <ul class="table-ul">
-        <!-- <li v-for="(value, key ,index ) in producerInfo" :key="index" class="row">
-          <span class="col">{{key}} :</span>
-          <span class="col col-lg-8" v-if="key === 'webSite'">
-            <router-link to="/home">{{value}}</router-link>
-          </span>
-          <span class="col col-lg-8" v-else>{{value}}</span>
-        </li>-->
+        <li class="row title">ProducerInfo</li>
         <li class="row">
           <span class="col">
             Miner:
@@ -82,7 +75,6 @@ export default {
   },
   data() {
     return {
-      title: "Producer Information",
       minerBy_url: "/api/v1.0/minerInfo/",
       minerBy: null,
       producerInfo: {
@@ -150,6 +142,11 @@ export default {
   }
   .data-table {
     .table-ul {
+      .title {
+        padding-left: 18px;
+        padding-top: 10px;
+        border-bottom: 2px solid #000;
+      }
       li {
         span {
           span {

@@ -1,9 +1,10 @@
 <template>
   <div class="producer">
-    <apex-title :title="title" class="title"/>
+    <!-- <apex-title :title="title" class="title"/> -->
     <apex-back-ground class="bg"/>
     <div class="data-table">
       <ul class="table-ul">
+        <li class="row title">Producer</li>
         <li class="row">
           <span class="col">Rank</span>
           <span class="col col-lg-8">Account</span>
@@ -131,7 +132,7 @@ export default {
           for (let i = 0; i < this.producer.length; i++) {
             this.producer[i]["Rank"] = this.Rank++;
           }
-          sessionStorage.setItem("producer", JSON.stringify(this.producer));
+          // sessionStorage.setItem("producer", JSON.stringify(this.producer));
         })
         .catch(function(err) {
           if (err.response) {
@@ -265,8 +266,12 @@ export default {
     background: url(./../../assets/images/shared/yunshi.png) 75% 93% no-repeat;
   }
   .data-table {
-    height: 93%;
     .table-ul {
+      .title {
+        padding-left: 18px;
+        padding-top: 10px;
+        border-bottom: 2px solid #000;
+      }
       li {
         .addr {
           cursor: pointer;

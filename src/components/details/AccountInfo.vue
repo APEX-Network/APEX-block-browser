@@ -1,9 +1,11 @@
 <template>
   <div class="AccountInfo">
-    <apex-title :title="title" class="title"/>
+    <!-- <apex-title :title="title" class="title"/> -->
     <apex-back-ground class="bg"/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
+                <li class="row title">{{title}}</li>
+
         <li class="row">
           <span class="col">Address</span>
           <span class="col col-lg-8 adressCPX" ref="address">
@@ -568,6 +570,10 @@ export default {
   .transactions-details {
     padding-top: 30px;
     .table-ul {
+      .title {
+        padding-left: 18px;
+        border-bottom: 2px solid #000;
+      }
       .adressCPX {
         .row {
           padding: 0 8px 0 69px;

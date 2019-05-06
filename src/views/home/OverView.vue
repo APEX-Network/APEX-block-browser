@@ -81,11 +81,4 @@ export default {
     }
   }
 }
-// @media screen and(max-width:1366px) {
-//   .home {
-//     .clearboth {
-//       padding-top: 65px;
-//     }
-//   }
-// }
 </style>

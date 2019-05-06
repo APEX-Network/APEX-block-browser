@@ -1,6 +1,7 @@
 <template>
   <div class="keyStore">
-    <apex-title :title="title" class="title"/>
+    <!-- <apex-title :title="title" class="title"/> -->
+    <p class="title">{{title}}</p>
     <apex-back-ground class="bg"/>
     <div class="flex-container">
       <div class="text">
@@ -126,21 +127,18 @@ export default {
 .keyStore {
   width: 100%;
   height: 100%;
+  .title {
+    padding-left: 18px;
+    padding-left: 23px;
+    padding-top: 10px;
+    padding-bottom: 9px;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
   .bg {
     background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
       no-repeat;
+    height: calc(100% - 113px);
   }
-  // background-color: rgba(255, 255, 255, 0.1) !important;
-  // .title {
-  //   width: 100%;
-  //   height: 40px;
-  //   line-height: 40px;
-  //   font-size: 14px;
-  //   text-indent: 30px;
-  //   box-sizing: border-box;
-  //   border-radius: 0px 0px 4px 4px;
-  //   border-bottom: 2px solid #000;
-  // }
   .flex-container {
     display: flex;
     height: auto;

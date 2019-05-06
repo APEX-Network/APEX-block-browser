@@ -1,9 +1,10 @@
 <template>
   <div class="Blocks">
-    <apex-title :title="title" class="title"/>
+    <!-- <apex-title :title="title" class="title"/> -->
     <apex-back-ground class="bg"/>
     <div class="data-table">
       <ul class="table-ul">
+        <li class="row title">Blocks</li>
         <li class="row">
           <span class="col">Height</span>
           <span class="col col-lg-6">Hash</span>
@@ -18,9 +19,7 @@
             <router-link to @click.native="setHashValue(item.blockHash)">{{item.blockHash}}</router-link>
           </span>
           <span class="col">{{item.timeStamp}}</span>
-          <span class="col producer" @click="setMinerByValue(item.producer)">
-            {{item.producer}}
-          </span>
+          <span class="col producer" @click="setMinerByValue(item.producer)">{{item.producer}}</span>
         </li>
       </ul>
       <div class="apex-pagination">
@@ -127,27 +126,27 @@ export default {
     },
     setHeightValue(data) {
       this.$router.push({
-          path: "/blocks/BlocksInfo",
-          query: {
-            id: data
-          }
-        });
+        path: "/blocks/BlocksInfo",
+        query: {
+          id: data
+        }
+      });
     },
     setHashValue(data) {
       this.$router.push({
-          path: "/blocks/BlocksInfo",
-          query: {
-            id: data
-          }
-        });
+        path: "/blocks/BlocksInfo",
+        query: {
+          id: data
+        }
+      });
     },
     setMinerByValue(data) {
       this.$router.push({
-          path: "/producer/ProducerInfo",
-          query: {
-            id: data
-          }
-        });
+        path: "/producer/ProducerInfo",
+        query: {
+          id: data
+        }
+      });
     },
     getNext() {
       if (this.start < 10) {
@@ -283,8 +282,13 @@ export default {
     background: url(./../../assets/images/shared/yunshi.png) 55% 67% no-repeat;
   }
   .data-table {
-    height: 93%;
+    // height: 93%;
     .table-ul {
+      .title {
+        padding-left: 18px;
+        padding-top: 10px;
+        border-bottom: 2px solid #000;
+      }
       & > li {
         .producer {
           cursor: pointer;

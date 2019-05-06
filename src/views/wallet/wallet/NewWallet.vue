@@ -1,6 +1,8 @@
 <template>
   <div class="newWallet">
-    <apex-title :title="title" class="title"/>
+    <!-- <apex-title :title="title" class="title"/> -->
+    <!-- <li class="row title">{{title}}</li> -->
+    <p class="title">{{title}}</p>
     <apex-back-ground class="bg"/>
     <div class="flex-container">
       <div class="text">
@@ -20,8 +22,8 @@
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
           autocomplete="new-password"
-           readonly
-            onfocus="this.removeAttribute('readonly');"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
         >
         <!-- <input type="text" ref="firstPwdCover" v-model="firstPwdCover" @change="coverFirstPwd"> -->
         <img src="../../../assets/images/hiddeneye.jpg" @click="displayFirstPwd" ref="firstEye">
@@ -36,7 +38,7 @@
             @change="getSecondPwd"
             onKeyUp="value=value.replace(/[\W]/g,'')"
             autocomplete="new-password"
-             readonly
+            readonly
             onfocus="this.removeAttribute('readonly');"
           >
           <!-- <input type="text" ref="secondPwdCover" v-model="secondPwdCover" @change="coverSecondPwd"> -->
@@ -188,7 +190,7 @@ export default {
           // if (this.walletUrl == "/emptyWallet") {
           //   this.$router.push("/emptyWallet/NewWallet/CreatedKeystore");
           // } else {
-            this.$router.push("/wallet/NewWallet/CreatedKeystore");
+          this.$router.push("/wallet/NewWallet/CreatedKeystore");
           // }
         }
       }
@@ -257,9 +259,17 @@ export default {
 .newWallet {
   width: 100%;
   height: 100%;
+  .title {
+    padding-left: 18px;
+    padding-left: 23px;
+    padding-top: 10px;
+    padding-bottom: 9px;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
   .bg {
     background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
       no-repeat;
+    height: calc(100% - 113px);
   }
   .flex-container {
     display: flex;

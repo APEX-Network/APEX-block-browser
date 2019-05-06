@@ -1,6 +1,6 @@
 <template>
   <div class="votingSupport">
-    <apex-title :title="title" class="title"/>
+    <p class="title">{{title}}</p>
     <apex-back-ground class="bg"/>
     <div class="flex-container">
       <div class="from">
@@ -195,7 +195,7 @@ export default {
   },
 
   methods: {
-     setAllGPrice() {
+    setAllGPrice() {
       this.$refs.inputGasePrice.value = this.gasePrice;
       this.check.checkGasPrice.style.visibility = "hidden";
       this.inputGasePrice = this.gasePrice;
@@ -307,7 +307,7 @@ export default {
         this.check.checktoAddress.style.visibility = "hidden";
       }
     },
-     getInputAmout() {
+    getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
       let inputlength = this.inputAmout.toString().length;
       if (inputlength >= 2) {
@@ -558,9 +558,17 @@ export default {
 .votingSupport {
   width: 100%;
   height: 100%;
+  .title {
+    padding-left: 18px;
+    padding-left: 23px;
+    padding-top: 10px;
+    padding-bottom: 9px;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
   .bg {
     background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
       no-repeat;
+    height: calc(100% - 113px);
   }
   .flex-container {
     position: absolute;
@@ -588,15 +596,6 @@ export default {
     }
     .to {
       margin: 0% 0 0 0%;
-      // input {
-      //   background: rgba(255, 255, 255, 0.001);
-      //   border: 1px solid #f26522;
-      //   width: 335px;
-      //   color: aliceblue;
-      // }
-      // input:hover {
-      //   box-shadow: 2px 2px 8px 2px #f26522;
-      // }
       .flex-item2 {
         width: 340px !important;
         height: 35px !important;
@@ -619,7 +618,6 @@ export default {
     .amount {
       position: relative;
       div {
-        margin: 0% 5% 0 2%;
         position: relative;
         span {
           cursor: pointer;
@@ -676,7 +674,6 @@ export default {
       width: 340px;
       position: relative;
       .recommend {
-        margin: 0% 5% 0 2%;
         position: relative;
         span {
           cursor: pointer;

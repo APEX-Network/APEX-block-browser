@@ -52,7 +52,7 @@ export default {
   .bottom-modul,
   .top-modul {
     height: 49%;
-    margin-bottom: 2%;
+    margin-bottom: 1.5%;
   }
   .bottom-modul {
     .apex-modul {

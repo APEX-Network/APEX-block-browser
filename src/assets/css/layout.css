@@ -162,7 +162,7 @@ body .select2-container--open .select2-dropdown .select2-results .select2-result
   -webkit-transform: translate(-50%, 0);
   transform: translate(-50%, 0);
   width: 100%;
-  height: calc( 100% - 130px);
+  height: calc( 100% - 73px);
   z-index: -1;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
