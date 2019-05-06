@@ -53,8 +53,8 @@
 import ApexTitle from "@/components/public/ApexTitle.vue";
 import ApexBackGround from "@/components/public/ApexBackGround.vue";
 // import Pagination from "@/components/public/Pagination.vue";
-import Bus from "./../../utils/bus";
-import util from "./../../utils/utils";
+import Bus from "@/utils/bus";
+import util from "@/utils/utils";
 
 export default {
   name: "BlocksInfo",
@@ -76,24 +76,17 @@ export default {
       blockHash: null,
       parentHash: null,
       minedBy: null,
-      result: {
-        type: null,
-        value: null
-      },
+      result: null,
       flag: null
     };
   },
   created() {},
   mounted() {
-    window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
+    // window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
     this.getClickValue();
   },
   methods: {
     goTxBlock(data) {
-      // this.$router.push("/blocks/BlocksInfo/TxFBlock");
-      // setTimeout(() => {
-      //   Bus.$emit("bHeight", this.height);
-      // });
       this.$router.push({
         path: "/blocks/BlocksInfo/TxFBlock",
         query: {
@@ -102,20 +95,22 @@ export default {
       });
     },
     getClickValue() {
-      this.result.value = this.$route.query.clickValue;
-      if (this.result.value !== null) {
-        this.getBlocksInfo();
-        return;
-      }
-      // Bus.$on("clickValue", data => {
-      //   this.result = JSON.parse(data);
-      //   sessionStorage.setItem("refresh", data);
-      //   this.getBlocksInfo();
-      //   return;
-      // });
-      this.flag = sessionStorage.getItem("flag");
-      if (this.flag == 1) {
-        this.result = JSON.parse(sessionStorage.getItem("refresh"));
+      this.result = this.$route.query.clickValue;
+      if (this.result !== null) {
+        let paramsType = typeof this.result.value;
+        console.log(paramsType);
+        console.log(this.result.type);
+        //刷新有问题
+        switch (paramsType) {
+          case "height":
+            this.result.type = "height";
+            break;
+          case "string":
+            this.result.type = "hash";
+            break;
+          default:
+            break;
+        }
         this.getBlocksInfo();
         return;
       }
@@ -130,18 +125,6 @@ export default {
     },
     getBlocksInfo() {
       if (!!this.result) {
-        let paramsType = typeof this.result.value;
-        switch (paramsType) {
-          case "number":
-            this.result.type = "height";
-            break;
-          case "string":
-            this.result.type = "hash";
-            break;
-          default:
-            break;
-        }
-        sessionStorage.setItem("refresh", JSON.stringify(this.result));
         let type = this.result.type;
         let params = this.result.value;
         switch (type) {
@@ -180,8 +163,6 @@ export default {
                     res.timeStamp,
                     serverTime
                   );
-                  console.log(this.timeStamp);
-
                   this.transactions =
                     res.txNum + " " + "transactions in this block";
                   this.parentHash = res.prevBlock;
@@ -209,7 +190,6 @@ export default {
         this.$axios
           .get(this.url.blockHash_url + this.parentHash)
           .then(response => {
-            debugger;
             let res = response.data.data;
             let serverTime = response.headers.date;
             this.height = res.height;

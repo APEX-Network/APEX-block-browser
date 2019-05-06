@@ -197,12 +197,6 @@ export default {
       this.Hash = this.$route.query.clickValue;
       sessionStorage.setItem("refresh", this.Hash);
       this.getTransactionsInfo();
-      // Bus.$on("txHash", data => {
-      //   this.Hash = data;
-      //   sessionStorage.setItem("refresh", data);
-      //   this.getTransactionsInfo();
-      //   return;
-      // });
       this.flag = sessionStorage.getItem("flag");
       if (this.Hash == null && this.flag == 1) {
         this.Hash = sessionStorage.getItem("refresh");
@@ -213,7 +207,6 @@ export default {
     setHeightValue(data) {
       this.clickValue.type = "height";
       this.clickValue.value = data;
-      // Bus.$emit("clickValue", JSON.stringify(this.clickValue));
         this.$router.push({
           path: "/blocks/BlocksInfo",
           query: {

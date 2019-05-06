@@ -72,7 +72,6 @@ const utilMethods = {
       }
       if (date < 60) {
         if (date === 0 || date < 0) {
-          console.log(date);
           return "0.5 sec ago"
         } else {
           return date + " sec ago";

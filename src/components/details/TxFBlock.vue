@@ -1,7 +1,7 @@
 <template>
   <div class="TxFBlock">
     <p class="bheight">
-      <router-link to="/blocks/BlocksInfo" @click.native="setHeightValue">{{blockHeight}}</router-link>
+      <router-link to @click.native="setHeightValue(blockHeight)">{{blockHeight}}</router-link>
     </p>
     <apex-title :title="title" class="title"/>
     <apex-back-ground class="bg"/>
@@ -98,13 +98,6 @@ export default {
   mounted() {
     this.getInstance();
     window.addEventListener("beforeunload", e => this.beforeunloadHandler(e));
-    // Bus.$on("bHeight", data => {
-    //   sessionStorage.setItem("refresh", data);
-    //   this.getTxFBlock(data);
-    //   this.blockHeight = data;
-    //   this.clickValue.value = this.blockHeight;
-    //   return;
-    // });
     this.blockHeight = this.$route.query.clickValue;
     this.clickValue.value = this.blockHeight;
     this.getTxFBlock(this.blockHeight);
@@ -122,9 +115,6 @@ export default {
       let x = address.slice(0, 8);
       let y = address.slice(-8);
       return !address ? "Miner Reward" : x + "..." + y;
-    },
-    setHeightValue() {
-      Bus.$emit("clickValue", this.clickValue);
     },
     getInstance() {
       this.arrow.leftArrow = this.$refs.left;
@@ -205,16 +195,22 @@ export default {
           console.log(response);
         });
     },
-    setHeightValue(e) {
-      this.clickValue.type = "height";
-      this.clickValue.value = e.target.innerHTML;
-      Bus.$emit("clickValue", JSON.stringify(this.clickValue));
+    setHeightValue(data) {
+      this.$router.push({
+          path: "/blocks/BlocksInfo",
+          query: {
+            clickValue: data
+          }
+        });
     },
     setHashValue(txHash) {
-      this.$router.push("/transactions/TransactionsInfo");
-      setTimeout(() => {
-        Bus.$emit("txHash", txHash);
-      });
+      this.$router.push({
+          path: "/transactions/TransactionsInfo",
+          query: {
+            clickValue: txHash
+          }
+        });
+
     },
     setMinerByValue(data) {
       if (data !== "") {

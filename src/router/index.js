@@ -26,7 +26,7 @@ import TxFBlock from '@/components/details/TxFBlock';
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history', 解开后刷新有问题
   routes: [{
     path: '/',
     name: 'default',

@@ -129,20 +129,14 @@ export default {
       }
     },
     setHeightValue(data) {
-      // this.clickValue.type = "height";
-      // this.clickValue.value = data;
       this.$router.push({
           path: "/blocks/BlocksInfo",
           query: {
             clickValue: data
           }
         });
-      // Bus.$emit("clickValue", JSON.stringify(this.clickValue));
     },
     setHashValue(data) {
-      // this.clickValue.type = "hash";
-      // this.clickValue.value = e.target.innerHTML;
-      // Bus.$emit("clickValue", JSON.stringify(this.clickValue));
       this.$router.push({
           path: "/blocks/BlocksInfo",
           query: {
