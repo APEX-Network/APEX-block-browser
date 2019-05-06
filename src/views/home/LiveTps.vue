@@ -146,16 +146,18 @@ export default {
               color: "#f26522"
             },
             areaStyle: {
+              opacity: 0.1,
+              // color:'#fff'
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 {
                   offset: 0,
-                  color: "rgb(50,50,50)"
+                  color: "#ccc",
                 },
                 {
                   offset: 1,
-                  color: "rgb(50,50,50)"
+                  color: "#000",
                 }
-              ])
+              ]),
             }
           }
         ]
