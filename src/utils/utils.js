@@ -253,6 +253,12 @@ const utilMethods = {
   serialized_transaction(message, signature) {
     return message + signature
   },
+  produceTxId(data){
+    let txId = Crypto.ripemd160(Crypto.sha256(data)).toString(
+      "hex"
+    );
+    return txId
+  },
   produce_message(serializParams) {
     let decode_from = Base58check.decode(serializParams.from).data.toString("hex");
     let from = decode_from.substring(2);
@@ -293,7 +299,10 @@ const utilMethods = {
       let nonce_hex = Number(serializParams.nonce).toString(16);
       nonce = "000000000000" + nonce_hex;
     };
+    console.log(serializParams.gasPrice.toString().length);
     let gasPrice_hex = Number(serializParams.gasPrice).toString(16);
+    console.log(gasPrice_hex);
+    
     let gasPrice;
     if (gasPrice_hex.length % 2 == 1) {
       let gasPrice_prefix = "0" + gasPrice_hex;
@@ -310,6 +319,7 @@ const utilMethods = {
       let gasPrice_length = gasPrice_prefix.length / 2;
       if (gasPrice_length < 10) {
         gasPrice = "0" + gasPrice_length + gasPrice_prefix;
+        console.log(gasPrice); 
       };
       if (gasPrice_length >= 10) {
         gasPrice = gasPrice_length + gasPrice_prefix;
@@ -325,7 +335,7 @@ const utilMethods = {
     if (gasLimit_prefix >= 10) {
       gasLimit = gasLimit_prefix.toString("hex") + gasLimit_hex;
     };
-    if (serializParams.data == "00") {
+    if (serializParams.data == "00") {      
       return serializParams.version + serializParams.txType + from + to + amount + nonce + serializParams.data + gasPrice + gasLimit + serializParams.executeTime;
     };
     if (serializParams.data !== "00" && serializParams.votingRefundType == "00") {

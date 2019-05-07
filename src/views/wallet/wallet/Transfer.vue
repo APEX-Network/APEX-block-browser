@@ -116,6 +116,7 @@ import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "@/utils/utils";
 import Bus from "./../../../utils/bus";
 import db from "./../../../utils/myDatabase";
+import utils from "../../../utils/utils";
 const bigdecimal = require("bigdecimal");
 
 export default {
@@ -445,19 +446,19 @@ export default {
               this.KStore,
               this.pwd
             );
+            if (this.privKey !== null) {
+              signParams.privKey = String(this.privKey);
+            }
+            this.signature = util.utilMethods.Sign(signParams);
+            this.serialized_transaction = util.utilMethods.serialized_transaction(
+              this.message,
+              this.signature
+            );
+            this.confirm();
           }
         } catch (error) {
           console.log("密码输入错误");
         }
-        if (this.privKey !== null) {
-          signParams.privKey = String(this.privKey);
-        }
-        this.signature = util.utilMethods.Sign(signParams);
-        this.serialized_transaction = util.utilMethods.serialized_transaction(
-          this.message,
-          this.signature
-        );
-        this.confirm();
       }
       return;
     },
@@ -479,6 +480,7 @@ export default {
       }
     },
     confirm() {
+      console.log(utils.utilMethods.produceTxId(this.serialized_transaction));
       this.$axios
         .post(this.url.transfer_url, {
           rawTx: this.serialized_transaction

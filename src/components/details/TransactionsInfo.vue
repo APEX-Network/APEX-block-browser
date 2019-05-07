@@ -1,7 +1,6 @@
 
 <template>
   <div class="TransactionsInfo">
-    <!-- <apex-title :title="title" class="title"/> -->
     <apex-back-ground class="bg"/>
     <div class="data-table transactions-details">
       <ul class="table-ul">

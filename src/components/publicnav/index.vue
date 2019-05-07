@@ -64,7 +64,7 @@
                 (China)
               </p>
             </a>
-          </li> -->
+          </li>-->
           <li class="wechat">
             <a href="javascript:;">
               <div class="img-box">
@@ -125,8 +125,8 @@
   </div>
 </template>
 <script>
-import Bus from "./../../utils/bus";
-import db from "./../../utils/myDatabase";
+import Bus from "@/utils/bus";
+import db from "@/utils/myDatabase";
 
 const Base58check = require("base58check");
 
@@ -178,11 +178,6 @@ export default {
     }
   },
   mounted() {
-    // setTimeout(() => {
-    //   this.walletUrl = sessionStorage.getItem("walletUrl");
-    //   this.nav[1].path = this.walletUrl;
-    //   console.log(this.nav[1].path);
-    // }, 500);
     this.about = this.$refs.aboutUs;
     this.wrapDiv = this.$refs.wrapAboutUs;
     this.search = this.$refs.search;
@@ -217,10 +212,6 @@ export default {
               let account = Base58check.decode(this.search).data.toString(
                 "hex"
               );
-              // setTimeout(() => {
-              //   Bus.$emit("accountValue", this.search);
-              // });
-              // this.$router.push("/transactions/TransactionsInfo/AccountInfo");
               this.$router.push({
                 path: "/transactions/TransactionsInfo/AccountInfo",
                 query: {
@@ -239,7 +230,7 @@ export default {
               .get(this.url.blockHeight_url + this.search)
               .then(response => {
                 if (response.data.data == "NotFound") {
-                  // this.$router.push("/error");
+                  this.$router.push("/error");
                   this.$refs.search.value = null;
                   return;
                 }
@@ -268,6 +259,7 @@ export default {
               .then(response => {
                 if (response.data.data == "NotFound") {
                   // this.$router.push("/error");
+                  this.$refs.search.value = null;
                   return;
                 }
                 if (response.data.status == 200) {
@@ -292,15 +284,12 @@ export default {
               .then(response => {
                 if (response.data.data == "NotFound") {
                   // this.$router.push("/error");
+                  this.$refs.search.value = null;
                   return;
                 }
                 if (response.data.status == 200) {
                   let res = response.data.data;
                   if (res.length !== 0) {
-                    // setTimeout(() => {
-                    //   Bus.$emit("txHash", this.search);
-                    // });
-                    // this.$router.push("/transactions/TransactionsInfo");
                     this.$router.push({
                       path: "/transactions/TransactionsInfo",
                       query: {
@@ -347,28 +336,10 @@ export default {
       this.about.style.height = "240px";
       this.wrapDiv.style.height = "100vh";
     },
-    switchWalletUrl() {
-      if (this.nav[1].title == this.$t("nav.wallet")) {
-        setTimeout(() => {
-          this.newwalletUrl = sessionStorage.getItem("walletUrl");
-          this.nav[1].path = this.newwalletUrl;
-        });
-        console.log(this.nav[1].path);
-      }
-    },
     hiddenAboutUs() {
       this.about.style.height = "0px";
       this.wrapDiv.style.height = "0vh";
-    },
-    offListener() {
-      Bus.$off("accountValue");
-      Bus.$off("clickValue");
-      Bus.$off("txHash");
-      // Bus.$off("walletUrl");
     }
-  },
-  beforeDestroy() {
-    this.offListener();
   }
 };
 </script>
@@ -494,9 +465,6 @@ export default {
       background: url(../../assets/images/shared/search.png) center 6px
         no-repeat;
     }
-    // .search-btn:hover {
-    //   box-shadow: 2px 2px 7px 2px #f26522;
-    // }
   }
   .language {
     position: absolute;
@@ -538,7 +506,7 @@ export default {
   .nav-bar {
     z-index: 9999;
     position: fixed;
-    bottom: 20%;
+    bottom: 28%;
     left: 106px;
     width: 30px;
     height: 350px;

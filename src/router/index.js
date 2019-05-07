@@ -18,7 +18,6 @@ import SavePrivKey from '@/views/wallet/wallet/SavePrivKey'
 import Transfer from '@/views/wallet/wallet/Transfer'
 import VotingSupport from '@/views/wallet/wallet/VotingSupport';
 import RefundVote from '@/views/wallet/wallet/RefundVote';
-import emptyWallet from '@/views/wallet/wallet/emptyWallet';
 import error from '@/views/error/error';
 import useProtocol from '@/views/useProtocol/useProtocol';
 import TxFBlock from '@/components/details/TxFBlock';
@@ -50,18 +49,6 @@ export default new Router({
     name: 'wallet',
     component: wallet,
   },
-  // {
-  //   path: '/emptyWallet',
-  //   name: 'emptyWallet',
-  //   component: emptyWallet,
-  // },
-
-  // {
-  //   path: '/NewWallet',
-  //   alias: '/emptyWallet/NewWallet',
-  //   name: 'NewWallet',
-  //   component: NewWallet,
-  // },
   {
     path: '/NewWallet',
     alias: '/wallet/NewWallet',
@@ -76,12 +63,6 @@ export default new Router({
     name: 'CreatedKeystore',
     component: CreatedKeystore,
   },
-  // {
-  //   path: '/CreatedKeystore',
-  //   alias: '/emptyWallet/NewWallet/CreatedKeystore',
-  //   name: 'CreatedKeystore',
-  //   component: CreatedKeystore,
-  // },
 
   {
     path: '/SavePrivKey',
@@ -89,19 +70,6 @@ export default new Router({
     name: 'SavePrivKey',
     component: SavePrivKey,
   },
-  // {
-  //   path: '/SavePrivKey',
-  //   alias: '/emptyWallet/NewWallet/CreatedKeystore/SavePrivKey',
-  //   name: 'SavePrivKey',
-  //   component: SavePrivKey,
-  // },
-
-  // {
-  //   path: '/OpenWallet',
-  //   alias: '/emptyWallet/OpenWallet',
-  //   name: 'OpenWallet',
-  //   component: OpenWallet,
-  // },
   {
     path: '/OpenWallet',
     alias: '/wallet/OpenWallet',
@@ -116,25 +84,12 @@ export default new Router({
     component: PrivateKey,
   },
 
-  // {
-  //   path: '/OpenWallet/PrivateKey',
-  //   alias: '/emptyWallet/OpenWallet/PrivateKey',
-  //   name: 'PrivateKey',
-  //   component: PrivateKey,
-  // },
-
   {
     path: '/OpenWallet/KeyStore',
     alias: '/wallet/OpenWallet/KeyStore',
     name: 'KeyStore',
     component: KeyStore,
   },
-  // {
-  //   path: '/OpenWallet/KeyStore',
-  //   alias: '/emptyWallet/OpenWallet/KeyStore',
-  //   name: 'KeyStore',
-  //   component: KeyStore,
-  // },
 
   {
     path: '/Transfer',
@@ -158,9 +113,6 @@ export default new Router({
     path: '/blocks',
     name: 'blocks',
     component: blocks,
-    meta: {
-      keepAlive: true, // 此组件需要被缓存
-    }
   },
   {
     path: "/BlocksInfo",

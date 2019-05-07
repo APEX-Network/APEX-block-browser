@@ -1,7 +1,5 @@
 <template>
   <div class="newWallet">
-    <!-- <apex-title :title="title" class="title"/> -->
-    <!-- <li class="row title">{{title}}</li> -->
     <p class="title">{{title}}</p>
     <apex-back-ground class="bg"/>
     <div class="flex-container">
@@ -25,7 +23,6 @@
           readonly
           onfocus="this.removeAttribute('readonly');"
         >
-        <!-- <input type="text" ref="firstPwdCover" v-model="firstPwdCover" @change="coverFirstPwd"> -->
         <img src="../../../assets/images/hiddeneye.jpg" @click="displayFirstPwd" ref="firstEye">
         <div class="repatpwd">
           <span>Repeat Password</span>
@@ -41,7 +38,6 @@
             readonly
             onfocus="this.removeAttribute('readonly');"
           >
-          <!-- <input type="text" ref="secondPwdCover" v-model="secondPwdCover" @change="coverSecondPwd"> -->
           <img src="../../../assets/images/hiddeneye.jpg" @click="displaySecondPwd" ref="secondEye">
         </div>
         <div ref="epd" class="epd">Enter Password differ</div>

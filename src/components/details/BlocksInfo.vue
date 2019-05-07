@@ -103,8 +103,12 @@ export default {
       this.result.value = this.$route.query.id;
       if (this.result.value !== null) {
         try {
-          Base58check.encode(this.result.value);
-          this.result.type = "hash";
+          let valueLength = this.result.value.length;
+          if (valueLength == 64) {
+            this.result.type = "hash";
+          } else {
+            this.result.type = "height";
+          }
         } catch (error) {
           this.result.type = "height";
         }
