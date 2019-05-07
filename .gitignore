@@ -18,7 +18,7 @@ test/e2e
 .editorconfig
 .eslintrc.js
 .postcssrc.js
-.package-lock.json
+package-lock.json
 typings.json
 typings/
 *.suo
