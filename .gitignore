@@ -2,6 +2,7 @@
 node_modules/
 config/
 build/
+static/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -14,6 +15,10 @@ test/e2e
 .idea
 .vscode
 .log
+.editorconfig
+.eslintrc.js
+.postcssrc.js
+.package-lock.json
 typings.json
 typings/
 *.suo
