@@ -241,7 +241,8 @@ export default {
     },
 
     getToAddress() {
-      this.toAddress = this.$refs.to.value;
+      try {
+        this.toAddress = this.$refs.to.value;
       if (this.toAddress.length !== 35 || this.toAddress.slice(0, 2) !== "AP") {
         this.check.checktoAddress.style.visibility = "visible";
         this.toAddress = null;
@@ -254,6 +255,9 @@ export default {
         this.toAddress = null;
         this.$refs.to.value = null;
         this.check.checktoAddress.style.visibility = "visible";
+      }
+      } catch (error) {
+        // console.log(error);
       }
     },
     getInputAmout() {

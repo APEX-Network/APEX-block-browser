@@ -63,7 +63,6 @@ export default {
               this.APAddress.push(v.APAddress);
             });
           });
-        console.log(this.APAddress);
       } catch (error) {
         console.log(error);
       }

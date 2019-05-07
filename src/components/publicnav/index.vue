@@ -39,11 +39,11 @@
         <img src="./../../assets/images/about.png" alt @click="showAboutUs">
       </ul>
     </div>
-    <!-- <div class="tips">
+    <div class="tips">
       <ul class="fl">
         <li class="tip" v-for="(item, index) in barName" :key="index">{{item}}</li>
       </ul>
-    </div> -->
+    </div>
     <div ref="wrapAboutUs" class="wrapAboutUs" @click="hiddenAboutUs">
       <div ref="aboutUs" class="aboutus">
         <p class="common-title">Join the Conversation</p>
@@ -520,7 +520,7 @@ export default {
     width: 30px;
     height: 350px;
     .fl {
-        padding-top: 5px;
+      padding-top: 5px;
       .tip {
         padding-bottom: 30px;
         padding-left: 40px;
@@ -589,13 +589,38 @@ export default {
     }
   }
 }
-@media screen and(max-width:1366px) {
+@media screen and (max-width: 1366px) {
   .nav {
     .nav-bar {
       left: 55px;
     }
   }
 }
+@media screen and (max-width: 1366px) {
+  .nav {
+    .main {
+      .search-box {
+        width: 73%;
+      }
+    }
+  }
+}
+
+// @media screen and (min-width: 1200px) {
+//         css-code;
+// }
+// @media screen and(min-width: 960px) and (max-width: 1199px) {
+//         css-code;
+// }
+// @media screen and(min-width: 768px) and (max-width: 959px) {
+//         css-code;
+// }
+// @media screen and(min-width: 480px) and (max-width: 767px) {
+//         css-code;
+// }
+// @media screen and (max-width: 479px) {
+//         css-code;
+// }
 </style>
 
 

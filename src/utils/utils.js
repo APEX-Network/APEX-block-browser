@@ -140,7 +140,6 @@ const utilMethods = {
         return formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + " " + "(" + utctime + "AM    +UTC" + ")";
       };
       if (date >= 86400) {
-        console.log(timeStampMounth);
         let diffDay;
         switch (Number(timeStampMounth)) {
           case 1:
@@ -299,18 +298,15 @@ const utilMethods = {
       let nonce_hex = Number(serializParams.nonce).toString(16);
       nonce = "000000000000" + nonce_hex;
     };
-    console.log(serializParams.gasPrice.toString().length);
-    let gasPrice_hex = Number(serializParams.gasPrice).toString(16);
-    console.log(BigInteger(serializParams.gasPrice).toByteArray());
-    
-    console.log(gasPrice_hex.slice(0, 1));
-
+    let gasPrice_hex = Number(serializParams.gasPrice).toString(16);    
     let gasPrice;
     if (gasPrice_hex.length % 2 == 1) {
       let gasPrice_prefix = "0" + gasPrice_hex;
       let gasPrice_length = gasPrice_prefix.length / 2;
       if (gasPrice_length < 10) {
-        if (gasPrice_hex.slice(0, 1) == 8 || gasLimit_hex.slice(0, 1) > 8) {
+        let flag = parseInt(gasPrice_hex.slice(0, 1), 16);
+        if (flag >= 8) {
+          gasPrice_length = gasPrice_length + 1;
           gasPrice = "0" + gasPrice_length + "00" + gasPrice_prefix;
         } else {
           gasPrice = "0" + gasPrice_length + gasPrice_prefix;
@@ -328,16 +324,19 @@ const utilMethods = {
       let gasPrice_prefix = gasPrice_hex;
       let gasPrice_length = gasPrice_prefix.length / 2;
       if (gasPrice_length < 10) {
-        if (gasPrice_hex.slice(0, 1) == 8 || gasPrice_hex.slice(0, 1) > 8) {
-          gasPrice = "0" + gasPrice_length + "00" + gasPrice_prefix;
+        let flag = parseInt(gasPrice_hex.slice(0, 1), 16);
+        if (flag >= 8 ) {
+          gasPrice_length = gasPrice_length + 1;
+          gasPrice = "0" + gasPrice_length  + "00" + gasPrice_prefix;
         } else {
           gasPrice = "0" + gasPrice_length + gasPrice_prefix;
         }
-        console.log(gasPrice);
       };
       if (gasPrice_length >= 10) {
-        if (gasPrice_hex.slice(0, 1) == 8 || gasLimit_hex.slice(0, 1) > 8) {
-          gasPrice = gasPrice_length + "00" + gasPrice_prefix;
+        let flag = parseInt(gasPrice_hex.slice(0, 1), 16);
+        if (flag >= 8) {
+          gasPrice_length = gasPrice_length + 1;
+          gasPrice = gasPrice_length  + "00" + gasPrice_prefix;
         } else {
           gasPrice = gasPrice_length + gasPrice_prefix;
         }

@@ -65,8 +65,8 @@ export default {
             color: "#fff",
             fontSize: "10"
           },
-          left: '90.5%',
-          top: '79%'
+          left: "90.5%",
+          top: "79%"
         },
         color: ["#1AC8FF"],
         grid: {
@@ -151,13 +151,13 @@ export default {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 {
                   offset: 0,
-                  color: "#ccc",
+                  color: "#ccc"
                 },
                 {
                   offset: 1,
-                  color: "#000",
+                  color: "#000"
                 }
-              ]),
+              ])
             }
           }
         ]
@@ -175,35 +175,29 @@ export default {
 };
 </script>
 <style scoped lang="less">
-.home {
-  width: 100%;
-  height: 100%;
-  .bottom-modul,
-  .top-modul {
-    height: 49%;
-    margin-bottom: 2%;
-    .apex-modul {
-      .apex-title {
-        height: 43px;
-        span:hover {
-          box-shadow: 2px 2px 8px 2px #f26522;
-        }
+.bottom-modul,
+.top-modul {
+  height: 49%;
+  margin-bottom: 2%;
+  .apex-modul {
+    .apex-title {
+      height: 43px;
+      span:hover {
+        box-shadow: 2px 2px 8px 2px #f26522;
       }
     }
   }
-  .chart-box {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    margin: 0;
-    height: calc(~"100% - 60px");
-  }
+}
+.chart-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  height: calc(~"100% - 60px");
 }
 @media screen and(max-width:1366px) {
-  .home {
-    .chart-box {
-      height: calc(~"100% - 60px");
-    }
+  .chart-box {
+    height: calc(~"100% - 60px");
   }
 }
 </style>
