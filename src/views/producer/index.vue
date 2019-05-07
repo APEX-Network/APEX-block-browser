@@ -263,7 +263,7 @@ export default {
   width: 100%;
   height: 100%;
   .bg {
-    background: url(./../../assets/images/shared/yunshi.png) 75% 93% no-repeat;
+    // background: url(./../../assets/images/shared/yunshi.png) 75% 93% no-repeat;
   }
   .data-table {
     .table-ul {

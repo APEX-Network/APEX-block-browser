@@ -48,7 +48,7 @@ export default {
 </script>
 <style lang='less' scoped>
 .error {
-    background: url("../../assets/images/shared/yunshi.png") 25% 41% no-repeat;
+    // background: url("../../assets/images/shared/yunshi.png") 25% 41% no-repeat;
 }
 .data-table {
   height: calc(100vh - 210px);

@@ -17,7 +17,7 @@ const utilMethods = {
     let diffTime = Math.abs((serverDate - timespan) / 1000);
     let formatterTime = new Date(serverDate - timespan);
     let havePoint = diffTime.toString().indexOf(".");
-    let date;    
+    let date;
     if (havePoint > -1) {
       date = diffTime.toString().split(".")[0];
     }
@@ -33,7 +33,7 @@ const utilMethods = {
         return "1" + " min ago";
       }
       if (date < 60) {
-        if ( date == 0) {
+        if (date == 0) {
           return "0.5 sec ago"
         } else {
           return date + " sec ago";
@@ -253,7 +253,7 @@ const utilMethods = {
   serialized_transaction(message, signature) {
     return message + signature
   },
-  produceTxId(data){
+  produceTxId(data) {
     let txId = Crypto.ripemd160(Crypto.sha256(data)).toString(
       "hex"
     );
@@ -301,28 +301,46 @@ const utilMethods = {
     };
     console.log(serializParams.gasPrice.toString().length);
     let gasPrice_hex = Number(serializParams.gasPrice).toString(16);
-    console.log(gasPrice_hex);
+    console.log(BigInteger(serializParams.gasPrice).toByteArray());
     
+    console.log(gasPrice_hex.slice(0, 1));
+
     let gasPrice;
     if (gasPrice_hex.length % 2 == 1) {
       let gasPrice_prefix = "0" + gasPrice_hex;
       let gasPrice_length = gasPrice_prefix.length / 2;
       if (gasPrice_length < 10) {
-        gasPrice = "0" + gasPrice_length + gasPrice_prefix;
+        if (gasPrice_hex.slice(0, 1) == 8 || gasLimit_hex.slice(0, 1) > 8) {
+          gasPrice = "0" + gasPrice_length + "00" + gasPrice_prefix;
+        } else {
+          gasPrice = "0" + gasPrice_length + gasPrice_prefix;
+        }
       };
       if (gasPrice_length >= 10) {
-        gasPrice = gasPrice_length + gasPrice_prefix;
+        if (gasPrice_hex.slice(0, 1) == 8 || gasLimit_hex.slice(0, 1) > 8) {
+          gasPrice = gasPrice_length + "00" + gasPrice_prefix;
+        } else {
+          gasPrice = gasPrice_length + gasPrice_prefix;
+        }
       };
     };
     if (gasPrice_hex.length % 2 == 0) {
       let gasPrice_prefix = gasPrice_hex;
       let gasPrice_length = gasPrice_prefix.length / 2;
       if (gasPrice_length < 10) {
-        gasPrice = "0" + gasPrice_length + gasPrice_prefix;
-        console.log(gasPrice); 
+        if (gasPrice_hex.slice(0, 1) == 8 || gasPrice_hex.slice(0, 1) > 8) {
+          gasPrice = "0" + gasPrice_length + "00" + gasPrice_prefix;
+        } else {
+          gasPrice = "0" + gasPrice_length + gasPrice_prefix;
+        }
+        console.log(gasPrice);
       };
       if (gasPrice_length >= 10) {
-        gasPrice = gasPrice_length + gasPrice_prefix;
+        if (gasPrice_hex.slice(0, 1) == 8 || gasLimit_hex.slice(0, 1) > 8) {
+          gasPrice = gasPrice_length + "00" + gasPrice_prefix;
+        } else {
+          gasPrice = gasPrice_length + gasPrice_prefix;
+        }
       };
     };
     let byteArraygaseLimit = BigInteger(serializParams.gasLimit.toString()).toByteArray();
@@ -335,7 +353,7 @@ const utilMethods = {
     if (gasLimit_prefix >= 10) {
       gasLimit = gasLimit_prefix.toString("hex") + gasLimit_hex;
     };
-    if (serializParams.data == "00") {      
+    if (serializParams.data == "00") {
       return serializParams.version + serializParams.txType + from + to + amount + nonce + serializParams.data + gasPrice + gasLimit + serializParams.executeTime;
     };
     if (serializParams.data !== "00" && serializParams.votingRefundType == "00") {

@@ -20,10 +20,10 @@
         >
         <div class="fl search-btn" @click="startSearch"></div>
       </div>
-      <div class="language" :class="isShow ? 'active' : ''" @click="changeLang">
+      <!-- <div class="language" :class="isShow ? 'active' : ''" @click="changeLang">
         <i></i>
         <span class="language-span" v-show="isShow" @click.stop="changeLangEvent">{{language}}</span>
-      </div>
+      </div>-->
     </div>
     <div class="nav-bar">
       <ul class="fl">
@@ -39,6 +39,11 @@
         <img src="./../../assets/images/about.png" alt @click="showAboutUs">
       </ul>
     </div>
+    <!-- <div class="tips">
+      <ul class="fl">
+        <li class="tip" v-for="(item, index) in barName" :key="index">{{item}}</li>
+      </ul>
+    </div> -->
     <div ref="wrapAboutUs" class="wrapAboutUs" @click="hiddenAboutUs">
       <div ref="aboutUs" class="aboutus">
         <p class="common-title">Join the Conversation</p>
@@ -142,6 +147,7 @@ export default {
       about: null,
       wrapDiv: null,
       clickValue: 0,
+      barName: ["Home", "Wallet", "Blocks", "Transactions", "Producer"],
       url: {
         blockHash_url: "/api/v1.0/blocks/blockHash/",
         blockHeight_url: "/api/v1.0/blocks/blockHeight/",
@@ -429,8 +435,11 @@ export default {
 
   .main {
     position: relative;
+    width: 75%;
+    padding-top: 20px;
   }
   .logo {
+    padding-left: 59px;
     img {
       margin-top: 34px;
     }
@@ -440,8 +449,8 @@ export default {
     padding-top: 26px;
     height: 56px;
     position: relative;
-    margin-left: 20px;
-    width: 60%;
+    margin-left: 10px;
+    width: 67%;
     input {
       width: 100%;
       height: 100%;
@@ -503,10 +512,28 @@ export default {
       }
     }
   }
+  .tips {
+    // z-index: 9999;
+    position: fixed;
+    bottom: 20%;
+    left: 106px;
+    width: 30px;
+    height: 350px;
+    .fl {
+        padding-top: 5px;
+      .tip {
+        padding-bottom: 30px;
+        padding-left: 40px;
+        color: #999999;
+        font-size: 16px;
+        font-family: Proxima Nova;
+      }
+    }
+  }
   .nav-bar {
     z-index: 9999;
     position: fixed;
-    bottom: 28%;
+    bottom: 20%;
     left: 106px;
     width: 30px;
     height: 350px;

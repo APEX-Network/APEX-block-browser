@@ -435,7 +435,7 @@ export default {
     }
   }
   .bg {
-    background: url(./../../assets/images/shared/yunshi.png) 55% 67% no-repeat;
+    // background: url(./../../assets/images/shared/yunshi.png) 55% 67% no-repeat;
   }
   .data-table {
     height: 100%;

@@ -51,7 +51,7 @@ body {
 body .logo-left {
   z-index: 999;
   position: absolute;
-  top: -86px;
+  top: -115px;
   left: -95px;
   width: 400px;
   height: 400px;
@@ -154,7 +154,6 @@ body .select2-container--open .select2-dropdown .select2-results .select2-result
   height: calc( 100vh - 130px);
   box-sizing: border-box;
   padding: 40px 45px;
-  background: url(../images/shared/icon-01.png) left top no-repeat, url(../images/shared/icon-02.png) right top no-repeat, url(../images/shared/icon-03.png) left bottom no-repeat, url(../images/shared/icon-04.png) right bottom no-repeat;
 }
 .apex-background {
   position: absolute;

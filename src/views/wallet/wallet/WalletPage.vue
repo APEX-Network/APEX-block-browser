@@ -6,7 +6,8 @@
         <div class="clearboth">
           <div class="flex-item1 fl">Address</div>
           <Select2
-          ref="select2"
+            ref="select2"
+            placeholder="currentAddress"
             class="flex-item2 fl"
             autocomplete="new-password"
             readonly
@@ -16,7 +17,13 @@
             @change="myChangeEvent($event)"
             @select="mySelectEvent($event)"
           />
-          <img @click="Copy()" ref="copy" style=" margin-top: 10px;cursor: pointer;margin-left: 12px;" src="../../../assets/images/copy.png" alt="">
+          <img
+            @click="Copy()"
+            ref="copy"
+            style=" margin-top: 10px;cursor: pointer;margin-left: 12px;"
+            src="../../../assets/images/copy.png"
+            alt
+          >
         </div>
         <div class="btn-box btn-box-left">
           <router-link to="/wallet/NewWallet">NEW WALLET</router-link>
@@ -27,18 +34,9 @@
       <div class="wallet-flex-container fl">
         <div class="cpx-number">CPX: {{CPX}}</div>
         <div class="btn-box">
-          <router-link
-            to="/wallet/Transfer"
-            @click.native="sendAddress"
-          >TRANSFER</router-link>
-          <router-link
-            to="/wallet/VotingSupport"
-            @click.native="sendAddress"
-          >VOTE</router-link>
-          <router-link
-            to="/wallet/RefundVote"
-            @click.native="sendAddress"
-          >REFUND</router-link>
+          <router-link to="/wallet/Transfer" @click.native="sendAddress">TRANSFER</router-link>
+          <router-link to="/wallet/VotingSupport" @click.native="sendAddress">VOTE</router-link>
+          <router-link to="/wallet/RefundVote" @click.native="sendAddress">REFUND</router-link>
         </div>
       </div>
     </div>
@@ -95,9 +93,9 @@ export default {
           this.APAddress.push(v.APAddress);
         });
       });
-      // if (this.APAddress.length == 0) {
-      //   sessionStorage.setItem("apAddress", null)
-      // }
+    // if (this.APAddress.length == 0) {
+    //   sessionStorage.setItem("apAddress", null)
+    // }
   },
 
   methods: {
@@ -115,8 +113,8 @@ export default {
       );
     },
     getInstances() {
-    this.selected = this.$refs.select2;
-    this.copyImg = this.$refs.copy;
+      // this.selected = this.$refs.select2;
+      this.copyImg = this.$refs.copy;
     },
     myChangeEvent(val) {
       this.currentAddress = val;
@@ -202,12 +200,12 @@ export default {
     font-size: 22px;
   }
   .btn-box {
-    margin-top:60px;
+    margin-top: 60px;
     a {
       display: inline-block;
       height: 30px;
       // font-size: 18px;
-      margin-right:30px;
+      margin-right: 30px;
       color: #f26522;
       line-height: 30px;
       text-align: center;
@@ -217,16 +215,16 @@ export default {
         box-shadow: 2px 2px 8px 2px #f26522;
       }
     }
-    &.btn-box-left{
-      a{
-        &:first-of-type{
+    &.btn-box-left {
+      a {
+        &:first-of-type {
           margin-left: 80px;
         }
       }
     }
   }
   .flex-item1 {
-    width:80px;
+    width: 80px;
   }
 
   .flex-item2 {
@@ -237,8 +235,6 @@ export default {
   .flex-item2:hover {
     box-shadow: 2px 2px 8px 2px #f26522;
   }
-
-  
 }
 
 .flex-container3 {

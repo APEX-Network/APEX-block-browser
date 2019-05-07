@@ -582,7 +582,7 @@ export default {
     }
   }
   .bg {
-    background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
+    // background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
   }
   .apex-box {
     .apex-title {

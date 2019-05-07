@@ -1,7 +1,7 @@
 <template>
   <div class="block apex-modul fl">
     <p class="apex-title">
-      Blocks
+      Latest  Blocks
       <router-link to="/blocks">
         <span>ALL</span>
       </router-link>

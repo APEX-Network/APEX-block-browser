@@ -160,8 +160,8 @@ export default {
     background-color: rgba(255, 255, 255, 0.1) !important;
   }
   .bg {
-    background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
-      no-repeat;
+    // background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
+    //   no-repeat;
     height: calc(100% - 113px);
   }
   .flex-container {

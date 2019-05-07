@@ -122,8 +122,8 @@ export default {
   width: 100%;
   height: 100%;
   .bg {
-    background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
-      no-repeat;
+    // background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
+    //   no-repeat;
     height: calc(100% - 113px);
 
   }
