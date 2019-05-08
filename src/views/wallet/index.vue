@@ -1,9 +1,9 @@
 <template>
   <div class="home clearboth">
-    <div class="top-modul clearboth" v-if="APAddress.length !== 0" v-cloak>
+    <div class="top-modul clearboth" v-if="APAddress.length !== 0">
       <wallet-page :address="apAddress" :privKey="privKey"/>
     </div>
-    <div class="bottom-modul clearboth" v-if="APAddress.length !== 0" v-cloak>
+    <div class="bottom-modul clearboth" v-if="APAddress.length !== 0">
       <transfers-list/>
       <transactions-list/>
     </div>
@@ -80,9 +80,6 @@ export default {
 };
 </script>
 <style scoped lang="less">
-[v-cloak] {
-    display: none;
-  }
 .home {
   width: 100%;
   height: 100%;
@@ -92,6 +89,12 @@ export default {
     height: 100%;
     background-color: rgba(255, 255, 255, 0.1) !important;
     border-radius: 0px 0px 4px 4px;
+    .apex-title {
+      padding-left: 23px;
+      height: 40px;
+      border-bottom: 2px solid #000;
+      padding-top: 10px;
+    }
   }
   .data-table {
     height: e("calc(100% - 40px)");

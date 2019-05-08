@@ -39,11 +39,11 @@
         <img src="./../../assets/images/about.png" alt @click="showAboutUs">
       </ul>
     </div>
-    <div class="tips">
+    <!-- <div class="tips">
       <ul class="fl">
         <li class="tip" v-for="(item, index) in barName" :key="index">{{item}}</li>
       </ul>
-    </div>
+    </div> -->
     <div ref="wrapAboutUs" class="wrapAboutUs" @click="hiddenAboutUs">
       <div ref="aboutUs" class="aboutus">
         <p class="common-title">Join the Conversation</p>
@@ -434,12 +434,12 @@ export default {
   }
 
   .main {
-    position: relative;
-    width: 75%;
+    min-width: 93%;
+    position: fixed;
     padding-top: 20px;
+    padding-left: 16.5%;
   }
   .logo {
-    padding-left: 59px;
     img {
       margin-top: 34px;
     }
@@ -449,8 +449,8 @@ export default {
     padding-top: 26px;
     height: 56px;
     position: relative;
-    margin-left: 10px;
-    width: 67%;
+    padding-left: 1%;
+    width: 74.5%;
     input {
       width: 100%;
       height: 100%;
@@ -600,7 +600,7 @@ export default {
   .nav {
     .main {
       .search-box {
-        width: 73%;
+        width: 70%;
       }
     }
   }
