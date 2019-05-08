@@ -6,8 +6,6 @@
         <div class="clearboth">
           <div class="flex-item1 fl">Address</div>
           <Select2
-            ref="select2"
-            placeholder="currentAddress"
             class="flex-item2 fl"
             autocomplete="new-password"
             readonly
@@ -48,6 +46,7 @@ import Vue from "vue";
 // import { mapActions, mapGetters } from "vuex";
 import Bus from "./../../../utils/bus";
 import db from "./../../../utils/myDatabase";
+import $ from "jquery";
 
 export default {
   name: "walletpage",
@@ -58,7 +57,6 @@ export default {
       getAllAddress: null,
       accountInfo_url: "/api/v1.0/accounts/account",
       CPX: 0,
-      selected: null,
       copyImg: null,
       currentAddress: this.address,
       currentPrivKey: this.privKey
@@ -71,14 +69,15 @@ export default {
 
   mounted() {
     this.getInstances();
-    this.currentAddress = sessionStorage.getItem("apAddress");
+    // this.currentAddress = sessionStorage.getItem("apAddress");
+      this.currentAddress = localStorage.getItem("apAddress");
     setTimeout(() => {
       if (this.currentAddress !== null) {
         this.getCPX(this.currentAddress);
       }
     });
     const timer = setInterval(() => {
-      this.currentAddress = sessionStorage.getItem("apAddress");
+      this.currentAddress = localStorage.getItem("apAddress");
       if (this.currentAddress !== null) {
         this.getCPX(this.currentAddress);
       }
@@ -91,11 +90,8 @@ export default {
       .toArray(APKStore => {
         APKStore.forEach(v => {
           this.APAddress.push(v.APAddress);
-        });
+        });             
       });
-    // if (this.APAddress.length == 0) {
-    //   sessionStorage.setItem("apAddress", null)
-    // }
   },
 
   methods: {
@@ -113,13 +109,12 @@ export default {
       );
     },
     getInstances() {
-      // this.selected = this.$refs.select2;
       this.copyImg = this.$refs.copy;
     },
     myChangeEvent(val) {
       this.currentAddress = val;
       this.copyImg.src = require("../../../assets/images/copy.png");
-      sessionStorage.setItem("apAddress", this.currentAddress);
+      localStorage.setItem("apAddress", this.currentAddress);
     },
     mySelectEvent({ id, text }) {
       // console.log({ id, text });

@@ -184,7 +184,7 @@ export default {
 
   mounted() {
     this.transferPwd = this.$refs.hiddenpwd;
-    this.voter_params.address = sessionStorage.getItem("apAddress");
+    this.voter_params.address = localStorage.getItem("apAddress");
     this.getAllInput();
     this.getAddress();
     this.getGasePrice();
@@ -505,21 +505,23 @@ export default {
           message: this.message,
           privKey: null
         };
-        if (this.KStore !== null && this.pwd !== null) {
-          signParams.privKey = util.utilMethods.produceKeyPriv(
-            this.KStore,
-            this.pwd
+        try {
+          if (this.KStore !== null && this.pwd !== null) {
+            signParams.privKey = util.utilMethods.produceKeyPriv(
+              this.KStore,
+              this.pwd
+            );
+          }
+          if (this.privKey !== null) {
+            signParams.privKey = String(this.privKey);
+          }
+          this.signature = util.utilMethods.Sign(signParams);
+          this.serialized_transaction = util.utilMethods.serialized_transaction(
+            this.message,
+            this.signature
           );
-        }
-        if (this.privKey !== null) {
-          signParams.privKey = String(this.privKey);
-        }
-        this.signature = util.utilMethods.Sign(signParams);
-        this.serialized_transaction = util.utilMethods.serialized_transaction(
-          this.message,
-          this.signature
-        );
-        this.confirm();
+          this.confirm();
+        } catch (error) {}
       }
       return;
     },

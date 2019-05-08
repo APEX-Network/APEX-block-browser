@@ -175,7 +175,7 @@ export default {
           setTimeout(() => {
             Bus.$emit("privKey", signParams.privKey);
             Bus.$emit("apAddress", this.apAddress);
-            sessionStorage.setItem("apAddress", this.apAddress);
+            localStorage.setItem("apAddress", this.apAddress);
             // sessionStorage.setItem("walletUrl", this.walletUrl);
             Bus.$emit("keyStore", this.keyStore);
             db.APKStore.put({

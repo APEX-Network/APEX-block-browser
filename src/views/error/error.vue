@@ -7,7 +7,7 @@
         </li>
 
         <li class="second-li">
-          <img src="../../assets/images/nothingfound.png" alt="">
+          <img src="../../assets/images/nothing.png" alt="">
         </li>
 
         <li>

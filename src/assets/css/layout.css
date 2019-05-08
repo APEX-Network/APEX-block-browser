@@ -330,8 +330,6 @@ body .select2-container--open .select2-dropdown .select2-results .select2-result
 }
 @media screen and (max-width: 1366px) {
   body .logo-left {
-    width: 300px;
-    height: 300px;
     cursor: pointer !important;
   }
   #app .main-box {

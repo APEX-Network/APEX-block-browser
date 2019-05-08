@@ -19,6 +19,7 @@ import BitcoinJS from 'bitcoinjs-lib'
 import base58check from 'base58check'
 import base58 from 'base58'
 import Select2 from 'v-select2-component';
+
 Vue.component('Select2', Select2);
 
 Vue.prototype.$axios = axios;

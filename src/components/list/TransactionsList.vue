@@ -46,13 +46,13 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this.accountTransaction_param.address = sessionStorage.getItem(
+      this.accountTransaction_param.address = localStorage.getItem(
         "apAddress"
       );
       this.getTransactionsList();
     });
     const timer = setInterval(() => {
-      this.accountTransaction_param.address = sessionStorage.getItem(
+      this.accountTransaction_param.address = localStorage.getItem(
         "apAddress"
       );
       this.getTransactionsList();
@@ -72,7 +72,7 @@ export default {
         });
     },
     goAccountInfo() {
-      let accountValue = sessionStorage.getItem("apAddress")
+      let accountValue = localStorage.getItem("apAddress")
       this.$router.push({
           path: "/transactions/TransactionsInfo/AccountInfo",
           query: {

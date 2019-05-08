@@ -20,10 +20,6 @@
         >
         <div class="fl search-btn" @click="startSearch"></div>
       </div>
-      <!-- <div class="language" :class="isShow ? 'active' : ''" @click="changeLang">
-        <i></i>
-        <span class="language-span" v-show="isShow" @click.stop="changeLangEvent">{{language}}</span>
-      </div>-->
     </div>
     <div class="nav-bar">
       <ul class="fl">
@@ -32,18 +28,16 @@
           :key="index"
           :class=" ((item.path === defaultNav) || ( defaultNav === '/' &&  index == 0)) ? 'active' : ''"
         >
-          <router-link :to="item.path"></router-link>
+          <router-link
+            :to="item.path"
+            ref="bars"
+          >{{item.name}}</router-link>
         </li>
       </ul>
       <ul class="fl about">
         <img src="./../../assets/images/about.png" alt @click="showAboutUs">
       </ul>
     </div>
-    <!-- <div class="tips">
-      <ul class="fl">
-        <li class="tip" v-for="(item, index) in barName" :key="index">{{item}}</li>
-      </ul>
-    </div> -->
     <div ref="wrapAboutUs" class="wrapAboutUs" @click="hiddenAboutUs">
       <div ref="aboutUs" class="aboutus">
         <p class="common-title">Join the Conversation</p>
@@ -165,18 +159,18 @@ export default {
       getAllAddress: null,
       APAddress: [],
       walletUrl: null,
-      newwalletUrl: null
+      selectedBar: null
     };
   },
   created() {},
   computed: {
     nav() {
       return [
-        { title: this.$t("nav.home"), path: "/home" },
-        { title: this.$t("nav.wallet"), path: "/wallet" },
-        { title: "", path: "/blocks" },
-        { title: "", path: "/transactions" },
-        { title: "", path: "/producer" }
+        { title: this.$t("nav.home"), path: "/home", name: "Home" },
+        { title: this.$t("nav.wallet"), path: "/wallet", name: "Wallet" },
+        { title: "", path: "/blocks", name: "Blocks" },
+        { title: "", path: "/transactions", name: "Transactions" },
+        { title: "", path: "/producer", name: "Producer" }
       ];
     },
     defaultNav() {
@@ -184,6 +178,7 @@ export default {
     }
   },
   mounted() {
+    this.selectedBar = this.$refs.bar;
     this.about = this.$refs.aboutUs;
     this.wrapDiv = this.$refs.wrapAboutUs;
     this.search = this.$refs.search;
@@ -201,7 +196,6 @@ export default {
       this.wrapDiv.style.height = "0vh";
       this.search = this.$refs.search.value;
     },
-
     startSearch() {
       if (this.search !== null) {
         if (
@@ -434,10 +428,9 @@ export default {
   }
 
   .main {
-    min-width: 93%;
-    position: fixed;
-    padding-top: 20px;
-    padding-left: 16.5%;
+    display: flex;
+    width: 81%;
+    padding: 30px 45px 30px 120px;
   }
   .logo {
     img {
@@ -450,7 +443,7 @@ export default {
     height: 56px;
     position: relative;
     padding-left: 1%;
-    width: 74.5%;
+    width: 100%;
     input {
       width: 100%;
       height: 100%;
@@ -507,26 +500,8 @@ export default {
       cursor: pointer;
     }
     &.active {
-      i {
-        transform: rotate(-180deg);
-      }
-    }
-  }
-  .tips {
-    // z-index: 9999;
-    position: fixed;
-    bottom: 20%;
-    left: 106px;
-    width: 30px;
-    height: 350px;
-    .fl {
-      padding-top: 5px;
-      .tip {
-        padding-bottom: 30px;
-        padding-left: 40px;
-        color: #999999;
-        font-size: 16px;
-        font-family: Proxima Nova;
+      a {
+        color: #f26522;
       }
     }
   }
@@ -534,9 +509,9 @@ export default {
     z-index: 9999;
     position: fixed;
     bottom: 20%;
-    left: 106px;
+    left: 96px;
     width: 30px;
-    height: 350px;
+    height: 50%;
     .about {
       padding-top: 70px;
       cursor: pointer;
@@ -545,82 +520,30 @@ export default {
       li {
         width: 30px;
         height: 30px;
-        margin-bottom: 25px;
-        background: url(../../assets/images/nav-fix.png) no-repeat;
+        margin-bottom: 20px;
+        // background: url(../../assets/images/nav-fix.png) no-repeat;
         background-position: center 3px;
         a {
           display: block;
           width: 100%;
           height: 100%;
+          color: #999999;
+          font-family: Proxima Nova;
+          font-size: 16px;
+        }
+        a:hover {
+          color: #f26522;
         }
         &:hover,
         &.active {
-          background-position: center -34px;
-        }
-        &:nth-child(2) {
-          background-position: center -68px;
-          &:hover,
-          &.active {
-            background-position: center -99px;
-          }
-        }
-        &:nth-child(3) {
-          background-position: center -134px;
-          &:hover,
-          &.active {
-            background-position: center -171px;
-          }
-        }
-        &:nth-child(4) {
-          background-position: center -209px;
-          &:hover,
-          &.active {
-            background-position: center -246px;
-          }
-        }
-        &:nth-child(5) {
-          background-position: center -283px;
-          &:hover,
-          &.active {
-            background-position: center -320px;
+          a {
+            color: #f26522;
           }
         }
       }
     }
   }
 }
-@media screen and (max-width: 1366px) {
-  .nav {
-    .nav-bar {
-      left: 55px;
-    }
-  }
-}
-@media screen and (max-width: 1366px) {
-  .nav {
-    .main {
-      .search-box {
-        width: 70%;
-      }
-    }
-  }
-}
-
-// @media screen and (min-width: 1200px) {
-//         css-code;
-// }
-// @media screen and(min-width: 960px) and (max-width: 1199px) {
-//         css-code;
-// }
-// @media screen and(min-width: 768px) and (max-width: 959px) {
-//         css-code;
-// }
-// @media screen and(min-width: 480px) and (max-width: 767px) {
-//         css-code;
-// }
-// @media screen and (max-width: 479px) {
-//         css-code;
-// }
 </style>
 
 

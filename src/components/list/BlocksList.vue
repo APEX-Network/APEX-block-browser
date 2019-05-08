@@ -1,7 +1,7 @@
 <template>
   <div class="block apex-modul fl">
     <p class="apex-title">
-      Latest  Blocks
+      Latest Blocks
       <router-link to="/blocks">
         <span>ALL</span>
       </router-link>
@@ -9,16 +9,18 @@
     <ul class="apex-list">
       <vue-scroll :ops="ops">
         <li v-for="(item,index) in blocksList" :key="index.id">
-          <div>
-            <div class="top">
-              <p>Block Height {{item.height}}</p>
-              <!-- <span>{{item.size}} Bytes</span> -->
+          <!-- <transition name="bounceUp" tag="li"> -->
+            <div>
+              <div class="top">
+                <p>Block Height {{item.height}}</p>
+                <!-- <span>{{item.size}} Bytes</span> -->
+              </div>
+              <div class="bottom">
+                <router-link to @click.native="setClickValue(item.blockHash)">{{item.blockHash}}</router-link>
+                <span>{{item.timeStamp}}</span>
+              </div>
             </div>
-            <div class="bottom">
-              <router-link to @click.native="setClickValue(item.blockHash)">{{item.blockHash}}</router-link>
-              <span>{{item.timeStamp}}</span>
-            </div>
-          </div>
+          <!-- </transition> -->
         </li>
       </vue-scroll>
     </ul>
@@ -28,6 +30,7 @@
 <script>
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
+require("vue2-animate/dist/vue2-animate.min.css");
 export default {
   name: "blockslist",
   components: {},
@@ -81,11 +84,11 @@ export default {
     },
     setClickValue(data) {
       this.$router.push({
-          path: "/blocks/BlocksInfo",
-          query: {
-            id: data
-          }
-        });
+        path: "/blocks/BlocksInfo",
+        query: {
+          id: data
+        }
+      });
     },
     offListener() {
       Bus.$off("clickValue");
