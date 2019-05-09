@@ -8,7 +8,7 @@
     </p>
     <ul class="apex-list">
       <vue-scroll :ops="ops">
-        <li v-for="(item,index) in transactions" :key="index">
+        <li  ref="tList" v-for="(item,index) in transactions" :key="index">
           <div class="bottom">
             <router-link
               to
@@ -41,7 +41,8 @@ export default {
       parmas: {
         start: "0",
         pageSize: "20"
-      }
+      },
+      time: 500
     };
   },
   created() {},
@@ -49,18 +50,56 @@ export default {
     this.getAllTransactions();
     const timer = setInterval(() => {
       this.getAllTransactions();
-    }, 1500);
+    }, 2000);
     this.$once("hook:beforeDestroy", () => {
       clearInterval(timer);
     });
   },
   methods: {
+    changeColor() {
+      this.newTransaction = this.$refs.tList;
+      this.newTransaction[0].style.opacity = "0";
+      this.newTransaction[1].style.opacity = "0";
+      this.newTransaction[2].style.opacity = "0";
+      this.newTransaction[3].style.opacity = "0";
+      this.newTransaction[4].style.opacity = "0";
+      this.newTransaction[5].style.opacity = "0";
+      this.newTransaction[6].style.opacity = "0";
+      this.newTransaction[7].style.opacity = "0";
+      this.newTransaction[8].style.opacity = "0";
+      this.newTransaction[9].style.opacity = "0";
+      setTimeout(() => {
+        this.newTransaction[0].style.opacity = "1";
+        this.newTransaction[0].style.transition = "opacity 0.1s linear";
+        this.newTransaction[1].style.opacity = "1";
+        this.newTransaction[1].style.transition = "opacity 0.2s linear";
+        this.newTransaction[2].style.opacity = "1";
+        this.newTransaction[2].style.transition = "opacity 0.3s linear";
+        this.newTransaction[3].style.opacity = "1";
+        this.newTransaction[3].style.transition = "opacity 0.4s linear";
+        this.newTransaction[4].style.opacity = "1";
+        this.newTransaction[4].style.transition = "opacity 0.5s linear";
+        this.newTransaction[5].style.opacity = "1";
+        this.newTransaction[5].style.transition = "opacity 0.6s linear";
+        this.newTransaction[6].style.opacity = "1";
+        this.newTransaction[6].style.transition = "opacity 0.7s linear";
+        this.newTransaction[7].style.opacity = "1";
+        this.newTransaction[7].style.transition = "opacity 0.8s linear";
+        this.newTransaction[8].style.opacity = "1";
+        this.newTransaction[8].style.transition = "opacity 0.9s linear";
+        this.newTransaction[9].style.opacity = "1";
+        this.newTransaction[9].style.transition = "opacity 1s linear";
+      }, this.time);
+    },
     getAllTransactions() {
       this.$axios
         .post(this.transaction_list_url, this.parmas)
         .then(response => {
+          this.transactions = [];
           let res = response.data.data;
           let serverTime = response.headers.date;
+          // this.time = new Date().getSeconds() - new Date(serverTime).getSeconds();
+
           let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
@@ -68,6 +107,9 @@ export default {
             item.refBlockTime = time;
           }
           this.transactions = res;
+          if (this.transactions !== []) {
+              this.changeColor();
+            }
         })
         .catch(function(err) {
           if (err.response) {

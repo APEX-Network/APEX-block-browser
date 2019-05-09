@@ -98,6 +98,42 @@ export default {
     }, 60000);
   },
   methods: {
+    changeColor() {
+      this.newBlock = this.$refs.bList;
+      this.newBlock[0].style.opacity = "0";
+      this.newBlock[1].style.opacity = "0";
+      this.newBlock[2].style.opacity = "0";
+      this.newBlock[3].style.opacity = "0";
+      this.newBlock[4].style.opacity = "0";
+      this.newBlock[5].style.opacity = "0";
+      this.newBlock[6].style.opacity = "0";
+      this.newBlock[7].style.opacity = "0";
+      this.newBlock[8].style.opacity = "0";
+      this.newBlock[9].style.opacity = "0";
+
+      setTimeout(() => {
+        this.newBlock[0].style.opacity = "1";
+        this.newBlock[0].style.transition = "opacity 0.1s linear";
+        this.newBlock[1].style.opacity = "1";
+        this.newBlock[1].style.transition = "opacity 0.2s linear";
+        this.newBlock[2].style.opacity = "1";
+        this.newBlock[2].style.transition = "opacity 0.3s linear";
+        this.newBlock[3].style.opacity = "1";
+        this.newBlock[3].style.transition = "opacity 0.4s linear";
+        this.newBlock[4].style.opacity = "1";
+        this.newBlock[4].style.transition = "opacity 0.5s linear";
+        this.newBlock[5].style.opacity = "1";
+        this.newBlock[5].style.transition = "opacity 0.6s linear";
+        this.newBlock[6].style.opacity = "1";
+        this.newBlock[6].style.transition = "opacity 0.7s linear";
+        this.newBlock[7].style.opacity = "1";
+        this.newBlock[7].style.transition = "opacity 0.8s linear";
+        this.newBlock[8].style.opacity = "1";
+        this.newBlock[8].style.transition = "opacity 0.9s linear";
+        this.newBlock[9].style.opacity = "1";
+        this.newBlock[9].style.transition = "opacity 1s linear";
+      }, this.time);
+    },
     getInstance() {
       this.arrow.leftArrow = this.$refs.left;
       this.arrow.rightArrow = this.$refs.right;

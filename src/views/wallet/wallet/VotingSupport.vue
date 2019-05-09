@@ -42,7 +42,7 @@
           ref="inputAmout"
           @keyup.enter="thInput($event)"
           @change="getInputAmout"
-          placeholder="Transfer Amount"
+          placeholder="Voting Amount"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
           autocomplete="new-password"
           readonly

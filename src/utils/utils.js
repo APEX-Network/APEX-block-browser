@@ -6,7 +6,7 @@ const script_signature = require("bitcoinjs-lib/src/script_signature");
 const CryptoJS = require('./../../node_modules/crypto-js/crypto-js.js');
 const BigInteger = require('bigi');
 const bigdecimal = require("bigdecimal");
-
+import _ from 'lodash';
 
 const utilMethods = {
   listUTCtime(timespan, serverTime) {
@@ -33,7 +33,7 @@ const utilMethods = {
         return "1" + " min ago";
       }
       if (date < 60) {
-        if (date == 0) {
+        if (date < 0 || date == 0) {
           return "0.5 sec ago"
         } else {
           return date + " sec ago";
@@ -71,7 +71,7 @@ const utilMethods = {
         return "1" + " min ago";
       }
       if (date < 60) {
-        if (date === 0 || date < 0) {
+        if (date < 0 || date == 0) {
           return "0.5 sec ago"
         } else {
           return date + " sec ago";
@@ -272,10 +272,10 @@ const utilMethods = {
     let amount_hex = Buffer.from(byteArrayamount, "hex").toString("hex");
     let amount
     if (amount_length <= 15) {
-      amount = "0" + Number(amount_length).toString(16) + amount_hex;
+      amount = "0" + amount_length.toString(16) + amount_hex;
     };
     if (amount_length >= 16) {
-      amount = Number(amount_prefix).toString(16) + amount_hex;
+      amount = amount_length.toString(16) + amount_hex;
     };
     let nonce;
     if (serializParams.nonce <= 15) {
@@ -283,77 +283,45 @@ const utilMethods = {
         nonce = "000000000000000" + serializParams.nonce;
       };
       if (serializParams.nonce >= 10) {
-        nonce = "000000000000000" + Number(serializParams.nonce).toString(16);
+        nonce = "000000000000000" + serializParams.nonce.toString(16);
       };
     };
     if (serializParams.nonce > 15 && serializParams.nonce <= 255) {
-      let nonce_hex = Number(serializParams.nonce).toString(16);
+      let nonce_hex = serializParams.nonce.toString(16);
       nonce = "00000000000000" + nonce_hex;
     };
     if (serializParams.nonce > 255 && serializParams.nonce <= 4095) {
-      let nonce_hex = Number(serializParams.nonce).toString(16);
+      let nonce_hex = serializParams.nonce.toString(16);
       nonce = "0000000000000" + nonce_hex;
     };
     if (serializParams.nonce > 4095 && serializParams.nonce <= 65535) {
-      let nonce_hex = Number(serializParams.nonce).toString(16);
+      let nonce_hex = serializParams.nonce.toString(16);
       nonce = "000000000000" + nonce_hex;
     };
-    let gasPrice_hex = Number(serializParams.gasPrice).toString(16);  
+    let byteGasePrice = BigInteger(serializParams.gasPrice.toString()).toByteArray();
+    let gas_length = byteGasePrice.length;
+    let gasPrice_hex = Buffer.from(byteGasePrice, "hex").toString("hex");
     console.log(gasPrice_hex);
+    console.log(BigInteger(serializParams.gasPrice.toString()).toByteArray().length);
     let gasPrice;
-    if (gasPrice_hex.length % 2 == 1) {
-      let gasPrice_prefix = "0" + gasPrice_hex;
-      let gasPrice_length = gasPrice_prefix.length / 2;
-      if (gasPrice_length < 10) {
-        let flag = parseInt(gasPrice_hex.slice(0, 1), 16);
-        console.log(flag);
-        if (flag >= 8) {
-          gasPrice_length = gasPrice_length + 1;
-          gasPrice = "0" + gasPrice_length + "00" + gasPrice_prefix;
-          console.log(gasPrice);
-        } else {
-          gasPrice = "0" + gasPrice_length + gasPrice_prefix;
-        }
-      };
-      if (gasPrice_length >= 10) {
-        if (gasPrice_hex.slice(0, 1) == 8 || gasLimit_hex.slice(0, 1) > 8) {
-          gasPrice = gasPrice_length + "00" + gasPrice_prefix;
-        } else {
-          gasPrice = gasPrice_length + gasPrice_prefix;
-        }
-      };
+    if (gas_length <= 15) {
+      gasPrice = "0" + gas_length.toString(16) + gasPrice_hex;
+      console.log(gasPrice);
     };
-    if (gasPrice_hex.length % 2 == 0) {
-      let gasPrice_prefix = gasPrice_hex;
-      let gasPrice_length = gasPrice_prefix.length / 2;
-      if (gasPrice_length < 10) {
-        let flag = parseInt(gasPrice_hex.slice(0, 1), 16);
-        if (flag >= 8 ) {
-          gasPrice_length = gasPrice_length + 1;
-          gasPrice = "0" + gasPrice_length  + "00" + gasPrice_prefix;
-        } else {
-          gasPrice = "0" + gasPrice_length + gasPrice_prefix;
-        }
-      };
-      if (gasPrice_length >= 10) {
-        let flag = parseInt(gasPrice_hex.slice(0, 1), 16);
-        if (flag >= 8) {
-          gasPrice_length = gasPrice_length + 1;
-          gasPrice = gasPrice_length  + "00" + gasPrice_prefix;
-        } else {
-          gasPrice = gasPrice_length + gasPrice_prefix;
-        }
-      };
+    if (gas_length >= 16) {
+      gasPrice = gas_length.toString(16) + gasPrice_hex;
+      console.log(gasPrice);
     };
+
     let byteArraygaseLimit = BigInteger(serializParams.gasLimit.toString()).toByteArray();
     let gasLimit_hex = Buffer.from(byteArraygaseLimit, "hex").toString("hex");
-    let gasLimit_prefix = (gasLimit_hex.length) / 2;
+    let gasLimit_length = byteArraygaseLimit.length;
     let gasLimit;
-    if (gasLimit_prefix < 10) {
-      gasLimit = "0" + gasLimit_prefix + gasLimit_hex;
+    if (gasLimit_length <= 15) {
+      gasLimit = "0" + gasLimit_length.toString(16) + gasLimit_hex;
     };
-    if (gasLimit_prefix >= 10) {
-      gasLimit = gasLimit_prefix.toString("hex") + gasLimit_hex;
+    if (gasLimit_length >= 16) {
+      gasLimit = gasLimit_length.toString(16) + gasLimit_hex;
     };
     if (serializParams.data == "00") {
       return serializParams.version + serializParams.txType + from + to + amount + nonce + serializParams.data + gasPrice + gasLimit + serializParams.executeTime;
@@ -372,6 +340,7 @@ const utilMethods = {
       if (data_length >= 16) {
         data = Number(data_length).toString(16) + voting_data;
       };
+      console.log(data);
       return serializParams.version + serializParams.txType + from + to + "0100" + nonce + data + gasPrice + gasLimit + serializParams.executeTime;
     };
     if (serializParams.data !== "00" && serializParams.votingRefundType == "01") {
@@ -440,6 +409,45 @@ const utilMethods = {
     let privKey = DeckeyStore.toString(CryptoJS.enc.Utf8);
     return privKey
   },
+
+  fullScreen(isOpen, target) {
+    let dom = target || void 0
+    let open_list = ['requestFullscreen', 'mozRequestFullScreen', 'webkitRequestFullScreen', 'msRequestFullscreen']
+    let cancel_list = ['exitFullscreen', 'mozCancelFullScreen', 'webkitCancelFullScreen']
+    let fn = void 0
+    if (isOpen) {
+      fn = _.find(open_list, (n) => {
+        return Boolean(dom[n])
+      })
+      fn && dom[fn]()
+    } else {
+      fn = _.find(cancel_list, (n) => {
+        return Boolean(document[n])
+      })
+      fn && document[fn]()
+    }
+  },
+
+  isFullScreen() {
+    console.log("adafasadsa");
+    return document.isFullScreen || document.mozIsFullScreen || document.webkitIsFullScreen
+  },
+  decodeTransactionsData(data) {
+    let ap = "0548"
+    let add = data.slice(0,40);
+    let decodeData = {
+      address: Base58check.encode(add,ap),
+      amount: parseInt(data.slice(41, data.length-2),16)*parseFloat(0.000000000000000001),
+      type: data.slice(data.length-2, data.length)
+    }
+    if (decodeData.type == "00") {
+      decodeData.type = "Vote"
+    }
+    if (decodeData.type == "01") {
+      decodeData.type = "Refund"
+    }
+    return decodeData
+  }
 };
 export default {
   utilMethods

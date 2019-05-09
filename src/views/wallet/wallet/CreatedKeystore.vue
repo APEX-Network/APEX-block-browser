@@ -62,8 +62,6 @@ export default {
 
   methods: {
     getKeyStoreAndlastAddress() {
-      // this.walletUrl = sessionStorage.getItem("walletUrl", this.walletUrl);
-      // console.log(this.walletUrl);
       Bus.$on("apAddress", data => {
         this.apAddress = data;
       });

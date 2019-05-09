@@ -509,7 +509,7 @@ export default {
     z-index: 9999;
     position: fixed;
     bottom: 20%;
-    left: 96px;
+    left: 93px;
     width: 30px;
     height: 50%;
     .about {
@@ -520,7 +520,7 @@ export default {
       li {
         width: 30px;
         height: 30px;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
         // background: url(../../assets/images/nav-fix.png) no-repeat;
         background-position: center 3px;
         a {

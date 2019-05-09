@@ -41,7 +41,10 @@ export default {
     TransactionsList
   },
   created() {
-    this.checkDB();
+    // this.checkDB();
+    if (!!localStorage.getItem("apAddress")) {
+      this.APAddress.push(localStorage.getItem("apAddress"));
+    }
   },
   data() {
     return {

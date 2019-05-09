@@ -8,12 +8,9 @@
     </p>
     <ul class="apex-list">
       <vue-scroll :ops="ops">
-        <li v-for="(item,index) in transactions" :key="index">
+        <li  v-for="(item,index) in transactions" :key="index">
           <div class="bottom">
-            <router-link
-              to
-              @click.native="setClickValue(item.txHash)"
-            >{{item.txHash}}</router-link>
+            <router-link to @click.native="setClickValue(item.txHash)">{{item.txHash}}</router-link>
             <span>{{item.refBlockTime}}</span>
           </div>
         </li>
@@ -41,20 +38,18 @@ export default {
         start: 0,
         pageSize: 10,
         address: null
-      }
+      },
+      newTransaction: null,
+      time: 500
     };
   },
   mounted() {
     setTimeout(() => {
-      this.accountTransaction_param.address = localStorage.getItem(
-        "apAddress"
-      );
+      this.accountTransaction_param.address = localStorage.getItem("apAddress");
       this.getTransactionsList();
     });
     const timer = setInterval(() => {
-      this.accountTransaction_param.address = localStorage.getItem(
-        "apAddress"
-      );
+      this.accountTransaction_param.address = localStorage.getItem("apAddress");
       this.getTransactionsList();
     }, 1500);
     this.$once("hook:beforeDestroy", () => {
@@ -64,21 +59,21 @@ export default {
   methods: {
     setClickValue(data) {
       // Bus.$emit("txHash", e.target.innerHTML);
-       this.$router.push({
-          path: "/transactions/TransactionsInfo",
-          query: {
-            id: data
-          }
-        });
+      this.$router.push({
+        path: "/transactions/TransactionsInfo",
+        query: {
+          id: data
+        }
+      });
     },
     goAccountInfo() {
-      let accountValue = localStorage.getItem("apAddress")
+      let accountValue = localStorage.getItem("apAddress");
       this.$router.push({
-          path: "/transactions/TransactionsInfo/AccountInfo",
-          query: {
-            id: accountValue
-          }
-        });
+        path: "/transactions/TransactionsInfo/AccountInfo",
+        query: {
+          id: accountValue
+        }
+      });
     },
     getTransactionsList() {
       if (this.accountTransaction_param.address !== null) {
@@ -100,7 +95,7 @@ export default {
               time = util.utilMethods.listUTCtime(
                 element.refBlockTime,
                 serverTime
-              );              
+              );
               element.refBlockTime = time;
             }
           })

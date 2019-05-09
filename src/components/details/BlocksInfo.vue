@@ -20,8 +20,8 @@
           <span class="col">
             Transactions:
             <span
-              class="clol col-lg-8"
-              
+              class="clol col-lg-8 transactions"
+              @click="goTxBlock(height)"
             >{{transactions}}</span>
           </span>
         </li>

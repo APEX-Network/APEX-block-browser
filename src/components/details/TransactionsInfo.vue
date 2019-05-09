@@ -17,7 +17,7 @@
             <span class="clol col-lg-8">{{transactionInfoData.txStatus}}</span>
           </span>
         </li>
-        <li class="row">
+        <li class="row" v-if="transactionInfoData.blockHeight !== -1">
           <span class="col">
             Block Height:
             <span class="clol col-lg-8 changewidth">
@@ -25,11 +25,11 @@
                 to
                 @click.native="setHeightValue(transactionInfoData.blockHeight)"
               >{{transactionInfoData.blockHeight}}</router-link>
-              <span>{{transactionInfoData.heightDiff}} Block Confirmations</span>
+              <span>{{transactionInfoData.Status}}</span>
             </span>
           </span>
         </li>
-        <li class="row">
+        <li class="row" v-if="!!transactionInfoData.timeStamp">
           <span class="col">
             TimeStamp:
             <span class="clol col-lg-8">{{transactionInfoData.timeStamp}}</span>
@@ -68,7 +68,7 @@
         </li>
         <li class="row" v-if="transactionInfoData.to !== ''">
           <span class="col">
-            To:
+            {{address}}
             <span class="clol col-lg-8">
               <router-link
                 to
@@ -87,7 +87,7 @@
         </li>
         <li class="row">
           <span class="col">
-            Value:
+            {{value}}
             <span class="clol col-lg-8">{{transactionInfoData.amount}}</span>
           </span>
         </li>
@@ -120,7 +120,6 @@ import ApexBackGround from "@/components/public/ApexBackGround.vue";
 import Pagination from "@/components/public/Pagination.vue";
 import Bus from "./../../utils/bus";
 import util from "./../../utils/utils";
-
 export default {
   name: "TransactionsInfo",
   components: {
@@ -147,7 +146,7 @@ export default {
         nonce: null,
         type: null,
         newBlockHeight: null,
-        heightDiff: null
+        Status: null
       },
       clickValue: {
         type: "height",
@@ -155,12 +154,22 @@ export default {
       },
       Hash: null,
       fAddress: null,
-      tAddress: null
+      tAddress: null,
+      timer: null,
+      decodeData: null,
+      address: null,
+      value: null
     };
   },
   created() {},
   mounted() {
     this.getClickValue();
+    this.timer = setInterval(() => {
+      this.getTransactionsInfo();
+    }, 1500);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(this.timer);
+    });
   },
   methods: {
     getInstances() {
@@ -216,21 +225,66 @@ export default {
             this.transactionInfoData.txStatus = res.status;
             this.transactionInfoData.newBlockHeight = res.newBlockHeight;
             this.transactionInfoData.blockHeight = res.refBlockHeight;
-            this.transactionInfoData.heightDiff =
-              res.newBlockHeight - res.refBlockHeight;
+            !!res.confirmed
+              ? (this.transactionInfoData.Status = "(Confirmed)")
+              : (this.transactionInfoData.Status = "(Unconfirmed)");
+            if (!!res.confirmed) {
+              clearInterval(this.timer);
+            }
             this.transactionInfoData.timeStamp = util.utilMethods.toUTCtime(
               res.refBlockTime,
               serverTime
-            );
+            );            
             this.transactionInfoData.from = res.from;
             this.transactionInfoData.nonce = res.nonce;
             this.transactionInfoData.to = res.to;
-            this.transactionInfoData.amount = res.amount;
             this.transactionInfoData.gasLimit = res.gasLimit;
             this.transactionInfoData.gasPrice = res.gasPrice;
             this.transactionInfoData.gasUsed = res.gasUsed;
             this.transactionInfoData.fee = res.fee;
-            this.transactionInfoData.type = res.type;
+            if (res.type == "Miner") {
+              this.transactionInfoData.type = res.type;
+              this.address = "To:";
+              this.transactionInfoData.to = res.to;
+              this.value = "Value:";
+              this.transactionInfoData.amount = res.amount;
+            }
+            if (
+              res.type == "Transfer" &&
+              res.to !== "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
+            ) {
+              this.transactionInfoData.type = res.type;
+              this.address = "To:";
+              this.transactionInfoData.to = res.to;
+              this.value = "Value:";
+              this.transactionInfoData.amount = res.amount;
+            }
+            if (
+              res.type == "Call" &&
+              res.to == "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
+            ) {
+              this.decodeData = util.utilMethods.decodeTransactionsData(
+                res.data
+              );
+              this.transactionInfoData.type = this.decodeData.type;
+              this.transactionInfoData.to = this.decodeData.address;
+              let key = this.decodeData.type;
+              switch (key) {
+                case "Vote":
+                  this.address = "Support node:";
+                  this.value = "Voting amount:";
+                  this.transactionInfoData.amount = this.decodeData.amount;
+                  break;
+                case "Refund":
+                  this.address = "Support node:";
+                  this.value = "Refund amount:";
+                  this.transactionInfoData.amount = this.decodeData.amount;
+                  break;
+
+                default:
+                  break;
+              }
+            }
           })
           .catch(function(response) {});
       }
@@ -255,7 +309,7 @@ export default {
   height: 100%;
   .bg {
     // background: url(./../../assets/images/shared/yunshi.png) 68% 89% no-repeat;
-    height: calc( 100% - 72px);
+    height: calc(100% - 72px);
   }
   .data-table {
     .table-ul {
@@ -272,7 +326,7 @@ export default {
               // width: 50%;
             }
             span {
-              padding-right: 46%;
+              padding-right: 75%;
             }
           }
         }

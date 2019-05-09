@@ -93,8 +93,7 @@ export default {
       firstClick: 1,
       ClickCheckBox: 0,
       isClick: false,
-      diffPwd: null,
-      walletUrl: null
+      diffPwd: null
     };
   },
 
@@ -113,30 +112,21 @@ export default {
 
   methods: {
     getInstances() {
-      this.walletUrl = sessionStorage.getItem("walletUrl", this.walletUrl);
       this.diffPwd = this.$refs.epd;
       this.firstInput = this.$refs.firstPwd;
       this.secondInput = this.$refs.secondPwd;
       this.nocheckbox = this.$refs.nocheckbox;
       this.firstEye = this.$refs.firstEye;
       this.secondEye = this.$refs.secondEye;
+      if (!!this.$route.query.id) {
+        this.changeCheckBox();
+      }
     },
     getPwd() {
       this.first = this.$refs.firstPwd.value;
     },
     getSecondPwd() {
       this.second = this.$refs.secondPwd.value;
-      if (this.first == this.second) {
-        this.diffPwd.style.visibility = "hidden";
-      }
-      if (this.first != this.second) {
-        this.diffPwd.style.visibility = "visible";
-        return;
-      }
-      if (this.firstPwd == null || this.secondPwd == null) {
-        this.diffPwd.style.visibility = "visible";
-        return;
-      }
     },
     nextInput(ev) {
       if (ev.keyCode == 13) {
@@ -144,18 +134,17 @@ export default {
       }
     },
     produceSign() {
-      if (this.firstPwd == null || this.secondPwd == null) {
-        this.diffPwd.style.visibility = "visible";
+      if (this.first == null || this.second == null) {
+          // this.diffPwd.style.visibility = "visible";
         return;
       }
       if (
-        this.firstPwd != null &&
-        this.secondPwd != null &&
+        this.first !== null &&
+        this.second !== null &&
         this.isClick == true
       ) {
-        if (this.first != this.second) {
+        if (this.first !== this.second) {
           this.diffPwd.style.visibility = "visible";
-          return;
         } else {
           this.diffPwd.style.visibility = "hidden";
           let ap = "0548";
@@ -176,18 +165,13 @@ export default {
             Bus.$emit("privKey", signParams.privKey);
             Bus.$emit("apAddress", this.apAddress);
             localStorage.setItem("apAddress", this.apAddress);
-            // sessionStorage.setItem("walletUrl", this.walletUrl);
             Bus.$emit("keyStore", this.keyStore);
             db.APKStore.put({
               APAddress: this.apAddress,
               KStore: this.keyStore
             });
           });
-          // if (this.walletUrl == "/emptyWallet") {
-          //   this.$router.push("/emptyWallet/NewWallet/CreatedKeystore");
-          // } else {
           this.$router.push("/wallet/NewWallet/CreatedKeystore");
-          // }
         }
       }
     },
@@ -217,31 +201,20 @@ export default {
       this.$router.push("/useProtocol");
     },
     changeCheckBox() {
-      if (
-        this.first == this.second &&
-        this.first != null &&
-        this.second != null
-      ) {
-        this.ClickCheckBox++;
-        console.log(this.ClickCheckBox);
-        if (this.ClickCheckBox % 2 == 0) {
-          this.isClick = false;
-          this.nocheckbox.src = require("../../../assets/images/nocheckbox.jpg");
-        }
-        if (this.ClickCheckBox % 2 == 1) {
-          this.isClick = true;
-          this.nocheckbox.src = require("../../../assets/images/checkbox.png");
-        }
-      } else {
-        this.diffPwd.style.visibility = "visible";
-        return;
+      this.ClickCheckBox++;
+      if (this.ClickCheckBox % 2 == 0) {
+        this.isClick = false;
+        this.nocheckbox.src = require("../../../assets/images/nocheckbox.jpg");
+      }
+      if (this.ClickCheckBox % 2 == 1) {
+        this.isClick = true;
+        this.nocheckbox.src = require("../../../assets/images/checkbox.png");
       }
     },
     offListener() {
       Bus.$off("apAddress");
       Bus.$off("privKey");
       Bus.$off("keyStore");
-      Bus.$off("walletUrl");
     }
   },
   beforeDestroy() {
@@ -264,7 +237,7 @@ export default {
   }
   .bg {
     // background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
-      // no-repeat;
+    // no-repeat;
     height: calc(100% - 113px);
   }
   .flex-container {
@@ -281,19 +254,19 @@ export default {
       p:nth-child(2) {
         color: rgba(255, 255, 255, 0.7);
         text-indent: 40px;
-        padding-top: 2px;
+        padding-top: 10px;
       }
       p:nth-child(3) {
-        padding-top: 2px;
+        padding-top: 10px;
       }
       p:nth-child(4) {
-        padding-top: 2px;
+        padding-top: 10px;
         text-indent: 80px;
       }
     }
     .enterpwd {
       margin-top: 40px;
-      margin-left: 35px;
+      margin-left: -22px;
       input {
         margin-left: 30px;
         background: rgba(255, 255, 255, 0.001);
@@ -357,7 +330,7 @@ export default {
       color: #f26522;
       border: 1px solid #f26522;
       margin-top: 30px;
-      margin-left: 60px;
+      margin-left: 69px;
       text-align: center;
       height: 30px;
       width: 120px;

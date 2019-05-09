@@ -139,7 +139,7 @@ export default {
           KStore: this.privKeyStore
         });
         Bus.$emit("apAddress", this.walletAddress);
-        sessionStorage.setItem("apAddress", this.walletAddress);
+        localStorage.setItem("apAddress", this.walletAddress);
         this.$router.push("/wallet");
       }
     }

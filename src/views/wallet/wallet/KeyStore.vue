@@ -96,10 +96,6 @@ export default {
     keyStoreWallet() {
       try {
         if (this.keyStore !== null && this.pwd !== null) {
-          // let url = "/wallet";
-          // setTimeout(() => {
-          //   sessionStorage.setItem("walletUrl", url);
-          // });
           let downKeyStore = this.keyStore;
           let key = this.pwd;
           this.walletAddress = util.utilMethods.keyStoreWallet(
@@ -107,7 +103,7 @@ export default {
             key
           );
           Bus.$emit("apAddress", this.walletAddress);
-          sessionStorage.setItem("apAddress", this.walletAddress);
+          localStorage.setItem("apAddress", this.walletAddress);
           db.APKStore.put({
             APAddress: this.walletAddress,
             KStore: this.keyStore

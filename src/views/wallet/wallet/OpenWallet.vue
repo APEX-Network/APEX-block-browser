@@ -1,6 +1,5 @@
 <template>
   <div class="openWallet">
-    <!-- <apex-title :title="title" class="title"/> -->
     <p class="title">{{title}}</p>
     <apex-back-ground class="bg"/>
     <div class="flex-container">
@@ -41,35 +40,14 @@ export default {
   beforeMount() {},
 
   mounted() {
-    this.walletUrl = sessionStorage.getItem("walletUrl", this.walletUrl);
   },
 
   methods: {
     goPrivKey() {
       this.$router.push("/wallet/OpenWallet/PrivateKey");
-      // switch (this.walletUrl) {
-      //   case "/wallet":
-      //     this.$router.push("/wallet/OpenWallet/PrivateKey");
-      //     break;
-      //   case "/emptyWallet":
-      //     this.$router.push("/emptyWallet/OpenWallet/PrivateKey");
-      //     break;
-      //   default:
-      //     break;
-      // }
     },
     goKeyStore() {
       this.$router.push("/wallet/OpenWallet/KeyStore");
-      // switch (this.walletUrl) {
-      //   case "/wallet":
-      //     this.$router.push("/wallet/OpenWallet/KeyStore");
-      //     break;
-      //   case "/emptyWallet":
-      //     this.$router.push("/emptyWallet/OpenWallet/KeyStore");
-      //     break;
-      //   default:
-      //     break;
-      // }
     }
   },
 

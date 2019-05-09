@@ -43,7 +43,7 @@
           ref="inputAmout"
           @keyup.enter="thInput($event)"
           @change="getInputAmout"
-          placeholder="Transfer Amount"
+          placeholder="Refund Amount"
           autocomplete="new-password"
           readonly
           onfocus="this.removeAttribute('readonly');"

@@ -14,7 +14,6 @@
           <p>2. Users:
             <p>（1）You must be a natural person with full capacity to exercise civil rights and to perform civil conduct;</p>
             <p>（2）If you are a minor under the age of 18, you have to obtain permission and guidance from your parents or guardian in order to use Apex Wallet.</p>
-          </p>
           <p>3. Create or import a wallet: Refers to the process of using Apex Wallet in compliance with the terms of this Agreement and thus creating or importing a wallet.
           </p>
           <p>4. Wallet password: Refers to the password you are instructed to enter at the software operation interface during the process of creating Apex Wallet. This password is for the encryption and protection of the Private Key, and for Transaction authorization.
@@ -58,7 +57,6 @@
             <p>（4）Report the loss of wallet;</p>
             <p>（5）Restoring the wallet;</p>
             <p>（6）Transaction rollback.</p>
-          </p>
           <p>2. Since we do not provide the aforementioned services, you should take care of your own mobile devices which have Apex Wallet installed, backup Apex Wallet, backup wallet password, mnemonic, Private Key and Keystore. If you lose your mobile devices, delete and fail to back up Apex Wallet, have your wallet stolen or forget your wallet password, Private Key, mnemonic, and Keystore, we will not be able to restore the wallet or retrieve the wallet password, Private Key, mnemonic, and Keystore for you; if you commit a mistake in the transaction (such as entering a wrong transfer address), we will not be able to cancel the transaction for you.
           </p>
           <p>3. The services that Apex Wallet and we provide does not include all existing digital tokens. Please do not manage digital tokens that are not supported by Apex Wallet through Apex Wallet. Otherwise, the loss of your assets will be borne by you.
@@ -72,7 +70,6 @@
             <p>2. Authentication: As stipulated by related laws, regulations and policies, Specific users who use the services provided by Apex Wallet are required to complete identity authentication according to Apex Wallet's instructions. You shall submit personal information including but not limited to your name, ID number, phone number and bank card number information upon request., and the loss caused by the delay of the Specific user shall be borne by Specific user.</p>
             <p>3. We may develop different software versions for different terminal devices, you should download and install the suitable version according to your actual needs. If you obtain Apex Wallet or an installation program having the same name as Apex Wallet via an unauthorized third-party app, we cannot guarantee that the software will operate properly or its security, and any damage caused shall be borne by you.</p>
             <p>4. After an updated version of Apex Wallet is released, the previous version of the software may not be available for use. We can not guarantee the security, continual usability of the previous version, and corresponding customer service may not be available.</p>
-          </p>
           <p>（2）Your Use of Apex Wallet
             <p>1. You should take care of your own mobile devices, wallet password, Private Key, mnemonic, Keystore and other information. We are not responsible for keeping the above information for you. You are solely responsible for any risks, liabilities, losses, and expenses incurred as a result of the loss of your mobile devices, active or passive disclosure, forgetting wallet passwords, Private Keys, mnemonics, Keystore or other attacks, fraud, etc.
             </p>
@@ -94,10 +91,8 @@
                   <p>e) Technical failures of networks and equipment;</p>
                   <p>f) Blockchain network congestion, failure and other reasons that render the transaction to be cancelled;</p>
                   <p>g) Your address or counterparty address is recognized as a special address, such as a high-risk address, an exchange address, an ICO address, a Token address, and so on.</p>
-                </p>
                 <p>（4）You acknowledge that Apex Wallet only provides you with the transfer tool. Completion of the transfer using Apex Wallet means that all obligations of the service we provide have been fulfilled. We undertake no obligations for other disputes.
                 </p>
-              </p>
               <p>6. Legal compliance. You acknowledge that when you operate on Apex Wallet or use Apex Wallet to conduct transactions, you should act in accordance with relevant laws, regulations, and policies of the People’s Republic of China.
               </p>
               <p>7. Announcement notice. Apex Wallet will send you notifications through website announcements, emails, text messages, phone calls, message center, pop-up reminders or client notifications, such as to notify you of the progress of transaction or to remind you to make relevant operations, please pay attention to it in a timely manner.
@@ -115,7 +110,6 @@
                 <p>
                   （4）Any taxes and other expenses incurred by the use of Apex Wallet shall be borne by you.
                 </p>
-              </p>
 
               <h3>5、 Risks Warning</h3>
               <p>
@@ -142,7 +136,6 @@
                 <p>
                   9. Please be alert to any fraud during the use of our services. Once you spot such behavior, please inform Chinapex Technology promptly.
                 </p>
-              </p>
 
               <h3>6、Change, Interruption or Termination of Service</h3>
               <p>
@@ -154,29 +147,55 @@
                   <p>（1）The business is interrupted due to technical reasons such as equipment, blockchain system maintenance, upgrade, failure and communication interruption;</p>
                   <p>（2）Due to force majeure such as typhoon, earthquake, tsunami, flood, power outage, war or terrorist attack, viruses, Trojans, hackers, system instability or government behavior, our system cannot provide services or that we reasonably believe a greater risk would ensue if we continue the provision of services;</p>
                   <p>（3）Other circumstances that we cannot control or reasonably foresee.</p>
-                </p>
 
                 <p>
                   3. If the following circumstances arise, we may unilaterally suspend or terminate your use of some or all of the functions of Apex Wallet:
                   <p>
+                    <p>
                     （1）User’s death;
+                    </p>
+                    <p>
                     （2）Stealing other people's wallet information or mobile devices;
-                    （3）Providing false, inaccurate or misleading information when filling in personal information;
-                    （4）Rejecting mandatory updates initiated to enhance functions of Apex Wallet;
-                    （5）Using Apex Wallet for illegal or criminal activities;
-                    （6）Hindering the normal use of other users;
-                    （7）Falsely claiming to be our staff or management personnel;
-                    （8）Attacking, invading, altering or using other means which would threaten the normal operation of our computer system;
-                    （9）Using Apex Wallet to promote spam ads;
-                    （10）Spreading rumors that harm Chinapex Technology and the goodwill of Apex Wallet;
-                    （11）Illegal activities, other violations of this Agreement, and circumstances in which we reasonably believe that the function should be suspended.
 
-                  </p>
-                </p>
+                    </p>
+                    <p>
+                      （3）Providing false, inaccurate or misleading information when filling in personal information;
+                    </p>
+                    <p>
+                    （4）Rejecting mandatory updates initiated to enhance functions of Apex Wallet;
+
+                    </p>
+                    <p>
+                    （5）Using Apex Wallet for illegal or criminal activities;
+
+                    </p>
+                    <p>
+                    （6）Hindering the normal use of other users;
+
+                    </p>
+                    <p>
+                    （7）Falsely claiming to be our staff or management personnel;
+
+                    </p>
+                    <p>
+                       （8）Attacking, invading, altering or using other means which would threaten the normal operation of our computer system;
+                    </p>
+                    <p>
+                    （9）Using Apex Wallet to promote spam ads;
+
+                    </p>
+                    <p>
+                    （10）Spreading rumors that harm Chinapex Technology and the goodwill of Apex Wallet;
+
+                    </p>
+                    <p>
+                      （11）Illegal activities, other violations of this Agreement, and circumstances in which we reasonably believe that the function should be suspended.
+                    </p>
+
+                  
                 <p>
                   4. When the service relationship between you and Chinapex Technology alters, is interrupted, or terminated, you still have the right to export information such as your wallet within a reasonable time.
                 </p>
-              </p>
 
               <h3>七、 Your Commitment to the Legal Use of Our Services</h3>
               <p>
@@ -185,24 +204,37 @@
                 </p>
                 <p>
                   2. You shall not use Apex Wallet to engage in illegal or criminal conduct, including but not limited to:
-                  <p>（1）Opposing the basic principles established by the Constitution, endangering national security, leaking state secrets, subverting state power, and undermining national unity;
-                    （2）Engaging in any criminal activity, including but not limited to money laundering, illegal fund raising;
-                    （3）Using any automated program, software, engine, web crawler, web analysis tool, data mining tool or similar tool to access our services, collect or process the content we provide, interfere or attempt to interfere with any third party’s access to our service;
-                    （4）Providing gambling information or inducing others to participate in gambling in any way;
-                    （5）Invading other people's Apex Wallet to steal digital tokens;
-                    （6）Conducting a transaction that is inconsistent with the transaction content claimed by the counterparty, or conducting an untrue transaction;
-                    （7）Engaging in any infringement or possible violation of the Apex Wallet service system and data;
-                    （8）Other illegal activities and acts that we have justified reasons to consider inappropriate.
-
+                  <p>
+                    （1）Opposing the basic principles established by the Constitution, endangering national security, leaking state secrets, subverting state power, and undermining national unity;
                   </p>
-                </p>
+                    <p>
+                      （2）Engaging in any criminal activity, including but not limited to money laundering, illegal fund raising;
+                    </p>
+                    <p>
+                      （3）Using any automated program, software, engine, web crawler, web analysis tool, data mining tool or similar tool to access our services, collect or process the content we provide, interfere or attempt to interfere with any third party’s access to our service;
+                    </p>
+                    <p>
+                      （4）Providing gambling information or inducing others to participate in gambling in any way;
+                    </p>
+                    <p>
+                      （5）Invading other people's Apex Wallet to steal digital tokens;
+                    </p>
+                    <p>
+                      （6）Conducting a transaction that is inconsistent with the transaction content claimed by the counterparty, or conducting an untrue transaction;
+                    </p>
+                    <p>
+                      （7）Engaging in any infringement or possible violation of the Apex Wallet service system and data;
+                    </p>
+                    <p>
+                      （8）Other illegal activities and acts that we have justified reasons to consider inappropriate.
+                    </p>
+
                 <p>
                   3. You understand and agree that if your violation of the laws or provisions of this Agreement renders Chinapex Technology loss, makes Chinapex Technology face claims from or penalty by any third-parties or any administrative departments, you shall compensate for our loss, including but not limited to the amount of our loss, legal costs, arbitration costs, property protection costs, notary costs, execution costs and attorney costs.
                 </p>
                 <p>
                   4. You promise to pay our service fees (if any) on time, otherwise we have the right to suspend or terminate the services provided to you.
                 </p>
-              </p>
 
               <h3>8、 Privacy Policy</h3>
               <p>
@@ -224,24 +256,40 @@
                     4. Habits, problems encountered when using Apex Wallet, and information about the mobile applications you use or frequently use, as well as usage scenarios and habits
                   </p>
                   <p>
-                    5. To the extent permitted by laws and regulations, we may collect and use your personal information in the following circumstances without your authorization:
-                    （（1）Related to national security and national defense security;
+                    5. To the extent permitted by laws and regulations, we may collect and use your personal information in the following circumstances without your authorization:</p>
+                    <p>
+                    （1）Related to national security and national defense security;
+                    </p>
+                    <p>
                     （2）Related to public safety, public health, and major public interests;
+                    </p>
+                    <p>
                     （3）Related to criminal investigation, prosecution, trial and execution of judgments;
+                    </p>
+                    <p>
                     （4）The personal information collected is disclosed to the public by yourself;
+                    </p>
+                    <p>
                     （5） Collecting your personal information from legally publicly disclosed information, such as legal news reports, government information disclosure;
-                    （6）Required for the safety and compliance of maintenance services, such as detection and handling of faults in products and services;
+                    </p>
+                    <p>
+                      （6）Required for the safety and compliance of maintenance services, such as detection and handling of faults in products and services;
+                    </p>
+                    <p>
                     （7）Other circumstances as stipulated by laws and regulations.
+                    </p>
 
-                  </p>
                   <p>
-                    6. The ways we collect information are as follows:
-                    （1） the name, mobile number or bank card number you enter on the Apex Wallet page, or email address provided when you submit feedback, or additional information that you provide to Chinapex Technology when using our specific services;
-                    （2）We obtain information during your use of Apex Wallet, including your mobile device information and your operation records of Apex Wallet;
-                    （3）We copy all or part of your transaction history through the blockchain system. However, the transaction records are subject to the records of the blockchain system.
-
-                  </p>
-                </p>
+                    6. The ways we collect information are as follows:</p>
+                    <p>
+                      （1） the name, mobile number or bank card number you enter on the Apex Wallet page, or email address provided when you submit feedback, or additional information that you provide to Chinapex Technology when using our specific services;
+                    </p>
+                    <p>
+                      （2）We obtain information during your use of Apex Wallet, including your mobile device information and your operation records of Apex Wallet;
+                    </p>
+                    <p>
+                      （3）We copy all or part of your transaction history through the blockchain system. However, the transaction records are subject to the records of the blockchain system.
+                    </p>
 
                 <p>
                   （2）Use of your information
@@ -263,7 +311,6 @@
                   <p>
                     6. Requirements for laws and regulations and cooperation with regulatory agencies.
                   </p>
-                </p>
 
                 <p>
                   （3）Share or Transmission of Your Information
@@ -271,15 +318,26 @@
                     1. Your personal information collected and generated within China will be stored in servers within China. If we do need to transfer your personal information to overseas, we will obtain your authorization beforehand and conduct cross-border data transmission in accordance with relevant laws, regulations and policies, and fulfill obligation of confidentiality for your personal information.
                   </p>
                   <p>
-                    2. We will not share or transfer your personal information to any third party without your prior consent, except in the following cases:
+                    2. We will not share or transfer your personal information to any third party without your prior consent, except in the following cases:</p>
+                    <p>
                     （1） Obtaining your explicit consent or authorization in advance;
+                    </p>
+                    <p>
                     （2） The personal information collected is disclosed to the public by yourself;
-                    （3） The personal information collected is collected from legally publicly disclosed information, such as legal news reports and government information disclosure channels;
-                    （4）Sharing with our affiliates, we will only share your necessary information and will be bound by the purposes stated in this privacy policy;
-                    （5） Provided in accordance with the requirements of applicable laws and regulations, legal procedures, administrative agencies or judicial authorities;
-                    （6） In the case of MAs and reorganizations, if personal information transfer is involved, we will require the recipient of the personal information to continue to be bound by this Agreement
-                  </p>
-                </p>
+                    </p>
+                    <p>
+                      （3） The personal information collected is collected from legally publicly disclosed information, such as legal news reports and government information disclosure channels;
+                    </p>
+                    <p>
+                      （4）Sharing with our affiliates, we will only share your necessary information and will be bound by the purposes stated in this privacy policy;
+                    </p>
+                    <p>
+                      （5） Provided in accordance with the requirements of applicable laws and regulations, legal procedures, administrative agencies or judicial authorities;
+                    </p>
+                    <p>
+                      （6） In the case of MAs and reorganizations, if personal information transfer is involved, we will require the recipient of the personal information to continue to be bound by this Agreement
+                    </p>
+                  
 
                 <p>
                   （4）Protection of Your Information
@@ -292,7 +350,6 @@
                   <p>
                     3. We will send you message about information security on Apex Wallet, and update your wallet usage and information protection data on Apex Wallet for your reference.
                   </p>
-                </p>
 
                 <p>
                   （5）Protection of minors
@@ -301,36 +358,45 @@
                       <p>1. Minors should use our services with the permission and guidance from their parents or guardians.</p>
                       <p>2. We recommend that parents and guardians of minors should allow and direct minors to use Apex Wallet, subject to this Agreement and our other relevant rules。</p>
                       <p>3.Apex Wallet will protect the confidentiality and security of minors' personal information in accordance with relevant national laws and regulations。</p>
-                    </p>
-                  </p>
-                </p>
-              </p>
 
               <h3>9、Disclaimer and Limitation of Liability</h3>
-              <!--            <p>-->
               <p> 1. We shall only be liable to the obligations set forth in this Agreement.</p>
-              <p> 2. You understand and agree that, insofar as permissible by laws, we only provide services based on our current technical level and conditions. We are not responsible for the failure of Apex Wallet to provide services for the following reasons:
+              <p> 2. You understand and agree that, insofar as permissible by laws, we only provide services based on our current technical level and conditions. We are not responsible for the failure of Apex Wallet to provide services for the following reasons:</p>
                 <p>
-                  （1）Shutdown, maintenance or upgrade of Apex Wallet system;
-                  （2）Force Majeure Events such as typhoons, earthquakes, floods, lightning or terrorist attacks;
-                  （3）Hardware and software malfunction of your mobile device, telecommunication and power supply cable failure;
-                  （4）Your misuse or use of our Services in an unauthorized or disapproved manner;
-                  （5）Viruses, Trojans, malicious program attacks, network congestion, system instability, system or equipment malfuction, telecommunication failures, power failures, banks, or actions of government;
+                  （1）Shutdown, maintenance or upgrade of Apex Wallet system;</p>
+                  <p>
+                    （2）Force Majeure Events such as typhoons, earthquakes, floods, lightning or terrorist attacks;
+                  </p>
+                  <p>
+                    （3）Hardware and software malfunction of your mobile device, telecommunication and power supply cable failure;
+                  </p>
+                  <p>
+                    （4）Your misuse or use of our Services in an unauthorized or disapproved manner;
+                  </p>
+                  <p>
+                    （5）Viruses, Trojans, malicious program attacks, network congestion, system instability, system or equipment malfuction, telecommunication failures, power failures, banks, or actions of government;
+                  </p>
+                  <p>
                   （6）Any other reasons not caused by Chinapex Technology.
-
-                </p>
-              </p>
-              <p>3. We shall not be responsible for the following situations:
+                  </p>
+              <p>3. We shall not be responsible for the following situations:</p>
                 <p>
-                  （1）Loss of digital tokens caused by the loss of your mobile device, removal and failure to back up Apex Wallet, removal and failure to back up your wallet, wallet stolen or forgotten Wallet Password, Private Key, Mnemonic, Keystore;
-                  （2）Loss of digital tokens due to divulgement of Wallet Password, Private Key, Mnemonic, Keystore committed by you, as you borrow, transfer, or authorize others to use your mobile device or Apex Wallet, or that you download the Apex Wallet app via unofficial channels or use Apex Wallet app in an unsafe manner;
-                  （3）Loss of digital tokens due to user error (including but not limited to mistyped transfer address, problem of your choice of transfer node server);
-                  （4）Loss of digital tokens caused by your misunderstanding of the nature of blockchain technology and thus the misuse of our services;
-                  （5）Deviation of your transaction records we copied in the blockchain caused by time lag, instability of the blockchain system and so on;
+                  （1）Loss of digital tokens caused by the loss of your mobile device, removal and failure to back up Apex Wallet, removal and failure to back up your wallet, wallet stolen or forgotten Wallet Password, Private Key, Mnemonic, Keystore;</p>
+                  <p>
+                    （2）Loss of digital tokens due to divulgement of Wallet Password, Private Key, Mnemonic, Keystore committed by you, as you borrow, transfer, or authorize others to use your mobile device or Apex Wallet, or that you download the Apex Wallet app via unofficial channels or use Apex Wallet app in an unsafe manner;
+                  </p>
+                  <p>
+                    （3）Loss of digital tokens due to user error (including but not limited to mistyped transfer address, problem of your choice of transfer node server);
+                  </p>
+                  <p>
+                    （4）Loss of digital tokens caused by your misunderstanding of the nature of blockchain technology and thus the misuse of our services;
+                  </p>
+                  <p>
+                    （5）Deviation of your transaction records we copied in the blockchain caused by time lag, instability of the blockchain system and so on;
+                  </p>
+                  <p>
                   （6）The risks and consequences of your operation on a third-party App.
-
-                </p>
-              </p>
+                  </p>
               <p>
                 4. You understand that Apex Wallet is only used as a tool for your digital token management. We cannot control the quality, safety or legality, authenticity or accuracy of the products and services provided by third party apps, and the ability of the counterparty to perform its obligations under this Agreement with you. All transactions you make in third-party apps are your personal actions, and any binding contractual relationship established between you and your counterparty is to the exclusion of Apex Wallet. You are reminded that you should carefully determine the authenticity, legality and validity of your login app and related information. Any risks arising from the transactions with any third-parties shall be borne by you.
               </p>
@@ -340,14 +406,16 @@
               <p>
                 6. We do not provide guarantees in the following forms:
                 <p>
-                  （1）Our services will meet all your needs;
-                  （2）Any technology, products, services and information you obtain through our services will meet your expectations;
-                  （3）We do not guarantee the timeliness, accuracy, integrity and reliability of the information about the digital token trading market captured by third-party exchanges;
-                  （4）The parties to your transaction on Apex Wallet will promptly perform their obligations set out in the transaction agreement with you.
-
-                </p>
-              </p>
-
+                  （1）Our services will meet all your needs;</p>
+                  <p>
+                    （2）Any technology, products, services and information you obtain through our services will meet your expectations;
+                  </p>
+                  <p>
+                    （3）We do not guarantee the timeliness, accuracy, integrity and reliability of the information about the digital token trading market captured by third-party exchanges;
+                  </p>
+                  <p>
+                    （4）The parties to your transaction on Apex Wallet will promptly perform their obligations set out in the transaction agreement with you.
+                  </p>
               <p>
                 7. In any event, the total damages for breach of contract we undertake under this Agreement shall not exceed RMB 500.
               </p>
@@ -357,7 +425,6 @@
               <p>
                 9. You understand that we may change our access criteria from time to time, limiting the scope and manner of service provided for a particular group, in accordance with the requirements of the relevant Chinese policies and regulations.
               </p>
-              <!--            </p>-->
 
               <h3>10、 Entire Agreement</h3>
               <p>
@@ -399,12 +466,11 @@
 
                 Chinapex (Shanghai) Data Technology Co., Ltd. </p>
 
-            </p>
         </div>
         </vue-scroll>
     </div>
     <div class="btn-box">
-      <router-link to="/wallet/NewWallet">I AGREE</router-link>
+      <router-link to @click.native="goNewWallet">I AGREE</router-link>
     </div>
   </div>
 </template>
@@ -412,8 +478,23 @@
 <script>
 export default {
   name: "useProtocol",
+  data() {
+    return {
+      ops: {}
+    }
+  },
   components: {},
-  computed: {}
+  computed: {},
+  methods: {
+    goNewWallet() {
+      this.$router.push({
+        path: "/wallet/NewWallet",
+        query: {
+          id: "1"
+        }
+      });
+    }
+  }
 };
 </script>
 <style scoped lang="less">

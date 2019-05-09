@@ -58,7 +58,7 @@
             >{{getaddress(list.from)}}</span>
             <span class="col to" @click="currentAccountInfo(list.to)">{{getaddress(list.to)}}</span>
             <span class="col amount">
-              <router-link to>{{list.amount}} CPX</router-link>
+              {{list.amount}} CPX
             </span>
           </li>
         </ul>
