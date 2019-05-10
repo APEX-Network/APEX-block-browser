@@ -18,6 +18,7 @@ test/e2e
 .editorconfig
 .eslintrc.js
 .postcssrc.js
+postcss.config.js
 package-lock.json
 typings.json
 typings/

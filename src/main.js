@@ -19,16 +19,20 @@ import BitcoinJS from 'bitcoinjs-lib'
 import base58check from 'base58check'
 import base58 from 'base58'
 import Select2 from 'v-select2-component';
-
+import Vtip from 'vtip'
+import 'vtip/lib/index.min.css'
 Vue.component('Select2', Select2);
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$BitcoinJS = BitcoinJS;
 Vue.prototype.$Base58check = base58check;
 Vue.prototype.$Base58 = base58;
+
 VueClipboard.config.autoSetContainer = true;
 Vue.use(VueClipboard)
 Vue.use(Vuex)
+Vue.use(Vtip.directive)
+Vue.prototype.$tip = Vtip.tip;
 Vue.config.productionTip = false
 Vue.use(vuescroll, {
     ops: {
