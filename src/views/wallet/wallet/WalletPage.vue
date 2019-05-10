@@ -30,11 +30,20 @@
         </div>
       </div>
       <div class="wallet-flex-container fl">
-        <div class="cpx-number">CPX: {{CPX}}</div>
+        <div class="cpx-number">CPX: <span v-tip="CPX">{{CPX}}</span></div>
         <div class="btn-box">
-          <router-link to="/wallet/Transfer" @click.native="sendAddress">TRANSFER</router-link>
-          <router-link to="/wallet/VotingSupport" @click.native="sendAddress">VOTE</router-link>
-          <router-link to="/wallet/RefundVote" @click.native="sendAddress">REFUND</router-link>
+          <router-link
+            to="/wallet/Transfer"
+            @click.native="sendAddress"
+          >TRANSFER</router-link>
+          <router-link
+            to="/wallet/VotingSupport"
+            @click.native="sendAddress"
+          >VOTE</router-link>
+          <router-link
+            to="/wallet/RefundVote"
+            @click.native="sendAddress"
+          >REFUND</router-link>
         </div>
       </div>
     </div>
@@ -70,7 +79,7 @@ export default {
   mounted() {
     this.getInstances();
     // this.currentAddress = sessionStorage.getItem("apAddress");
-      this.currentAddress = localStorage.getItem("apAddress");
+    this.currentAddress = localStorage.getItem("apAddress");
     setTimeout(() => {
       if (this.currentAddress !== null) {
         this.getCPX(this.currentAddress);
@@ -90,7 +99,7 @@ export default {
       .toArray(APKStore => {
         APKStore.forEach(v => {
           this.APAddress.push(v.APAddress);
-        });             
+        });
       });
   },
 
