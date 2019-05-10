@@ -1,6 +1,5 @@
 <template>
   <div class="AccountInfo">
-    <!-- <apex-title :title="title" class="title"/> -->
     <apex-back-ground class="bg"/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
@@ -39,10 +38,10 @@
             <span class="col to">To</span>
             <span class="col amount">Amount</span>
           </li>
-          <!-- <li class="row">
-            <span class="col col-lg-10" v-if="count == 0">{{noTransactions}}</span>
-          </li>-->
-          <li v-for="(list,index) in transactions" :key="index" class="row">
+          <!-- <li class="row" >
+            <span class="col" v-if="count == 0">{{noTransactions}}</span>
+          </li> -->
+          <li v-for="(list,index) in transactions" :key="index" class="row" v-show="count !== 0">
             <span class="col ttHash">
               <div class="bottom">
                 <router-link
@@ -259,7 +258,7 @@ export default {
             }
             this.count = response.data.data.count;
             if (this.count == 0) {
-              this.noTransactions = "There are no matching entries";
+              this.noTransactions = "There are no transactions";
               this.pageNumber = "1-1";
               this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
               return;
@@ -620,13 +619,14 @@ export default {
           }
           .to {
             max-width: 232px;
-            padding-left: 50px;
+            // padding-left: 50px;
+                padding-left: 14px;
             color: #f26522;
             cursor: pointer;
           }
           .amount {
             max-width: 200px;
-            padding-left: 90px;
+            padding-left: 20px;
 
             a {
               color: #ebebeb;

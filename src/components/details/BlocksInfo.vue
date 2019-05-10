@@ -43,7 +43,7 @@
           <span class="col">
             Mined By:
             <span class="clol col-lg-8">
-              <router-link to @click.native="setClickValue(minedBy)">{{minedBy}}</router-link>
+              <span  @click="setClickValue(minedBy)">{{minedBy}}</span>
             </span>
           </span>
         </li>

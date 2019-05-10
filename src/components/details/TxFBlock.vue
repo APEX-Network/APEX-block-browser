@@ -103,6 +103,9 @@ export default {
     getaddress(address) {
       let x = address.slice(0, 8);
       let y = address.slice(-8);
+      if (this.blockHeight == "0") {
+        return !address ? "Genesis" : x + "..." + y;
+      }
       return !address ? "Miner Reward" : x + "..." + y;
     },
     getInstance() {
@@ -458,13 +461,13 @@ export default {
         }
         .from {
           max-width: 250px;
-          padding-left: 80px;
+          padding-left: 62px;
           cursor: pointer;
           color: #f26522;
         }
         .fromtitle {
           max-width: 250px;
-          padding-left: 80px;
+          padding-left: 62px;
         }
         .emptyFrom {
           max-width: 250px;
@@ -474,17 +477,17 @@ export default {
         }
         .to {
           max-width: 250px;
-          padding-left: 55px;
+          padding-left: 35px;
           cursor: pointer;
           color: #f26522;
         }
         .totitle {
           max-width: 250px;
-          padding-left: 55px;
+          padding-left: 35px;
         }
         .amount {
-          padding-left: 5%;
-          max-width: 165px;
+    padding-left: 14px;
+              max-width: 165px;
         }
         & > span {
           a:hover {

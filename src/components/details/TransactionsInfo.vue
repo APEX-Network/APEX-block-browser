@@ -7,49 +7,49 @@
         <li class="row title">TransactionsInfo</li>
         <li class="row">
           <span class="col">
-            TxHash:
+            {{TxHash}}
             <span class="clol col-lg-8">{{transactionInfoData.txHash}}</span>
           </span>
         </li>
         <li class="row">
           <span class="col">
-            Status:
+            {{Status}}
             <span class="clol col-lg-8">{{transactionInfoData.txStatus}}</span>
           </span>
         </li>
         <li class="row" v-if="transactionInfoData.blockHeight !== -1">
           <span class="col">
-            Block Height:
+            {{bHeight}}
             <span class="clol col-lg-8 changewidth">
               <router-link
                 to
                 @click.native="setHeightValue(transactionInfoData.blockHeight)"
-              >{{transactionInfoData.blockHeight}}</router-link>
-              <span>{{transactionInfoData.Status}}</span>
+              >{{transactionInfoData.blockHeight}}{{transactionInfoData.Status}}</router-link>
+              <!-- <span>{{transactionInfoData.Status}}</span> -->
             </span>
           </span>
         </li>
-        <li class="row" v-if="!!transactionInfoData.timeStamp">
+        <li class="row" v-if="resTime !== null">
           <span class="col">
-            TimeStamp:
+            {{TimeStamp}}
             <span class="clol col-lg-8">{{transactionInfoData.timeStamp}}</span>
           </span>
         </li>
         <li class="row">
           <span class="col">
-            Type:
+            {{Type}}
             <span class="clol col-lg-8">{{transactionInfoData.type}}</span>
           </span>
         </li>
         <li class="row" v-if="transactionInfoData.nonce !== null">
           <span class="col">
-            Nonce:
+            {{Nonce}}
             <span class="clol col-lg-8">{{transactionInfoData.nonce}}</span>
           </span>
         </li>
         <li class="row" v-if="transactionInfoData.from !== ''">
           <span class="col">
-            From:
+            {{From}}
             <span class="clol col-lg-8">
               <router-link
                 to
@@ -93,19 +93,19 @@
         </li>
         <li class="row" v-if="transactionInfoData.gasLimit !== null">
           <span class="col">
-            Gas Limit:
+            {{gLimit}}
             <span class="clol col-lg-8">{{transactionInfoData.gasLimit}}</span>
           </span>
         </li>
         <li class="row">
           <span class="col">
-            Gas Price:
+            {{gPrice}}
             <span class="clol col-lg-8">{{transactionInfoData.gasPrice}}</span>
           </span>
         </li>
         <li class="row" v-if="transactionInfoData.gasUsed !== null ">
           <span class="col">
-            Gas Used:
+            {{gUsed}}
             <span class="clol col-lg-8">{{transactionInfoData.gasUsed}}</span>
           </span>
         </li>
@@ -152,13 +152,25 @@ export default {
         type: "height",
         value: null
       },
+      resTime: null,
       Hash: null,
       fAddress: null,
       tAddress: null,
       timer: null,
+      timer2: null,
       decodeData: null,
       address: null,
-      value: null
+      value: null,
+      TxHash: null,
+      Status: null,
+      bHeight: null,
+      TimeStamp: null,
+      Type: null,
+      Nonce: null,
+      From: null,
+      gLimit: null,
+      gPrice: null,
+      gUsed: null
     };
   },
   created() {},
@@ -167,8 +179,13 @@ export default {
     this.timer = setInterval(() => {
       this.getTransactionsInfo();
     }, 1500);
+    if (this.transactionInfoData.blockHeight == "-1") {
+      this.timer2 = setInterval(() => {
+        this.getTransactionsInfo();
+      }, 1500);
+    }
     this.$once("hook:beforeDestroy", () => {
-      clearInterval(this.timer);
+      clearInterval(this.timer, this.timer2);
     });
   },
   methods: {
@@ -225,6 +242,7 @@ export default {
             this.transactionInfoData.txStatus = res.status;
             this.transactionInfoData.newBlockHeight = res.newBlockHeight;
             this.transactionInfoData.blockHeight = res.refBlockHeight;
+            this.resTime = res.refBlockTime;
             !!res.confirmed
               ? (this.transactionInfoData.Status = "(Confirmed)")
               : (this.transactionInfoData.Status = "(Unconfirmed)");
@@ -234,7 +252,7 @@ export default {
             this.transactionInfoData.timeStamp = util.utilMethods.toUTCtime(
               res.refBlockTime,
               serverTime
-            );            
+            );
             this.transactionInfoData.from = res.from;
             this.transactionInfoData.nonce = res.nonce;
             this.transactionInfoData.to = res.to;
@@ -242,6 +260,7 @@ export default {
             this.transactionInfoData.gasPrice = res.gasPrice;
             this.transactionInfoData.gasUsed = res.gasUsed;
             this.transactionInfoData.fee = res.fee;
+            this.transactionInfoData.type = res.type;
             if (res.type == "Miner") {
               this.transactionInfoData.type = res.type;
               this.address = "To:";
@@ -258,7 +277,21 @@ export default {
               this.transactionInfoData.to = res.to;
               this.value = "Value:";
               this.transactionInfoData.amount = res.amount;
+              this.From = "From:";
             }
+
+            if (
+              res.type == "Call" &&
+              res.to !== "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
+            ) {
+              this.transactionInfoData.type = res.type;
+              this.transactionInfoData.to = res.to;
+              this.transactionInfoData.amount = res.amount;
+              this.value = "Value:";
+              this.From = "From:";
+              this.address = "To";
+            }
+
             if (
               res.type == "Call" &&
               res.to == "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
@@ -271,12 +304,10 @@ export default {
               let key = this.decodeData.type;
               switch (key) {
                 case "Vote":
-                  this.address = "Support node:";
                   this.value = "Voting amount:";
                   this.transactionInfoData.amount = this.decodeData.amount;
                   break;
                 case "Refund":
-                  this.address = "Support node:";
                   this.value = "Refund amount:";
                   this.transactionInfoData.amount = this.decodeData.amount;
                   break;
@@ -284,7 +315,18 @@ export default {
                 default:
                   break;
               }
+              this.address = "Support node:";
+              this.From = "Voter:";
             }
+            this.TxHash = "TxHash:";
+            this.Status = "Status:";
+            this.bHeight = "Block Height:";
+            this.TimeStamp = "TimeStamp:";
+            this.Type = "Type:";
+            this.Nonce = "Nonce:";
+            this.gLimit = "Gas Limit:";
+            this.gPrice = "Gas Price:";
+            this.gUsed = "Gas Used:";
           })
           .catch(function(response) {});
       }
@@ -326,7 +368,7 @@ export default {
               // width: 50%;
             }
             span {
-              padding-right: 75%;
+              padding-right: 82%;
             }
           }
         }

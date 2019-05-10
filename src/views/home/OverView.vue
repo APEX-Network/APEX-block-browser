@@ -15,7 +15,7 @@
         <p>{{overView_data.dailyTxs}}</p>
       </li>
       <li>
-        <p>Daily Active Account</p>
+        <p>Daily Active Accounts</p>
         <p>{{overView_data.dailyActiveAccounts}}</p>
       </li>
     </ul>
@@ -72,7 +72,7 @@ export default {
       this.$axios
         .get(this.overView_url)
         .then(response => {
-          let res = response.data.data;
+          let res = response.data.data;          
           this.overView_data.tps = res.tps;
           this.overView_data.dailyTxs = res.dailyTxs;
           this.overView_data.dailyActiveAccounts = res.dailyActiveAccounts;

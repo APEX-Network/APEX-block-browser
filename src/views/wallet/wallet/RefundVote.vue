@@ -65,7 +65,7 @@
           ref="inputGasePrice"
           @keyup.enter="foInput($event)"
           @change="getInputGasePrice"
-          placeholder="Please enter the  gas price"
+          placeholder="Please enter the gas price"
           autocomplete="new-password"
           readonly
           onfocus="this.removeAttribute('readonly');"
@@ -304,10 +304,14 @@ export default {
       });
     },
     getGasePrice() {
+      
       this.$axios
         .post(this.url.gasePrice_url)
         .then(response => {
           let res = response.data.data;
+          if (res == "NotFound") {
+            this.gasePrice = 30;
+          }
           if (res < 1.0) {
             this.gasePrice = 1.0;
           }
@@ -543,22 +547,11 @@ export default {
       }
     },
     confirm() {
-      this.$axios
-        .post(this.url.transfer_url, {
-          rawTx: this.serialized_transaction
-        })
-        .then(response => {
-          let res = response.data.data;
-          this.copyTxId = res.txId;
-          let x = res.txId.slice(0, 6);
-          let y = res.txId.slice(-6);
-          this.txId = x + "..." + y;
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
+      this.txId = util.utilMethods.produceTxId(this.serialized_transaction);
+      this.copyTxId = this.txId;
+      let x = this.txId.slice(0, 6);
+      let y = this.txId.slice(-6);
+      this.txId = x + "......" + y;
     }
   },
 

@@ -65,7 +65,7 @@
           ref="inputGasePrice"
           @keyup.enter="foInput($event)"
           @change="getInputGasePrice"
-          placeholder="Please enter the  gas price"
+          placeholder="Please enter the gas price"
           onkeyup="value=value.replace(/[^\d\.]/g,'')"
           autocomplete="new-password"
           readonly
@@ -84,7 +84,7 @@
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
           autocomplete="new-password"
-          placeholder="Please enter the  password"
+          placeholder="Please enter the password"
           readonly
           onfocus="this.removeAttribute('readonly');"
         >
@@ -285,6 +285,9 @@ export default {
         .post(this.url.gasePrice_url)
         .then(response => {
           let res = response.data.data;
+          if (res == "NotFound") {
+            this.gasePrice = 30;
+          }
           if (res < 1.0) {
             this.gasePrice = 1.0;
           }
@@ -534,16 +537,21 @@ export default {
       }
     },
     confirm() {
+      this.txId = util.utilMethods.produceTxId(this.serialized_transaction);
+      this.copyTxId = this.txId;
+      let x = this.txId.slice(0, 6);
+      let y = this.txId.slice(-6);
+      this.txId = x + "......" + y;
       this.$axios
         .post(this.url.transfer_url, {
           rawTx: this.serialized_transaction
         })
         .then(response => {
-          let res = response.data.data;
-          this.copyTxId = res.txId;
-          let x = res.txId.slice(0, 6);
-          let y = res.txId.slice(-6);
-          this.txId = x + "..." + y;
+          // let res = response.data.data;
+          // this.copyTxId = res.txId;
+          // let x = res.txId.slice(0, 6);
+          // let y = res.txId.slice(-6);
+          // this.txId = x + "..." + y;
         })
         .catch(function(err) {
           if (err.response) {

@@ -13,7 +13,6 @@ const utilMethods = {
     let serverDate = new Date(serverTime).getTime();
     let serDay = new Date(serverTime).getUTCDate();
     let timeDay = new Date(timespan).getUTCDate();
-    let timeStampMounth = new Date(timespan).getUTCMonth() + 1;
     let diffTime = Math.abs((serverDate - timespan) / 1000);
     let formatterTime = new Date(serverDate - timespan);
     let havePoint = diffTime.toString().indexOf(".");
@@ -24,10 +23,7 @@ const utilMethods = {
     if (havePoint == -1) {
       date = diffTime
     }
-    // let allTime = (new Date(timespan)).toUTCString();
     let apM = new Date(timespan).getUTCHours();
-    // let utc = allTime.split("GMT")[0];
-    // let utctime = utc.split(",")[1];
     if (apM <= 12) {
       if (date == 60) {
         return "1" + " min ago";
@@ -47,23 +43,10 @@ const utilMethods = {
       };
       if (date >= 86400) {
         let diffDay;
-        switch (Number(timeStampMounth)) {
-          case 1:
-            diffDay = Math.abs(serDay - timeDay);
-
-            break;
-          case 4:
-            diffDay = Math.abs(30 - timeDay + serDay);
-            return diffDay + "  d ago";
-          case 5:
-            diffDay = Math.abs(timeDay - serDay);
-            return "2 m" + diffDay + "  d ago";
-          default:
-            break;
+        diffDay = Math.abs(serDay - timeDay);
+        if (diffDay !== 0) {
+          return diffDay + "  day ago";
         }
-        // if (diffDay !== 0) {
-        //   return diffDay + "  day ago";
-        // }
       };
     }
     if (apM > 12) {
@@ -85,22 +68,9 @@ const utilMethods = {
       };
       if (date >= 86400) {
         let diffDay;
-        switch (Number(timeStampMounth)) {
-          case 1:
-            diffDay = Math.abs(serDay - timeDay);
-
-            break;
-          case 4:
-            diffDay = Math.abs(30 - timeDay + serDay);
-            return diffDay + "  d ago";
-          case 5:
-            diffDay = Math.abs(timeDay - serDay);
-            return "2 m" + diffDay + "  d ago";
-          default:
-            break;
-        }
+        diffDay = Math.abs(serDay - timeDay);
         if (diffDay !== 0) {
-          //   return diffDay + "  day ago";
+          return diffDay + "  day ago";
         }
       };
     }
@@ -109,7 +79,6 @@ const utilMethods = {
     let serverDate = new Date(serverTime).getTime();
     let serverDay = new Date(serverDate).getUTCDate();
     let timeStampDay = new Date(timespan).getUTCDate();
-    let timeStampMounth = new Date(timespan).getUTCMonth() + 1;
     let formatterTime = new Date(serverDate - timespan);
     let diffTime = Math.abs((serverDate - timespan) / 1000);
     let havePoint = diffTime.toString().indexOf(".");
@@ -140,25 +109,10 @@ const utilMethods = {
         return formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + " " + "(" + utctime + "AM    +UTC" + ")";
       };
       if (date >= 86400) {
-        let diffDay;
-        switch (Number(timeStampMounth)) {
-          case 1:
-            diffDay = Math.abs(serverDay - timeStampDay);
-
-            break;
-          case 4:
-            diffDay = Math.abs(30 - timeStampDay + serverDay);
-            return diffDay + "   Day" + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "PM    +UTC" + ")";
-            break;
-          case 5:
-            diffDay = Math.abs(serverDay - timeStampDay);
-            return "2 m" + diffDay + "   Day" + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "AM    +UTC" + ")";
-          default:
-            break;
+        let diffDay = Math.abs(serverDay - timeStampDay);
+        if (diffDay !== 0) {
+          return diffDay + "   day" + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "AM    +UTC" + ")";
         }
-        // if (diffDay !== 0) {
-        //   return diffDay + "   Day" + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "AM    +UTC" + ")";
-        // }
       };
     }
     if (apM > 12) {
@@ -178,25 +132,10 @@ const utilMethods = {
         return formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + " " + "(" + utctime + "PM    +UTC" + ")";
       };
       if (date >= 86400) {
-        let diffDay;
-        switch (Number(timeStampMounth)) {
-          case 1:
-            diffDay = Math.abs(serverDay - timeStampDay);
-
-            break;
-          case 4:
-            diffDay = Math.abs(30 - timeStampDay + serverDay);
-            return diffDay + "   Day" + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "PM    +UTC" + ")";
-            break;
-          case 5:
-            diffDay = Math.abs(serverDay - timeStampDay);
-            return "2 m" + diffDay + "   Day" + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "AM    +UTC" + ")";
-          default:
-            break;
+        let diffDay = Math.abs(serverDay - timeStampDay);
+        if (diffDay !== 0) {
+          return diffDay + "   day" + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "PM    +UTC" + ")";
         }
-        // if (diffDay !== 0) {
-        //   return diffDay + "   Day" + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "PM    +UTC" + ")";
-        // }
       };
 
     }
@@ -253,9 +192,7 @@ const utilMethods = {
     return message + signature
   },
   produceTxId(data) {
-    let txId = Crypto.ripemd160(Crypto.sha256(data)).toString(
-      "hex"
-    );
+    let txId = Crypto.hash256(Buffer.from(String(data), "hex")).toString("hex");
     return txId
   },
   produce_message(serializParams) {
@@ -301,16 +238,12 @@ const utilMethods = {
     let byteGasePrice = BigInteger(serializParams.gasPrice.toString()).toByteArray();
     let gas_length = byteGasePrice.length;
     let gasPrice_hex = Buffer.from(byteGasePrice, "hex").toString("hex");
-    console.log(gasPrice_hex);
-    console.log(BigInteger(serializParams.gasPrice.toString()).toByteArray().length);
     let gasPrice;
     if (gas_length <= 15) {
       gasPrice = "0" + gas_length.toString(16) + gasPrice_hex;
-      console.log(gasPrice);
     };
     if (gas_length >= 16) {
       gasPrice = gas_length.toString(16) + gasPrice_hex;
-      console.log(gasPrice);
     };
 
     let byteArraygaseLimit = BigInteger(serializParams.gasLimit.toString()).toByteArray();
@@ -340,7 +273,6 @@ const utilMethods = {
       if (data_length >= 16) {
         data = Number(data_length).toString(16) + voting_data;
       };
-      console.log(data);
       return serializParams.version + serializParams.txType + from + to + "0100" + nonce + data + gasPrice + gasLimit + serializParams.executeTime;
     };
     if (serializParams.data !== "00" && serializParams.votingRefundType == "01") {
@@ -434,12 +366,12 @@ const utilMethods = {
   },
   decodeTransactionsData(data) {
     let ap = "0548"
-    let add = data.slice(0,40);
+    let add = data.slice(0, 40);
     let decodeData = {
-      address: Base58check.encode(add,ap),
-      amount: parseInt(data.slice(41, data.length-2),16)*parseFloat(0.000000000000000001),
-      type: data.slice(data.length-2, data.length)
-    }
+      address: Base58check.encode(add, ap),
+      amount: parseInt(data.slice(42, data.length - 2), 16) * parseFloat(0.000000000000000001),
+      type: data.slice(data.length - 2, data.length)
+    }    
     if (decodeData.type == "00") {
       decodeData.type = "Vote"
     }
