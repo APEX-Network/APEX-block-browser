@@ -116,6 +116,7 @@ import ApexBackGround from "@/components/public/ApexBackGround";
 import util from "@/utils/utils";
 import Bus from "./../../../utils/bus";
 import db from "./../../../utils/myDatabase";
+import utils from "../../../utils/utils";
 const bigdecimal = require("bigdecimal");
 
 export default {
@@ -486,11 +487,22 @@ export default {
       }
     },
     confirm() {
-      this.txId = util.utilMethods.produceTxId(this.serialized_transaction);
+      this.txId = utils.utilMethods.produceTxId(this.serialized_transaction);
       this.copyTxId = this.txId;
       let x = this.txId.slice(0, 6);
       let y = this.txId.slice(-6);
       this.txId = x + "......" + y;
+      this.$axios
+        .post(this.url.transfer_url, {
+          rawTx: this.serialized_transaction
+        })
+        .then(response => {
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
     }
   },
 

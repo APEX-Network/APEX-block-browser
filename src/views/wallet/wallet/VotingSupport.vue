@@ -547,11 +547,6 @@ export default {
           rawTx: this.serialized_transaction
         })
         .then(response => {
-          // let res = response.data.data;
-          // this.copyTxId = res.txId;
-          // let x = res.txId.slice(0, 6);
-          // let y = res.txId.slice(-6);
-          // this.txId = x + "..." + y;
         })
         .catch(function(err) {
           if (err.response) {

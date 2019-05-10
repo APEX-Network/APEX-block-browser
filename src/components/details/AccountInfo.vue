@@ -38,9 +38,9 @@
             <span class="col to">To</span>
             <span class="col amount">Amount</span>
           </li>
-          <!-- <li class="row" >
-            <span class="col" v-if="count == 0">{{noTransactions}}</span>
-          </li> -->
+<!--           <li class="row" >-->
+<!--            <span class="col" v-if="count == 0">{{noTransactions}}</span>-->
+<!--          </li>-->
           <li v-for="(list,index) in transactions" :key="index" class="row" v-show="count !== 0">
             <span class="col ttHash">
               <div class="bottom">

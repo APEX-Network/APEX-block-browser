@@ -267,6 +267,7 @@ export default {
               this.transactionInfoData.to = res.to;
               this.value = "Value:";
               this.transactionInfoData.amount = res.amount;
+              this.Nonce = "Nonce:";
             }
             if (
               res.type == "Transfer" &&
@@ -278,6 +279,7 @@ export default {
               this.value = "Value:";
               this.transactionInfoData.amount = res.amount;
               this.From = "From:";
+              this.Nonce = "Nonce:";
             }
 
             if (
@@ -290,6 +292,7 @@ export default {
               this.value = "Value:";
               this.From = "From:";
               this.address = "To";
+              this.Nonce = "Nonce:";
             }
 
             if (
@@ -307,7 +310,7 @@ export default {
                   this.value = "Voting amount:";
                   this.transactionInfoData.amount = this.decodeData.amount;
                   break;
-                case "Refund":
+                case "Redemption vote":
                   this.value = "Refund amount:";
                   this.transactionInfoData.amount = this.decodeData.amount;
                   break;
@@ -315,15 +318,42 @@ export default {
                 default:
                   break;
               }
+              this.Nonce = "Nonce:";
               this.address = "Support node:";
               this.From = "Voter:";
             }
+            // if (
+            //   res.type == "Call" &&
+            //   res.from == "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
+            // ) {
+            //   this.decodeData = util.utilMethods.decodeTransactionsData(
+            //     res.data
+            //   );
+            //   this.transactionInfoData.type = this.decodeData.type;
+            //   this.transactionInfoData.to = this.decodeData.address;
+            //   let key = this.decodeData.type;
+            //   switch (key) {
+            //     case "Vote":
+            //       this.value = "Voting amount:";
+            //       this.transactionInfoData.amount = this.decodeData.amount;
+            //       break;
+            //     case "Redemption vote":
+            //       this.value = "Refund amount:";
+            //       this.transactionInfoData.amount = this.decodeData.amount;
+            //       break;
+
+            //     default:
+            //       break;
+            //   }
+            //   this.Nonce = "Parent Tx:";
+            //   this.address = "Support node:";
+            //   this.From = "Voter:";
+            // }
             this.TxHash = "TxHash:";
             this.Status = "Status:";
             this.bHeight = "Block Height:";
             this.TimeStamp = "TimeStamp:";
             this.Type = "Type:";
-            this.Nonce = "Nonce:";
             this.gLimit = "Gas Limit:";
             this.gPrice = "Gas Price:";
             this.gUsed = "Gas Used:";

@@ -552,6 +552,17 @@ export default {
       let x = this.txId.slice(0, 6);
       let y = this.txId.slice(-6);
       this.txId = x + "......" + y;
+       this.$axios
+        .post(this.url.transfer_url, {
+          rawTx: this.serialized_transaction
+        })
+        .then(response => {
+        })
+        .catch(function(err) {
+          if (err.response) {
+            console.log(err.response);
+          }
+        });
     }
   },
 

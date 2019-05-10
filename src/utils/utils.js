@@ -369,14 +369,14 @@ const utilMethods = {
     let add = data.slice(0, 40);
     let decodeData = {
       address: Base58check.encode(add, ap),
-      amount: parseInt(data.slice(42, data.length - 2), 16) * parseFloat(0.000000000000000001),
+      amount: new bigdecimal.BigDecimal(String(parseInt(data.slice(42, data.length - 2), 16))).multiply(new bigdecimal.BigDecimal(String(Math.pow(10, -18)))),
       type: data.slice(data.length - 2, data.length)
     }    
     if (decodeData.type == "00") {
       decodeData.type = "Vote"
     }
     if (decodeData.type == "01") {
-      decodeData.type = "Refund"
+      decodeData.type = "Redemption vote"
     }
     return decodeData
   }
