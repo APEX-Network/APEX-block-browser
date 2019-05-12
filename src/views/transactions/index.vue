@@ -102,8 +102,8 @@ export default {
         // Bus.$emit("txHash", e.target.innerHTML);
       }
     },
-    getAllTransactions() {
-      this.$axios
+     getAllTransactions() {
+       this.$axios
         .post(this.transaction_list_url, this.params)
         .then(response => {
           let res = response.data.data;

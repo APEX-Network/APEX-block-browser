@@ -7,6 +7,7 @@ const api = {
             res = res.data
             return new Promise((resolve) => {
                 if (res.code === 0) {
+                    console.log(res);
                     resolve(res)
                 } else {
                     resolve(res)
@@ -19,8 +20,8 @@ const api = {
     },
     async post(url, data) {
         try {
-            let res = await axios.post(url, qs.stringify(data))
-            res = res.data
+            let res = await axios.post(url, data)
+            res = res.data.data
             return new Promise((resolve, reject) => {
                 if (res.code === 0) {
                     resolve(res)
@@ -35,4 +36,4 @@ const api = {
         }
     },
 }
-export { api }
+export default { api }

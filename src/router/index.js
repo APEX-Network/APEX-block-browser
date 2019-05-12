@@ -47,13 +47,13 @@ export default new Router({
   {
     path: '/wallet',
     name: 'wallet',
-    component: wallet,
+    component: resolve => require(['@/views/wallet/index'],resolve),
   },
   {
     path: '/NewWallet',
     alias: '/wallet/NewWallet',
     name: 'NewWallet',
-    component: NewWallet,
+    component: resolve => require(['@/views/wallet/wallet/NewWallet'],resolve),
   },
 
 
@@ -61,108 +61,108 @@ export default new Router({
     path: '/CreatedKeystore',
     alias: '/wallet/NewWallet/CreatedKeystore',
     name: 'CreatedKeystore',
-    component: CreatedKeystore,
+    component: resolve => require(['@/views/wallet/wallet/CreatedKeystore'],resolve),
   },
 
   {
     path: '/SavePrivKey',
     alias: '/wallet/NewWallet/CreatedKeystore/SavePrivKey',
     name: 'SavePrivKey',
-    component: SavePrivKey,
+    component: resolve => require(['@/views/wallet/wallet/SavePrivKey'],resolve),
   },
   {
     path: '/OpenWallet',
     alias: '/wallet/OpenWallet',
     name: 'OpenWallet',
-    component: OpenWallet,
+    component: resolve => require(['@/views/wallet/wallet/OpenWallet'],resolve),
   },
 
   {
     path: '/OpenWallet/PrivateKey',
     alias: '/wallet/OpenWallet/PrivateKey',
     name: 'PrivateKey',
-    component: PrivateKey,
+    component: resolve => require(['@/views/wallet/wallet/PrivateKey'],resolve),
   },
 
   {
     path: '/OpenWallet/KeyStore',
     alias: '/wallet/OpenWallet/KeyStore',
     name: 'KeyStore',
-    component: KeyStore,
+    component: resolve => require(['@/views/wallet/wallet/KeyStore'],resolve),
   },
 
   {
     path: '/Transfer',
     alias: '/wallet/Transfer',
     name: 'Transfer',
-    component: Transfer,
+    component: resolve => require(['@/views/wallet/wallet/Transfer'],resolve),
   },
   {
     path: '/VotingSupport',
     alias: '/wallet/VotingSupport',
     name: 'VotingSupport',
-    component: VotingSupport,
+    component: resolve => require(['@/views/wallet/wallet/VotingSupport'],resolve),
   },
   {
     path: '/RefundVote',
     alias: '/wallet/RefundVote',
     name: 'RefundVote',
-    component: RefundVote,
+    component: resolve => require(['@/views/wallet/wallet/RefundVote'],resolve),
   },
   {
     path: '/blocks',
     name: 'blocks',
-    component: blocks,
+    component: resolve => require(['@/views/blocks/index'],resolve),
   },
   {
     path: "/BlocksInfo",
     alias: '/blocks/BlocksInfo',
     name: "BlocksInfo",
-    component: BlocksInfo
+    component: resolve => require(['@/components/details/BlocksInfo'],resolve),
   },
   {
     path: "/TxFBlock",
     alias: '/blocks/BlocksInfo/TxFBlock',
     name: "TxFBlock",
-    component: TxFBlock
+    component: resolve => require(['@/components/details/TxFBlock'],resolve),
   },
   {
     path: '/transactions',
     name: 'transactions',
-    component: transactions,
+    component: resolve => require(['@/views/transactions/index'],resolve),
   },
   {
     path: "/TransactionsInfo",
     alias: '/transactions/TransactionsInfo',
     name: "TransactionsInfo",
-    component: TransactionsInfo,
+    component: resolve => require(['@/components/details/TransactionsInfo'],resolve),
   },
   {
     path: "/TransactionsInfo/AccountInfo",
     alias: '/transactions/TransactionsInfo/AccountInfo',
     name: "AccountInfo",
-    component: AccountInfo,
+    component: resolve => require(['@/components/details/AccountInfo'],resolve),
   },
   {
     path: '/producer',
     name: 'producer',
-    component: producer,
+    component: resolve => require(['@/views/producer/index'],resolve),
   },
   {
     path: "/ProducerInfo",
     alias: '/producer/ProducerInfo',
     name: "ProducerInfo",
-    component: ProducerInfo,
+    component: resolve => require(['@/components/details/ProducerInfo'],resolve),
   },
   {
     path: '/error',
     name: 'error',
-    component: error,
+    component: resolve => require(['@/views/error/error'],resolve),
   },
   {
     path: '/useProtocol',
     alias: 'useProtocol',
-    component: useProtocol,
+    component: resolve => require(['@/views/useProtocol/useProtocol'],resolve),
   },
   ]
 })

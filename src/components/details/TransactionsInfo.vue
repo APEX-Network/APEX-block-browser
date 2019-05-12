@@ -261,6 +261,7 @@ export default {
             this.transactionInfoData.gasUsed = res.gasUsed;
             this.transactionInfoData.fee = res.fee;
             this.transactionInfoData.type = res.type;
+            //矿工交易
             if (res.type == "Miner") {
               this.transactionInfoData.type = res.type;
               this.address = "To:";
@@ -269,9 +270,10 @@ export default {
               this.transactionInfoData.amount = res.amount;
               this.Nonce = "Nonce:";
             }
+            //正常交易
             if (
               res.type == "Transfer" &&
-              res.to !== "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
+              res.data == ""
             ) {
               this.transactionInfoData.type = res.type;
               this.address = "To:";
@@ -282,6 +284,7 @@ export default {
               this.Nonce = "Nonce:";
             }
 
+            //提案交易
             if (
               res.type == "Call" &&
               res.to !== "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
@@ -294,7 +297,7 @@ export default {
               this.address = "To";
               this.Nonce = "Nonce:";
             }
-
+            //投票交易和第一笔赎回交易
             if (
               res.type == "Call" &&
               res.to == "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
@@ -322,33 +325,34 @@ export default {
               this.address = "Support node:";
               this.From = "Voter:";
             }
-            // if (
-            //   res.type == "Call" &&
-            //   res.from == "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
-            // ) {
-            //   this.decodeData = util.utilMethods.decodeTransactionsData(
-            //     res.data
-            //   );
-            //   this.transactionInfoData.type = this.decodeData.type;
-            //   this.transactionInfoData.to = this.decodeData.address;
-            //   let key = this.decodeData.type;
-            //   switch (key) {
-            //     case "Vote":
-            //       this.value = "Voting amount:";
-            //       this.transactionInfoData.amount = this.decodeData.amount;
-            //       break;
-            //     case "Redemption vote":
-            //       this.value = "Refund amount:";
-            //       this.transactionInfoData.amount = this.decodeData.amount;
-            //       break;
+            //第二笔赎回交易
+            if (
+              res.type == "Refund" &&
+              res.from == "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
+            ) {
+              this.decodeData = util.utilMethods.decodeTransactionsData(
+                res.data
+              );
+              this.transactionInfoData.type = res.type;
+              this.transactionInfoData.to = this.decodeData.address;
+              let key = this.decodeData.type;
+              switch (key) {
+                case "Vote":
+                  this.value = "Voting amount:";
+                  this.transactionInfoData.amount = this.decodeData.amount;
+                  break;
+                case "Redemption vote":
+                  this.value = "Refund amount:";
+                  this.transactionInfoData.amount = this.decodeData.amount;
+                  break;
 
-            //     default:
-            //       break;
-            //   }
-            //   this.Nonce = "Parent Tx:";
-            //   this.address = "Support node:";
-            //   this.From = "Voter:";
-            // }
+                default:
+                  break;
+              }
+              this.Nonce = "Parent Tx:";
+              this.address = "Support node:";
+              this.From = "Voter:";
+            }
             this.TxHash = "TxHash:";
             this.Status = "Status:";
             this.bHeight = "Block Height:";

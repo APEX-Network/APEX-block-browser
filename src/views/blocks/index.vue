@@ -138,9 +138,9 @@ export default {
       this.arrow.leftArrow = this.$refs.left;
       this.arrow.rightArrow = this.$refs.right;
     },
-    getBlocks() {
+     getBlocks() {
       if (!!this.params) {
-        this.$axios
+         this.$axios
           .post(this.allBlockUrl, this.params)
           .then(response => {
             let res = response.data.data;

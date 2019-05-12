@@ -724,7 +724,7 @@ export default {
       margin: auto;
       width: 310px;
       height: 180px;
-      margin-left: 390px;
+      margin-left: 3620px;
       background: #ffffff;
       div:nth-child(1) {
         color: #f26522;
