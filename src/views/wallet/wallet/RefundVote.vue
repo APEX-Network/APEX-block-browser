@@ -271,10 +271,12 @@ export default {
             let amount, address;
             for (let i = 0; i < address_amount.length; i++) {
               let item = address_amount[i];
-              address = address_amount[i].split("-")[0].replace(/\s/gi, "");
-              amount = address_amount[i].split("-")[1].replace(/\s/gi, "");
-              this.targetAddress.push(address);
-              this.targetAddressAmount.push({ key: address, value: amount });
+              address = item.split("-")[0].replace(/\s/gi, "");
+              amount = item.split("-")[1].replace(/\s/gi, "");              
+              if (amount !== "0") {
+                this.targetAddress.push(address);
+                this.targetAddressAmount.push({ key: address, value: amount });
+              }
             }
           })
           .catch(function(err) {
@@ -304,7 +306,6 @@ export default {
       });
     },
     getGasePrice() {
-      
       this.$axios
         .post(this.url.gasePrice_url)
         .then(response => {
@@ -552,12 +553,11 @@ export default {
       let x = this.txId.slice(0, 6);
       let y = this.txId.slice(-6);
       this.txId = x + "......" + y;
-       this.$axios
+      this.$axios
         .post(this.url.transfer_url, {
           rawTx: this.serialized_transaction
         })
-        .then(response => {
-        })
+        .then(response => {})
         .catch(function(err) {
           if (err.response) {
             console.log(err.response);
@@ -784,7 +784,7 @@ export default {
       margin: auto;
       width: 310px;
       height: 180px;
-      margin-left: 362px;
+      // margin-left: 362px;
       background: #ffffff;
       div:nth-child(1) {
         color: #f26522;

@@ -44,7 +44,11 @@
         <li class="row" v-if="transactionInfoData.nonce !== null">
           <span class="col">
             {{Nonce}}
-            <span class="clol col-lg-8">{{transactionInfoData.nonce}}</span>
+            <span
+              class="clol col-lg-8"
+              :class="objectClass"
+              @click="isClick && goParentTx(transactionInfoData.nonce)"
+            >{{transactionInfoData.nonce}}</span>
           </span>
         </li>
         <li class="row" v-if="transactionInfoData.from !== ''">
@@ -170,7 +174,12 @@ export default {
       From: null,
       gLimit: null,
       gPrice: null,
-      gUsed: null
+      gUsed: null,
+      objectClass: {
+        noTxId: true,
+        TxId: false
+      },
+      isClick: false
     };
   },
   created() {},
@@ -254,13 +263,15 @@ export default {
               serverTime
             );
             this.transactionInfoData.from = res.from;
-            this.transactionInfoData.nonce = res.nonce;
             this.transactionInfoData.to = res.to;
             this.transactionInfoData.gasLimit = res.gasLimit;
             this.transactionInfoData.gasPrice = res.gasPrice;
             this.transactionInfoData.gasUsed = res.gasUsed;
             this.transactionInfoData.fee = res.fee;
             this.transactionInfoData.type = res.type;
+            this.objectClass.noTxId = true;
+            this.objectClass.TxId = false;
+            this.isClick = false;
             //矿工交易
             if (res.type == "Miner") {
               this.transactionInfoData.type = res.type;
@@ -268,23 +279,20 @@ export default {
               this.transactionInfoData.to = res.to;
               this.value = "Value:";
               this.transactionInfoData.amount = res.amount;
-              this.Nonce = "Nonce:";
             }
             //正常交易
-            if (
-              res.type == "Transfer" &&
-              res.data == ""
-            ) {
+            if (res.type == "Transfer" && res.data == "") {
               this.transactionInfoData.type = res.type;
               this.address = "To:";
               this.transactionInfoData.to = res.to;
               this.value = "Value:";
               this.transactionInfoData.amount = res.amount;
               this.From = "From:";
+              this.transactionInfoData.nonce = res.nonce;
               this.Nonce = "Nonce:";
             }
 
-            //提案交易
+            //提案交易,不需要解析data
             if (
               res.type == "Call" &&
               res.to !== "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
@@ -295,64 +303,70 @@ export default {
               this.value = "Value:";
               this.From = "From:";
               this.address = "To";
+              this.transactionInfoData.nonce = res.nonce;
               this.Nonce = "Nonce:";
             }
-            //投票交易和第一笔赎回交易
-            if (
-              res.type == "Call" &&
-              res.to == "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
-            ) {
-              this.decodeData = util.utilMethods.decodeTransactionsData(
-                res.data
-              );
-              this.transactionInfoData.type = this.decodeData.type;
-              this.transactionInfoData.to = this.decodeData.address;
-              let key = this.decodeData.type;
-              switch (key) {
-                case "Vote":
-                  this.value = "Voting amount:";
-                  this.transactionInfoData.amount = this.decodeData.amount;
-                  break;
-                case "Redemption vote":
-                  this.value = "Refund amount:";
-                  this.transactionInfoData.amount = this.decodeData.amount;
-                  break;
+            //投票交易和第一笔赎回交易,data解析不出来时需要捕获异常
+            try {
+              if (
+                res.type == "Call" &&
+                res.to == "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
+              ) {
+                this.decodeData = util.utilMethods.decodeTransactionsData(
+                  res.data
+                );
+                this.transactionInfoData.type = this.decodeData.type;
+                this.transactionInfoData.to = this.decodeData.address;
+                let key = this.decodeData.type;
+                switch (key) {
+                  case "Vote":
+                    this.value = "Voting amount:";
+                    this.transactionInfoData.amount = this.decodeData.amount;
+                    break;
+                  case "Redemption vote":
+                    this.value = "Refund amount:";
+                    this.transactionInfoData.amount = this.decodeData.amount;
+                    break;
 
-                default:
-                  break;
+                  default:
+                    break;
+                }
+
+                this.transactionInfoData.nonce = res.nonce;
+                this.Nonce = "Nonce:";
+                this.address = "Support node:";
+                this.From = "Voter:";
               }
-              this.Nonce = "Nonce:";
-              this.address = "Support node:";
-              this.From = "Voter:";
-            }
-            //第二笔赎回交易
-            if (
-              res.type == "Refund" &&
-              res.from == "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
-            ) {
-              this.decodeData = util.utilMethods.decodeTransactionsData(
-                res.data
-              );
+            } catch (error) {
               this.transactionInfoData.type = res.type;
-              this.transactionInfoData.to = this.decodeData.address;
-              let key = this.decodeData.type;
-              switch (key) {
-                case "Vote":
-                  this.value = "Voting amount:";
-                  this.transactionInfoData.amount = this.decodeData.amount;
-                  break;
-                case "Redemption vote":
-                  this.value = "Refund amount:";
-                  this.transactionInfoData.amount = this.decodeData.amount;
-                  break;
-
-                default:
-                  break;
-              }
-              this.Nonce = "Parent Tx:";
-              this.address = "Support node:";
-              this.From = "Voter:";
+              this.transactionInfoData.to = res.to;
+              this.transactionInfoData.amount = res.amount;
+              this.value = "Value:";
+              this.From = "From:";
+              this.address = "To";
+              this.transactionInfoData.nonce = res.nonce;
+              this.Nonce = "Nonce:";
             }
+            //第二笔赎回交易,data解析不出来时需要捕获异常
+            try {
+              if (
+                res.type == "Refund" &&
+                res.from == "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU"
+              ) {
+                this.objectClass.noTxId = false;
+                this.objectClass.TxId = true;
+                this.isClick = true;
+                this.transactionInfoData.type = res.type;
+                this.Nonce = "Parent Tx:";
+                this.transactionInfoData.nonce = res.data;
+                this.From = "From:";
+                this.transactionInfoData.from = res.from;
+                this.address = "Voter:";
+                this.transactionInfoData.to = res.to;
+                this.value = "Refund amount:";
+                this.transactionInfoData.amount = res.amount;
+              }
+            } catch (error) {}
             this.TxHash = "TxHash:";
             this.Status = "Status:";
             this.bHeight = "Block Height:";
@@ -364,17 +378,16 @@ export default {
           })
           .catch(function(response) {});
       }
+    },
+    goParentTx(data) {
+      this.$router.push({
+        path: "/transactions/TransactionsInfo",
+        query: {
+          id: data
+        }
+      });
     }
   }
-  // beforeDestroy() {
-  //   sessionStorage.setItem("flag", null);
-  //   this.offListener();
-  // },
-  // destroyed() {
-  //   window.removeEventListener("beforeunload", e =>
-  //     this.beforeunloadHandler(e)
-  //   );
-  // }
 };
 </script>
 
@@ -396,11 +409,15 @@ export default {
       }
       li {
         span {
+          .noTxId {
+            color: #ebebeb;
+          }
+          .TxId {
+            color: #f26522;
+            cursor: pointer;
+          }
           span {
             float: right;
-            a {
-              // width: 50%;
-            }
             span {
               padding-right: 82%;
             }

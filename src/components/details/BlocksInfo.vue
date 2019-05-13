@@ -19,9 +19,12 @@
         <li class="row">
           <span class="col">
             Transactions:
-            <span
+            <!-- <span
               class="clol col-lg-8 transactions"
               @click="goTxBlock(height)"
+            >{{transactions}}</span> -->
+            <span
+              class="clol col-lg-8"
             >{{transactions}}</span>
           </span>
         </li>

@@ -464,6 +464,7 @@ export default {
             this.confirm();
           }
         } catch (error) {
+          console.log(error);
           console.log("密码输入错误");
         }
       }
@@ -724,7 +725,6 @@ export default {
       margin: auto;
       width: 310px;
       height: 180px;
-      margin-left: 3620px;
       background: #ffffff;
       div:nth-child(1) {
         color: #f26522;

@@ -30,20 +30,12 @@
         </div>
       </div>
       <div class="wallet-flex-container fl">
-        <div class="cpx-number">CPX: <span v-tip="CPX">{{CPX}}</span></div>
+        <!-- <div class="cpx-number">CPX: <span v-tip="CPX">{{CPX}}</span></div> -->
+        <div class="cpx-number">CPX: {{CPX}}</div>
         <div class="btn-box">
-          <router-link
-            to="/wallet/Transfer"
-            @click.native="sendAddress"
-          >TRANSFER</router-link>
-          <router-link
-            to="/wallet/VotingSupport"
-            @click.native="sendAddress"
-          >VOTE</router-link>
-          <router-link
-            to="/wallet/RefundVote"
-            @click.native="sendAddress"
-          >REFUND</router-link>
+          <router-link to="/wallet/Transfer" @click.native="sendAddress">TRANSFER</router-link>
+          <router-link to="/wallet/VotingSupport" @click.native="sendAddress">VOTE</router-link>
+          <router-link to="/wallet/RefundVote" @click.native="sendAddress">REFUND</router-link>
         </div>
       </div>
     </div>

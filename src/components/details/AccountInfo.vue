@@ -38,9 +38,9 @@
             <span class="col to">To</span>
             <span class="col amount">Amount</span>
           </li>
-<!--           <li class="row" >-->
-<!--            <span class="col" v-if="count == 0">{{noTransactions}}</span>-->
-<!--          </li>-->
+          <li class="row" >
+           <span class="col noTx" v-if="count == 0">{{noTransactions}}</span>
+         </li>
           <li v-for="(list,index) in transactions" :key="index" class="row" v-show="count !== 0">
             <span class="col ttHash">
               <div class="bottom">
@@ -111,7 +111,7 @@ export default {
       start: 0,
       accountTransaction_param: {
         start: 0,
-        pageSize: 6,
+        pageSize: 5,
         address: null
       },
       totalPage: null,
@@ -598,6 +598,9 @@ export default {
         max-width: 100%;
         border-top: #0000 2px solid;
         & > li {
+        .noTx {
+          padding-left: 20px;
+        }
           .ttHash {
             max-width: 335px;
           }

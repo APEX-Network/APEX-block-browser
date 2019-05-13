@@ -27,12 +27,13 @@ Vue.prototype.$axios = axios;
 Vue.prototype.$BitcoinJS = BitcoinJS;
 Vue.prototype.$Base58check = base58check;
 Vue.prototype.$Base58 = base58;
+Vue.prototype.$echarts = echarts;
+Vue.prototype.$tip = Vtip.tip;
 
 VueClipboard.config.autoSetContainer = true;
 Vue.use(VueClipboard)
 Vue.use(Vuex)
 Vue.use(Vtip.directive)
-Vue.prototype.$tip = Vtip.tip;
 Vue.config.productionTip = false
 Vue.use(vuescroll, {
     ops: {
@@ -58,7 +59,6 @@ Vue.use(vuescroll, {
 })
 
 
-Vue.prototype.$echarts = echarts;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -6,6 +6,7 @@ const script_signature = require("bitcoinjs-lib/src/script_signature");
 const CryptoJS = require('./../../node_modules/crypto-js/crypto-js.js');
 const BigInteger = require('bigi');
 const bigdecimal = require("bigdecimal");
+const bigInt = require('big-integer');
 import _ from 'lodash';
 
 const utilMethods = {
@@ -200,11 +201,11 @@ const utilMethods = {
     let from = decode_from.substring(2);
     let decode_PubKeyHash = Base58check.decode(serializParams.to).data.toString("hex");
     let to = decode_PubKeyHash.substring(2);
-    let eightPow = new bigdecimal.BigInteger(Math.pow(10, 18).toString());
-    let bigEightPow = new bigdecimal.BigDecimal(eightPow);
-    let bigAmount = new bigdecimal.BigDecimal(String(serializParams.amount));
-    let amountMultiplyEightPow = bigAmount.multiply(bigEightPow).toString();
-    let byteArrayamount = BigInteger(amountMultiplyEightPow.split(".")[0]).toByteArray();
+    let bigEightPow = new bigdecimal.BigDecimal(String(Math.pow(10, 18)));
+    let bigAmount = new bigdecimal.BigDecimal(serializParams.amount.stripTrailingZeros().toPlainString());
+    let amountMultiplyEightPow = bigAmount.multiply(bigEightPow).stripTrailingZeros().toPlainString();
+    let byteArrayamount = BigInteger(amountMultiplyEightPow).toByteArray();
+    console.log(amountMultiplyEightPow);
     let amount_length = byteArrayamount.length;
     let amount_hex = Buffer.from(byteArrayamount, "hex").toString("hex");
     let amount
@@ -235,7 +236,7 @@ const utilMethods = {
       let nonce_hex = serializParams.nonce.toString(16);
       nonce = "000000000000" + nonce_hex;
     };
-    let byteGasePrice = BigInteger(serializParams.gasPrice.toString()).toByteArray();
+    let byteGasePrice = BigInteger(serializParams.gasPrice.stripTrailingZeros().toPlainString()).toByteArray();
     let gas_length = byteGasePrice.length;
     let gasPrice_hex = Buffer.from(byteGasePrice, "hex").toString("hex");
     let gasPrice;
@@ -367,11 +368,12 @@ const utilMethods = {
   decodeTransactionsData(data) {
     let ap = "0548"
     let add = data.slice(0, 40);
+    let dAmount = (new bigdecimal.BigDecimal(String(parseInt(data.slice(42, data.length - 2), 16))).divide(new bigdecimal.BigDecimal(String(Math.pow(10, 18))))).stripTrailingZeros().toPlainString();
     let decodeData = {
       address: Base58check.encode(add, ap),
-      amount: new bigdecimal.BigDecimal(String(parseInt(data.slice(42, data.length - 2), 16))).multiply(new bigdecimal.BigDecimal(String(Math.pow(10, -18)))),
+      amount: dAmount,
       type: data.slice(data.length - 2, data.length)
-    }    
+    }     
     if (decodeData.type == "00") {
       decodeData.type = "Vote"
     }
