@@ -1,6 +1,6 @@
 <template>
   <div class="tps apex-modul fr">
-    <p class="apex-title">Live TPS</p>
+    <p class="apex-title">Latest Week's Transactions History</p>
     <div class="chart-box" id="echartContainer" style="width:100%;"></div>
   </div>
 </template>
@@ -13,43 +13,47 @@ export default {
   components: {},
   data() {
     return {
-      blockTips_url: "/api/v1.0/state/blockTpsInfos",
-      params: { time: "2018-11-20", count: "100" },
+      blockTips_url: "/api/v1.0/state/txsDaily",
+      params: { count: "100" },
       data: [],
       time: [],
       tooltps: [],
-      myChart: null
+      myChart: null,
+      alldata: []
     };
   },
   created() {},
   mounted() {
     this.myChart = echarts.init(document.getElementById("echartContainer"));
     this.postBlockTips();
-    const timer = setInterval(() => {
-      this.postBlockTips();
-    }, 2000);
-    this.$once("hook:beforeDestroy", () => {
-      clearInterval(timer);
-    });
+    // const timer = setInterval(() => {
+    //   this.postBlockTips();
+    // }, 2000);
+    // this.$once("hook:beforeDestroy", () => {
+    //   clearInterval(timer);
+    // });
   },
   methods: {
     postBlockTips() {
       this.$axios
         .post(this.blockTips_url, this.params)
         .then(response => {
-          let res = response.data.data;
+          this.data = [];
+          this.alldata = [];
+          let res = response.data.data.slice(0, response.data.data.length-1);
           let time = [];
           let data = [];
           let tooltps = [];
           for (let i = 0; i < res.length; i++) {
             time.push(util.utilMethods.tierAllTime(res[i].timeStamp));
-            data.push(res[i].tps);
+            data.push(res[i].txs);
             tooltps.push(util.utilMethods.tierAllTime(res[i].timeStamp));
-          }
-          // this.alldata.push({ tps: data, timeStamp: time });
+          }          
+          this.alldata.push({ txs: data, timeStamp: time });
           this.time = time;
           this.tooltps = tooltps;
           this.data = data;
+          console.log(this.alldata);
           this.drawCharts();
         })
         .catch(function(response) {
@@ -70,7 +74,7 @@ export default {
         },
         color: ["#1AC8FF"],
         grid: {
-          left: -48,
+          left: -60,
           right: 0,
           top: 0,
           bottom: 5,
@@ -78,11 +82,8 @@ export default {
         },
         xAxis: {
           type: "category",
-          boundaryGap: false,
-          data: this.time.map(item => {
-            let x = item.trim().split(" ");
-            return x[1];
-          }),
+          boundaryGap:  true,
+          data: this.time,
           show: true,
           axisLine: {
             show: true,
@@ -93,22 +94,20 @@ export default {
           splitLine: { show: false },
           axisTick: { show: false },
           axisLabel: {
-            interval: 2
+            interval: 0
           }
         },
         yAxis: {
-          // type: "value",
+           type: 'value',
           show: false,
-          boundaryGap: false,
-          axisLine: {
-            show: true,
-            lineStyle: {
-              color: "#999"
-            }
+          axisTick: {
+            show: false
           },
           splitLine: {
             show: false
-          }
+          },
+          axisLine:{show:false},
+          boundaryGap : true,
         },
         tooltip: {
           show: true,
@@ -121,14 +120,7 @@ export default {
           textStyle: {
             color: "#ffffff",
             fontSize: "14px"
-          }
-          // formatter: function(data) {
-          //   let res;
-          //   tooltps.forEach(v => {
-          //       res = "2019-03-28" + v
-          //   });
-          //   return "TPS " + res;
-          // }
+          },
         },
         series: [
           {
@@ -140,7 +132,7 @@ export default {
             symbol: "circle", //设定为实心点
             symbolSize: 6,
             itemStyle: {
-              color: "rgba(242, 101, 34, .2)"
+              color: "#f26522"
             },
             lineStyle: {
               color: "#f26522"

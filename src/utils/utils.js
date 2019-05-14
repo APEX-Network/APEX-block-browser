@@ -10,6 +10,14 @@ const bigInt = require('big-integer');
 import _ from 'lodash';
 
 const utilMethods = {
+  cutArray(array, subLength) {
+    let index = 0;
+    let newArr = [];
+    while (index < array.length) {
+      newArr.push(array.slice(index, index += subLength));
+    }
+    return newArr;
+  },
   listUTCtime(timespan, serverTime) {
     let serverDate = new Date(serverTime).getTime();
     let serDay = new Date(serverTime).getUTCDate();
@@ -149,7 +157,7 @@ const utilMethods = {
       function timestampToTime(timestamp) {
         var date = new Date(timestamp);
         var Y = date.getUTCFullYear() + '-';
-        var M = (date.getUTCMonth() + 1 < 10 ? '0' + (date.getUTCMonth() + 1) : date.getUTCMonth() + 1) + '-';
+        var M = (date.getUTCMonth() + 1 < 10 ? '0' + (date.getUTCMonth() + 1) : date.getUTCMonth() + 1) + '/';
         var D;
         if (date.getUTCDate() < 10) {
           D = "0" + date.getUTCDate() + " ";
@@ -159,8 +167,8 @@ const utilMethods = {
         var h = (date.getUTCHours() < 10 ? '0' + (date.getUTCHours()) : date.getUTCHours()) + ':';
         var m = (date.getUTCMinutes() < 10 ? '0' + (date.getUTCMinutes()) : date.getUTCMinutes()) + ':';
         var s = (date.getUTCSeconds() < 10 ? '0' + (date.getUTCSeconds()) : date.getUTCSeconds());
-        datatime = Y + M + D + h + m + s;
-        return Y + M + D + h + m + s;
+        datatime =  M + D ;
+        return  M + D; 
       }
       return datatime;
     }

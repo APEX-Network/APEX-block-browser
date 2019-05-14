@@ -30,11 +30,11 @@
       </ul>
       <div class="apex-pagination">
         <div class="pagination-content">
-          <a class="first" @click="getFirst">First</a>
+          <a class="first" @click="isClick && getFirst()">First</a>
           <img
             ref="left"
             class="prev"
-            @click="getPrevious()"
+            @click="isClick && getPrevious() "
             src="../../assets/images/shared/leftWhiteArrow.png"
             alt
           >
@@ -46,7 +46,7 @@
             src="../../assets/images/shared/rightArrow.png"
             alt
           >
-          <a class="last" @click="getLast">Last</a>
+          <a class="last" @click="isClick && getLast()">Last</a>
         </div>
       </div>
     </div>
@@ -74,7 +74,7 @@ export default {
         type: "height",
         value: null
       },
-      pageNumber: "1-10",
+      pageNumber: null,
       arrow: {
         leftArrow: null,
         rightArrow: null
@@ -91,7 +91,8 @@ export default {
       objectClass: {
         from: true,
         emptyFrom: false
-      }
+      },
+      pageArr: null
     };
   },
   mounted() {
@@ -118,6 +119,10 @@ export default {
         .then(response => {
           let res = response.data.data.txs;
           this.totalNumber = res;
+          for (let i = 0; i < this.totalNumber.length; i++) {
+            const element = this.totalNumber[i];
+            element["index"] = this.index++;            
+          }
           this.count = res.length;
           if (this.count == 0) {
             this.noTransactions = "There are no matching entries";
@@ -145,7 +150,12 @@ export default {
             }
           }
           this.pageNumber = this.start + 1 + "-" + this.totalPage;
-          this.dataList = this.totalNumber.slice(0, 10);
+          if (this.totalNumber.length >= 10) {
+            this.pageArr = util.utilMethods.cutArray(this.totalNumber, 10);
+            this.dataList = this.pageArr[0];
+          } else {
+            this.dataList = this.totalNumber;
+          }
           for (let i = 0; i < this.dataList.length; i++) {
             const element = this.dataList[i];
             let amount = element.amount;
@@ -162,7 +172,6 @@ export default {
             this.getaddress(faddress);
             this.getaddress(taddress);
             let result = amount.toString().indexOf(".");
-            element["index"] = this.index++;
             if (result > -1) {
               let pointLength = amount.toString().split(".")[1].length;
               if (pointLength > 2) {
@@ -214,55 +223,42 @@ export default {
       }
     },
     getNext() {
-      if (this.start < 10) {
+      if (this.start < this.totalPage - 1) {
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start++;
-        this.pageNumber = this.start + 1 + "-10";
-        this.params.start = this.start;
-        this.$axios
-          .post(this.allBlockUrl, this.params)
-          .then(response => {
-            let res = response.data.data.txs;
-            this.dataList = res;
-            for (let i = 0; i < this.dataList.length; i++) {
-              const element = this.dataList[i];
-              let amount = element.amount;
-              let faddress = element.from;
-              let taddress = element.to;
-              let result = amount.toString().indexOf(".");
-              this.getaddress(faddress);
-              this.getaddress(taddress);
-              element["index"] = this.index++;
-              if (result > -1) {
-                let pointLength = amount.toString().split(".")[1].length;
-                if (pointLength > 2) {
-                  element["amount"] =
-                    amount.toString().split(".")[0] +
-                    "." +
-                    amount
-                      .toString()
-                      .split(".")[1]
-                      .substring(0, 2);
-                }
-                if (pointLength <= 2) {
-                  element["amount"] = amount;
-                }
-              }
-              if (result == -1) {
-                element["amount"] = amount;
-              }
+        this.pageNumber = this.start + 1 + "-" + this.totalPage;
+        this.dataList = this.pageArr[this.start];
+        for (let i = 0; i < this.dataList.length; i++) {
+          const element = this.dataList[i];
+          let amount = element.amount;
+          let faddress = element.from;
+          let taddress = element.to;
+          let result = amount.toString().indexOf(".");
+          this.getaddress(faddress);
+          this.getaddress(taddress);
+          if (result > -1) {
+            let pointLength = amount.toString().split(".")[1].length;
+            if (pointLength > 2) {
+              element["amount"] =
+                amount.toString().split(".")[0] +
+                "." +
+                amount
+                  .toString()
+                  .split(".")[1]
+                  .substring(0, 2);
             }
-          })
-          .catch(function(err) {
-            if (err.response) {
-              console.log(err.response);
+            if (pointLength <= 2) {
+              element["amount"] = amount;
             }
-          });
-        if (this.start == 10) {
-          this.pageNumber = this.start + "-10";
+          }
+          if (result == -1) {
+            element["amount"] = amount;
+          }
+        }
+        if (this.start == this.totalPage - 1) {
+          this.pageNumber = this.start + 1 + "-" + this.totalPage;
           this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
-          this.isClick = false;
           return;
         }
       }
@@ -270,145 +266,109 @@ export default {
     getLast() {
       this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
-      this.start = 10;
-      this.pageNumber = this.start + "-10";
-      this.params.start = this.start;
-      this.$axios
-        .post(this.allBlockUrl, this.params)
-        .then(response => {
-          let res = response.data.data.txs;
-          this.dataList = res;
-          for (let i = 0; i < this.dataList.length; i++) {
-            const element = this.dataList[i];
-            let amount = element.amount;
-            let faddress = element.from;
-            let taddress = element.to;
-            let result = amount.toString().indexOf(".");
-            this.getaddress(faddress);
-            this.getaddress(taddress);
-            element["index"] = this.index++;
-            if (result > -1) {
-              let pointLength = amount.toString().split(".")[1].length;
-              if (pointLength > 2) {
-                element["amount"] =
-                  amount.toString().split(".")[0] +
-                  "." +
-                  amount
-                    .toString()
-                    .split(".")[1]
-                    .substring(0, 2);
-              }
-              if (pointLength <= 2) {
-                element["amount"] = amount;
-              }
-            }
-            if (result == -1) {
-              element["amount"] = amount;
-            }
+      this.start = this.totalPage - 1;
+      this.pageNumber =this.totalPage + "-" + this.totalPage;
+      this.dataList = this.pageArr[this.start];
+      for (let i = 0; i < this.dataList.length; i++) {
+        const element = this.dataList[i];
+        let amount = element.amount;
+        let faddress = element.from;
+        let taddress = element.to;
+        let result = amount.toString().indexOf(".");
+        this.getaddress(faddress);
+        this.getaddress(taddress);
+        if (result > -1) {
+          let pointLength = amount.toString().split(".")[1].length;
+          if (pointLength > 2) {
+            element["amount"] =
+              amount.toString().split(".")[0] +
+              "." +
+              amount
+                .toString()
+                .split(".")[1]
+                .substring(0, 2);
           }
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
+          if (pointLength <= 2) {
+            element["amount"] = amount;
           }
-        });
+        }
+        if (result == -1) {
+          element["amount"] = amount;
+        }
+      }
     },
     getFirst() {
       this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
       this.start = 0;
-      this.pageNumber = this.start + 1 + "-10";
-      this.params.start = this.start;
-      this.$axios
-        .post(this.allBlockUrl, this.params)
-        .then(response => {
-          let res = response.data.data.txs;
-          this.dataList = res;
-          for (let i = 0; i < this.dataList.length; i++) {
-            const element = this.dataList[i];
-            let amount = element.amount;
-            let faddress = element.from;
-            let taddress = element.to;
-            let result = amount.toString().indexOf(".");
-            this.getaddress(faddress);
-            this.getaddress(taddress);
-            element["index"] = this.index++;
-            if (result > -1) {
-              let pointLength = amount.toString().split(".")[1].length;
-              if (pointLength > 2) {
-                element["amount"] =
-                  amount.toString().split(".")[0] +
-                  "." +
-                  amount
-                    .toString()
-                    .split(".")[1]
-                    .substring(0, 2);
-              }
-              if (pointLength <= 2) {
-                element["amount"] = amount;
-              }
-            }
-            if (result == -1) {
-              element["amount"] = amount;
-            }
+      this.pageNumber = this.start + 1 + "-" + this.totalPage;
+      this.dataList = this.pageArr[0];
+      for (let i = 0; i < this.dataList.length; i++) {
+        const element = this.dataList[i];
+        let amount = element.amount;
+        let faddress = element.from;
+        let taddress = element.to;
+        let result = amount.toString().indexOf(".");
+        this.getaddress(faddress);
+        this.getaddress(taddress);
+        if (result > -1) {
+          let pointLength = amount.toString().split(".")[1].length;
+          if (pointLength > 2) {
+            element["amount"] =
+              amount.toString().split(".")[0] +
+              "." +
+              amount
+                .toString()
+                .split(".")[1]
+                .substring(0, 2);
           }
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
+          if (pointLength <= 2) {
+            element["amount"] = amount;
           }
-        });
+        }
+        if (result == -1) {
+          element["amount"] = amount;
+        }
+      }
     },
     getPrevious() {
-      this.isClick = true;
       if (this.start > 0) {
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start--;
-        this.pageNumber = this.start + "-10";
-        this.params.start = this.start;
-        this.$axios
-          .post(this.allBlockUrl, this.params)
-          .then(response => {
-            let res = response.data.data.txs;
-            this.dataList = res;
-            for (let i = 0; i < this.dataList.length; i++) {
-              const element = this.dataList[i];
-              let amount = element.amount;
-              let faddress = element.from;
-              let taddress = element.to;
-              let result = amount.toString().indexOf(".");
-              this.getaddress(faddress);
-              this.getaddress(taddress);
-              element["index"] = this.index++;
-              if (result > -1) {
-                let pointLength = amount.toString().split(".")[1].length;
-                if (pointLength > 2) {
-                  element["amount"] =
-                    amount.toString().split(".")[0] +
-                    "." +
-                    amount
-                      .toString()
-                      .split(".")[1]
-                      .substring(0, 2);
-                }
-                if (pointLength <= 2) {
-                  element["amount"] = amount;
-                }
-              }
-              if (result == -1) {
-                element["amount"] = amount;
-              }
+        this.pageNumber = this.start + 1 + "-" + this.totalPage;
+        this.dataList = [];
+        this.dataList = this.pageArr[this.start];
+        for (let i = 0; i < this.dataList.length; i++) {
+          const element = this.dataList[i];
+          let amount = element.amount;
+          let faddress = element.from;
+          let taddress = element.to;
+          let result = amount.toString().indexOf(".");
+          this.getaddress(faddress);
+          this.getaddress(taddress);
+          if (result > -1) {
+            let pointLength = amount.toString().split(".")[1].length;
+            if (pointLength > 2) {
+              element["amount"] =
+                amount.toString().split(".")[0] +
+                "." +
+                amount
+                  .toString()
+                  .split(".")[1]
+                  .substring(0, 2);
             }
-          })
-          .catch(function(err) {
-            if (err.response) {
-              console.log(err.response);
+            if (pointLength <= 2) {
+              element["amount"] = amount;
             }
-          });
+          }
+          if (result == -1) {
+            element["amount"] = amount;
+          }
+        }
         if (this.start == 0) {
           this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
-          this.pageNumber = this.start + 1 + "-10";
+          this.pageNumber = this.start + 1 + "-" + this.totalPage;
           return;
         }
       }
@@ -486,8 +446,8 @@ export default {
           padding-left: 35px;
         }
         .amount {
-    padding-left: 14px;
-              max-width: 165px;
+          padding-left: 14px;
+          max-width: 165px;
         }
         & > span {
           a:hover {
