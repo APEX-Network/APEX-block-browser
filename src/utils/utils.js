@@ -233,11 +233,8 @@ const utilMethods = {
     let from = decode_from.substring(2);
     let decode_PubKeyHash = Base58check.decode(serializParams.to).data.toString("hex");
     let to = decode_PubKeyHash.substring(2);
-    let bigEightPow = new bigdecimal.BigDecimal(String(Math.pow(10, 18)));
-    let bigAmount = new bigdecimal.BigDecimal(serializParams.amount.stripTrailingZeros().toPlainString());
-    let amountMultiplyEightPow = bigAmount.multiply(bigEightPow).stripTrailingZeros().toPlainString();
+    let amountMultiplyEightPow = serializParams.amount.stripTrailingZeros().toPlainString();
     let byteArrayamount = BigInteger(amountMultiplyEightPow).toByteArray();
-    console.log(amountMultiplyEightPow);
     let amount_length = byteArrayamount.length;
     let amount_hex = Buffer.from(byteArrayamount, "hex").toString("hex");
     let amount

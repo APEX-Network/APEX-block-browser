@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import ApexTitle from "@/components/public/ApexTitle";
-import ApexBackGround from "@/components/public/ApexBackGround";
+const ApexTitle = () => import("@/components/public/ApexTitle");
+const ApexBackGround = () => import("@/components/public/ApexBackGround");
 import Bus from "@/utils/bus";
 const ECPair = require("bitcoinjs-lib/src/ecpair");
 

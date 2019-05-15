@@ -51,7 +51,7 @@
       <div class="gasPrice">
         <div class="recommend">
           Recommended:
-          <span @click="setAllGPrice">{{gasePrice}} Mp</span>
+          <span @click="setAllGPrice">{{gasePrice}} KGp</span>
         </div>
         <input
           spellcheck="false"
@@ -65,7 +65,7 @@
           readonly
           onfocus="this.removeAttribute('readonly');"
         >
-        <div>Mp</div>
+        <div>KGp</div>
         <div ref="checkGasPrice">Please enter the correct gas price</div>
       </div>
       <div class="password">
@@ -111,12 +111,11 @@
 </template>
 
 <script>
-import ApexTitle from "@/components/public/ApexTitle";
-import ApexBackGround from "@/components/public/ApexBackGround";
+const ApexTitle = () => import("@/components/public/ApexTitle");
+const ApexBackGround = () => import("@/components/public/ApexBackGround");
 import util from "@/utils/utils";
-import Bus from "./../../../utils/bus";
-import db from "./../../../utils/myDatabase";
-import utils from "../../../utils/utils";
+import Bus from "@/utils/bus";
+import db from "@/utils/myDatabase";
 const bigdecimal = require("bigdecimal");
 
 export default {
@@ -226,19 +225,19 @@ export default {
         });
     },
     getAddress() {
-      Bus.$on("apAddress", data => {
-        this.apAddress = data;
-        if (this.apAddress !== null) {
-          setTimeout(() => {
-            this.getAccountInfo(this.apAddress);
-            db.APKStore.get(this.apAddress).then(APKStore => {
-              this.KStore = APKStore.KStore;
-            });
+      // Bus.$on("apAddress", data => {
+      this.apAddress = localStorage.getItem("apAddress");
+      if (this.apAddress !== null) {
+        setTimeout(() => {
+          this.getAccountInfo(this.apAddress);
+          db.APKStore.get(this.apAddress).then(APKStore => {
+            this.KStore = APKStore.KStore;
           });
-        } else {
-          return;
-        }
-      });
+        });
+      } else {
+        return;
+      }
+      // });
       Bus.$on("privKey", data => {
         this.privKey = data;
       });
@@ -423,28 +422,33 @@ export default {
         this.pwd !== null
       ) {
         this.checkAddress();
+        let bigEightPow = new bigdecimal.BigDecimal(String(Math.pow(10, 18)));
+        let tNTwelve = new bigdecimal.BigDecimal(String(Math.pow(10, 12)));
+        let handlFee = new bigdecimal.BigDecimal(
+              String(Math.pow(10, 12) * String(this.inputGasePrice) * 21000)
+            );
         let serializParams = {
           version: "00000001",
           txType: "01",
           from: this.apAddress,
           to: this.toAddress,
-          amount: new bigdecimal.BigDecimal(String(this.inputAmout)).subtract(
-            new bigdecimal.BigDecimal(
-              String(Math.pow(10, -12) * String(this.inputGasePrice) * 21000)
-            )
+          amount: new bigdecimal.BigDecimal(String(this.inputAmout)).multiply(
+            bigEightPow
           ),
           nonce: this.nonce,
           data: "00",
           gasPrice: new bigdecimal.BigDecimal(
             String(this.inputGasePrice)
-          ).multiply(new bigdecimal.BigDecimal(String(Math.pow(10, 6)))),
+          ).multiply(tNTwelve),
           gasLimit: "21000",
           executeTime: "0000000000000000"
         };
-        if (this.inputAmout !== this.allamount) {
+        if (this.inputAmout == this.allamount) {
           serializParams.amount = new bigdecimal.BigDecimal(
             String(this.inputAmout)
-          );
+          )
+            .multiply(bigEightPow)
+            .subtract(handlFee);
         }
         this.message = util.utilMethods.produce_message(serializParams);
         let signParams = {
@@ -499,14 +503,14 @@ export default {
           })
           .then(response => {
             this.id = "txId:";
-            this.txId = utils.utilMethods.produceTxId(
+            this.txId = util.utilMethods.produceTxId(
               this.serialized_transaction
             );
             this.copyTxId = this.txId;
             let x = this.txId.slice(0, 6);
             let y = this.txId.slice(-6);
             this.txId = x + "......" + y;
-          })
+          });
       } catch (error) {
         this.id = "originTx:";
         this.txId = this.serialized_transaction;

@@ -11,10 +11,11 @@
   </div>
 </template>
 <script>
-import LiveTps from "@/views/home/LiveTps";
-import OverView from "@/views/home/OverView";
-import BlocksList from "@/components/list/BlocksList";
-import HomeTransactionsList from "./HomeTransactionsList";
+const LiveTps = r => require.ensure([], () => r(require("@/views/home/LiveTps")), 'Home');
+const OverView = r => require.ensure([], () => r(require("@/views/home/OverView")), 'Home');
+const BlocksList = r => require.ensure([], () => r(require("@/components/list/BlocksList")), 'Home');
+const HomeTransactionsList = r => require.ensure([], () => r(require("./HomeTransactionsList")), 'Home');
+
 
 export default {
   name: "home",

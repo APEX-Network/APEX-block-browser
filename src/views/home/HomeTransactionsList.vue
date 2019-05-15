@@ -23,13 +23,12 @@
 </template>
 
 <script>
-import Pagination from "@/components/public/Pagination.vue";
-import Bus from "./../../utils/bus";
-import util from "./../../utils/utils";
+import Bus from "@/utils/bus";
+import util from "@/utils/utils";
 export default {
   name: "HomeTransactionsList",
   components: {
-    Pagination
+    
   },
   data() {
     return {

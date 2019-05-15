@@ -57,7 +57,7 @@
       <div class="gasPrice">
         <div class="recommend">
           Recommended:
-          <span @click="setAllGPrice">{{gasePrice}} Mp</span>
+          <span @click="setAllGPrice">{{gasePrice}} KGp</span>
         </div>
         <input
           spellcheck="false"
@@ -71,7 +71,7 @@
           readonly
           onfocus="this.removeAttribute('readonly');"
         >
-        <div>Mp</div>
+        <div>KGp</div>
         <div ref="checkGasPrice">Please enter the correct gas price</div>
       </div>
       <div class="password">
@@ -117,11 +117,11 @@
 </template>
 
 <script>
-import ApexTitle from "@/components/public/ApexTitle";
-import ApexBackGround from "@/components/public/ApexBackGround";
-import util from "../../../utils/utils";
-import Bus from "./../../../utils/bus";
-import db from "./../../../utils/myDatabase";
+const ApexTitle = () => import("@/components/public/ApexTitle");
+const ApexBackGround = () => import("@/components/public/ApexBackGround");
+import util from "@/utils/utils";
+import Bus from "@/utils/bus";
+import db from "@/utils/myDatabase";
 const bigdecimal = require("bigdecimal");
 
 export default {
@@ -264,19 +264,19 @@ export default {
       this.check.checkPwd = this.$refs.checkPwd;
     },
     getAddress() {
-      Bus.$on("apAddress", data => {
-        this.apAddress = data;
-        if (this.apAddress !== null) {
-          setTimeout(() => {
-            this.getAccountInfo(this.apAddress);
-            db.APKStore.get(this.apAddress).then(APKStore => {
-              this.KStore = APKStore.KStore;
-            });
+      // Bus.$on("apAddress", data => {
+      this.apAddress = localStorage.getItem("apAddress");
+      if (this.apAddress !== null) {
+        setTimeout(() => {
+          this.getAccountInfo(this.apAddress);
+          db.APKStore.get(this.apAddress).then(APKStore => {
+            this.KStore = APKStore.KStore;
           });
-        } else {
-          return;
-        }
-      });
+        });
+      } else {
+        return;
+      }
+      // });
       Bus.$on("privKey", data => {
         this.privKey = data;
       });
@@ -466,35 +466,36 @@ export default {
         this.pwd !== null
       ) {
         this.checkAddress();
+        let bigEightPow = new bigdecimal.BigDecimal(String(Math.pow(10, 18)));
+        let tNTwelve = new bigdecimal.BigDecimal(String(Math.pow(10, 12)));
+        let handlFee = new bigdecimal.BigDecimal(
+              String(Math.pow(10, 12) * String(this.inputGasePrice) * 30000)
+            );
         let serializParams = {
           version: "00000001", //不变
           txType: "03", //不变
           from: this.apAddress,
           to: "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU", //合约地址
-          amount: new bigdecimal.BigDecimal(String(this.inputAmout)).subtract(
-            new bigdecimal.BigDecimal(
-              String(
-                Math.pow(10, -18) *
-                  String(this.inputGasePrice) *
-                  Math.pow(10, 6) *
-                  30000
-              )
-            )
+          amount: new bigdecimal.BigDecimal(String(this.inputAmout)).multiply(
+            bigEightPow
           ),
           nonce: this.nonce, //从服务器获取该账户的nonce值
           data: this.toAddress, //被投地址
           gasPrice: new bigdecimal.BigDecimal(
             String(this.inputGasePrice)
-          ).multiply(new bigdecimal.BigDecimal(String(Math.pow(10, 6)))),
+          ).multiply(tNTwelve),
           gasLimit: "30000", //程序限制
           executeTime: "0000000000000000", //不变
           votingRefundType: "00"
         };
-        if (this.inputAmout !== this.allamount) {
+        if (this.inputAmout == this.allamount) {
           serializParams.amount = new bigdecimal.BigDecimal(
             String(this.inputAmout)
+          ).multiply(bigEightPow).subtract(
+            handlFee
           );
         }
+
         this.message = util.utilMethods.produce_message(serializParams);
         let signParams = {
           message: this.message,

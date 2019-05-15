@@ -46,9 +46,8 @@
   </div>
 </template>
 <script>
-// import Pagination from "@/components/public/Pagination.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue";
-import ApexTitle from "@/components/public/ApexTitle.vue";
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'Blocks');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'Blocks');
 import Bus from "@/utils/bus";
 import util from "@/utils/utils";
 

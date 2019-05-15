@@ -40,11 +40,10 @@
 </template>
 
 <script>
-import ApexTitle from "@/components/public/ApexTitle.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue";
-// import Pagination from "@/components/public/Pagination.vue";
-import Bus from "./../../utils/bus";
-import util from "./../../utils/utils";
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'Transactions');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'Transactions');
+import Bus from "@/utils/bus";
+import util from "@/utils/utils";
 
 export default {
   name: "Transactions",

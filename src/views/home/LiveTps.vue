@@ -6,7 +6,7 @@
 </template>
 <script>
 import echarts from "echarts";
-import util from "./../../utils/utils";
+import util from "@/utils/utils";
 
 export default {
   name: "livetps",
@@ -26,12 +26,12 @@ export default {
   mounted() {
     this.myChart = echarts.init(document.getElementById("echartContainer"));
     this.postBlockTips();
-    const timer = setInterval(() => {
-      this.postBlockTips();
-    }, 2000);
-    this.$once("hook:beforeDestroy", () => {
-      clearInterval(timer);
-    });
+    // const timer = setInterval(() => {
+    //   this.postBlockTips();
+    // }, 2000);
+    // this.$once("hook:beforeDestroy", () => {
+    //   clearInterval(timer);
+    // });
   },
   methods: {
     postBlockTips() {

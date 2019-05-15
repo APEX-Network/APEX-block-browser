@@ -43,11 +43,8 @@
 </template>
 
 <script>
-import Vue from "vue";
-// import { mapActions, mapGetters } from "vuex";
-import Bus from "./../../../utils/bus";
-import db from "./../../../utils/myDatabase";
-import $ from "jquery";
+import Bus from "@/utils/bus";
+import db from "@/utils/myDatabase";
 
 export default {
   name: "walletpage",

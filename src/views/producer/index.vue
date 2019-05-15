@@ -46,13 +46,13 @@
 </template>
 
 <script>
-import PublicNav from "@/components/publicnav/index.vue";
-import PublicFooter from "@/components/publicfooter/index.vue";
-import ApexTitle from "@/components/public/ApexTitle.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue";
-// import Pagination from "@/components/public/Pagination.vue";
-import Bus from "./../../utils/bus";
-import utils from "./../../utils/utils";
+const PublicNav = r => require.ensure([], () => r(require("@/components/publicnav/index")), 'Producer');
+const PublicFooter = r => require.ensure([], () => r(require("@/components/publicfooter/index")), 'Producer');
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'Producer');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'Producer');
+
+import Bus from "@/utils/bus";
+import utils from "@/utils/utils";
 export default {
   name: "Producer",
   components: {

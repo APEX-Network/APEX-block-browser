@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import Bus from "./../../utils/bus";
+import Bus from "@/utils/bus";
 export default {
   name: "overview",
   components: {},

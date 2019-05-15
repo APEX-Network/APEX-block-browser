@@ -27,11 +27,15 @@
   </div>
 </template>
 <script>
-import WalletPage from "@/views/wallet/wallet/walletPage";
-import TransfersList from "@/components/list/TransfersList";
-import TransactionsList from "@/components/list/TransactionsList";
 import Bus from "@/utils/bus";
 import db from "@/utils/myDatabase";
+// const WalletPage = () => import('@/views/wallet/wallet/walletPage');
+// const TransfersList = () => import('@/components/list/TransfersList');
+// const TransactionsList = () => import('@/components/list/TransactionsList');
+const WalletPage = r => require.ensure([], () => r(require("@/views/wallet/wallet/walletPage")), 'Wallet');
+const TransfersList = r => require.ensure([], () => r(require("@/components/list/TransfersList")), 'Wallet');
+const TransactionsList = r => require.ensure([], () => r(require("@/components/list/TransactionsList")), 'Wallet');
+
 
 export default {
   name: "wallet",
