@@ -240,21 +240,22 @@ export default {
       );
     },
     getProducerList() {
-      this.$axios
-        .post(this.minerBy_url, this.params)
-        .then(response => {
-          this.producer = response.data.data;
-          this.producerAddress = [];
-          for (let i = 0; i < this.producer.length; i++) {
-            const element = this.producer[i];
-            this.producerAddress.push(element.addr);
-          }
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
+      // this.$axios
+      //   .post(this.minerBy_url, this.params)
+      //   .then(response => {
+      //     this.producer = response.data.data;
+      this.producerAddress = [];
+      this.producer = JSON.parse(localStorage.getItem("producer"));
+      for (let i = 0; i < this.producer.length; i++) {
+        const element = this.producer[i].addr;
+        this.producerAddress.push(element);
+      }
+      // })
+      // .catch(function(err) {
+      //   if (err.response) {
+      //     console.log(err.response);
+      //   }
+      // });
     },
     getAllInputInstances() {
       this.check.checktoAddress = this.$refs.checktoAddress;
@@ -537,16 +538,16 @@ export default {
       }
     },
     confirm() {
-      this.txId = util.utilMethods.produceTxId(this.serialized_transaction);
-      this.copyTxId = this.txId;
-      let x = this.txId.slice(0, 6);
-      let y = this.txId.slice(-6);
-      this.txId = x + "......" + y;
       this.$axios
         .post(this.url.transfer_url, {
           rawTx: this.serialized_transaction
         })
         .then(response => {
+          this.txId = util.utilMethods.produceTxId(this.serialized_transaction);
+          this.copyTxId = this.txId;
+          let x = this.txId.slice(0, 6);
+          let y = this.txId.slice(-6);
+          this.txId = x + "......" + y;
         })
         .catch(function(err) {
           if (err.response) {

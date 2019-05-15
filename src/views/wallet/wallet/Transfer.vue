@@ -96,7 +96,7 @@
           <router-link to="/wallet">CONFIRM</router-link>
         </div>
         <div>
-          txId: {{txId}}
+          {{id}} {{txId}}
           <img
             ref="copyId"
             @click="Copy()"
@@ -160,7 +160,8 @@ export default {
       txId: null,
       copyTxId: null,
       txIdImg: null,
-      gasePrice: null
+      gasePrice: null,
+      id: null
     };
   },
 
@@ -246,19 +247,22 @@ export default {
     getToAddress() {
       try {
         this.toAddress = this.$refs.to.value;
-      if (this.toAddress.length !== 35 || this.toAddress.slice(0, 2) !== "AP") {
-        this.check.checktoAddress.style.visibility = "visible";
-        this.toAddress = null;
-        this.$refs.to.value = null;
-      }
-      if (this.toAddress.length == 35 && this.toAddress.slice(0, 2) == "AP") {
-        this.check.checktoAddress.style.visibility = "hidden";
-      }
-      if (this.toAddress == this.apAddress) {
-        this.toAddress = null;
-        this.$refs.to.value = null;
-        this.check.checktoAddress.style.visibility = "visible";
-      }
+        if (
+          this.toAddress.length !== 35 ||
+          this.toAddress.slice(0, 2) !== "AP"
+        ) {
+          this.check.checktoAddress.style.visibility = "visible";
+          this.toAddress = null;
+          this.$refs.to.value = null;
+        }
+        if (this.toAddress.length == 35 && this.toAddress.slice(0, 2) == "AP") {
+          this.check.checktoAddress.style.visibility = "hidden";
+        }
+        if (this.toAddress == this.apAddress) {
+          this.toAddress = null;
+          this.$refs.to.value = null;
+          this.check.checktoAddress.style.visibility = "visible";
+        }
       } catch (error) {
         // console.log(error);
       }
@@ -488,22 +492,29 @@ export default {
       }
     },
     confirm() {
-      this.txId = utils.utilMethods.produceTxId(this.serialized_transaction);
-      this.copyTxId = this.txId;
-      let x = this.txId.slice(0, 6);
-      let y = this.txId.slice(-6);
-      this.txId = x + "......" + y;
-      this.$axios
-        .post(this.url.transfer_url, {
-          rawTx: this.serialized_transaction
-        })
-        .then(response => {
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
+      try {
+        this.$axios
+          .post(this.url.transfer_url, {
+            rawTx: this.serialized_transaction
+          })
+          .then(response => {
+            this.id = "txId:";
+            this.txId = utils.utilMethods.produceTxId(
+              this.serialized_transaction
+            );
+            this.copyTxId = this.txId;
+            let x = this.txId.slice(0, 6);
+            let y = this.txId.slice(-6);
+            this.txId = x + "......" + y;
+          })
+      } catch (error) {
+        this.id = "originTx:";
+        this.txId = this.serialized_transaction;
+        this.copyTxId = this.txId;
+        let x = this.txId.slice(0, 6);
+        let y = this.txId.slice(-6);
+        this.txId = x + "......" + y;
+      }
     }
   },
 

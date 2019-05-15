@@ -272,7 +272,7 @@ export default {
             for (let i = 0; i < address_amount.length; i++) {
               let item = address_amount[i];
               address = item.split("-")[0].replace(/\s/gi, "");
-              amount = item.split("-")[1].replace(/\s/gi, "");              
+              amount = item.split("-")[1].replace(/\s/gi, "");
               if (amount !== "0") {
                 this.targetAddress.push(address);
                 this.targetAddressAmount.push({ key: address, value: amount });
@@ -548,16 +548,17 @@ export default {
       }
     },
     confirm() {
-      this.txId = util.utilMethods.produceTxId(this.serialized_transaction);
-      this.copyTxId = this.txId;
-      let x = this.txId.slice(0, 6);
-      let y = this.txId.slice(-6);
-      this.txId = x + "......" + y;
       this.$axios
         .post(this.url.transfer_url, {
           rawTx: this.serialized_transaction
         })
-        .then(response => {})
+        .then(response => {
+          this.txId = util.utilMethods.produceTxId(this.serialized_transaction);
+          this.copyTxId = this.txId;
+          let x = this.txId.slice(0, 6);
+          let y = this.txId.slice(-6);
+          this.txId = x + "......" + y;
+        })
         .catch(function(err) {
           if (err.response) {
             console.log(err.response);

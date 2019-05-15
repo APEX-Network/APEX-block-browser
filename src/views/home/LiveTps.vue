@@ -26,12 +26,12 @@ export default {
   mounted() {
     this.myChart = echarts.init(document.getElementById("echartContainer"));
     this.postBlockTips();
-    // const timer = setInterval(() => {
-    //   this.postBlockTips();
-    // }, 2000);
-    // this.$once("hook:beforeDestroy", () => {
-    //   clearInterval(timer);
-    // });
+    const timer = setInterval(() => {
+      this.postBlockTips();
+    }, 2000);
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(timer);
+    });
   },
   methods: {
     postBlockTips() {
@@ -40,20 +40,19 @@ export default {
         .then(response => {
           this.data = [];
           this.alldata = [];
-          let res = response.data.data.slice(0, response.data.data.length-1);
+          let res = response.data.data.slice(response.data.data.length-8, response.data.data.length-1);
           let time = [];
           let data = [];
           let tooltps = [];
           for (let i = 0; i < res.length; i++) {
             time.push(util.utilMethods.tierAllTime(res[i].timeStamp));
             data.push(res[i].txs);
-            tooltps.push(util.utilMethods.tierAllTime(res[i].timeStamp));
+            tooltps.push(util.utilMethods.UTCallTime(res[i].timeStamp));
           }          
-          this.alldata.push({ txs: data, timeStamp: time });
+          this.alldata.push({ txs: data, timeStamp: tooltps });
           this.time = time;
           this.tooltps = tooltps;
           this.data = data;
-          console.log(this.alldata);
           this.drawCharts();
         })
         .catch(function(response) {
@@ -121,6 +120,9 @@ export default {
             color: "#ffffff",
             fontSize: "14px"
           },
+          // formatter: (data) => {
+          //   console.log(data);
+          // }
         },
         series: [
           {

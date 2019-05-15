@@ -149,6 +149,30 @@ const utilMethods = {
 
     }
   },
+  UTCallTime(data) {
+    var datatime = '';
+    if (data != null || data != undefined) {
+      timestampToTime(data);
+
+      function timestampToTime(timestamp) {
+        var date = new Date(timestamp);
+        var Y = date.getUTCFullYear() + '-';
+        var M = (date.getUTCMonth() + 1 < 10 ? '0' + (date.getUTCMonth() + 1) : date.getUTCMonth() + 1) + '-';
+        var D;
+        if (date.getUTCDate() < 10) {
+          D = "0" + date.getUTCDate() + " ";
+        } else {
+          D = date.getUTCDate() + " ";
+        }
+        var h = (date.getUTCHours() < 10 ? '0' + (date.getUTCHours()) : date.getUTCHours()) + ':';
+        var m = (date.getUTCMinutes() < 10 ? '0' + (date.getUTCMinutes()) : date.getUTCMinutes()) + ':';
+        var s = (date.getUTCSeconds() < 10 ? '0' + (date.getUTCSeconds()) : date.getUTCSeconds());
+        datatime =  Y + M + D ;
+        return   Y + M + D; 
+      }
+      return datatime;
+    }
+  },
   tierAllTime(data) {
     var datatime = '';
     if (data != null || data != undefined) {

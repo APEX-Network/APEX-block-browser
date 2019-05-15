@@ -93,7 +93,7 @@ export default {
   created() {},
   mounted() {
     this.getClickValue();
-    this.producer = JSON.parse(sessionStorage.getItem("producer"));
+    this.producer = JSON.parse(localStorage.getItem("producer"));
   },
   methods: {
     gotHome() {

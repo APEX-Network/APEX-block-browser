@@ -132,7 +132,7 @@ export default {
           for (let i = 0; i < this.producer.length; i++) {
             this.producer[i]["Rank"] = this.Rank++;
           }
-          // sessionStorage.setItem("producer", JSON.stringify(this.producer));
+          localStorage.setItem("producer", JSON.stringify(this.producer));
         })
         .catch(function(err) {
           if (err.response) {
