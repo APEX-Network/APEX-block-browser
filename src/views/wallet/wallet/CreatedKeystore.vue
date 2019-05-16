@@ -21,7 +21,7 @@
       </div>
       <div class="create1" @click="downloadKeyStore">DOWNLOAD ENCRYPTED KEY</div>
       <div class="create2">
-        <router-link to @click.native="getAddress">CONTINUE</router-link>
+        <span @click="getAddress">CONTINUE</span>
       </div>
     </div>
   </div>
@@ -51,8 +51,6 @@ export default {
     ApexTitle
   },
 
-  computed: {},
-
   beforeMount() {},
 
   mounted() {
@@ -66,6 +64,7 @@ export default {
       });
       Bus.$on("privKey", data => {
         this.privKey = data;
+        console.log(this.privKey);
       });
       Bus.$on("keyStore", data => {
         this.keyStore = data;
@@ -76,13 +75,13 @@ export default {
         Bus.$emit("apAddress", this.apAddress);
         Bus.$emit("privKey", this.privKey);
       });
-      // if (this.walletUrl == "/emptyWallet") {
-      //   this.$router.push("/emptyWallet/NewWallet/CreatedKeystore/SavePrivKey");
-      // } else {
       this.$router.push("/wallet/NewWallet/CreatedKeystore/SavePrivKey");
-      // }
     },
     downloadKeyStore() {
+      setTimeout(() => {
+        Bus.$emit("apAddress", this.apAddress);
+        Bus.$emit("privKey", this.privKey);
+      });
       let link = document.createElement("a");
       link.download = "keyStore.txt";
       link.style.display = "none";
@@ -91,9 +90,15 @@ export default {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    },
+    offListener() {
+      Bus.$off("apAddress");
+      Bus.$off("privKey");
     }
   },
-
+  beforeDestroy() {
+    this.offListener();
+  },
   watch: {}
 };
 </script>
@@ -103,9 +108,8 @@ export default {
   height: 100%;
   .bg {
     // background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
-      // no-repeat;
+    // no-repeat;
     height: calc(100% - 113px);
-
   }
   .title {
     padding-left: 18px;
@@ -171,7 +175,8 @@ export default {
       width: 220px;
       line-height: 30px;
       z-index: 1;
-      a {
+      span {
+        cursor: pointer;
         color: #f26522;
       }
       a:hover {

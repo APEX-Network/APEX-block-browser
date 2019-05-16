@@ -87,12 +87,11 @@ export default {
         let privKeyToBuffer = Buffer.from(data, "hex");
         let privKeyToWif = ECPair.fromPrivateKey(privKeyToBuffer).toWIF();
         this.privKey = privKeyToWif;
+        console.log(data);
       });
     },
     getAddress() {
-      // let url = "/wallet";
       setTimeout(() => {
-        // sessionStorage.setItem("walletUrl", url);
         Bus.$emit("apAddress", this.apAddress);
         this.$router.push("/wallet");
       });

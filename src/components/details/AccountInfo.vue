@@ -62,7 +62,7 @@
           </li>
         </ul>
         <!-- <Pagination/> -->
-        <div class="apex-pagination">
+        <div class="apex-pagination" v-if="!!noData">
           <div class="pagination-content">
             <a class="first" @click=" getFirst()">First</a>
             <img
@@ -133,7 +133,8 @@ export default {
       objectClass: {
         from: true,
         emptyFrom: false
-      }
+      },
+      noData: null
     };
   },
   mounted() {
@@ -188,7 +189,9 @@ export default {
           })
           .then(response => {
             let res = response.data.data;
-            let result = res.balance.toString().indexOf(".");
+            this.noData = res;
+            if (!!res) {
+              let result = res.balance.toString().indexOf(".");
             if (result > -1) {
               let pointLength = res.balance.toString().split(".")[1].length;
               if (pointLength > 8) {
@@ -206,6 +209,7 @@ export default {
             }
             if (result == -1) {
               this.Balance = res.balance;
+            }
             }
           })
           .catch(function(err) {

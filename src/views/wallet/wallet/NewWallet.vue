@@ -58,8 +58,8 @@
           </span>
         </div>
       </div>
-      <div class="create" @click=" isClick && produceSign()">
-        <router-link to>CREATE</router-link>
+      <div class="create">
+        <span  @click=" isClick && produceSign()">CREATE</span>
       </div>
     </div>
   </div>
@@ -147,6 +147,7 @@ export default {
           this.diffPwd.style.visibility = "visible";
         } else {
           this.diffPwd.style.visibility = "hidden";
+          console.log(this.isClick);
           let ap = "0548";
           let signParams = {
             privKey: util.utilMethods.producePrivKey()
@@ -171,6 +172,7 @@ export default {
               KStore: this.keyStore
             });
           });
+          console.log(signParams.privKey);
           this.$router.push("/wallet/NewWallet/CreatedKeystore");
         }
       }
@@ -336,8 +338,9 @@ export default {
       width: 120px;
       line-height: 30px;
       z-index: 1;
-      a {
+      span {
         color: #f26522;
+        cursor: pointer;
       }
       a:hover {
         box-shadow: 2px 2px 8px 2px #f26522;

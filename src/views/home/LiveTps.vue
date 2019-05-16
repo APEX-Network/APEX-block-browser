@@ -25,16 +25,10 @@ export default {
   created() {},
   mounted() {
     this.myChart = echarts.init(document.getElementById("echartContainer"));
-    this.postBlockTips();
-    // const timer = setInterval(() => {
-    //   this.postBlockTips();
-    // }, 2000);
-    // this.$once("hook:beforeDestroy", () => {
-    //   clearInterval(timer);
-    // });
+    this.postWeekTxs();
   },
   methods: {
-    postBlockTips() {
+    postWeekTxs() {
       this.$axios
         .post(this.blockTips_url, this.params)
         .then(response => {
