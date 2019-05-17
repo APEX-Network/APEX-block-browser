@@ -1,7 +1,7 @@
 
 <template>
   <div class="TransactionsInfo">
-    <apex-back-ground class="bg"/>
+    <apex-back-ground />
     <div class="data-table transactions-details">
       <ul class="table-ul">
         <li class="row title">TransactionsInfo</li>
@@ -25,7 +25,6 @@
                 to
                 @click.native="setHeightValue(transactionInfoData.blockHeight)"
               >{{transactionInfoData.blockHeight}}{{transactionInfoData.Status}}</router-link>
-              <!-- <span>{{transactionInfoData.Status}}</span> -->
             </span>
           </span>
         </li>
@@ -59,14 +58,7 @@
                 to
                 @click.native="setToValue(transactionInfoData.from)"
               >{{transactionInfoData.from}}</router-link>
-              <img
-                ref="fromAddress"
-                @click="Copy(1)"
-                style="cursor: pointer; padding-left: 10px;padding-top: 10px;
-    position: absolute;"
-                src="./../../assets/images/copy.png"
-                alt
-              >
+              <img ref="fromAddress" @click="Copy(1)" src="./../../assets/images/copy.png" alt>
             </span>
           </span>
         </li>
@@ -81,8 +73,6 @@
               <img
                 ref="toAddress"
                 @click="Copy(2)"
-                style="cursor: pointer; padding-left: 10px;padding-top: 10px;
-    position: absolute;"
                 src="./../../assets/images/copy.png"
                 alt
               >
@@ -397,7 +387,6 @@ export default {
   width: 100%;
   height: 100%;
   .bg {
-    // background: url(./../../assets/images/shared/yunshi.png) 68% 89% no-repeat;
     height: calc(100% - 72px);
   }
   .data-table {
@@ -420,6 +409,12 @@ export default {
             float: right;
             span {
               padding-right: 82%;
+            }
+            img {
+              cursor: pointer;
+              padding-left: 10px;
+              padding-top: 10px;
+              position: absolute;
             }
           }
         }

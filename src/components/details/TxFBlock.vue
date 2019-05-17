@@ -3,7 +3,7 @@
     <p class="bheight">
       <router-link to @click.native="setHeightValue(blockHeight)">{{blockHeight}}</router-link>
     </p>
-    <apex-back-ground class="bg"/>
+    <apex-back-ground />
     <div class="data-table">
       <ul class="table-ul">
         <li class="row title">{{title}}</li>
@@ -396,9 +396,6 @@ export default {
         color: #f26522;
       }
     }
-  }
-  .bg {
-    // background: url(./../../assets/images/shared/yunshi.png) 55% 67% no-repeat;
   }
   .data-table {
     height: 100%;

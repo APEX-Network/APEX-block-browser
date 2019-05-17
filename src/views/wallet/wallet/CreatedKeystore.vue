@@ -1,6 +1,5 @@
 <template>
   <div class="createdKeystore">
-    <!-- <apex-title :title="title" class="title"/> -->
     <p class="title">{{title}}</p>
     <apex-back-ground class="bg"/>
     <div class="flex-container">
@@ -107,8 +106,6 @@ export default {
   width: 100%;
   height: 100%;
   .bg {
-    // background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
-    // no-repeat;
     height: calc(100% - 113px);
   }
   .title {

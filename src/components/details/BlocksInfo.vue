@@ -1,6 +1,6 @@
 <template>
   <div class="BlocksInfo">
-    <apex-back-ground class="bg"/>
+    <apex-back-ground />
     <div class="data-table">
       <ul class="table-ul">
         <li class="row title">Blocks Information</li>
@@ -222,9 +222,6 @@ export default {
 .BlocksInfo {
   width: 100%;
   height: 100%;
-  .bg {
-    // background: url(./../../assets/images/shared/yunshi.png) 55% 67% no-repeat;
-  }
   .data-table {
     .table-ul {
       .title {

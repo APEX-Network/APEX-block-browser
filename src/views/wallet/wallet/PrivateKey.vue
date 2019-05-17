@@ -1,6 +1,5 @@
 <template>
   <div class="privateKey">
-    <!-- <apex-title :title="title" class="title"/> -->
     <p class="title">{{title}}</p>
     <apex-back-ground class="bg"/>
     <div class="flex-container">
@@ -156,8 +155,6 @@ export default {
     background-color: rgba(255, 255, 255, 0.1) !important;
   }
   .bg {
-    // background: url(./../../../assets/images/shared/yunshi.png) 34% 58%
-    //   no-repeat;
     height: calc(100% - 113px);
   }
   .flex-container {

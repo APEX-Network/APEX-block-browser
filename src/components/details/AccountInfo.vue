@@ -1,10 +1,9 @@
 <template>
   <div class="AccountInfo">
-    <apex-back-ground class="bg"/>
+    <apex-back-ground />
     <div class="data-table transactions-details">
       <ul class="table-ul">
                 <li class="row title">{{title}}</li>
-
         <li class="row">
           <span class="col">Address</span>
           <span class="col col-lg-8 adressCPX" ref="address">
@@ -39,7 +38,7 @@
             <span class="col amount">Amount</span>
           </li>
           <li class="row" >
-           <span class="col noTx" v-if="count == 0">{{noTransactions}}</span>
+           <span class="col noTx" v-if="count == 0 || !!noData">{{noTransactions}}</span>
          </li>
           <li v-for="(list,index) in transactions" :key="index" class="row" v-show="count !== 0">
             <span class="col ttHash">
@@ -583,9 +582,6 @@ export default {
         }
       }
     }
-  }
-  .bg {
-    // background: url(./../../assets/images/shared/yunshi.png) 50% 65% no-repeat;
   }
   .apex-box {
     .apex-title {

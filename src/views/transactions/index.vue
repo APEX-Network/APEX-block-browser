@@ -1,6 +1,6 @@
 <template>
   <div class="transactions">
-    <apex-back-ground class="bg"/>
+    <apex-back-ground />
     <div class="data-table transactions-table">
       <ul class="table-ul">
         <li class="row title">Transactions</li>
@@ -256,9 +256,6 @@ export default {
 .transactions {
   width: 100%;
   height: 100%;
-  .bg {
-    // background: url(./../../assets/images/shared/yunshi.png) 68% 89% no-repeat;
-  }
   .data-table {
     height: 100%;
     width: 100%;
