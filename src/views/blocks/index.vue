@@ -1,23 +1,19 @@
 <template>
   <div class="Blocks">
-    <apex-back-ground />
+    <apex-back-ground/>
     <div class="data-table">
       <ul class="table-ul">
         <li class="row title">Blocks</li>
         <li class="row">
-          <span class="col">Height</span>
+          <span class="col tHeight">Height</span>
           <span class="col col-lg-6">Hash</span>
-          <span class="col">Age</span>
+          <span class="col age">Age</span>
           <span class="col">Miner</span>
         </li>
         <li v-for="(item,index) in dataList" :key="index" class="row">
-          <span class="col height">
-            <router-link to @click.native="setHeightValue(item.height)">{{item.height}}</router-link>
-          </span>
-          <span class="col col-lg-6">
-            <router-link to @click.native="setHashValue(item.blockHash)">{{item.blockHash}}</router-link>
-          </span>
-          <span class="col">{{item.timeStamp}}</span>
+          <span class="col height" @click="setHeightValue(item.height)">{{item.height}}</span>
+          <span class="col col-lg-6 hash" @click="setHashValue(item.blockHash)">{{item.blockHash}}</span>
+          <span class="col age">{{item.timeStamp}}</span>
           <span class="col producer" @click="setMinerByValue(item.producer)">{{item.producer}}</span>
         </li>
       </ul>
@@ -46,8 +42,18 @@
   </div>
 </template>
 <script>
-const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'Blocks');
-const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'Blocks');
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
 import Bus from "@/utils/bus";
 import util from "@/utils/utils";
 
@@ -100,9 +106,9 @@ export default {
       this.arrow.leftArrow = this.$refs.left;
       this.arrow.rightArrow = this.$refs.right;
     },
-     getBlocks() {
+    getBlocks() {
       if (!!this.params) {
-         this.$axios
+        this.$axios
           .post(this.allBlockUrl, this.params)
           .then(response => {
             let res = response.data.data;
@@ -289,10 +295,20 @@ export default {
           cursor: pointer;
           color: #f26522;
         }
-        & > span {
-          a:hover {
-            color: #f26522;
-          }
+        .height {
+          cursor: pointer;
+          color: #f26522;
+          max-width: 126px;
+        }
+        .tHeight {
+          max-width: 126px;
+        }
+        .age {
+          padding-left: 85px;
+        }
+        .hash {
+          cursor: pointer;
+          color: #f26522;
         }
       }
     }

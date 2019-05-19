@@ -29,8 +29,8 @@
 <script>
 import Bus from "@/utils/bus";
 import util from "@/utils/utils";
-const ApexTitle = () => import("@/components/public/ApexTitle");
-const ApexBackGround = () => import("@/components/public/ApexBackGround");
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
 export default {
   name: "CreatedKeystore",
   props: [""],
@@ -73,14 +73,12 @@ export default {
       setTimeout(() => {
         Bus.$emit("apAddress", this.apAddress);
         Bus.$emit("privKey", this.privKey);
+      }, 510);
+      setTimeout(() => {
+        this.$router.push("/wallet/NewWallet/CreatedKeystore/SavePrivKey");
       });
-      this.$router.push("/wallet/NewWallet/CreatedKeystore/SavePrivKey");
     },
     downloadKeyStore() {
-      setTimeout(() => {
-        Bus.$emit("apAddress", this.apAddress);
-        Bus.$emit("privKey", this.privKey);
-      });
       let link = document.createElement("a");
       link.download = "keyStore.txt";
       link.style.display = "none";

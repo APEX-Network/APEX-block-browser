@@ -309,6 +309,17 @@ body {
 
             .bottom {
                 overflow: hidden;
+                .hash {
+                    float: left;
+                    line-height: 24px;
+                    border-bottom: 1px solid #f26522;
+                    display: inline-block;
+                    max-width: 300px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    cursor: pointer;
+                  }
 
                 a {
                     float: left;
@@ -350,7 +361,7 @@ body {
     &.overview {
         ul {
             width: 100%;
-            padding: 0 50px;
+            padding: 0 45px;
             // padding-top: calc(~"100% - 2000px");
             box-sizing: border-box;
 

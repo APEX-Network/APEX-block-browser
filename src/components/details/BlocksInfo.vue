@@ -23,9 +23,6 @@
               class="clol col-lg-8 transactions"
               @click="goTxBlock(height)"
             >{{transactions}}</span>
-            <!-- <span
-              class="clol col-lg-8"
-            >{{transactions}}</span> -->
           </span>
         </li>
         <li class="row">
@@ -56,17 +53,14 @@
 </template>
 
 <script>
-import ApexTitle from "@/components/public/ApexTitle.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue";
-// import Pagination from "@/components/public/Pagination.vue";
-import Bus from "@/utils/bus";
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
 import util from "@/utils/utils";
 const Base58check = require("base58check");
 
 export default {
   name: "BlocksInfo",
   components: {
-    // Pagination,
     ApexTitle,
     ApexBackGround
   },

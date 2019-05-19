@@ -18,6 +18,7 @@
           readonly
           onfocus="this.removeAttribute('readonly');"
         >
+        <div ref="checkPriv" class="checkPriv">Please enter the correct privKey</div>
         <div class="repatpwd">
           <input
             spellcheck="false"
@@ -34,16 +35,24 @@
           <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         </div>
       </div>
-      <div class="create">
-        <router-link to @click.native="privKeyAddress">ENCRYPT</router-link>
-      </div>
+      <div class="create" @click="isClick && privKeyAddress()">ENCRYPT</div>
     </div>
   </div>
 </template>
 
 <script>
-const ApexTitle = () => import("@/components/public/ApexTitle");
-const ApexBackGround = () => import("@/components/public/ApexBackGround");
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
 import util from "@/utils/utils";
 import Bus from "@/utils/bus";
 import db from "@/utils/myDatabase";
@@ -62,7 +71,9 @@ export default {
       hiddenpwd: null,
       firstClick: 1,
       inputPrivKey: null,
-      firstPwd: null
+      firstPwd: null,
+      checkPriv: null,
+      isClick: false
     };
   },
 
@@ -77,6 +88,7 @@ export default {
 
   mounted() {
     this.hiddenpwd = this.$refs.hiddenpwd;
+    this.checkPriv = this.$refs.checkPriv;
     Bus.$on("keyStore", data => {
       this.keyStore = data;
     });
@@ -91,16 +103,26 @@ export default {
         (firstByte == "K" && privLength == 52) ||
         (firstByte == "L" && privLength == 52)
       ) {
-        let decode_privKey_Hex = Base58check.decode(
-          this.inputPrivKey
-        ).data.toString("hex");
-        let decode_privKey = decode_privKey_Hex.substring(
-          0,
-          decode_privKey_Hex.length - 2
-        );
-        this.privKey = decode_privKey;
+        try {
+          let decode_privKey_Hex = Base58check.decode(
+            this.inputPrivKey
+          ).data.toString("hex");
+          let decode_privKey = decode_privKey_Hex.substring(
+            0,
+            decode_privKey_Hex.length - 2
+          );
+          this.privKey = decode_privKey;
+          this.checkPriv.style.visibility = "hidden";
+          this.isClick = true;
+        } catch (error) {
+          this.$refs.privKey.value = null;
+          this.checkPriv.style.visibility = "visible";
+          this.isClick = false;
+        }
       } else {
-        // this.$refs.privKey.value = null;
+        this.$refs.privKey.value = null;
+        this.checkPriv.style.visibility = "visible";
+        this.isClick = false;
       }
     },
     getPwd() {
@@ -186,6 +208,12 @@ export default {
       input:hover {
         box-shadow: 2px 2px 8px 2px #f26522;
       }
+      .checkPriv {
+        color: #f26522;
+        position: relative;
+        top: 35px;
+        visibility: hidden;
+      }
       .repatpwd {
         margin: 45px 100px 0 0;
         input {
@@ -208,6 +236,7 @@ export default {
       }
     }
     .create {
+      cursor: pointer;
       color: #f26522;
       border: 1px solid #f26522;
       margin-top: 60px;
@@ -217,12 +246,9 @@ export default {
       width: 160px;
       line-height: 30px;
       z-index: 1;
-      a {
-        color: #f26522;
-      }
-      a:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
-      }
+    }
+    .create:hover {
+      box-shadow: 2px 2px 8px 2px #f26522;
     }
   }
 }

@@ -1,6 +1,5 @@
 <template>
   <div class="SavePrivKey">
-    <!-- <apex-title :title="title" class="title"/> -->
     <p class="title">{{title}}</p>
     <apex-back-ground class="bg"/>
     <div class="flex-container">
@@ -41,8 +40,8 @@
 </template>
 
 <script>
-const ApexTitle = () => import("@/components/public/ApexTitle");
-const ApexBackGround = () => import("@/components/public/ApexBackGround");
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
 import Bus from "@/utils/bus";
 const ECPair = require("bitcoinjs-lib/src/ecpair");
 
@@ -87,7 +86,6 @@ export default {
         let privKeyToBuffer = Buffer.from(data, "hex");
         let privKeyToWif = ECPair.fromPrivateKey(privKeyToBuffer).toWIF();
         this.privKey = privKeyToWif;
-        console.log(data);
       });
     },
     getAddress() {
@@ -105,10 +103,6 @@ export default {
     },
     doCopy(val) {
       this.$copyText(val).then(
-        function(e) {},
-        function(e) {
-          // console.log(e)
-        }
       );
     }
   },

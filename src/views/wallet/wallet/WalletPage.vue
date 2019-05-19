@@ -26,11 +26,9 @@
         <div class="btn-box btn-box-left">
           <router-link to="/wallet/NewWallet">NEW WALLET</router-link>
           <router-link to="/wallet/OpenWallet">IMPORT WALLET</router-link>
-          <!-- @click.native="modifyAddress('abc')" -->
         </div>
       </div>
       <div class="wallet-flex-container fl">
-        <!-- <div class="cpx-number">CPX: <span v-tip="CPX">{{CPX}}</span></div> -->
         <div class="cpx-number">CPX: {{CPX}}</div>
         <div class="btn-box">
           <router-link to="/wallet/Transfer" @click.native="sendAddress">TRANSFER</router-link>
@@ -67,7 +65,6 @@ export default {
 
   mounted() {
     this.getInstances();
-    // this.currentAddress = sessionStorage.getItem("apAddress");
     this.currentAddress = localStorage.getItem("apAddress");
     setTimeout(() => {
       if (this.currentAddress !== null) {
@@ -100,10 +97,7 @@ export default {
     },
     doCopy(val) {
       this.$copyText(val).then(
-        function(e) {},
-        function(e) {
-          // console.log(e)
-        }
+        
       );
     },
     getInstances() {
@@ -115,7 +109,6 @@ export default {
       localStorage.setItem("apAddress", this.currentAddress);
     },
     mySelectEvent({ id, text }) {
-      // console.log({ id, text });
     },
     sendAddress() {
       Bus.$emit("apAddress", this.currentAddress);

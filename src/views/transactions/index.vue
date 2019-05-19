@@ -7,7 +7,7 @@
         <li v-for="(list,index) in transactions" :key="index" class="row">
           <span class="col col-lg-10">
             <div class="bottom">
-              <router-link to @click.native="setClickValue(list.txHash)">{{list.txHash}}</router-link>
+              <span @click="setClickValue(list.txHash)">{{list.txHash}}</span>
             </div>
           </span>
           <span class="col time">{{list.refBlockTime }}</span>
@@ -40,8 +40,8 @@
 </template>
 
 <script>
-const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'Transactions');
-const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'Transactions');
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
 import Bus from "@/utils/bus";
 import util from "@/utils/utils";
 
@@ -293,19 +293,10 @@ export default {
             box-sizing: border-box;
             background: url(./../../assets/images/shared/icon-fix.png) left 5px
               no-repeat;
-            a {
-              // max-width: 300px;
-              // overflow: hidden;
-              // white-space: nowrap;
+            span {
               color: #f26522;
-              // margin-top: 5px;
+              cursor: pointer;
             }
-          }
-        }
-        &:first-of-type {
-          span {
-            color: #ebebeb;
-            font-family: "Semibold";
           }
         }
       }

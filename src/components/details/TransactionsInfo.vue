@@ -1,7 +1,7 @@
 
 <template>
   <div class="TransactionsInfo">
-    <apex-back-ground />
+    <apex-back-ground/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
         <li class="row title">TransactionsInfo</li>
@@ -20,12 +20,10 @@
         <li class="row" v-if="transactionInfoData.blockHeight !== -1">
           <span class="col">
             {{bHeight}}
-            <span class="clol col-lg-8 changewidth">
-              <router-link
-                to
-                @click.native="setHeightValue(transactionInfoData.blockHeight)"
-              >{{transactionInfoData.blockHeight}}{{transactionInfoData.Status}}</router-link>
-            </span>
+            <span
+              class="clol col-lg-8 changewidth"
+              @click="setHeightValue(transactionInfoData.blockHeight)"
+            >{{transactionInfoData.blockHeight}}{{transactionInfoData.Status}}</span>
           </span>
         </li>
         <li class="row" v-if="resTime !== null">
@@ -54,10 +52,7 @@
           <span class="col">
             {{From}}
             <span class="clol col-lg-8">
-              <router-link
-                to
-                @click.native="setToValue(transactionInfoData.from)"
-              >{{transactionInfoData.from}}</router-link>
+              <i @click="setToValue(transactionInfoData.from)">{{transactionInfoData.from}}</i>
               <img ref="fromAddress" @click="Copy(1)" src="./../../assets/images/copy.png" alt>
             </span>
           </span>
@@ -66,16 +61,8 @@
           <span class="col">
             {{address}}
             <span class="clol col-lg-8">
-              <router-link
-                to
-                @click.native="setToValue(transactionInfoData.to)"
-              >{{transactionInfoData.to}}</router-link>
-              <img
-                ref="toAddress"
-                @click="Copy(2)"
-                src="./../../assets/images/copy.png"
-                alt
-              >
+              <i @click="setToValue(transactionInfoData.to)">{{transactionInfoData.to}}</i>
+              <img ref="toAddress" @click="Copy(2)" src="./../../assets/images/copy.png" alt>
             </span>
           </span>
         </li>
@@ -109,15 +96,22 @@
 </template>
 
 <script>
-import ApexTitle from "@/components/public/ApexTitle.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue";
-import Pagination from "@/components/public/Pagination.vue";
-import Bus from "./../../utils/bus";
-import util from "./../../utils/utils";
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
+import util from "@/utils/utils";
 export default {
   name: "TransactionsInfo",
   components: {
-    Pagination,
     ApexTitle,
     ApexBackGround
   },
@@ -405,10 +399,18 @@ export default {
             color: #f26522;
             cursor: pointer;
           }
+          .changewidth {
+            cursor: pointer;
+            color: #f26522;
+          }
           span {
             float: right;
             span {
               padding-right: 82%;
+            }
+            i {
+              cursor: pointer;
+              color: #f26522;
             }
             img {
               cursor: pointer;

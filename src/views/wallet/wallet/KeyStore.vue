@@ -32,17 +32,18 @@
           >
           <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenPwd">
         </div>
+        <div ref="checkKeyStore" class="checkKeyStore">Import failed</div>
       </div>
-      <div class="create">
-        <router-link to @click.native="keyStoreWallet">CONTNUE</router-link>
+      <div class="create" @click="keyStoreWallet">
+        CONTNUE
       </div>
     </div>
   </div>
 </template>
 
 <script>
-const ApexTitle = () => import("@/components/public/ApexTitle");
-const ApexBackGround = () => import("@/components/public/ApexBackGround");
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
 import util from "@/utils/utils";
 import Bus from "@/utils/bus";
 import db from "@/utils/myDatabase";
@@ -57,7 +58,8 @@ export default {
       keyStore: null,
       pwd: null,
       firstClick: 1,
-      hiddenpwd: null
+      hiddenpwd: null,
+      checkKeyStore: null
     };
   },
 
@@ -72,6 +74,7 @@ export default {
 
   mounted() {
     this.hiddenpwd = this.$refs.hiddenPwd;
+    this.checkKeyStore = this.$refs.checkKeyStore;
   },
 
   methods: {
@@ -107,10 +110,11 @@ export default {
             APAddress: this.walletAddress,
             KStore: this.keyStore
           });
+          this.checkKeyStore.style.visibility = "hidden";
           this.$router.push("/wallet");
         }
       } catch (error) {
-        console.log("密码输入错误");
+        this.checkKeyStore.style.visibility = "visible";
       }
     }
   },
@@ -182,7 +186,15 @@ export default {
         }
       }
     }
+    .checkKeyStore {
+       color: #f26522;
+        position: relative;
+        top: 20px;
+        left: 30px;
+        visibility: hidden;
+    }
     .create {
+      cursor: pointer;
       color: #f26522;
       border: 1px solid #f26522;
       margin-top: 60px;
@@ -191,9 +203,6 @@ export default {
       width: 160px;
       line-height: 30px;
       z-index: 1;
-      a {
-        color: #f26522;
-      }
     }
     .create:hover {
       box-shadow: 2px 2px 8px 2px #f26522;

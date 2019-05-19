@@ -59,15 +59,15 @@
         </div>
       </div>
       <div class="create">
-        <span  @click=" isClick && produceSign()">CREATE</span>
+        <span @click=" isClick && produceSign()">CREATE</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-const ApexTitle = () => import("@/components/public/ApexTitle");
-const ApexBackGround = () => import("@/components/public/ApexBackGround");
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
 import util from "@/utils/utils";
 import ECPair from "bitcoinjs-lib/src/ecpair";
 import Bus from "@/utils/bus";
@@ -135,19 +135,14 @@ export default {
     },
     produceSign() {
       if (this.first == null || this.second == null) {
-          // this.diffPwd.style.visibility = "visible";
+        // this.diffPwd.style.visibility = "visible";
         return;
       }
-      if (
-        this.first !== null &&
-        this.second !== null &&
-        this.isClick == true
-      ) {
+      if (this.first !== null && this.second !== null && this.isClick == true) {
         if (this.first !== this.second) {
           this.diffPwd.style.visibility = "visible";
         } else {
           this.diffPwd.style.visibility = "hidden";
-          console.log(this.isClick);
           let ap = "0548";
           let signParams = {
             privKey: util.utilMethods.producePrivKey()
@@ -162,18 +157,19 @@ export default {
             iv: null
           };
           this.keyStore = util.utilMethods.produce_KeyStore(keyStoreParams);
+          localStorage.setItem("apAddress", this.apAddress);
+          db.APKStore.put({
+            APAddress: this.apAddress,
+            KStore: this.keyStore
+          });
           setTimeout(() => {
             Bus.$emit("privKey", signParams.privKey);
             Bus.$emit("apAddress", this.apAddress);
-            localStorage.setItem("apAddress", this.apAddress);
             Bus.$emit("keyStore", this.keyStore);
-            db.APKStore.put({
-              APAddress: this.apAddress,
-              KStore: this.keyStore
-            });
-          });
-          console.log(signParams.privKey);
-          this.$router.push("/wallet/NewWallet/CreatedKeystore");
+          }, 510);
+          setTimeout(() => {
+            this.$router.push("/wallet/NewWallet/CreatedKeystore");            
+          }, );
         }
       }
     },

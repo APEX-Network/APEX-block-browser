@@ -38,8 +38,8 @@
         <li class="row" v-if="producerInfo.Website !== ''">
           <span class="col">
             Website:
-            <span class="clo col-lg-8">
-              <router-link to @click.native="gotHome">{{producerInfo.Website}}</router-link>
+            <span class="clo col-lg-8 goHome" @click="gotHome" >
+             {{producerInfo.Website}}
             </span>
           </span>
         </li>
@@ -61,15 +61,12 @@
 </template>
 
 <script>
-import ApexTitle from "@/components/public/ApexTitle.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue";
-// import Pagination from "@/components/public/Pagination.vue";
-import Bus from "./../../utils/bus";
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
 
 export default {
   name: "ProducerInfo",
   components: {
-    // Pagination,
     ApexTitle,
     ApexBackGround
   },
@@ -146,6 +143,10 @@ export default {
       }
       li {
         span {
+          .goHome {
+            cursor: pointer;
+            color: #f26522
+          }
           span {
             float: right;
           }

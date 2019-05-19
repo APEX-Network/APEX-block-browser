@@ -116,8 +116,8 @@
 </template>
 
 <script>
-const ApexTitle = () => import("@/components/public/ApexTitle");
-const ApexBackGround = () => import("@/components/public/ApexBackGround");
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
 import util from "@/utils/utils";
 import Bus from "@/utils/bus";
 import db from "@/utils/myDatabase";
@@ -149,7 +149,7 @@ export default {
       toAddress: null,
       message: null,
       inputAmout: null,
-      inputGasePrice: null, //用户输入
+      inputGasePrice: null,
       inputGasePriceValue: null,
       secondInput: null,
       thereInput: null,
@@ -201,7 +201,6 @@ export default {
       this.copyImg.src = require("../../../assets/images/copy.png");
       this.toAddress = val;
       this.check.checktoAddress.style.visibility = "hidden";
-      // sessionStorage.setItem("apAddress", this.address);
     },
     mySelectEvent({ id, text }) {
       this.targetAddressAmount.map(item => {
@@ -237,10 +236,7 @@ export default {
     },
     doToCopy(val) {
       this.$copyText(val).then(
-        function(e) {},
-        function(e) {
-          // console.log(e)
-        }
+        
       );
     },
     Copy(index) {
@@ -287,7 +283,6 @@ export default {
       }
     },
     getAddress() {
-      // Bus.$on("apAddress", data => {
         this.apAddress = localStorage.getItem("apAddress");
         if (this.apAddress !== null) {
           setTimeout(() => {
@@ -300,7 +295,6 @@ export default {
         } else {
           return;
         }
-      // });
       Bus.$on("privKey", data => {
         this.privKey = data;
       });
@@ -327,7 +321,6 @@ export default {
     getToAddress() {
       this.toAddress = this.$refs.to.value;
       if (this.toAddress.length !== 35 || this.toAddress.slice(0, 2) !== "AP") {
-        console.log(this.check.checktoAddress);
         this.check.checktoAddress.style.visibility = "visible";
         this.$refs.to.value = null;
       }
@@ -477,7 +470,7 @@ export default {
       ) {
         this.checkAddress();
         let bigEightPow = new bigdecimal.BigDecimal(String(Math.pow(10, 18)));
-        let tNTwelve = new bigdecimal.BigDecimal(String(Math.pow(10, 12)));
+        let tNTwelve = new bigdecimal.BigDecimal(String(Math.pow(3, 17)));
         let handlFee = new bigdecimal.BigDecimal(
               String(Math.pow(10, 12) * String(this.inputGasePrice) * 30000)
             );
@@ -485,12 +478,10 @@ export default {
           version: "00000001",
           txType: "03",
           from: this.apAddress,
-          to: "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU", //合约地址
+          to: "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU",
           amount: new bigdecimal.BigDecimal(
             String(this.inputAmout)
-          ).multiply(bigEightPow).subtract(
-            handlFee
-          ),
+          ).multiply(bigEightPow),
           nonce: this.nonce,
           data: this.toAddress,
           gasPrice: new bigdecimal.BigDecimal(

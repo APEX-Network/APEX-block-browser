@@ -111,8 +111,8 @@
 </template>
 
 <script>
-const ApexTitle = () => import("@/components/public/ApexTitle");
-const ApexBackGround = () => import("@/components/public/ApexBackGround");
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
 import util from "@/utils/utils";
 import Bus from "@/utils/bus";
 import db from "@/utils/myDatabase";
@@ -141,7 +141,7 @@ export default {
       toAddress: null,
       message: null,
       inputAmout: null,
-      inputGasePrice: null, //用户输入
+      inputGasePrice: null,
       inputGasePriceValue: null,
       secondInput: null,
       thereInput: null,
@@ -192,10 +192,6 @@ export default {
     },
     doCopy(val) {
       this.$copyText(val).then(
-        function(e) {},
-        function(e) {
-          // console.log(e)
-        }
       );
     },
     getAllInputInstances() {
@@ -225,7 +221,6 @@ export default {
         });
     },
     getAddress() {
-      // Bus.$on("apAddress", data => {
       this.apAddress = localStorage.getItem("apAddress");
       if (this.apAddress !== null) {
         setTimeout(() => {
@@ -237,7 +232,6 @@ export default {
       } else {
         return;
       }
-      // });
       Bus.$on("privKey", data => {
         this.privKey = data;
       });
@@ -263,12 +257,10 @@ export default {
           this.check.checktoAddress.style.visibility = "visible";
         }
       } catch (error) {
-        // console.log(error);
       }
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
-      console.log(this.inputAmout);
       let inputlength = this.inputAmout.toString().length;
       if (inputlength >= 2) {
         let errorinput = this.inputAmout.slice(0, 2);
@@ -473,7 +465,6 @@ export default {
           }
         } catch (error) {
           console.log(error);
-          console.log("密码输入错误");
         }
       }
       return;
@@ -581,7 +572,6 @@ export default {
         margin-top: 8px;
         color: #f26522;
         visibility: hidden;
-        // visibility:visible;
       }
     }
     .amount {
@@ -636,7 +626,6 @@ export default {
         margin-top: 8px;
         margin-left: -2px;
         visibility: hidden;
-        // visibility:visible;
       }
     }
     .gasPrice {
@@ -659,7 +648,6 @@ export default {
         box-shadow: 2px 2px 8px 2px #f26522;
       }
       div:nth-child(2) {
-        // margin-left: 5%;
         padding-left: 25px;
         display: inline-block;
       }
@@ -729,7 +717,6 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
-    // margin-top: -38px;
     background: rgba(255, 255, 255, 0);
     justify-content: center;
     align-items: center;

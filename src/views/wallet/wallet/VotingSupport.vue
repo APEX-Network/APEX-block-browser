@@ -117,8 +117,8 @@
 </template>
 
 <script>
-const ApexTitle = () => import("@/components/public/ApexTitle");
-const ApexBackGround = () => import("@/components/public/ApexBackGround");
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
 import util from "@/utils/utils";
 import Bus from "@/utils/bus";
 import db from "@/utils/myDatabase";
@@ -149,7 +149,7 @@ export default {
       toAddress: null,
       message: null,
       inputAmout: null,
-      inputGasePrice: null, //用户输入
+      inputGasePrice: null,
       inputGasePriceValue: null,
       secondInput: null,
       thereInput: null,
@@ -211,7 +211,6 @@ export default {
       this.copyImg.src = require("../../../assets/images/copy.png");
     },
     mySelectEvent({ id, text }) {
-      // console.log({ id, text });
     },
     CopyTo(index) {
       this.copyImg.src = require("../../../assets/images/copied.png");
@@ -220,10 +219,6 @@ export default {
     },
     doToCopy(val) {
       this.$copyText(val).then(
-        function(e) {},
-        function(e) {
-          // console.log(e)
-        }
       );
     },
     Copy(index) {
@@ -233,29 +228,15 @@ export default {
     },
     doCopy(val) {
       this.$copyText(val).then(
-        function(e) {},
-        function(e) {
-          // console.log(e)
-        }
       );
     },
     getProducerList() {
-      // this.$axios
-      //   .post(this.minerBy_url, this.params)
-      //   .then(response => {
-      //     this.producer = response.data.data;
       this.producerAddress = [];
       this.producer = JSON.parse(localStorage.getItem("producer"));
       for (let i = 0; i < this.producer.length; i++) {
         const element = this.producer[i].addr;
         this.producerAddress.push(element);
       }
-      // })
-      // .catch(function(err) {
-      //   if (err.response) {
-      //     console.log(err.response);
-      //   }
-      // });
     },
     getAllInputInstances() {
       this.check.checktoAddress = this.$refs.checktoAddress;
@@ -264,7 +245,6 @@ export default {
       this.check.checkPwd = this.$refs.checkPwd;
     },
     getAddress() {
-      // Bus.$on("apAddress", data => {
       this.apAddress = localStorage.getItem("apAddress");
       if (this.apAddress !== null) {
         setTimeout(() => {
@@ -276,7 +256,6 @@ export default {
       } else {
         return;
       }
-      // });
       Bus.$on("privKey", data => {
         this.privKey = data;
       });
@@ -303,7 +282,6 @@ export default {
     getToAddress() {
       this.toAddress = this.$refs.to.value;
       if (this.toAddress.length !== 35 || this.toAddress.slice(0, 2) !== "AP") {
-        console.log(this.check.checktoAddress);
         this.check.checktoAddress.style.visibility = "visible";
         this.$refs.to.value = null;
       }
@@ -472,20 +450,20 @@ export default {
               String(Math.pow(10, 12) * String(this.inputGasePrice) * 30000)
             );
         let serializParams = {
-          version: "00000001", //不变
-          txType: "03", //不变
+          version: "00000001",
+          txType: "03",
           from: this.apAddress,
-          to: "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU", //合约地址
+          to: "AP1xWDozWvuVah1W86DKtcWzdw1LqMYokMU",
           amount: new bigdecimal.BigDecimal(String(this.inputAmout)).multiply(
             bigEightPow
           ),
-          nonce: this.nonce, //从服务器获取该账户的nonce值
-          data: this.toAddress, //被投地址
+          nonce: this.nonce,
+          data: this.toAddress,
           gasPrice: new bigdecimal.BigDecimal(
             String(this.inputGasePrice)
           ).multiply(tNTwelve),
-          gasLimit: "30000", //程序限制
-          executeTime: "0000000000000000", //不变
+          gasLimit: "30000",
+          executeTime: "0000000000000000",
           votingRefundType: "00"
         };
         if (this.inputAmout == this.allamount) {
@@ -672,7 +650,6 @@ export default {
         margin-top: 8px;
         margin-left: -2px;
         visibility: hidden;
-        // visibility:visible;
       }
     }
     .gasPrice {
@@ -695,7 +672,6 @@ export default {
         box-shadow: 2px 2px 8px 2px #f26522;
       }
       div:nth-child(2) {
-        // margin-left: 5%;
         padding-left: 25px;
         display: inline-block;
       }
@@ -765,7 +741,6 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
-    // margin-top: -38px;
     background: rgba(255, 255, 255, 0);
     justify-content: center;
     align-items: center;
@@ -774,7 +749,6 @@ export default {
       margin: auto;
       width: 310px;
       height: 180px;
-      // margin-left: 362px;
       background: #ffffff;
       div:nth-child(1) {
         color: #f26522;

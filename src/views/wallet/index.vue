@@ -42,7 +42,6 @@ export default {
     TransactionsList
   },
   created() {
-    // this.checkDB();
     if (!!localStorage.getItem("apAddress")) {
       this.APAddress.push(localStorage.getItem("apAddress"));
     }
@@ -87,7 +86,6 @@ export default {
 .home {
   width: 100%;
   height: 100%;
-  // background: url(./../../assets/images/shared/yunshi.png) 34% 58% no-repeat;
   .emptyWallet {
     width: 100%;
     height: 100%;

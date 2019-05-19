@@ -1,9 +1,7 @@
 <template>
   <div class="TxFBlock">
-    <p class="bheight">
-      <router-link to @click.native="setHeightValue(blockHeight)">{{blockHeight}}</router-link>
-    </p>
-    <apex-back-ground />
+    <p class="bheight" @click="setHeightValue(blockHeight)">{{blockHeight}}</p>
+    <apex-back-ground/>
     <div class="data-table">
       <ul class="table-ul">
         <li class="row title">{{title}}</li>
@@ -16,9 +14,7 @@
         </li>
         <li v-for="(item,index) in dataList" :key="index" class="row">
           <span class="col height">{{item.index}}</span>
-          <span class="col col-lg-6 txHash">
-            <router-link to @click.native="setHashValue(item.txHash)">{{item.txHash}}</router-link>
-          </span>
+          <span class="col col-lg-6 ttxHash" @click="setHashValue(item.txHash)">{{item.txHash}}</span>
           <span
             class="col"
             :class="objectClass"
@@ -53,9 +49,18 @@
   </div>
 </template>
 <script>
-import ApexBackGround from "@/components/public/ApexBackGround.vue";
-import ApexTitle from "@/components/public/ApexTitle.vue";
-import Bus from "@/utils/bus";
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
 import util from "@/utils/utils";
 
 export default {
@@ -121,7 +126,7 @@ export default {
           this.totalNumber = res;
           for (let i = 0; i < this.totalNumber.length; i++) {
             const element = this.totalNumber[i];
-            element["index"] = this.index++;            
+            element["index"] = this.index++;
           }
           this.count = res.length;
           if (this.count == 0) {
@@ -267,7 +272,7 @@ export default {
       this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
       this.start = this.totalPage - 1;
-      this.pageNumber =this.totalPage + "-" + this.totalPage;
+      this.pageNumber = this.totalPage + "-" + this.totalPage;
       this.dataList = this.pageArr[this.start];
       for (let i = 0; i < this.dataList.length; i++) {
         const element = this.dataList[i];
@@ -384,18 +389,8 @@ export default {
     position: absolute;
     padding-top: 11px;
     padding-left: 180px;
-    a {
-      cursor: pointer;
-      color: #f26522;
-    }
-  }
-  /deep/ .title {
-    .apex-title {
-      p {
-        cursor: pointer;
-        color: #f26522;
-      }
-    }
+    cursor: pointer;
+    color: #f26522;
   }
   .data-table {
     height: 100%;
@@ -415,6 +410,11 @@ export default {
         }
         .txHash {
           max-width: 250px;
+        }
+        .ttxHash {
+          max-width: 250px;
+          cursor: pointer;
+          color: #f26522;
         }
         .from {
           max-width: 250px;

@@ -10,7 +10,7 @@
       <vue-scroll :ops="ops">
         <li v-for="(item,index) in transactions" :key="index">
           <div class="bottom">
-            <router-link to @click.native="setClickValue(item.txHash)">{{item.txHash}}</router-link>
+            <span class="hash" @click="setClickValue(item.txHash)">{{item.txHash}}</span>
             <span>{{item.refBlockTime}}</span>
           </div>
         </li>
@@ -20,13 +20,10 @@
 </template>
 
 <script>
-import Pagination from "@/components/public/Pagination.vue";
-import Bus from "./../../utils/bus";
-import util from "./../../utils/utils";
+import util from "@/utils/utils";
 export default {
   name: "transactionsList",
   components: {
-    Pagination
   },
   data() {
     return {
@@ -106,14 +103,7 @@ export default {
             }
           });
       }
-    },
-    offListener() {
-      Bus.$off("txHash");
-      Bus.$off("accountValue");
     }
-  },
-  beforeDestroy() {
-    this.offListener();
   }
 };
 </script>

@@ -9,18 +9,15 @@
     <ul class="apex-list">
       <vue-scroll :ops="ops">
         <li ref="bList" v-for="(item,index) in blocksList" :key="index.id">
-          <!-- <transition name="bounceUp" tag="li"> -->
           <div>
             <div class="top">
               <p>Block Height {{item.height}}</p>
-              <!-- <span>{{item.size}} Bytes</span> -->
             </div>
             <div class="bottom">
-              <router-link to @click.native="setClickValue(item.blockHash)">{{item.blockHash}}</router-link>
+              <span class="hash" @click="setClickValue(item.blockHash)">{{item.blockHash}}</span>
               <span>{{item.timeStamp}}</span>
             </div>
           </div>
-          <!-- </transition> -->
         </li>
       </vue-scroll>
     </ul>
@@ -28,10 +25,8 @@
 </template>
 
 <script>
-import Bus from "./../../utils/bus";
-import util from "./../../utils/utils";
-import utils from "./../../utils/utils";
-require("vue2-animate/dist/vue2-animate.min.css");
+import Bus from "@/utils/bus";
+import util from "@/utils/utils";
 export default {
   name: "blockslist",
   components: {},
@@ -66,37 +61,9 @@ export default {
     changeColor() {
       this.newBlock = this.$refs.bList;
       this.newBlock[0].style.opacity = "0";
-      // this.newBlock[1].style.opacity = "0";
-      // this.newBlock[2].style.opacity = "0";
-      // this.newBlock[3].style.opacity = "0";
-      // this.newBlock[4].style.opacity = "0";
-      // this.newBlock[5].style.opacity = "0";
-      // this.newBlock[6].style.opacity = "0";
-      // this.newBlock[7].style.opacity = "0";
-      // this.newBlock[8].style.opacity = "0";
-      // this.newBlock[9].style.opacity = "0";
-
       setTimeout(() => {
         this.newBlock[0].style.opacity = "1";
-        this.newBlock[0].style.transition = "opacity 0.1s linear";
-        // this.newBlock[1].style.opacity = "1";
-        // this.newBlock[1].style.transition = "opacity 0.2s linear";
-        // this.newBlock[2].style.opacity = "1";
-        // this.newBlock[2].style.transition = "opacity 0.3s linear";
-        // this.newBlock[3].style.opacity = "1";
-        // this.newBlock[3].style.transition = "opacity 0.4s linear";
-        // this.newBlock[4].style.opacity = "1";
-        // this.newBlock[4].style.transition = "opacity 0.5s linear";
-        // this.newBlock[5].style.opacity = "1";
-        // this.newBlock[5].style.transition = "opacity 0.6s linear";
-        // this.newBlock[6].style.opacity = "1";
-        // this.newBlock[6].style.transition = "opacity 0.7s linear";
-        // this.newBlock[7].style.opacity = "1";
-        // this.newBlock[7].style.transition = "opacity 0.8s linear";
-        // this.newBlock[8].style.opacity = "1";
-        // this.newBlock[8].style.transition = "opacity 0.9s linear";
-        // this.newBlock[9].style.opacity = "1";
-        // this.newBlock[9].style.transition = "opacity 1s linear";
+        this.newBlock[0].style.transition = "opacity 0.5s linear";
       }, this.time);
     },
     getBlocksList() {
@@ -134,7 +101,6 @@ export default {
       });
     },
     offListener() {
-      Bus.$off("clickValue");
       Bus.$off("lastBlock");
     }
   },
@@ -145,29 +111,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-// .rippleEffect {
-//   /* 执行时长0.6s、效果为渐变(linear)、名称为rippleDrop的动画 */
-//   -webkit-animation: rippleDrop .6s linear;
-//   animation: rippleDrop .6s linear;
-// }
-
-// @keyframes rippleDrop {
-//   /* 下面是动画100%时候的状态 */
-//   100% {
-//     transform: scale(2);
-//     -webkit-transform: scale(2);
-//     opacity: 0;
-//   }
-// }
-
-// @-webkit-keyframes rippleDrop {
-//   100% {
-//     transform: scale(2);
-//     -webkit-transform: scale(2);
-//     opacity: 0;
-//   }
-// }
-
 .apex-modul {
   .apex-list {
     li:nth-child(0) {

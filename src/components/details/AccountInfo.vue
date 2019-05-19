@@ -1,9 +1,9 @@
 <template>
   <div class="AccountInfo">
-    <apex-back-ground />
+    <apex-back-ground/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
-                <li class="row title">{{title}}</li>
+        <li class="row title">{{title}}</li>
         <li class="row">
           <span class="col">Address</span>
           <span class="col col-lg-8 adressCPX" ref="address">
@@ -37,16 +37,15 @@
             <span class="col to">To</span>
             <span class="col amount">Amount</span>
           </li>
-          <li class="row" >
-           <span class="col noTx" v-if="count == 0 || !!noData">{{noTransactions}}</span>
-         </li>
+          <li class="row">
+            <span class="col noTx" v-if="count == 0">{{noTransactions}}</span>
+          </li>
           <li v-for="(list,index) in transactions" :key="index" class="row" v-show="count !== 0">
             <span class="col ttHash">
               <div class="bottom">
-                <router-link
-                  to
-                  @click.native="setTxHash(list.txHash)"
-                >{{list.txHash}}</router-link>
+                <span class="col col-lg-6" @click="setTxHash(list.txHash)">
+                {{list.txHash}}
+                </span>
               </div>
             </span>
             <span
@@ -55,15 +54,12 @@
               @click="currentAccountInfo(list.from)"
             >{{getaddress(list.from)}}</span>
             <span class="col to" @click="currentAccountInfo(list.to)">{{getaddress(list.to)}}</span>
-            <span class="col amount">
-              {{list.amount}} CPX
-            </span>
+            <span class="col amount">{{list.amount}} CPX</span>
           </li>
         </ul>
-        <!-- <Pagination/> -->
-        <div class="apex-pagination" v-if="!!noData">
+        <div class="apex-pagination" v-if="count !== 0">
           <div class="pagination-content">
-            <a class="first" @click=" getFirst()">First</a>
+            <a class="first" @click="getFirst()">First</a>
             <img
               ref="left"
               class="prev"
@@ -88,16 +84,23 @@
 </template>
 
 <script>
-import ApexTitle from "@/components/public/ApexTitle.vue";
-import ApexBackGround from "@/components/public/ApexBackGround.vue";
-// import Pagination from "@/components/public/Pagination.vue";
-import Bus from "./../../utils/bus";
-import util from "./../../utils/utils";
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
+import util from "@/utils/utils";
 
 export default {
   name: "AccountInfo",
   components: {
-    // Pagination,
     ApexTitle,
     ApexBackGround
   },
@@ -157,7 +160,6 @@ export default {
       }
     },
     getaddress(address) {
-      // !address ? this.objectClass.emptyFrom = true : this.objectClass.emptyFrom = false;
       let x = address.slice(0, 8);
       let y = address.slice(-8);
       return !address ? "Miner Reward" : x + "..." + y;
@@ -189,26 +191,29 @@ export default {
           .then(response => {
             let res = response.data.data;
             this.noData = res;
+            if (this.noData == null) {
+              this.count = 0;
+            }
             if (!!res) {
               let result = res.balance.toString().indexOf(".");
-            if (result > -1) {
-              let pointLength = res.balance.toString().split(".")[1].length;
-              if (pointLength > 8) {
-                this.Balance =
-                  res.balance.toString().split(".")[0] +
-                  "." +
-                  res.balance
-                    .toString()
-                    .split(".")[1]
-                    .substring(0, 8);
+              if (result > -1) {
+                let pointLength = res.balance.toString().split(".")[1].length;
+                if (pointLength > 8) {
+                  this.Balance =
+                    res.balance.toString().split(".")[0] +
+                    "." +
+                    res.balance
+                      .toString()
+                      .split(".")[1]
+                      .substring(0, 8);
+                }
+                if (pointLength <= 8) {
+                  this.Balance = res.balance;
+                }
               }
-              if (pointLength <= 8) {
+              if (result == -1) {
                 this.Balance = res.balance;
               }
-            }
-            if (result == -1) {
-              this.Balance = res.balance;
-            }
             }
           })
           .catch(function(err) {
@@ -598,9 +603,9 @@ export default {
         max-width: 100%;
         border-top: #0000 2px solid;
         & > li {
-        .noTx {
-          padding-left: 20px;
-        }
+          .noTx {
+            padding-left: 20px;
+          }
           .ttHash {
             max-width: 335px;
           }
@@ -622,8 +627,7 @@ export default {
           }
           .to {
             max-width: 232px;
-            // padding-left: 50px;
-                padding-left: 14px;
+            padding-left: 14px;
             color: #f26522;
             cursor: pointer;
           }
@@ -651,17 +655,19 @@ export default {
             white-space: nowrap;
             .bottom {
               margin-left: 20px;
-              padding-left: 40px;
               box-sizing: border-box;
               font-family: "Regular";
               background: url(./../../assets/images/shared/icon-fix.png) left
                 5px no-repeat;
-              a {
+              span {
                 overflow: hidden;
                 white-space: nowrap;
                 max-width: 232px;
                 color: #f26522;
                 margin-top: 5px;
+                cursor: pointer;
+                text-overflow: ellipsis;
+                display: inline-block;
               }
             }
           }

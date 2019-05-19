@@ -47,8 +47,8 @@
 <script>
 const PublicNav = r => require.ensure([], () => r(require("@/components/publicnav/index")), 'Producer');
 const PublicFooter = r => require.ensure([], () => r(require("@/components/publicfooter/index")), 'Producer');
-const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'Producer');
-const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'Producer');
+const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
+const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
 
 import Bus from "@/utils/bus";
 import utils from "@/utils/utils";
