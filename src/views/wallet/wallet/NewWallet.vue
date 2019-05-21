@@ -66,10 +66,19 @@
 </template>
 
 <script>
-const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
-const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
 import util from "@/utils/utils";
-import ECPair from "bitcoinjs-lib/src/ecpair";
 import Bus from "@/utils/bus";
 import db from "@/utils/myDatabase";
 
@@ -101,11 +110,6 @@ export default {
     ApexBackGround,
     ApexTitle
   },
-
-  computed: {},
-
-  beforeMount() {},
-
   mounted() {
     this.getInstances();
   },
@@ -135,12 +139,13 @@ export default {
     },
     produceSign() {
       if (this.first == null || this.second == null) {
-        // this.diffPwd.style.visibility = "visible";
+        this.diffPwd.style.visibility = "visible";
         return;
       }
       if (this.first !== null && this.second !== null && this.isClick == true) {
         if (this.first !== this.second) {
           this.diffPwd.style.visibility = "visible";
+          return;
         } else {
           this.diffPwd.style.visibility = "hidden";
           let ap = "0548";
@@ -168,8 +173,8 @@ export default {
             Bus.$emit("keyStore", this.keyStore);
           }, 510);
           setTimeout(() => {
-            this.$router.push("/wallet/NewWallet/CreatedKeystore");            
-          }, );
+            this.$router.push("/wallet/NewWallet/CreatedKeystore");
+          });
         }
       }
     },
@@ -332,13 +337,10 @@ export default {
       width: 120px;
       line-height: 30px;
       z-index: 1;
-      span {
-        color: #f26522;
-        cursor: pointer;
-      }
-      a:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
-      }
+      cursor: pointer;
+    }
+    .create:hover {
+      box-shadow: 2px 2px 8px 2px #f26522;
     }
   }
 }

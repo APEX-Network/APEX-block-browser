@@ -81,11 +81,6 @@ export default {
     ApexBackGround,
     ApexTitle
   },
-
-  computed: {},
-
-  beforeMount() {},
-
   mounted() {
     this.hiddenpwd = this.$refs.hiddenpwd;
     this.checkPriv = this.$refs.checkPriv;

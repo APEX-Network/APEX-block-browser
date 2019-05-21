@@ -7,16 +7,15 @@
         <li class="row">
           <span class="col">Address</span>
           <span class="col col-lg-8 adressCPX" ref="address">
-            <i>
+            <p>
               {{accountTransaction_param.address}}
               <img
                 ref="img"
                 @click="Copy()"
-                style="cursor: pointer; padding-left: 10px;"
                 src="./../../assets/images/copy.png"
                 alt
               >
-            </i>
+            </p>
           </span>
         </li>
         <li class="row">
@@ -584,6 +583,10 @@ export default {
       .adressCPX {
         .row {
           padding: 0 8px 0 69px;
+        }
+        img {
+          cursor: pointer; 
+          padding-left: 10px;
         }
       }
     }

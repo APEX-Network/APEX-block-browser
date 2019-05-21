@@ -8,11 +8,9 @@
     </p>
     <ul class="apex-list">
       <vue-scroll :ops="ops">
-        <li  ref="tList" v-for="(item,index) in transactions" :key="index">
+        <li ref="tList" v-for="(item,index) in transactions" :key="index">
           <div class="bottom">
-            <span class="hash"
-              @click="setClickValue(item.txHash)"
-            >{{item.txHash}}</span>
+            <span class="hash" @click="setClickValue(item.txHash)">{{item.txHash}}</span>
             <span>{{item.refBlockTime}}</span>
           </div>
         </li>
@@ -25,19 +23,16 @@
 import util from "@/utils/utils";
 export default {
   name: "HomeTransactionsList",
-  components: {
-    
-  },
+  components: {},
   data() {
     return {
-      title: "Transactions",
       transactions: [],
       ops: {},
       clickValue: null,
       transaction_list_url: "/api/v1.0/transactions/transactionList",
       parmas: {
         start: "0",
-        pageSize: "20"
+        pageSize: "10"
       },
       time: 500
     };
@@ -56,10 +51,12 @@ export default {
     changeColor() {
       this.newTransaction = this.$refs.tList;
       this.newTransaction[0].style.opacity = "0";
-      setTimeout(() => {
-        this.newTransaction[0].style.opacity = "1";
-        this.newTransaction[0].style.transition = "opacity 0.5s linear";
-      }, this.time);
+      if (!!this.transactions) {
+        setTimeout(() => {
+          this.newTransaction[0].style.opacity = "1";
+          this.newTransaction[0].style.transition = "opacity 0.5s linear";
+        }, this.time);
+      }
     },
     getAllTransactions() {
       this.$axios
@@ -68,7 +65,6 @@ export default {
           this.transactions = [];
           let res = response.data.data;
           let serverTime = response.headers.date;
-          // this.time = new Date().getSeconds() - new Date(serverTime).getSeconds();
           let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
@@ -77,8 +73,8 @@ export default {
           }
           this.transactions = res;
           if (this.transactions !== []) {
-              this.changeColor();
-            }
+            this.changeColor();
+          }
         })
         .catch(function(err) {
           if (err.response) {
@@ -87,12 +83,12 @@ export default {
         });
     },
     setClickValue(data) {
-       this.$router.push({
-          path: "/transactions/TransactionsInfo",
-          query: {
-            id: data
-          }
-        });
+      this.$router.push({
+        path: "/transactions/TransactionsInfo",
+        query: {
+          id: data
+        }
+      });
     }
   }
 };

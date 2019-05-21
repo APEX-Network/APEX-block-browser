@@ -53,17 +53,6 @@
               </p>
             </a>
           </li>
-          <!-- <li>
-            <a href="https://t.me/APEXcommunityCN" target="_blank">
-              <div class="img-box">
-                <img src="../../assets/bottom/logo-1.png" alt>
-              </div>
-              <p>
-                Telegram
-                (China)
-              </p>
-            </a>
-          </li>-->
           <li class="wechat">
             <a href="javascript:;">
               <div class="img-box">

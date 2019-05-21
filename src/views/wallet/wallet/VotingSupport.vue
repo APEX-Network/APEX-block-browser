@@ -91,9 +91,7 @@
         <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         <div ref="checkPwd">Password Incorrect</div>
       </div>
-      <div class="send" @click="SendTransfer()">
-        <router-link to>SEND</router-link>
-      </div>
+      <div class="send" @click="SendTransfer()">SEND</div>
     </div>
     <div class="dialog" ref="dialog">
       <div class="confirm" ref="confirm">
@@ -117,8 +115,18 @@
 </template>
 
 <script>
-const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
-const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
 import util from "@/utils/utils";
 import Bus from "@/utils/bus";
 import db from "@/utils/myDatabase";
@@ -210,16 +218,14 @@ export default {
       this.toAddress = val;
       this.copyImg.src = require("../../../assets/images/copy.png");
     },
-    mySelectEvent({ id, text }) {
-    },
+    mySelectEvent({ id, text }) {},
     CopyTo(index) {
       this.copyImg.src = require("../../../assets/images/copied.png");
       let getCopyText = this.toAddress;
       this.doToCopy(getCopyText);
     },
     doToCopy(val) {
-      this.$copyText(val).then(
-      );
+      this.$copyText(val).then();
     },
     Copy(index) {
       this.txIdImg.src = require("../../../assets/images/copied.png");
@@ -227,8 +233,7 @@ export default {
       this.doCopy(getCopyText);
     },
     doCopy(val) {
-      this.$copyText(val).then(
-      );
+      this.$copyText(val).then();
     },
     getProducerList() {
       this.producerAddress = [];
@@ -447,8 +452,8 @@ export default {
         let bigEightPow = new bigdecimal.BigDecimal(String(Math.pow(10, 18)));
         let tNTwelve = new bigdecimal.BigDecimal(String(Math.pow(10, 12)));
         let handlFee = new bigdecimal.BigDecimal(
-              String(Math.pow(10, 12) * String(this.inputGasePrice) * 30000)
-            );
+          String(Math.pow(10, 12) * String(this.inputGasePrice) * 30000)
+        );
         let serializParams = {
           version: "00000001",
           txType: "03",
@@ -469,9 +474,9 @@ export default {
         if (this.inputAmout == this.allamount) {
           serializParams.amount = new bigdecimal.BigDecimal(
             String(this.inputAmout)
-          ).multiply(bigEightPow).subtract(
-            handlFee
-          );
+          )
+            .multiply(bigEightPow)
+            .subtract(handlFee);
         }
 
         this.message = util.utilMethods.produce_message(serializParams);
@@ -595,7 +600,6 @@ export default {
         margin-top: 8px;
         color: #f26522;
         visibility: hidden;
-        // visibility:visible;
       }
     }
     .amount {
@@ -727,13 +731,10 @@ export default {
       line-height: 30px;
       border-radius: 4px;
       z-index: 2;
-      a {
-        color: #ffffff;
-        border-radius: 4px;
-      }
-      a:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
-      }
+      cursor: pointer;
+    }
+    .send:hover {
+      box-shadow: 2px 2px 8px 2px #f26522;
     }
   }
   .dialog {

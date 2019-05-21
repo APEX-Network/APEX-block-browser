@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import Vuex from 'vuex'
+// import Vuex from 'vuex'
 import store from './vuex/store'
 import i18n from './lang/i18n'
 import echarts from 'echarts'
@@ -32,7 +32,7 @@ Vue.prototype.$tip = Vtip.tip;
 
 VueClipboard.config.autoSetContainer = true;
 Vue.use(VueClipboard)
-Vue.use(Vuex)
+// Vue.use(Vuex)
 Vue.use(Vtip.directive)
 Vue.config.productionTip = false
 Vue.use(vuescroll, {

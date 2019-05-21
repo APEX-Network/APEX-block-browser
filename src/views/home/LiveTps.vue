@@ -34,7 +34,16 @@ export default {
         .then(response => {
           this.data = [];
           this.alldata = [];
-          let res = response.data.data.slice(response.data.data.length-8, response.data.data.length-1);
+          let resData = response.data.data;
+          let res;
+          if (resData.length >= 9) {
+            res = resData.slice(
+              resData.length - 8,
+              resData.length - 1
+            );
+          } else {
+            res = resData.slice(0, resData.length - 1);
+          } 
           let time = [];
           let data = [];
           let tooltps = [];
@@ -42,7 +51,7 @@ export default {
             time.push(util.utilMethods.tierAllTime(res[i].timeStamp));
             data.push(res[i].txs);
             tooltps.push(util.utilMethods.UTCallTime(res[i].timeStamp));
-          }          
+          }
           this.alldata.push({ txs: data, timeStamp: tooltps });
           this.time = time;
           this.tooltps = tooltps;
@@ -75,7 +84,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          boundaryGap:  true,
+          boundaryGap: true,
           data: this.time,
           show: true,
           axisLine: {
@@ -91,7 +100,7 @@ export default {
           }
         },
         yAxis: {
-           type: 'value',
+          type: "value",
           show: false,
           axisTick: {
             show: false
@@ -99,8 +108,8 @@ export default {
           splitLine: {
             show: false
           },
-          axisLine:{show:false},
-          boundaryGap : true,
+          axisLine: { show: false },
+          boundaryGap: true
         },
         tooltip: {
           show: true,
@@ -113,10 +122,7 @@ export default {
           textStyle: {
             color: "#ffffff",
             fontSize: "14px"
-          },
-          // formatter: (data) => {
-          //   console.log(data);
-          // }
+          }
         },
         series: [
           {
@@ -135,7 +141,6 @@ export default {
             },
             areaStyle: {
               opacity: 0.1,
-              // color:'#fff'
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 {
                   offset: 0,

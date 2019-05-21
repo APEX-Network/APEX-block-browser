@@ -61,10 +61,12 @@ export default {
     changeColor() {
       this.newBlock = this.$refs.bList;
       this.newBlock[0].style.opacity = "0";
-      setTimeout(() => {
-        this.newBlock[0].style.opacity = "1";
-        this.newBlock[0].style.transition = "opacity 0.5s linear";
-      }, this.time);
+      if (!!this.blocksList) {
+        setTimeout(() => {
+          this.newBlock[0].style.opacity = "1";
+          this.newBlock[0].style.transition = "opacity 0.5s linear";
+        }, this.time);
+      }
     },
     getBlocksList() {
       this.$axios

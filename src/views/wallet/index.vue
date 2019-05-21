@@ -28,7 +28,6 @@
 </template>
 <script>
 import Bus from "@/utils/bus";
-import db from "@/utils/myDatabase";
 const WalletPage = r => require.ensure([], () => r(require("@/views/wallet/wallet/walletPage")), 'Wallet');
 const TransfersList = r => require.ensure([], () => r(require("@/components/list/TransfersList")), 'Wallet');
 const TransactionsList = r => require.ensure([], () => r(require("@/components/list/TransactionsList")), 'Wallet');
@@ -57,19 +56,6 @@ export default {
     this.getlastAddress();
   },
   methods: {
-    checkDB() {
-      try {
-        this.getAllAddress = db.APKStore.where("APAddress")
-          .above(0)
-          .toArray(APKStore => {
-            APKStore.forEach(v => {
-              this.APAddress.push(v.APAddress);
-            });
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    },
     getlastAddress() {
       Bus.$on("apAddress", data => {
         this.apAddress = data;

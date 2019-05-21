@@ -13,7 +13,6 @@
           <span class="col time">{{list.refBlockTime }}</span>
         </li>
       </ul>
-      <!-- <Pagination ref="pagInation" /> -->
       <div class="apex-pagination">
         <div class="pagination-content">
           <a class="first" @click="getFirst">First</a>
@@ -42,13 +41,11 @@
 <script>
 const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
 const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
-import Bus from "@/utils/bus";
 import util from "@/utils/utils";
 
 export default {
   name: "Transactions",
   components: {
-    // Pagination,
     ApexTitle,
     ApexBackGround
   },
@@ -98,7 +95,6 @@ export default {
             id: data
           }
         });
-        // Bus.$emit("txHash", e.target.innerHTML);
       }
     },
      getAllTransactions() {
@@ -117,6 +113,7 @@ export default {
         })
         .catch(function(err) {
           if (err.response) {
+            console.log(err.response);
           }
         });
     },
@@ -145,6 +142,7 @@ export default {
           })
           .catch(function(err) {
             if (err.response) {
+              console.log(err.response);
             }
           });
         if (this.start == 10) {
@@ -181,6 +179,7 @@ export default {
           })
           .catch(function(err) {
             if (err.response) {
+              console.log(err.response);
             }
           });
         if (this.start == 0) {
@@ -201,7 +200,6 @@ export default {
         .then(response => {
           let res = response.data.data;
           let serverTime = response.headers.date;
-
           let time;
           for (let i = 0; i < res.length; i++) {
             const item = res[i];
@@ -212,6 +210,7 @@ export default {
         })
         .catch(function(err) {
           if (err.response) {
+            console.log(err.response);
           }
         });
       return;
@@ -237,16 +236,11 @@ export default {
         })
         .catch(function(err) {
           if (err.response) {
+            console.log(err.response);
           }
         });
       return;
-    },
-    offListener() {
-      Bus.$off("txHash");
     }
-  },
-  beforeDestroy() {
-    this.offListener();
   }
 };
 </script>

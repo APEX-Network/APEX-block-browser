@@ -24,7 +24,6 @@
             <img
               ref="img"
               @click=" privKey !== null && Copy()"
-              style="cursor: pointer; padding-left: 10px;float: right; padding-bottom: 6px;"
               src="./../../../assets/images/copy.png"
               alt
             >
@@ -32,16 +31,24 @@
           <span ref="copyed" class="s2">Copy Successed</span>
         </p>
       </div>
-      <div class="create2">
-        <router-link to @click.native="getAddress">CONTINUE</router-link>
-      </div>
+      <div class="create2" @click="getAddress">CONTINUE</div>
     </div>
   </div>
 </template>
 
 <script>
-const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
-const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
 import Bus from "@/utils/bus";
 const ECPair = require("bitcoinjs-lib/src/ecpair");
 
@@ -102,8 +109,7 @@ export default {
       this.tip.style.visibility = "visible";
     },
     doCopy(val) {
-      this.$copyText(val).then(
-      );
+      this.$copyText(val).then();
     }
   },
 
@@ -116,7 +122,6 @@ export default {
   height: 100%;
   .bg {
     height: calc(100% - 113px);
-
   }
   .title {
     padding-left: 18px;
@@ -167,6 +172,12 @@ export default {
           position: absolute;
           padding-top: 8px;
           border-bottom: 1px solid #ffffff;
+          img {
+            cursor: pointer;
+            padding-left: 10px;
+            float: right;
+            padding-bottom: 6px;
+          }
         }
       }
       div {
@@ -199,12 +210,10 @@ export default {
       width: 220px;
       line-height: 30px;
       z-index: 1;
-      a {
-        color: #f26522;
-      }
-      a:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
-      }
+      cursor: pointer;
+    }
+    .create2:hover {
+      box-shadow: 2px 2px 8px 2px #f26522;
     }
   }
 }

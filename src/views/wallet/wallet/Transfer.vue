@@ -77,7 +77,7 @@
           v-model="pwd"
           @change="getPwd"
           onKeyUp="value=value.replace(/[\W]/g,'')"
-          placeholder="Please enter the  password"
+          placeholder="Please enter the password"
           autocomplete="new-password"
           readonly
           onfocus="this.removeAttribute('readonly');"
@@ -85,9 +85,7 @@
         <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
         <div ref="checkPwd">Password Incorrect</div>
       </div>
-      <div class="send" @click="SendTransfer()">
-        <router-link to>SEND</router-link>
-      </div>
+      <div class="send" @click="SendTransfer()">SEND</div>
     </div>
     <div class="dialog" ref="dialog">
       <div class="confirm" ref="confirm">
@@ -111,8 +109,18 @@
 </template>
 
 <script>
-const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
-const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
 import util from "@/utils/utils";
 import Bus from "@/utils/bus";
 import db from "@/utils/myDatabase";
@@ -191,8 +199,7 @@ export default {
       this.doCopy(getCopyText);
     },
     doCopy(val) {
-      this.$copyText(val).then(
-      );
+      this.$copyText(val).then();
     },
     getAllInputInstances() {
       this.check.checktoAddress = this.$refs.checktoAddress;
@@ -256,8 +263,7 @@ export default {
           this.$refs.to.value = null;
           this.check.checktoAddress.style.visibility = "visible";
         }
-      } catch (error) {
-      }
+      } catch (error) {}
     },
     getInputAmout() {
       this.inputAmout = this.$refs.inputAmout.value;
@@ -417,8 +423,8 @@ export default {
         let bigEightPow = new bigdecimal.BigDecimal(String(Math.pow(10, 18)));
         let tNTwelve = new bigdecimal.BigDecimal(String(Math.pow(10, 12)));
         let handlFee = new bigdecimal.BigDecimal(
-              String(Math.pow(10, 12) * String(this.inputGasePrice) * 21000)
-            );
+          String(Math.pow(10, 12) * String(this.inputGasePrice) * 21000)
+        );
         let serializParams = {
           version: "00000001",
           txType: "01",
@@ -502,14 +508,16 @@ export default {
             let y = this.txId.slice(-6);
             this.txId = x + "......" + y;
           });
-      } catch (error) {
-        this.id = "originTx:";
-        this.txId = this.serialized_transaction;
-        this.copyTxId = this.txId;
-        let x = this.txId.slice(0, 6);
-        let y = this.txId.slice(-6);
-        this.txId = x + "......" + y;
-      }
+        // if (this.txId !== null) {
+        //   this.id = "originTx:";
+        //   this.txId = this.serialized_transaction;
+        //   this.copyTxId = this.txId;
+        //   let x = this.txId.slice(0, 6);
+        //   let y = this.txId.slice(-6);
+        //   this.txId = x + "......" + y;
+        //   console.log(11231231);
+        // }
+      } catch (error) {}
     }
   },
 
@@ -703,13 +711,10 @@ export default {
       line-height: 30px;
       border-radius: 4px;
       z-index: 2;
-      a {
-        color: #ffffff;
-        border-radius: 4px;
-      }
-      a:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
-      }
+      cursor: pointer;
+    }
+    .send:hover {
+      box-shadow: 2px 2px 8px 2px #f26522;
     }
   }
   .dialog {

@@ -16,7 +16,6 @@
 import publicnav from "@/components/publicnav/index.vue";
 import publicfooter from "@/components/publicfooter/index.vue";
 import db from "@/utils/myDatabase";
-import Bus from "@/utils/bus";
 
 export default {
   name: "App",
@@ -58,7 +57,13 @@ export default {
         .then(response => {
           this.producer = [];
           this.Rank = 1;
-          this.producer = response.data.data;
+          this.producer = JSON.parse(JSON.stringify(response.data.data, (key, value) => {
+            if (key == 'address' || key == 'blockCount' || key == 'describe' || key == 'name' || key == 'votes' || key == 'webSite' || key == 'zone') {
+              return undefined;
+            } else {
+              return value
+            }
+          }))
           for (let i = 0; i < this.producer.length; i++) {
             this.producer[i]["Rank"] = this.Rank++;
           }

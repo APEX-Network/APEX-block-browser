@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import home from '@/views/home/index'
 const home = () => import('@/views/home/index');
 const wallet = () => import('@/views/wallet/index');
 const blocks = () => import('@/views/blocks/index');

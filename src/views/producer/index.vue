@@ -50,8 +50,6 @@ const PublicFooter = r => require.ensure([], () => r(require("@/components/publi
 const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
 const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
 
-import Bus from "@/utils/bus";
-import utils from "@/utils/utils";
 export default {
   name: "Producer",
   components: {
@@ -129,7 +127,28 @@ export default {
             }
           }
           for (let i = 0; i < this.producer.length; i++) {
+            const element = this.producer[i];
             this.producer[i]["Rank"] = this.Rank++;
+            let amount = this.producer[i].votes;
+            let result = amount.toString().indexOf(".");
+            if (result > -1) {
+              let pointLength = amount.toString().split(".")[1].length;
+              if (pointLength > 2) {
+                element["votes"] =
+                  amount.toString().split(".")[0] +
+                  "." +
+                  amount
+                    .toString()
+                    .split(".")[1]
+                    .substring(0, 2);
+              }
+              if (pointLength <= 2) {
+                element["votes"] = amount;
+              }
+            }
+            if (result == -1) {
+              element["votes"] = amount;
+            }
           }
           localStorage.setItem("producer", JSON.stringify(this.producer));
         })

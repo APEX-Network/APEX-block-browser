@@ -67,11 +67,7 @@ export default {
     ApexBackGround,
     ApexTitle
   },
-
-  computed: {},
-
-  beforeMount() {},
-
+  
   mounted() {
     this.hiddenpwd = this.$refs.hiddenPwd;
     this.checkKeyStore = this.$refs.checkKeyStore;

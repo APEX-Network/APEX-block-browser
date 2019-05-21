@@ -31,8 +31,7 @@ export default {
   props: [""],
   data() {
     return {
-      title: "ImportWallet",
-      walletUrl: null
+      title: "ImportWallet"
     };
   },
 
@@ -40,13 +39,6 @@ export default {
     ApexBackGround,
     ApexTitle
   },
-
-  computed: {},
-
-  beforeMount() {},
-
-  mounted() {},
-
   methods: {
     goPrivKey() {
       this.$router.push("/wallet/OpenWallet/PrivateKey");
@@ -54,9 +46,7 @@ export default {
     goKeyStore() {
       this.$router.push("/wallet/OpenWallet/KeyStore");
     }
-  },
-
-  watch: {}
+  }
 };
 </script>
 <style lang='less' scoped>
@@ -98,6 +88,7 @@ export default {
       }
     }
     .privateKey {
+      cursor: pointer;
       color: #f26522;
       border: 1px solid #f26522;
       margin-top: 100px;
@@ -111,6 +102,7 @@ export default {
       box-shadow: 2px 2px 8px 2px #f26522;
     }
     .keyStore {
+      cursor: pointer;
       color: #f26522;
       border: 1px solid #f26522;
       margin-top: 30px;

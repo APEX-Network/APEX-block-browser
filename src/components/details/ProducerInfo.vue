@@ -6,38 +6,38 @@
         <li class="row title">ProducerInfo</li>
         <li class="row">
           <span class="col">
-            Miner:
+            {{Miner}}
             <span class="clo col-lg-8">{{producerInfo.Miner}}</span>
           </span>
         </li>
         <li class="row">
           <span class="col" v-if="producerInfo.Name !== ''">
-            Name:
+            {{Name}}
             <span class="clo col-lg-8">{{producerInfo.Name}}</span>
           </span>
         </li>
 
         <li class="row" v-if="producerInfo.Area !== ''">
           <span class="col">
-            Area:
+            {{Area}}
             <span class="clo col-lg-8">{{producerInfo.Area}}</span>
           </span>
         </li>
         <li class="row" v-if="producerInfo.MAddress !== ''">
           <span class="col">
-            Mailing Address:
+            {{mAddress}}
             <span class="clo col-lg-8">{{producerInfo.MAddress}}</span>
           </span>
         </li>
         <li class="row">
           <span class="col">
-            CurrentRank:
+            {{CurrentRank}}
             <span class="clo col-lg-8">{{producerInfo.CurrentRank}}</span>
           </span>
         </li>
         <li class="row" v-if="producerInfo.Website !== ''">
           <span class="col">
-            Website:
+            {{Website}}
             <span class="clo col-lg-8 goHome" @click="gotHome" >
              {{producerInfo.Website}}
             </span>
@@ -45,13 +45,13 @@
         </li>
         <li class="row" v-if="producerInfo.Description !== ''">
           <span class="col">
-            Description:
+            {{Description}}
             <span class="clo col-lg-8">{{producerInfo.Description}}</span>
           </span>
         </li>
         <li class="row">
           <span class="col">
-            Block:
+            {{Block}}
             <span class="clo col-lg-8">{{producerInfo.block}}</span>
           </span>
         </li>
@@ -84,7 +84,15 @@ export default {
         MAddress: null,
         Name: null
       },
-      producer: []
+      producer: [],
+      Miner: null,
+      Name: null,
+      Area: null,
+      mAddress: null,
+      CurrentRank: null,
+      Website: null,
+      Description: null,
+      Block: null
     };
   },
   created() {},
@@ -119,6 +127,14 @@ export default {
                 this.producerInfo.CurrentRank = item.Rank;
               }
             }
+            this.Miner = "Miner:";
+            this.Name = "Name:";
+            this.Area = "Area:";
+            this.mAddress = "Mailing Address:";
+            this.CurrentRank = "CurrentRank:";
+            this.Website = "Website:";
+            this.Description = "Description:";
+            this.Block = "Block:";
           })
           .catch(function(response) {
             console.log(response);

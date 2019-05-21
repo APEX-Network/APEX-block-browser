@@ -19,8 +19,8 @@
         <div>Save Your Keystore File</div>
       </div>
       <div class="create1" @click="downloadKeyStore">DOWNLOAD ENCRYPTED KEY</div>
-      <div class="create2">
-        <span @click="getAddress">CONTINUE</span>
+      <div class="create2" @click="getAddress">
+        CONTINUE
       </div>
     </div>
   </div>
@@ -28,7 +28,6 @@
 
 <script>
 import Bus from "@/utils/bus";
-import util from "@/utils/utils";
 const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
 const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
 export default {
@@ -40,8 +39,7 @@ export default {
       address: null,
       apAddress: null,
       privKey: null,
-      keyStore: null,
-      walletUrl: null
+      keyStore: null
     };
   },
 
@@ -49,9 +47,6 @@ export default {
     ApexBackGround,
     ApexTitle
   },
-
-  beforeMount() {},
-
   mounted() {
     this.getKeyStoreAndlastAddress();
   },
@@ -63,7 +58,6 @@ export default {
       });
       Bus.$on("privKey", data => {
         this.privKey = data;
-        console.log(this.privKey);
       });
       Bus.$on("keyStore", data => {
         this.keyStore = data;
@@ -153,14 +147,11 @@ export default {
       width: 220px;
       line-height: 30px;
       z-index: 1;
-      cursor: pointer;
-      a {
-        color: #f26522;
-      }
-      a:hover {
+      cursor: pointer;    
+    }
+    .create1:hover {
         box-shadow: 2px 2px 8px 2px #f26522;
       }
-    }
     .create2 {
       color: #f26522;
       border: 1px solid #f26522;
@@ -170,14 +161,11 @@ export default {
       width: 220px;
       line-height: 30px;
       z-index: 1;
-      span {
-        cursor: pointer;
-        color: #f26522;
-      }
-      a:hover {
+      cursor: pointer;
+    }
+    .create2:hover {
         box-shadow: 2px 2px 8px 2px #f26522;
       }
-    }
   }
 }
 </style>

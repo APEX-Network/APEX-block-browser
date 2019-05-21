@@ -30,7 +30,6 @@ export default {
     return {
       overView_url: "/api/v1.0/state/blockStateInfo",
       overView_data: {
-        // lastBlock: null,
         tps: null,
         dailyTxs: null,
         dailyActiveAccounts: null
@@ -43,31 +42,6 @@ export default {
     this.getOverView();
   },
   methods: {
-    requesFullScreen(element) {
-      let requestMethod = element.requesFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
-      if (requestMethod) {
-        requestMethod.call(element);
-      } else if (typeof window.ActiveXObject !== "undefined") {
-        let wscript = new ActiveXObject("WScript.Shell");
-        if (wscript !== null) {
-          wscript.SendKeys("{F11}");
-        }
-      }
-    },
-    
-    exitFullScreen() {
-      let exitMethod = document.exitFullscreen || document.mozCancelFullScreen || document.webkitExitFullscreen || document.webkitExitFullscreen;
-      document.webkitExitFullscreen;
-      if (exitMethod) {
-        exitMethod.call(document);
-      } else if (typeof window.ActiveXObject !== "undefined") {
-        let wscript = new ActiveXObject("WScript.Shell");
-        if (wscript !== null) {
-          wscript.SendKeys("{F11}");
-        }
-      }
-    },
-
     getOverView() {
       this.$axios
         .get(this.overView_url)
