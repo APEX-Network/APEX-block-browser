@@ -71,9 +71,9 @@ export default {
   created() {},
   mounted() {
     this.getInstance();
-    this.getAllTransactions();
+    this.getAllTransactions(this.start);
     const timer = setInterval(() => {
-      this.getAllTransactions();
+      this.getAllTransactions(this.start);
     }, 1500);
     const timer2 = setInterval(() => {
       clearInterval(timer);
@@ -97,10 +97,12 @@ export default {
         });
       }
     },
-     getAllTransactions() {
+     getAllTransactions(start) {
+       this.params.start = start;
        this.$axios
         .post(this.transaction_list_url, this.params)
         .then(response => {
+          this.transactions = [];
           let res = response.data.data;
           let serverTime = response.headers.date;
           let time;
@@ -118,35 +120,13 @@ export default {
         });
     },
     getNext() {
-      if (this.start < 10) {
+      if (this.start < 9) {
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start++;
         this.pageNumber = this.start + 1 + "-10";
-        this.params.start = this.start;
-        this.$axios
-          .post(this.transaction_list_url, this.params)
-          .then(response => {
-            let res = response.data.data;
-            let serverTime = response.headers.date;
-            let time;
-            for (let i = 0; i < res.length; i++) {
-              const item = res[i];
-              time = util.utilMethods.listUTCtime(
-                item.refBlockTime,
-                serverTime
-              );
-              item.refBlockTime = time;
-            }
-            this.transactions = res;
-          })
-          .catch(function(err) {
-            if (err.response) {
-              console.log(err.response);
-            }
-          });
-        if (this.start == 10) {
-          this.pageNumber = this.start + "-10";
+        this.getAllTransactions(this.start);
+        if (this.start == 9) {
           this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
           this.isClick = false;
           return;
@@ -160,28 +140,7 @@ export default {
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start--;
         this.pageNumber = this.start + "-10";
-        this.params.start = this.start;
-        this.$axios
-          .post(this.transaction_list_url, this.params)
-          .then(response => {
-            let res = response.data.data;
-            let serverTime = response.headers.date;
-            let time;
-            for (let i = 0; i < res.length; i++) {
-              const item = res[i];
-              time = util.utilMethods.listUTCtime(
-                item.refBlockTime,
-                serverTime
-              );
-              item.refBlockTime = time;
-            }
-            this.transactions = res;
-          })
-          .catch(function(err) {
-            if (err.response) {
-              console.log(err.response);
-            }
-          });
+        this.getAllTransactions(this.start);
         if (this.start == 0) {
           this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
           this.pageNumber = "1-10";
@@ -190,55 +149,21 @@ export default {
       }
     },
     getFirst() {
+      this.isClick = true;
       this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
       this.start = 0;
       this.pageNumber = "1-10";
-      this.params.start = this.start;
-      this.$axios
-        .post(this.transaction_list_url, this.params)
-        .then(response => {
-          let res = response.data.data;
-          let serverTime = response.headers.date;
-          let time;
-          for (let i = 0; i < res.length; i++) {
-            const item = res[i];
-            time = util.utilMethods.listUTCtime(item.refBlockTime, serverTime);
-            item.refBlockTime = time;
-          }
-          this.transactions = res;
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
+      this.getAllTransactions(this.start);
       return;
     },
     getLast() {
+      this.isClick = true;
       this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
-      this.start = 10;
-      this.pageNumber = this.start + "-10";
-      this.params.start = this.start;
-      this.$axios
-        .post(this.transaction_list_url, this.params)
-        .then(response => {
-          let res = response.data.data;
-          let serverTime = response.headers.date;
-          let time;
-          for (let i = 0; i < res.length; i++) {
-            const item = res[i];
-            time = util.utilMethods.listUTCtime(item.refBlockTime, serverTime);
-            item.refBlockTime = time;
-          }
-          this.transactions = res;
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
+      this.start = 9;
+      this.pageNumber = this.start + 1 + "-10";
+      this.getAllTransactions(this.start);
       return;
     }
   }
@@ -296,7 +221,9 @@ export default {
       }
     }
     .apex-pagination {
-      width: 100%;
+      position: fixed;
+      bottom: 55px;
+      width: 90%;
       height: 50px;
       padding: 20px 35px 0 35px;
       box-sizing: border-box;

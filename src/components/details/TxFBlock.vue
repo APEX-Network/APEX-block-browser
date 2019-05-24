@@ -24,7 +24,7 @@
           <span class="col amount">{{item.amount}} CPX</span>
         </li>
       </ul>
-      <div class="apex-pagination">
+      <footer class="apex-pagination">
         <div class="pagination-content">
           <a class="first" @click="isClick && getFirst()">First</a>
           <img
@@ -44,7 +44,7 @@
           >
           <a class="last" @click="isClick && getLast()">Last</a>
         </div>
-      </div>
+      </footer>
     </div>
   </div>
 </template>
@@ -74,7 +74,12 @@ export default {
       title: "Transactions For Block    ",
       dataList: [],
       start: 0,
-      blockHeight_url: "/api/v1.0/blocks/blockHeight/",
+      blockHeight_url: "/api/v1.0/blocks/blockHeight/transactions",
+      params: {
+        height: null,
+        start: 0,
+        pageSize: 10
+      },
       clickValue: {
         type: "height",
         value: null
@@ -103,7 +108,8 @@ export default {
   mounted() {
     this.getInstance();
     this.blockHeight = this.$route.query.id;
-    this.getTxFBlock(this.blockHeight);
+    this.count = this.$route.query.txNum;
+    this.getTxFBlock(this.blockHeight, this.start);
   },
   methods: {
     getaddress(address) {
@@ -118,17 +124,19 @@ export default {
       this.arrow.leftArrow = this.$refs.left;
       this.arrow.rightArrow = this.$refs.right;
     },
-    getTxFBlock(data) {
+    getTxFBlock(data, start) {
+      this.params.height = data;
+      this.params.start = start;
       this.$axios
-        .get(this.blockHeight_url + data)
+        .post(this.blockHeight_url, this.params)
         .then(response => {
-          let res = response.data.data.txs;
+          this.dataList = [];
+          let res = response.data.data;
           this.totalNumber = res;
           for (let i = 0; i < this.totalNumber.length; i++) {
             const element = this.totalNumber[i];
             element["index"] = this.index++;
           }
-          this.count = res.length;
           if (this.count == 0) {
             this.noTransactions = "There are no matching entries";
             this.pageNumber = "1-1";
@@ -155,12 +163,7 @@ export default {
             }
           }
           this.pageNumber = this.start + 1 + "-" + this.totalPage;
-          if (this.totalNumber.length >= 10) {
-            this.pageArr = util.utilMethods.cutArray(this.totalNumber, 10);
-            this.dataList = this.pageArr[0];
-          } else {
-            this.dataList = this.totalNumber;
-          }
+          this.dataList = this.totalNumber;
           for (let i = 0; i < this.dataList.length; i++) {
             const element = this.dataList[i];
             let amount = element.amount;
@@ -233,34 +236,7 @@ export default {
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start++;
         this.pageNumber = this.start + 1 + "-" + this.totalPage;
-        this.dataList = this.pageArr[this.start];
-        for (let i = 0; i < this.dataList.length; i++) {
-          const element = this.dataList[i];
-          let amount = element.amount;
-          let faddress = element.from;
-          let taddress = element.to;
-          let result = amount.toString().indexOf(".");
-          this.getaddress(faddress);
-          this.getaddress(taddress);
-          if (result > -1) {
-            let pointLength = amount.toString().split(".")[1].length;
-            if (pointLength > 2) {
-              element["amount"] =
-                amount.toString().split(".")[0] +
-                "." +
-                amount
-                  .toString()
-                  .split(".")[1]
-                  .substring(0, 2);
-            }
-            if (pointLength <= 2) {
-              element["amount"] = amount;
-            }
-          }
-          if (result == -1) {
-            element["amount"] = amount;
-          }
-        }
+        this.getTxFBlock(this.blockHeight, this.start);
         if (this.start == this.totalPage - 1) {
           this.pageNumber = this.start + 1 + "-" + this.totalPage;
           this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
@@ -273,68 +249,16 @@ export default {
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
       this.start = this.totalPage - 1;
       this.pageNumber = this.totalPage + "-" + this.totalPage;
-      this.dataList = this.pageArr[this.start];
-      for (let i = 0; i < this.dataList.length; i++) {
-        const element = this.dataList[i];
-        let amount = element.amount;
-        let faddress = element.from;
-        let taddress = element.to;
-        let result = amount.toString().indexOf(".");
-        this.getaddress(faddress);
-        this.getaddress(taddress);
-        if (result > -1) {
-          let pointLength = amount.toString().split(".")[1].length;
-          if (pointLength > 2) {
-            element["amount"] =
-              amount.toString().split(".")[0] +
-              "." +
-              amount
-                .toString()
-                .split(".")[1]
-                .substring(0, 2);
-          }
-          if (pointLength <= 2) {
-            element["amount"] = amount;
-          }
-        }
-        if (result == -1) {
-          element["amount"] = amount;
-        }
-      }
+      this.index = (this.totalPage - 1) * 10;
+      this.getTxFBlock(this.blockHeight, this.start);
     },
     getFirst() {
       this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
       this.start = 0;
       this.pageNumber = this.start + 1 + "-" + this.totalPage;
-      this.dataList = this.pageArr[0];
-      for (let i = 0; i < this.dataList.length; i++) {
-        const element = this.dataList[i];
-        let amount = element.amount;
-        let faddress = element.from;
-        let taddress = element.to;
-        let result = amount.toString().indexOf(".");
-        this.getaddress(faddress);
-        this.getaddress(taddress);
-        if (result > -1) {
-          let pointLength = amount.toString().split(".")[1].length;
-          if (pointLength > 2) {
-            element["amount"] =
-              amount.toString().split(".")[0] +
-              "." +
-              amount
-                .toString()
-                .split(".")[1]
-                .substring(0, 2);
-          }
-          if (pointLength <= 2) {
-            element["amount"] = amount;
-          }
-        }
-        if (result == -1) {
-          element["amount"] = amount;
-        }
-      }
+      this.index = 0;
+      this.getTxFBlock(this.blockHeight, this.start);
     },
     getPrevious() {
       if (this.start > 0) {
@@ -342,34 +266,11 @@ export default {
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start--;
         this.pageNumber = this.start + 1 + "-" + this.totalPage;
-        this.dataList = [];
-        this.dataList = this.pageArr[this.start];
-        for (let i = 0; i < this.dataList.length; i++) {
-          const element = this.dataList[i];
-          let amount = element.amount;
-          let faddress = element.from;
-          let taddress = element.to;
-          let result = amount.toString().indexOf(".");
-          this.getaddress(faddress);
-          this.getaddress(taddress);
-          if (result > -1) {
-            let pointLength = amount.toString().split(".")[1].length;
-            if (pointLength > 2) {
-              element["amount"] =
-                amount.toString().split(".")[0] +
-                "." +
-                amount
-                  .toString()
-                  .split(".")[1]
-                  .substring(0, 2);
-            }
-            if (pointLength <= 2) {
-              element["amount"] = amount;
-            }
-          }
-          if (result == -1) {
-            element["amount"] = amount;
-          }
+        this.index = this.index - 10;
+        this.getTxFBlock(this.blockHeight, this.start);
+        for (let i = 0; i < this.totalNumber.length; i++) {
+          const element = this.totalNumber[i];
+          element["index"] = this.index--;
         }
         if (this.start == 0) {
           this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
@@ -454,7 +355,10 @@ export default {
       }
     }
     .apex-pagination {
-      width: 100%;
+      position: fixed;
+      bottom: 55px;
+      width: 90%;
+      height: 50px;
       height: 40px;
       padding: 0px 35px;
       box-sizing: border-box;

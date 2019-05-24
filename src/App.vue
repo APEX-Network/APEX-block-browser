@@ -13,8 +13,18 @@
 </template>
 
 <script>
-import publicnav from "@/components/publicnav/index.vue";
-import publicfooter from "@/components/publicfooter/index.vue";
+const publicnav = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/publicnav/index.vue")),
+    "App"
+  );
+const publicfooter = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/publicfooter/index.vue")),
+    "App"
+  );
 import db from "@/utils/myDatabase";
 
 export default {
@@ -26,7 +36,6 @@ export default {
   data() {
     return {
       ops: {},
-      walletUrl: null,
       APAddress: [],
       getAllAddress: null,
       minerBy_url: "/api/v1.0/minerInfo/minerList",

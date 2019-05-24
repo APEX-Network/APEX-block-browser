@@ -6,8 +6,7 @@ const script_signature = require("bitcoinjs-lib/src/script_signature");
 const CryptoJS = require('./../../node_modules/crypto-js/crypto-js.js');
 const BigInteger = require('bigi');
 const bigdecimal = require("bigdecimal");
-const bigInt = require('big-integer');
-import _ from 'lodash';
+// import _ from 'lodash';
 
 const utilMethods = {
   cutArray(array, subLength) {
@@ -372,28 +371,28 @@ const utilMethods = {
     return privKey
   },
 
-  fullScreen(isOpen, target) {
-    let dom = target || void 0
-    let open_list = ['requestFullscreen', 'mozRequestFullScreen', 'webkitRequestFullScreen', 'msRequestFullscreen']
-    let cancel_list = ['exitFullscreen', 'mozCancelFullScreen', 'webkitCancelFullScreen']
-    let fn = void 0
-    if (isOpen) {
-      fn = _.find(open_list, (n) => {
-        return Boolean(dom[n])
-      })
-      fn && dom[fn]()
-    } else {
-      fn = _.find(cancel_list, (n) => {
-        return Boolean(document[n])
-      })
-      fn && document[fn]()
-    }
-  },
+  // fullScreen(isOpen, target) {
+  //   let dom = target || void 0
+  //   let open_list = ['requestFullscreen', 'mozRequestFullScreen', 'webkitRequestFullScreen', 'msRequestFullscreen']
+  //   let cancel_list = ['exitFullscreen', 'mozCancelFullScreen', 'webkitCancelFullScreen']
+  //   let fn = void 0
+  //   if (isOpen) {
+  //     fn = _.find(open_list, (n) => {
+  //       return Boolean(dom[n])
+  //     })
+  //     fn && dom[fn]()
+  //   } else {
+  //     fn = _.find(cancel_list, (n) => {
+  //       return Boolean(document[n])
+  //     })
+  //     fn && document[fn]()
+  //   }
+  // },
 
-  isFullScreen() {
-    console.log("adafasadsa");
-    return document.isFullScreen || document.mozIsFullScreen || document.webkitIsFullScreen
-  },
+  // isFullScreen() {
+  //   console.log("adafasadsa");
+  //   return document.isFullScreen || document.mozIsFullScreen || document.webkitIsFullScreen
+  // },
   decodeTransactionsData(data) {
     let ap = "0548"
     let add = data.slice(0, 40);

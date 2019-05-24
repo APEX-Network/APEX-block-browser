@@ -334,7 +334,6 @@ body .select2-container--open .select2-dropdown .select2-results .select2-result
   font-family: "Semibold";
 }
 .transactions-table .table-ul > li span:first-of-type {
-  padding-left: 36px;
   background-position: 0px -33px;
 }
 .transactions-table .table-ul > li:first-of-type span {

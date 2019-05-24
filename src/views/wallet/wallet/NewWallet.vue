@@ -59,7 +59,7 @@
         </div>
       </div>
       <div class="create">
-        <span @click=" isClick && produceSign()">CREATE</span>
+        <span @click="isClick && produceSign()">CREATE</span>
       </div>
     </div>
   </div>

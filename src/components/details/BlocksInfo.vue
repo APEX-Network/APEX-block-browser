@@ -80,7 +80,8 @@ export default {
       result: {
         type: null,
         value: null
-      }
+      },
+      txNum: null
     };
   },
   created() {},
@@ -92,7 +93,8 @@ export default {
       this.$router.push({
         path: "/blocks/BlocksInfo/TxFBlock",
         query: {
-          id: data
+          id: data,
+          txNum: this.txNum
         }
       });
     },
@@ -144,7 +146,7 @@ export default {
                   res.txNum + "   " + "transactions in this block";
                 this.parentHash = res.prevBlock;
                 this.minedBy = res.producer;
-                this.nonce = res.txNum;
+                this.txNum = res.txNum;
               })
               .catch(function(response) {
                 console.log(response);
@@ -167,7 +169,7 @@ export default {
                     res.txNum + " " + "transactions in this block";
                   this.parentHash = res.prevBlock;
                   this.minedBy = res.producer;
-                  this.nonce = res.txNum;
+                  this.txNum = res.txNum;
                 }
               })
               .catch(function(response) {
@@ -187,24 +189,25 @@ export default {
             id: data
           }
         });
-        this.$axios
-          .get(this.url.blockHash_url + this.parentHash)
-          .then(response => {
-            let res = response.data.data;
-            let serverTime = response.headers.date;
-            this.height = res.height;
-            this.timeStamp = util.utilMethods.toUTCtime(
-              res.timeStamp,
-              serverTime
-            );
-            this.transactions = res.txNum + " " + "transactions in this block";
-            this.blockHash = res.blockHash;
-            this.parentHash = res.prevBlock;
-            this.minedBy = res.producer;
-          })
-          .catch(function(response) {
-            console.log(response);
-          });
+        // this.$axios
+        //   .get(this.url.blockHash_url + this.parentHash)
+        //   .then(response => {
+        //     let res = response.data.data;
+        //     let serverTime = response.headers.date;
+        //     this.height = res.height;
+        //     this.timeStamp = util.utilMethods.toUTCtime(
+        //       res.timeStamp,
+        //       serverTime
+        //     );
+        //     this.transactions = res.txNum + " " + "transactions in this block";
+        //     this.blockHash = res.blockHash;
+        //     this.parentHash = res.prevBlock;
+        //     this.minedBy = res.producer;
+        //     this.txNum = res.txNum;
+        //   })
+        //   .catch(function(response) {
+        //     console.log(response);
+        //   });
       }
     }
   }

@@ -165,7 +165,6 @@ export default {
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start++;
         this.pageNumber = this.start + 1 + "-" + this.totalPage;
-        console.log(this.pageNumber);
         this.params.start = this.start;
         this.$axios
           .post(this.minerBy_url, this.params)
@@ -295,7 +294,9 @@ export default {
       }
     }
     .apex-pagination {
-      width: 100%;
+      position: fixed;
+      bottom: 55px;
+      width: 90%;
       height: 40px;
       padding: 10px 35px;
       box-sizing: border-box;

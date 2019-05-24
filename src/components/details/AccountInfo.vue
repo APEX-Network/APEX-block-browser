@@ -42,9 +42,7 @@
           <li v-for="(list,index) in transactions" :key="index" class="row" v-show="count !== 0">
             <span class="col ttHash">
               <div class="bottom">
-                <span class="col col-lg-6" @click="setTxHash(list.txHash)">
-                {{list.txHash}}
-                </span>
+                <span class="col col-lg-6" @click="setTxHash(list.txHash)">{{list.txHash}}</span>
               </div>
             </span>
             <span
@@ -585,7 +583,7 @@ export default {
           padding: 0 8px 0 69px;
         }
         img {
-          cursor: pointer; 
+          cursor: pointer;
           padding-left: 10px;
         }
       }
@@ -683,7 +681,9 @@ export default {
         }
       }
       .apex-pagination {
-        width: 100%;
+        position: fixed;
+        bottom: 40px;
+        width: 92%;
         height: 40px;
         padding: 0px 35px;
         box-sizing: border-box;

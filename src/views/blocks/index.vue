@@ -60,7 +60,6 @@ import util from "@/utils/utils";
 export default {
   name: "blocks",
   components: {
-    // Pagination,
     ApexBackGround,
     ApexTitle
   },
@@ -90,9 +89,9 @@ export default {
   },
   mounted() {
     this.getInstance();
-    this.getBlocks();
+    this.getBlocks(this.start);
     const timer = setInterval(() => {
-      this.getBlocks();
+      this.getBlocks(this.start);
     }, 1500);
     this.$once("hook:beforeDestroy", () => {
       clearInterval(timer, timer2);
@@ -106,11 +105,13 @@ export default {
       this.arrow.leftArrow = this.$refs.left;
       this.arrow.rightArrow = this.$refs.right;
     },
-    getBlocks() {
+    getBlocks(start) {
       if (!!this.params) {
+        this.params.start = start;
         this.$axios
           .post(this.allBlockUrl, this.params)
           .then(response => {
+            this.dataList = [];
             let res = response.data.data;
             let serverTime = response.headers.date;
             let time;
@@ -153,32 +154,14 @@ export default {
       });
     },
     getNext() {
-      if (this.start < 10) {
+      if (this.start < 9) {
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start++;
         this.pageNumber = this.start + 1 + "-10";
-        this.params.start = this.start;
-        this.$axios
-          .post(this.allBlockUrl, this.params)
-          .then(response => {
-            let res = response.data.data;
-            let serverTime = response.headers.date;
-            let time;
-            for (let i = 0; i < res.length; i++) {
-              const item = res[i];
-              time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
-              item.timeStamp = time;
-            }
-            this.dataList = res;
-          })
-          .catch(function(err) {
-            if (err.response) {
-              console.log(err.response);
-            }
-          });
-        if (this.start == 10) {
-          this.pageNumber = this.start + "-10";
+        this.getBlocks(this.start);   
+        if (this.start == 9) {
+          this.pageNumber = this.start + 1 + "-10";
           this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
           this.isClick = false;
           return;
@@ -186,54 +169,20 @@ export default {
       }
     },
     getLast() {
+      this.isClick = true;
       this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
-      this.start = 10;
-      this.pageNumber = this.start + "-10";
-      this.params.start = this.start;
-      this.$axios
-        .post(this.allBlockUrl, this.params)
-        .then(response => {
-          let res = response.data.data;
-          let serverTime = response.headers.date;
-          let time;
-          for (let i = 0; i < res.length; i++) {
-            const item = res[i];
-            time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
-            item.timeStamp = time;
-          }
-          this.dataList = res;
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
+      this.start = 9;
+      this.pageNumber = this.start + 1  + "-10";
+      this.getBlocks(this.start);
     },
     getFirst() {
+      this.isClick = true;
       this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
       this.start = 0;
       this.pageNumber = this.start + 1 + "-10";
-      this.params.start = this.start;
-      this.$axios
-        .post(this.allBlockUrl, this.params)
-        .then(response => {
-          let res = response.data.data;
-          let serverTime = response.headers.date;
-          let time;
-          for (let i = 0; i < res.length; i++) {
-            const item = res[i];
-            time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
-            item.timeStamp = time;
-          }
-          this.dataList = res;
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
+      this.getBlocks(this.start);
     },
     getPrevious() {
       this.isClick = true;
@@ -242,25 +191,7 @@ export default {
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start--;
         this.pageNumber = this.start + "-10";
-        this.params.start = this.start;
-        this.$axios
-          .post(this.allBlockUrl, this.params)
-          .then(response => {
-            let res = response.data.data;
-            let serverTime = response.headers.date;
-            let time;
-            for (let i = 0; i < res.length; i++) {
-              const item = res[i];
-              time = util.utilMethods.listUTCtime(item.timeStamp, serverTime);
-              item.timeStamp = time;
-            }
-            this.dataList = res;
-          })
-          .catch(function(err) {
-            if (err.response) {
-              console.log(err.response);
-            }
-          });
+        this.getBlocks(this.start);
         if (this.start == 0) {
           this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
           this.pageNumber = this.start + 1 + "-10";
@@ -313,7 +244,9 @@ export default {
       }
     }
     .apex-pagination {
-      width: 100%;
+      position: fixed;
+      bottom: 55px;
+      width: 90%;
       height: 40px;
       padding: 0px 35px;
       box-sizing: border-box;
