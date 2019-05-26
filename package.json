@@ -45,6 +45,7 @@
     "vuescroll": "^4.8.4",
     "vuetify": "^1.5.11",
     "vuex": "^3.0.1",
+    "wc-loading": "^1.2.6",
     "webdriver-manager": "^13.0.0"
   },
   "devDependencies": {

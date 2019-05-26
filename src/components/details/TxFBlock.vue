@@ -1,5 +1,10 @@
 <template>
   <div class="TxFBlock">
+    <div>
+      <transition name="fade">
+        <loading v-if="isLoading"></loading>
+      </transition>
+    </div>
     <p class="bheight" @click="setHeightValue(blockHeight)">{{blockHeight}}</p>
     <apex-back-ground/>
     <div class="data-table">
@@ -62,15 +67,18 @@ const ApexBackGround = r =>
     "titleAndBackground"
   );
 import util from "@/utils/utils";
+import Loading from "@/components/loading";
 
 export default {
   name: "TxFBlock",
   components: {
     ApexBackGround,
-    ApexTitle
+    ApexTitle,
+    Loading
   },
   data() {
     return {
+      isLoading: true,
       title: "Transactions For Block    ",
       dataList: [],
       start: 0,
@@ -102,14 +110,15 @@ export default {
         from: true,
         emptyFrom: false
       },
-      pageArr: null
+      pageArr: null,
+      totalNumber: []
     };
   },
   mounted() {
     this.getInstance();
     this.blockHeight = this.$route.query.id;
     this.count = this.$route.query.txNum;
-    this.getTxFBlock(this.blockHeight, this.start);
+    this.getTxFBlock(this.blockHeight, this.start, this.index);
   },
   methods: {
     getaddress(address) {
@@ -124,24 +133,24 @@ export default {
       this.arrow.leftArrow = this.$refs.left;
       this.arrow.rightArrow = this.$refs.right;
     },
-    getTxFBlock(data, start) {
+    getTxFBlock(data, start, index) {
       this.params.height = data;
       this.params.start = start;
       this.$axios
         .post(this.blockHeight_url, this.params)
         .then(response => {
-          this.dataList = [];
+          this.totalNumber = [];
+          this.isLoading = false;
           let res = response.data.data;
           this.totalNumber = res;
           for (let i = 0; i < this.totalNumber.length; i++) {
-            const element = this.totalNumber[i];
-            element["index"] = this.index++;
+            let element = this.totalNumber[i];
+            element["index"] = index++;
           }
           if (this.count == 0) {
             this.noTransactions = "There are no matching entries";
             this.pageNumber = "1-1";
             this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
-            return;
           }
           this.totalPage = this.count / 10;
           if (this.totalPage >= 100) {
@@ -165,7 +174,7 @@ export default {
           this.pageNumber = this.start + 1 + "-" + this.totalPage;
           this.dataList = this.totalNumber;
           for (let i = 0; i < this.dataList.length; i++) {
-            const element = this.dataList[i];
+            let element = this.dataList[i];
             let amount = element.amount;
             let faddress = element.from;
             let taddress = element.to;
@@ -236,11 +245,13 @@ export default {
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start++;
         this.pageNumber = this.start + 1 + "-" + this.totalPage;
-        this.getTxFBlock(this.blockHeight, this.start);
+        this.totalNumber.length = 0;
+        this.isLoading = true;
+        this.index = this.start * 10;
+        this.getTxFBlock(this.blockHeight, this.start, this.index);
         if (this.start == this.totalPage - 1) {
           this.pageNumber = this.start + 1 + "-" + this.totalPage;
           this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
-          return;
         }
       }
     },
@@ -250,15 +261,21 @@ export default {
       this.start = this.totalPage - 1;
       this.pageNumber = this.totalPage + "-" + this.totalPage;
       this.index = (this.totalPage - 1) * 10;
-      this.getTxFBlock(this.blockHeight, this.start);
+      this.totalNumber.length = 0;
+      this.isLoading = true;
+      this.getTxFBlock(this.blockHeight, this.start, this.index);
     },
     getFirst() {
       this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
-      this.start = 0;
-      this.pageNumber = this.start + 1 + "-" + this.totalPage;
-      this.index = 0;
-      this.getTxFBlock(this.blockHeight, this.start);
+      if (this.start > 0) {
+        this.start = 0;
+        this.pageNumber = this.start + 1 + "-" + this.totalPage;
+        this.index = 0;
+        this.totalNumber.length = 0;
+        this.isLoading = true;
+        this.getTxFBlock(this.blockHeight, this.start, this.index);
+      }
     },
     getPrevious() {
       if (this.start > 0) {
@@ -266,16 +283,12 @@ export default {
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start--;
         this.pageNumber = this.start + 1 + "-" + this.totalPage;
-        this.index = this.index - 10;
-        this.getTxFBlock(this.blockHeight, this.start);
-        for (let i = 0; i < this.totalNumber.length; i++) {
-          const element = this.totalNumber[i];
-          element["index"] = this.index--;
-        }
+        this.index = this.start * 10;
+        this.totalNumber.length = 0;
+        this.isLoading = true;
+        this.getTxFBlock(this.blockHeight, this.start, this.index);
         if (this.start == 0) {
           this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
-          this.pageNumber = this.start + 1 + "-" + this.totalPage;
-          return;
         }
       }
     }
@@ -356,8 +369,8 @@ export default {
     }
     .apex-pagination {
       position: fixed;
-      bottom: 55px;
-      width: 90%;
+      bottom: 40px;
+      width: 91%;
       height: 50px;
       height: 40px;
       padding: 0px 35px;

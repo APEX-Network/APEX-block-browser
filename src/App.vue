@@ -2,7 +2,7 @@
   <div>
     <vue-scroll :ops="ops"/>
     <div id="app">
-      <publicnav />
+      <publicnav/>
       <div class="main-box">
         <router-view :key="key"></router-view>
       </div>
@@ -47,8 +47,7 @@ export default {
       Rank: 0
     };
   },
-  created() {
-  },
+  created() {},
   computed: {
     key() {
       return this.$route.name !== undefined
@@ -66,13 +65,23 @@ export default {
         .then(response => {
           this.producer = [];
           this.Rank = 1;
-          this.producer = JSON.parse(JSON.stringify(response.data.data, (key, value) => {
-            if (key == 'address' || key == 'blockCount' || key == 'describe' || key == 'name' || key == 'votes' || key == 'webSite' || key == 'zone') {
-              return undefined;
-            } else {
-              return value
-            }
-          }))
+          this.producer = JSON.parse(
+            JSON.stringify(response.data.data, (key, value) => {
+              if (
+                key == "address" ||
+                key == "blockCount" ||
+                key == "describe" ||
+                key == "name" ||
+                key == "votes" ||
+                key == "webSite" ||
+                key == "zone"
+              ) {
+                return undefined;
+              } else {
+                return value;
+              }
+            })
+          );
           for (let i = 0; i < this.producer.length; i++) {
             this.producer[i]["Rank"] = this.Rank++;
           }

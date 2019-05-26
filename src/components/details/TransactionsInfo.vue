@@ -48,12 +48,12 @@
             >{{transactionInfoData.nonce}}</span>
           </span>
         </li>
-        <li class="row" v-if="transactionInfoData.from !== ''">
+        <li class="row" v-if="transactionInfoData.from !== null">
           <span class="col">
             {{From}}
             <span class="clol col-lg-8">
               <i @click="setToValue(transactionInfoData.from)">{{transactionInfoData.from}}</i>
-              <img ref="fromAddress" @click="Copy(1)" src="./../../assets/images/copy.png" alt>
+              <img  ref="fromAddress" @click="Copy(1)" src="./../../assets/images/copy.png" alt>
             </span>
           </span>
         </li>
@@ -246,7 +246,7 @@ export default {
               res.refBlockTime,
               serverTime
             );
-            this.transactionInfoData.from = res.from;
+            // this.transactionInfoData.from = res.from;
             this.transactionInfoData.to = res.to;
             this.transactionInfoData.gasLimit = res.gasLimit;
             this.transactionInfoData.gasPrice = res.gasPrice;
@@ -272,6 +272,7 @@ export default {
               this.value = "Value:";
               this.transactionInfoData.amount = res.amount;
               this.From = "From:";
+              this.transactionInfoData.from = res.from;
               this.transactionInfoData.nonce = res.nonce;
               this.Nonce = "Nonce:";
             }
@@ -286,6 +287,7 @@ export default {
               this.transactionInfoData.amount = res.amount;
               this.value = "Value:";
               this.From = "From:";
+              this.transactionInfoData.from = res.from;
               this.address = "To";
               this.transactionInfoData.nonce = res.nonce;
               this.Nonce = "Nonce:";
@@ -320,6 +322,7 @@ export default {
                 this.Nonce = "Nonce:";
                 this.address = "Support node:";
                 this.From = "Voter:";
+                this.transactionInfoData.from = res.from;
               }
             } catch (error) {
               this.transactionInfoData.type = res.type;
@@ -343,8 +346,8 @@ export default {
                 this.transactionInfoData.type = res.type;
                 this.Nonce = "Parent Tx:";
                 this.transactionInfoData.nonce = res.data;
-                this.From = "From:";
-                this.transactionInfoData.from = res.from;
+                // this.From = "From:";
+                // this.transactionInfoData.from = res.from;
                 this.address = "Voter:";
                 this.transactionInfoData.to = res.to;
                 this.value = "Refund amount:";

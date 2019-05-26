@@ -1,5 +1,10 @@
 <template>
   <div class="Blocks">
+  <div>
+      <transition name="fade">
+        <loading v-if="isLoading"></loading>
+      </transition>
+    </div>
     <apex-back-ground/>
     <div class="data-table">
       <ul class="table-ul">
@@ -56,15 +61,19 @@ const ApexBackGround = r =>
   );
 import Bus from "@/utils/bus";
 import util from "@/utils/utils";
+import Loading from "@/components/loading";
+
 
 export default {
   name: "blocks",
   components: {
     ApexBackGround,
-    ApexTitle
+    ApexTitle,
+    Loading
   },
   data() {
     return {
+      isLoading: true,
       title: "Blocks",
       dataList: [],
       secondTime: null,
@@ -113,6 +122,7 @@ export default {
           .then(response => {
             this.dataList = [];
             let res = response.data.data;
+            this.isLoading = false;  
             let serverTime = response.headers.date;
             let time;
             for (let i = 0; i < res.length; i++) {
@@ -159,7 +169,9 @@ export default {
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start++;
         this.pageNumber = this.start + 1 + "-10";
-        this.getBlocks(this.start);   
+        this.dataList = [];
+        this.isLoading = true;
+        this.getBlocks(this.start); 
         if (this.start == 9) {
           this.pageNumber = this.start + 1 + "-10";
           this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
@@ -174,6 +186,8 @@ export default {
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
       this.start = 9;
       this.pageNumber = this.start + 1  + "-10";
+      this.dataList = [];
+        this.isLoading = true;
       this.getBlocks(this.start);
     },
     getFirst() {
@@ -182,6 +196,8 @@ export default {
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
       this.start = 0;
       this.pageNumber = this.start + 1 + "-10";
+      this.dataList = [];
+      this.isLoading = true;
       this.getBlocks(this.start);
     },
     getPrevious() {
@@ -191,6 +207,8 @@ export default {
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start--;
         this.pageNumber = this.start + "-10";
+        this.dataList = [];
+        this.isLoading = true;
         this.getBlocks(this.start);
         if (this.start == 0) {
           this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");

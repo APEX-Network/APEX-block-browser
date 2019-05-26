@@ -663,12 +663,12 @@ export default {
               span {
                 overflow: hidden;
                 white-space: nowrap;
-                max-width: 232px;
+                max-width: 250px;
                 color: #f26522;
-                margin-top: 5px;
                 cursor: pointer;
                 text-overflow: ellipsis;
                 display: inline-block;
+                padding-left: 37px;
               }
             }
           }
