@@ -1,10 +1,10 @@
 <template>
   <div class="Blocks">
-  <div>
+  <!-- <div>
       <transition name="fade">
         <loading v-if="isLoading"></loading>
       </transition>
-    </div>
+    </div> -->
     <apex-back-ground/>
     <div class="data-table">
       <ul class="table-ul">

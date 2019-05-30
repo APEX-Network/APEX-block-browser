@@ -25,11 +25,19 @@
         </div>
         <div class="btn-box btn-box-left">
           <router-link to="/wallet/NewWallet">NEW WALLET</router-link>
-          <router-link to="/wallet/OpenWallet">IMPORT WALLET</router-link>
+          <router-link to="/wallet/OpenWallet" class="Iwallet">IMPORT WALLET</router-link>
         </div>
       </div>
       <div class="wallet-flex-container fl">
-        <div class="cpx-number">CPX: {{CPX}}</div>
+        <div class="cpx-number">CPX Available:</div>
+        <span class="alignRight">{{CPX}}</span>
+
+        <div class="cpx-number">Staked:</div>
+        <span class="alignRight">{{staked}}</span>
+
+        <div class="cpx-number">Refunding:</div>
+        <span class="alignRight">{{refund}}</span>
+
         <div class="btn-box">
           <router-link to="/wallet/Transfer" @click.native="sendAddress">TRANSFER</router-link>
           <router-link to="/wallet/VotingSupport" @click.native="sendAddress">VOTE</router-link>
@@ -43,6 +51,7 @@
 <script>
 import Bus from "@/utils/bus";
 import db from "@/utils/myDatabase";
+import util from "@/utils/utils";
 
 export default {
   name: "walletpage",
@@ -52,10 +61,15 @@ export default {
       APAddress: [],
       getAllAddress: null,
       accountInfo_url: "/api/v1.0/accounts/account",
+      voter_url: "/api/v1.0/vote/getVote",
+      voter_params: { address: null },
       CPX: 0,
       copyImg: null,
       currentAddress: this.address,
-      currentPrivKey: this.privKey
+      currentPrivKey: this.privKey,
+      refundAmount: [],
+      refund: 0,
+      staked: 0
     };
   },
 
@@ -90,15 +104,39 @@ export default {
   },
 
   methods: {
+    getVoter(address) {
+      if (address !== null) {
+        this.$axios
+          .post(this.voter_url, {
+            address: address
+          })
+          .then(response => {
+            this.refundAmount = [];
+            let res = response.data.data;
+            this.refund = res.pendingVote;
+            let address_amount = res.target;
+            let amount;
+            for (let i = 0; i < address_amount.length; i++) {
+              let item = address_amount[i];
+              amount = item.split("-")[1].replace(/\s/gi, "");
+              this.refundAmount.push(Number(amount));
+            }
+            this.staked = util.utilMethods.sum(this.refundAmount);
+          })
+          .catch(function(err) {
+            if (err.response) {
+              console.log(err.response);
+            }
+          });
+      }
+    },
     Copy(index) {
       this.copyImg.src = require("../../../assets/images/copied.png");
       let getCopyText = this.currentAddress;
       this.doCopy(getCopyText);
     },
     doCopy(val) {
-      this.$copyText(val).then(
-        
-      );
+      this.$copyText(val).then();
     },
     getInstances() {
       this.copyImg = this.$refs.copy;
@@ -108,8 +146,7 @@ export default {
       this.copyImg.src = require("../../../assets/images/copy.png");
       localStorage.setItem("apAddress", this.currentAddress);
     },
-    mySelectEvent({ id, text }) {
-    },
+    mySelectEvent({ id, text }) {},
     sendAddress() {
       Bus.$emit("apAddress", this.currentAddress);
       setTimeout(() => {
@@ -117,6 +154,7 @@ export default {
       });
     },
     getCPX(currentAddress) {
+      this.getVoter(this.currentAddress);
       this.$axios
         .post(this.accountInfo_url, {
           address: currentAddress
@@ -178,34 +216,42 @@ export default {
 
 .wallet-flex-container {
   width: 50%;
-  padding: 60px 0 0 30px;
+  padding: 35px 0 0 30px;
   .cpx-number {
     height: 35px;
     line-height: 35px;
-    text-align: left;
-    font-size: 22px;
+    font-size: 15px;
   }
+  .alignRight {
+    padding-left: 14%;
+    margin-top: -29px;
+    position: fixed;
+  }
+
   .btn-box {
-    margin-top: 60px;
+    margin-top: 20px;
     a {
       display: inline-block;
       height: 30px;
-      // font-size: 18px;
       margin-right: 30px;
       color: #f26522;
       line-height: 30px;
       text-align: center;
       border: 1px solid #f26522;
-      padding: 0 30px;
+      width: 120px;
       &:hover {
         box-shadow: 2px 2px 8px 2px #f26522;
       }
     }
     &.btn-box-left {
+      margin-top: 85px;
       a {
         &:first-of-type {
           margin-left: 80px;
         }
+      }
+      .Iwallet {
+        margin-left: 65px;
       }
     }
   }

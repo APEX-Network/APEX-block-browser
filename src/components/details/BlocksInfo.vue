@@ -189,25 +189,6 @@ export default {
             id: data
           }
         });
-        // this.$axios
-        //   .get(this.url.blockHash_url + this.parentHash)
-        //   .then(response => {
-        //     let res = response.data.data;
-        //     let serverTime = response.headers.date;
-        //     this.height = res.height;
-        //     this.timeStamp = util.utilMethods.toUTCtime(
-        //       res.timeStamp,
-        //       serverTime
-        //     );
-        //     this.transactions = res.txNum + " " + "transactions in this block";
-        //     this.blockHash = res.blockHash;
-        //     this.parentHash = res.prevBlock;
-        //     this.minedBy = res.producer;
-        //     this.txNum = res.txNum;
-        //   })
-        //   .catch(function(response) {
-        //     console.log(response);
-        //   });
       }
     }
   }

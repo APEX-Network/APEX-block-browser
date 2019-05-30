@@ -1,10 +1,10 @@
 <template>
   <div class="TxFBlock">
-    <div>
+    <!-- <div>
       <transition name="fade">
         <loading v-if="isLoading"></loading>
       </transition>
-    </div>
+    </div> -->
     <p class="bheight" @click="setHeightValue(blockHeight)">{{blockHeight}}</p>
     <apex-back-ground/>
     <div class="data-table">
@@ -66,7 +66,6 @@ const ApexBackGround = r =>
     () => r(require("@/components/public/ApexBackGround")),
     "titleAndBackground"
   );
-import util from "@/utils/utils";
 import Loading from "@/components/loading";
 
 export default {

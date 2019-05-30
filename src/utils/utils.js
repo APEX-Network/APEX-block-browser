@@ -9,6 +9,15 @@ const bigdecimal = require("bigdecimal");
 // import _ from 'lodash';
 
 const utilMethods = {
+  sum(arr) {
+    if (arr.length) {
+      return arr.reduce(function (prev, curr, idx, arr) {
+        return prev + curr;
+      });
+    } else {
+      return 0;
+    }
+  },
   cutArray(array, subLength) {
     let index = 0;
     let newArr = [];
@@ -166,8 +175,8 @@ const utilMethods = {
         var h = (date.getUTCHours() < 10 ? '0' + (date.getUTCHours()) : date.getUTCHours()) + ':';
         var m = (date.getUTCMinutes() < 10 ? '0' + (date.getUTCMinutes()) : date.getUTCMinutes()) + ':';
         var s = (date.getUTCSeconds() < 10 ? '0' + (date.getUTCSeconds()) : date.getUTCSeconds());
-        datatime =  Y + M + D ;
-        return   Y + M + D; 
+        datatime = Y + M + D;
+        return Y + M + D;
       }
       return datatime;
     }
@@ -190,8 +199,8 @@ const utilMethods = {
         var h = (date.getUTCHours() < 10 ? '0' + (date.getUTCHours()) : date.getUTCHours()) + ':';
         var m = (date.getUTCMinutes() < 10 ? '0' + (date.getUTCMinutes()) : date.getUTCMinutes()) + ':';
         var s = (date.getUTCSeconds() < 10 ? '0' + (date.getUTCSeconds()) : date.getUTCSeconds());
-        datatime =  M + D ;
-        return  M + D; 
+        datatime = M + D;
+        return M + D;
       }
       return datatime;
     }
@@ -401,7 +410,7 @@ const utilMethods = {
       address: Base58check.encode(add, ap),
       amount: dAmount,
       type: data.slice(data.length - 2, data.length)
-    }     
+    }
     if (decodeData.type == "00") {
       decodeData.type = "Vote"
     }
