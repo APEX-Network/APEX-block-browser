@@ -536,6 +536,7 @@ export default {
         text-align: right;
         font-size: 12px;
         .pagination-content {
+          padding-top: 11px;
           .prev {
             cursor: pointer;
             padding-right: 8px;

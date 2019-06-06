@@ -1,10 +1,10 @@
 <template>
   <div class="Blocks">
-  <!-- <div>
+    <!-- <div>
       <transition name="fade">
         <loading v-if="isLoading"></loading>
       </transition>
-    </div> -->
+    </div>-->
     <apex-back-ground/>
     <div class="data-table">
       <ul class="table-ul">
@@ -62,7 +62,6 @@ const ApexBackGround = r =>
 import Bus from "@/utils/bus";
 import util from "@/utils/utils";
 import Loading from "@/components/loading";
-
 
 export default {
   name: "blocks",
@@ -122,7 +121,7 @@ export default {
           .then(response => {
             this.dataList = [];
             let res = response.data.data;
-            this.isLoading = false;  
+            this.isLoading = false;
             let serverTime = response.headers.date;
             let time;
             for (let i = 0; i < res.length; i++) {
@@ -171,7 +170,7 @@ export default {
         this.pageNumber = this.start + 1 + "-10";
         this.dataList = [];
         this.isLoading = true;
-        this.getBlocks(this.start); 
+        this.getBlocks(this.start);
         if (this.start == 9) {
           this.pageNumber = this.start + 1 + "-10";
           this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
@@ -185,9 +184,9 @@ export default {
       this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
       this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
       this.start = 9;
-      this.pageNumber = this.start + 1  + "-10";
+      this.pageNumber = this.start + 1 + "-10";
       this.dataList = [];
-        this.isLoading = true;
+      this.isLoading = true;
       this.getBlocks(this.start);
     },
     getFirst() {
@@ -271,6 +270,7 @@ export default {
       text-align: right;
       font-size: 12px;
       .pagination-content {
+        padding-top: 12px;
         .prev {
           cursor: pointer;
           padding-right: 8px;
