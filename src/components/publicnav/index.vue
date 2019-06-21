@@ -1,11 +1,11 @@
 <template>
   <div class="nav">
     <div class="main clearboth">
-      <div class="logo fl" @click="hiddenAboutUs">
+      <!-- <div class="logo fl" @click="hiddenAboutUs">
         <router-link to="/home">
           <img src="../../assets/images/logo.png" alt>
         </router-link>
-      </div>
+      </div>-->
       <div class="search-box fl clearboth">
         <input
           @click="hiddenAboutUs"
@@ -23,19 +23,29 @@
     </div>
     <div class="nav-bar">
       <ul class="fl">
+        <li>
+          <router-link to="/home">
+            <img
+              style="padding-left: 16px;
+    padding-top: 9px;"
+              src="../../assets/images/apex.png"
+              alt
+            >
+          </router-link>
+        </li>
         <li
           v-for="(item, index) in nav"
           :key="index"
           :class=" ((item.path === defaultNav) || ( defaultNav === '/' &&  index == 0)) ? 'active' : ''"
         >
-          <router-link
-            :to="item.path"
-            ref="bars"
-          >{{item.name}}</router-link>
+          <router-link :to="item.path" ref="bars">
+            <img style="padding-left: 18px;
+    padding-top: 20px;" :src="item.url" alt="home">
+          </router-link>
         </li>
-      </ul>
-      <ul class="fl about">
-        <img src="./../../assets/images/about.png" alt @click="showAboutUs">
+        <li class="fl about">
+          <img src="./../../assets/images/about.png" alt @click="showAboutUs">
+        </li>
       </ul>
     </div>
     <div ref="wrapAboutUs" class="wrapAboutUs" @click="hiddenAboutUs">
@@ -155,11 +165,31 @@ export default {
   computed: {
     nav() {
       return [
-        { title: this.$t("nav.home"), path: "/home", name: "Home" },
-        { title: this.$t("nav.wallet"), path: "/wallet", name: "Wallet" },
-        { title: "", path: "/blocks", name: "Blocks" },
-        { title: "", path: "/transactions", name: "Transactions" },
-        { title: "", path: "/producer", name: "Producer" }
+        {
+          title: this.$t("nav.home"),
+          path: "/home",
+          url: require("../../assets/images/home.png")
+        },
+        {
+          title: this.$t("nav.wallet"),
+          path: "/wallet",
+          url: require("./../../assets/images/wallet.png")
+        },
+        {
+          title: "",
+          path: "/blocks",
+          url: require("./../../assets/images/blocks.png")
+        },
+        {
+          title: "",
+          path: "/transactions",
+          url: require("./../../assets/images/retweet.png")
+        },
+        {
+          title: "",
+          path: "/producer",
+          url: require("./../../assets/images/producer.png")
+        }
       ];
     },
     defaultNav() {
@@ -339,7 +369,6 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 90px;
   .wrapAboutUs {
     z-index: 12000;
     width: 100vw;
@@ -418,8 +447,8 @@ export default {
 
   .main {
     display: flex;
-    width: 81%;
-    padding: 30px 45px 30px 120px;
+    width: 100%;
+    padding: 0px 0px 0px 64px;
   }
   .logo {
     img {
@@ -428,10 +457,8 @@ export default {
   }
 
   .search-box {
-    padding-top: 26px;
-    height: 56px;
+    height: 60px;
     position: relative;
-    padding-left: 1%;
     width: 100%;
     input {
       width: 100%;
@@ -440,9 +467,8 @@ export default {
       border-radius: 4px;
       font-size: 14px;
       padding: 4px 56px 4px 15px;
-      background: rgba(255, 255, 255, 0.2);
+      background: #333333;
       color: #fff;
-      // border: 1px solid #f26522;
     }
     input:hover {
       box-shadow: 2px 2px 8px 2px #333333;
@@ -453,7 +479,13 @@ export default {
       cursor: pointer;
       width: 50px;
       height: 30px;
-      background: url(../../assets/images/shared/search.png) center 6px
+      background: center 6px no-repeat;
+      position: absolute;
+      right: 24px;
+      cursor: pointer;
+      width: 50px;
+      height: 30px;
+      background: url(../../assets/images/shared/search.png) center 13px
         no-repeat;
     }
   }
@@ -497,21 +529,19 @@ export default {
   .nav-bar {
     z-index: 9999;
     position: fixed;
-    bottom: 20%;
-    left: 93px;
-    width: 30px;
-    height: 50%;
+    width: 67px;
+    height: 100%;
+    background: #000000;
     .about {
-      padding-top: 70px;
+      bottom: 0px;
       cursor: pointer;
+      position: absolute;
+      left: 15px;
     }
     ul {
       li {
-        width: 30px;
-        height: 30px;
-        margin-bottom: 30px;
-        // background: url(../../assets/images/nav-fix.png) no-repeat;
-        background-position: center 3px;
+        width: 67px;
+        height: 60px;
         a {
           display: block;
           width: 100%;
@@ -521,12 +551,12 @@ export default {
           font-size: 16px;
         }
         a:hover {
-          color: #f26522;
+          // background: #56c4fd;
         }
-        &:hover,
+        // &:hover,
         &.active {
           a {
-            color: #f26522;
+            background: #56c4fd;
           }
         }
       }

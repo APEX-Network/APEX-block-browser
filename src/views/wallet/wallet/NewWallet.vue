@@ -1,7 +1,7 @@
 <template>
   <div class="newWallet">
     <p class="title">{{title}}</p>
-    <apex-back-ground class="bg"/>
+    <!-- <apex-back-ground class="bg"/> -->
     <div class="flex-container">
       <div class="text">
         <p>Password is Used To Encrypt Private Key And Authorize Transaction</p>
@@ -23,7 +23,7 @@
           readonly
           onfocus="this.removeAttribute('readonly');"
         >
-        <img src="../../../assets/images/hiddeneye.jpg" @click="displayFirstPwd" ref="firstEye">
+        <img src="../../../assets/images/hiddeneye.png" @click="displayFirstPwd" ref="firstEye">
         <div class="repatpwd">
           <span>Repeat Password</span>
           <input
@@ -38,12 +38,12 @@
             readonly
             onfocus="this.removeAttribute('readonly');"
           >
-          <img src="../../../assets/images/hiddeneye.jpg" @click="displaySecondPwd" ref="secondEye">
+          <img src="../../../assets/images/hiddeneye.png" @click="displaySecondPwd" ref="secondEye">
         </div>
         <div ref="epd" class="epd">Enter Password differ</div>
         <div class="agreePolicy">
           <img
-            src="./../../../assets/images/nocheckbox.jpg"
+            src="./../../../assets/images/nocheckbox.png"
             @click="changeCheckBox"
             ref="nocheckbox"
           >
@@ -186,7 +186,7 @@ export default {
       }
       if (this.firstClick % 2 == 1 && this.firstPwd !== null) {
         this.$refs.firstPwd.type = "password";
-        this.firstEye.src = require("../../../assets/images/hiddeneye.jpg");
+        this.firstEye.src = require("../../../assets/images/hiddeneye.png");
       }
     },
     displaySecondPwd() {
@@ -197,7 +197,7 @@ export default {
       }
       if (this.firstClick % 2 == 1 && this.secondPwd !== null) {
         this.$refs.secondPwd.type = "password";
-        this.secondEye.src = require("../../../assets/images/hiddeneye.jpg");
+        this.secondEye.src = require("../../../assets/images/hiddeneye.png");
       }
     },
     privacyPolicy() {
@@ -207,7 +207,7 @@ export default {
       this.ClickCheckBox++;
       if (this.ClickCheckBox % 2 == 0) {
         this.isClick = false;
-        this.nocheckbox.src = require("../../../assets/images/nocheckbox.jpg");
+        this.nocheckbox.src = require("../../../assets/images/nocheckbox.png");
       }
       if (this.ClickCheckBox % 2 == 1) {
         this.isClick = true;
@@ -231,21 +231,22 @@ export default {
 .newWallet {
   width: 100%;
   height: 100%;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 45px;
   .title {
     padding-left: 18px;
     padding-left: 23px;
     padding-top: 10px;
     padding-bottom: 9px;
-    background-color: rgba(255, 255, 255, 0.1) !important;
-  }
-  .bg {
-    height: calc(100% - 113px);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.07);
+    background-color: #000 !important;
   }
   .flex-container {
+    height: 95%;
+    background: #000;
     display: flex;
-    height: auto;
-    width: 60%;
-    margin-left: 20%;
+    width: 100%;
     flex-direction: column;
     .text {
       margin-top: 80px;
@@ -271,14 +272,14 @@ export default {
       input {
         margin-left: 30px;
         background: rgba(255, 255, 255, 0.001);
-        border: 1px solid #f26522;
+        border: 1px solid #56c4fd;
         width: 250px;
         height: 30px;
         position: absolute;
         color: aliceblue;
       }
       input:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #56c4fd;
       }
       img {
         z-index: 1000;
@@ -290,7 +291,7 @@ export default {
       .epd {
         margin-left: 130px;
         margin-top: 16px;
-        color: #f26522;
+        color: #56c4fd;
         visibility: hidden;
       }
       .agreePolicy {
@@ -304,7 +305,7 @@ export default {
         span {
           margin-right: 5px;
           span {
-            color: #f26522;
+            color: #56c4fd;
           }
         }
       }
@@ -316,7 +317,7 @@ export default {
           color: antiquewhite;
         }
         input:hover {
-          box-shadow: 2px 2px 8px 2px #f26522;
+          box-shadow: 2px 2px 8px 2px #56c4fd;
         }
         img {
           z-index: 1000;
@@ -328,9 +329,10 @@ export default {
       }
     }
     .create {
-      color: #f26522;
-      border: 1px solid #f26522;
+      color: #56c4fd;
+      border: 1px solid #56c4fd;
       margin-top: 30px;
+      margin-bottom: 75px;
       margin-left: 69px;
       text-align: center;
       height: 30px;
@@ -340,7 +342,7 @@ export default {
       cursor: pointer;
     }
     .create:hover {
-      box-shadow: 2px 2px 8px 2px #f26522;
+      box-shadow: 2px 2px 8px 2px #56c4fd;
     }
   }
 }

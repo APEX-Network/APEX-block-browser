@@ -1,7 +1,6 @@
 <template>
   <div class="votingSupport">
     <p class="title">{{title}}</p>
-    <apex-back-ground class="bg"/>
     <div class="flex-container">
       <div class="from">
         <div>From:</div>
@@ -88,7 +87,7 @@
           readonly
           onfocus="this.removeAttribute('readonly');"
         >
-        <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenpwd">
+        <img src="./../../../assets/images/hiddeneye.png" @click="displayPwd" ref="hiddenpwd">
         <div ref="checkPwd">Password Incorrect</div>
       </div>
       <div class="send" @click="SendTransfer()">SEND</div>
@@ -378,7 +377,7 @@ export default {
       }
       if (this.firstClick % 2 == 1 && this.pwd !== null) {
         this.$refs.firstPwd.type = "password";
-        this.transferPwd.src = require("../../../assets/images/hiddeneye.jpg");
+        this.transferPwd.src = require("../../../assets/images/hiddeneye.png");
       }
     },
     getAccountInfo(address) {
@@ -548,22 +547,22 @@ export default {
 .votingSupport {
   width: 100%;
   height: 100%;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 45px;
   .title {
     padding-left: 18px;
     padding-left: 23px;
     padding-top: 10px;
     padding-bottom: 9px;
-    background-color: rgba(255, 255, 255, 0.1) !important;
-  }
-  .bg {
-    height: calc(100% - 113px);
-  }
+border-bottom: 2px solid rgba(255, 255, 255, 0.07);
+    background-color: #000 !important;  }
   .flex-container {
     position: absolute;
     display: flex;
-    height: 60%;
-    width: 33.333%;
-    margin-left: 30%;
+    height: 80%;
+    background: #000;
+    width: 91.2%;
     flex-direction: column;
     justify-content: space-between;
     .from {
@@ -574,12 +573,12 @@ export default {
       }
       input {
         background: rgba(255, 255, 255, 0.001);
-        border: 1px solid #f26522;
+        border: 1px solid #56c4fd;
         width: 335px;
         color: aliceblue;
       }
       input:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #56c4fd;
       }
     }
     .to {
@@ -587,10 +586,10 @@ export default {
       .flex-item2 {
         width: 340px !important;
         height: 35px !important;
-        border: 1px solid #f26522;
+        border: 1px solid #56c4fd;
       }
       .flex-item2:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #56c4fd;
       }
       div:nth-child(1) {
         color: rgba(255, 255, 255, 0.5);
@@ -598,7 +597,7 @@ export default {
       }
       .errorAddress {
         margin-top: 8px;
-        color: #f26522;
+        color: #56c4fd;
         visibility: hidden;
       }
     }
@@ -608,23 +607,23 @@ export default {
         position: relative;
         span {
           cursor: pointer;
-          color: #f26522;
+          color: #56c4fd;
         }
       }
       input {
         background: rgba(255, 255, 255, 0.001);
-        border: 1px solid #f26522;
+        border: 1px solid #56c4fd;
         width: 235px;
         color: aliceblue;
       }
       input:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #56c4fd;
       }
       .p1 {
         display: inline-block;
         margin-left: 25px;
         a {
-          color: #f26522;
+          color: #56c4fd;
         }
       }
       .p2 {
@@ -642,7 +641,7 @@ export default {
         margin-top: 1.4%;
         z-index: 1;
         a {
-          color: #f26522;
+          color: #56c4fd;
         }
       }
       div:nth-child(4) {
@@ -650,7 +649,7 @@ export default {
         margin-left: 20%;
       }
       div:nth-child(5) {
-        color: #f26522;
+        color: #56c4fd;
         margin-top: 8px;
         margin-left: -2px;
         visibility: hidden;
@@ -663,17 +662,17 @@ export default {
         position: relative;
         span {
           cursor: pointer;
-          color: #f26522;
+          color: #56c4fd;
         }
       }
       input {
         background: rgba(255, 255, 255, 0.001);
-        border: 1px solid #f26522;
+        border: 1px solid #56c4fd;
         width: 235px;
         color: aliceblue;
       }
       input:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #56c4fd;
       }
       div:nth-child(2) {
         padding-left: 25px;
@@ -686,11 +685,11 @@ export default {
         margin-top: 1.4%;
         z-index: 1;
         a {
-          color: #f26522;
+          color: #56c4fd;
         }
       }
       div:nth-child(4) {
-        color: #f26522;
+        color: #56c4fd;
         margin-top: 8px;
         visibility: hidden;
       }
@@ -699,12 +698,12 @@ export default {
       margin: 0% 0 0 0%;
       input {
         background: rgba(255, 255, 255, 0.001);
-        border: 1px solid #f26522;
+        border: 1px solid #56c4fd;
         width: 335px;
         color: aliceblue;
       }
       input:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #56c4fd;
       }
       img {
         z-index: 1;
@@ -715,7 +714,7 @@ export default {
         cursor: pointer;
       }
       div:nth-child(4) {
-        color: #f26522;
+        color: #56c4fd;
         margin-top: 0px;
         visibility: hidden;
       }
@@ -723,10 +722,11 @@ export default {
     .send {
       margin: 5px 0 0 18%;
       color: #ffffff;
-      background: #f26522;
+      background: #56c4fd;
       width: 180px;
       height: 30px;
       margin-right: 18%;
+      margin-bottom: 54px;
       text-align: center;
       line-height: 30px;
       border-radius: 4px;
@@ -734,7 +734,7 @@ export default {
       cursor: pointer;
     }
     .send:hover {
-      box-shadow: 2px 2px 8px 2px #f26522;
+      box-shadow: 2px 2px 8px 2px #56c4fd;
     }
   }
   .dialog {
@@ -752,7 +752,7 @@ export default {
       height: 180px;
       background: #ffffff;
       div:nth-child(1) {
-        color: #f26522;
+        color: #56c4fd;
         font-size: 15px;
         margin-left: 80px;
         margin-top: 30px;
@@ -766,12 +766,12 @@ export default {
         margin-top: 50px;
         line-height: 30px;
         border-radius: 4px;
-        background: #f26522;
+        background: #56c4fd;
         a {
           color: #ffffff;
         }
         a:hover {
-          box-shadow: 2px 2px 8px 2px #f26522;
+          box-shadow: 2px 2px 8px 2px #56c4fd;
           border-radius: 4px;
         }
       }
@@ -784,7 +784,7 @@ export default {
         margin-top: 9px;
         line-height: 30px;
         border-radius: 4px;
-        color: #f26522;
+        color: #56c4fd;
         font-size: 20px;
       }
     }

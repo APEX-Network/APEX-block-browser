@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="body-container">
     <vue-scroll :ops="ops"/>
     <div id="app">
       <publicnav/>
@@ -96,6 +96,11 @@ export default {
   }
 };
 </script>
+<style scoped lang="less">
+ .body-container {
+   width: 100%;
+ }
+</style>
 
 
 

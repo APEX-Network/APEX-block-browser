@@ -1,6 +1,6 @@
 <template>
   <div class="transactions">
-    <apex-back-ground />
+    <!-- <apex-back-ground /> -->
     <div class="data-table transactions-table">
       <ul class="table-ul">
         <li class="row title">Transactions</li>
@@ -175,7 +175,11 @@ export default {
 .transactions {
   width: 100%;
   height: 100%;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 45px;
   .data-table {
+    background: #000;
     height: 100%;
     width: 100%;
     padding: 0px 12px 0px;
@@ -187,7 +191,7 @@ export default {
       max-width: 100%;
       .title {
         padding-left: 18px;
-        border-bottom: 2px solid #000;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.07);
       }
       & > li {
         .time {
@@ -196,7 +200,7 @@ export default {
         &.row {
           margin: 0;
           color: #ebebeb;
-          height: 40px;
+          height: 50px;
         }
         & > span {
           line-height: 35px;
@@ -207,13 +211,10 @@ export default {
           overflow: hidden;
           white-space: nowrap;
           .bottom {
-            margin-left: 20px;
-            padding-left: 40px;
+            padding-left: 19px;
             box-sizing: border-box;
-            background: url(./../../assets/images/shared/icon-fix.png) left 5px
-              no-repeat;
             span {
-              color: #f26522;
+              color: #56c4fd;
               cursor: pointer;
             }
           }
@@ -222,7 +223,7 @@ export default {
     }
     .apex-pagination {
       position: fixed;
-      bottom: 55px;
+      bottom: 39px;
       width: 90%;
       height: 50px;
       padding: 20px 35px 0 35px;
@@ -254,7 +255,7 @@ export default {
           &.last {
             transition: all 0.3s;
             &:hover {
-              color: #f26522;
+              color: #56c4fd;
             }
           }
         }

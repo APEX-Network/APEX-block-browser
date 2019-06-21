@@ -3,14 +3,14 @@
     <p class="apex-title">
       Transactions
       <router-link to="/transactions">
-        <span>ALL</span>
+        <span>VIEW ALL</span>
       </router-link>
     </p>
     <ul class="apex-list">
       <vue-scroll :ops="ops">
         <li ref="tList" v-for="(item,index) in transactions" :key="index">
           <div class="bottom">
-            <span class="hash" @click="setClickValue(item.txHash)">{{item.txHash}}</span>
+            <span style="max-width: 430px;"  class="hash" @click="setClickValue(item.txHash)">{{item.txHash}}</span>
             <span>{{item.refBlockTime}}</span>
           </div>
         </li>
@@ -101,11 +101,11 @@ export default {
     a {
       display: inline;
       span {
-        color: #f26522;
+        color: #56c4fd;
       }
     }
     span:hover {
-      box-shadow: 2px 2px 8px 2px #f26522;
+      box-shadow: 2px 2px 8px 2px #56c4fd;
     }
   }
 }

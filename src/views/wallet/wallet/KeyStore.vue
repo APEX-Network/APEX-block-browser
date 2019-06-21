@@ -1,7 +1,6 @@
 <template>
   <div class="keyStore">
     <p class="title">{{title}}</p>
-    <apex-back-ground class="bg"/>
     <div class="flex-container">
       <div class="text">
         <p>Import wallet address by keystore.</p>
@@ -30,7 +29,7 @@
             readonly
             onfocus="this.removeAttribute('readonly');"
           >
-          <img src="./../../../assets/images/hiddeneye.jpg" @click="displayPwd" ref="hiddenPwd">
+          <img src="./../../../assets/images/hiddeneye.png" @click="displayPwd" ref="hiddenPwd">
         </div>
         <div ref="checkKeyStore" class="checkKeyStore">Import failed</div>
       </div>
@@ -88,7 +87,7 @@ export default {
       }
       if (this.firstClick % 2 == 1 && this.pwd !== null) {
         this.$refs.pwd.type = "password";
-        this.hiddenpwd.src = require("../../../assets/images/hiddeneye.jpg");
+        this.hiddenpwd.src = require("../../../assets/images/hiddeneye.png");
       }
     },
     keyStoreWallet() {
@@ -120,23 +119,24 @@ export default {
 </script>
 <style lang='less' scoped>
 .keyStore {
-  width: 100%;
+   width: 100%;
   height: 100%;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 45px;
   .title {
     padding-left: 18px;
     padding-left: 23px;
     padding-top: 10px;
     padding-bottom: 9px;
-    background-color: rgba(255, 255, 255, 0.1) !important;
-  }
-  .bg {
-    height: calc(100% - 113px);
+     border-bottom: 2px solid rgba(255, 255, 255, 0.07);
+    background-color: #000 !important;
   }
   .flex-container {
+    height: 95%;
+    background: #000;
     display: flex;
-    height: auto;
-    width: 60%;
-    margin-left: 20%;
+    width: 100%;
     flex-direction: column;
     .text {
       margin-top: 80px;
@@ -151,14 +151,14 @@ export default {
       input {
         margin-left: 30px;
         background: rgba(255, 255, 255, 0.001);
-        border: 1px solid #f26522;
+        border: 1px solid #56c4fd;
         width: 370px;
         height: 30px;
         position: absolute;
         color: aliceblue;
       }
       input:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #56c4fd;
       }
       .repatpwd {
         margin: 45px 100px 0 0;
@@ -171,7 +171,7 @@ export default {
           color: aliceblue;
         }
         input:hover {
-          box-shadow: 2px 2px 8px 2px #f26522;
+          box-shadow: 2px 2px 8px 2px #56c4fd;
         }
         img {
           z-index: 1000;
@@ -183,7 +183,7 @@ export default {
       }
     }
     .checkKeyStore {
-       color: #f26522;
+       color: #56c4fd;
         position: relative;
         top: 20px;
         left: 30px;
@@ -191,9 +191,10 @@ export default {
     }
     .create {
       cursor: pointer;
-      color: #f26522;
-      border: 1px solid #f26522;
+      color: #56c4fd;
+      border: 1px solid #56c4fd;
       margin-top: 60px;
+      margin-bottom: 150px;
       text-align: center;
       height: 30px;
       width: 160px;
@@ -201,7 +202,7 @@ export default {
       z-index: 1;
     }
     .create:hover {
-      box-shadow: 2px 2px 8px 2px #f26522;
+      box-shadow: 2px 2px 8px 2px #56c4fd;
     }
   }
 }

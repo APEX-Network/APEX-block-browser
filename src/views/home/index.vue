@@ -39,11 +39,10 @@ export default {
   height: 100%;
   .bottom-modul,
   .top-modul {
-    height: 49%;
-    margin-bottom: 1.5%;
+    padding: 45px 30px 15px;
   }
   .bottom-modul{
-    margin-bottom: 0;
+    padding: 10px 30px 10px;
   }
 }
 </style>

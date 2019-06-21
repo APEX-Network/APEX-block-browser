@@ -1,6 +1,6 @@
 <template>
   <div class="producer">
-    <apex-back-ground />
+    <!-- <apex-back-ground /> -->
     <div class="data-table">
       <ul class="table-ul">
         <li class="row title">Producer</li>
@@ -277,19 +277,28 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 .producer {
-  width: 100%;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 45px;
   height: 100%;
+  width: 100%;
   .data-table {
+    background: #000;
+    height: 100%;
     .table-ul {
+      
       .title {
         padding-left: 18px;
         padding-top: 10px;
-        border-bottom: 2px solid #000;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.07);
       }
       li {
+          margin: 0;
+          color: #ebebeb;
+          height: 50px;
         .addr {
           cursor: pointer;
-          color: #f26522;
+          color: #56c4fd;
         }
       }
     }

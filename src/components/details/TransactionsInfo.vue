@@ -1,7 +1,7 @@
 
 <template>
   <div class="TransactionsInfo">
-    <apex-back-ground/>
+    <!-- <apex-back-ground/> -->
     <div class="data-table transactions-details">
       <ul class="table-ul">
         <li class="row title">TransactionsInfo</li>
@@ -381,17 +381,25 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 .TransactionsInfo {
-  width: 100%;
+  // width: 100%;
+  // height: 100%;
+  // .bg {
+  //   height: calc(100% - 72px);
+  // }
+   width: 100%;
   height: 100%;
-  .bg {
-    height: calc(100% - 72px);
-  }
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 45px;
   .data-table {
+    background: #000;
+    height: 100%;
+    width: 100%;
     .table-ul {
       .title {
         padding-left: 18px;
         padding-top: 10px;
-        border-bottom: 2px solid #000;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.07);
       }
       li {
         span {
@@ -399,12 +407,12 @@ export default {
             color: #ebebeb;
           }
           .TxId {
-            color: #f26522;
+            color: #56c4fd;
             cursor: pointer;
           }
           .changewidth {
             cursor: pointer;
-            color: #f26522;
+            color: #56c4fd;
           }
           span {
             float: right;
@@ -413,7 +421,7 @@ export default {
             }
             i {
               cursor: pointer;
-              color: #f26522;
+              color: #56c4fd;
             }
             img {
               cursor: pointer;

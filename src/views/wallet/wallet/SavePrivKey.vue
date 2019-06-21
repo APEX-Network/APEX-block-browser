@@ -1,7 +1,6 @@
 <template>
   <div class="SavePrivKey">
     <p class="title">{{title}}</p>
-    <apex-back-ground class="bg"/>
     <div class="flex-container">
       <div class="text">
         <p class="p1">
@@ -120,21 +119,22 @@ export default {
 .SavePrivKey {
   width: 100%;
   height: 100%;
-  .bg {
-    height: calc(100% - 113px);
-  }
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 45px;
   .title {
     padding-left: 18px;
     padding-left: 23px;
     padding-top: 10px;
     padding-bottom: 9px;
-    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.07);
+    background-color: #000 !important;
   }
   .flex-container {
+    height: 95%;
+    background: #000;
     display: flex;
-    height: auto;
-    width: 60%;
-    margin-left: 20%;
+    width: 100%;
     flex-direction: column;
     .text {
       margin-top: 80px;
@@ -156,14 +156,14 @@ export default {
       .p3 {
         margin-left: 50px;
         .s1 {
-          color: #f26522;
+          color: #56c4fd;
         }
         .s2 {
           float: right;
           padding-right: 10px;
           font-size: 15px;
           padding-top: 37px;
-          color: #f26522;
+          color: #56c4fd;
           visibility: hidden;
         }
         .privkey {
@@ -186,8 +186,8 @@ export default {
       }
     }
     .create1 {
-      color: #f26522;
-      border: 1px solid #f26522;
+      color: #56c4fd;
+      border: 1px solid #56c4fd;
       margin-top: 50px;
       text-align: center;
       height: 30px;
@@ -195,16 +195,17 @@ export default {
       line-height: 30px;
       z-index: 1;
       a {
-        color: #f26522;
+        color: #56c4fd;
       }
       a:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #56c4fd;
       }
     }
     .create2 {
-      color: #f26522;
-      border: 1px solid #f26522;
+      color: #56c4fd;
+      border: 1px solid #56c4fd;
       margin-top: 50px;
+      margin-bottom: 150px;
       text-align: center;
       height: 30px;
       width: 220px;
@@ -213,7 +214,7 @@ export default {
       cursor: pointer;
     }
     .create2:hover {
-      box-shadow: 2px 2px 8px 2px #f26522;
+      box-shadow: 2px 2px 8px 2px #56c4fd;
     }
   }
 }

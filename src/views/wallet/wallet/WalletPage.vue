@@ -234,13 +234,13 @@ export default {
       display: inline-block;
       height: 30px;
       margin-right: 30px;
-      color: #f26522;
+      color: #56c4fd;
       line-height: 30px;
       text-align: center;
-      border: 1px solid #f26522;
+      border: 1px solid #56c4fd;
       width: 120px;
       &:hover {
-        box-shadow: 2px 2px 8px 2px #f26522;
+        box-shadow: 2px 2px 8px 2px #56c4fd;
       }
     }
     &.btn-box-left {
@@ -262,10 +262,10 @@ export default {
   .flex-item2 {
     width: 340px !important;
     height: 35px !important;
-    border: 1px solid #f26522;
+    border: 1px solid #56c4fd;
   }
   .flex-item2:hover {
-    box-shadow: 2px 2px 8px 2px #f26522;
+    box-shadow: 2px 2px 8px 2px #56c4fd;
   }
 }
 
@@ -280,10 +280,10 @@ export default {
     height: 30px;
     margin-left: 940px;
     margin-top: 20px;
-    color: #f26522;
+    color: #56c4fd;
     line-height: 30px;
     text-align: center;
-    border: 1px solid #f26522;
+    border: 1px solid #56c4fd;
   }
 }
 @media screen and(max-width:1366px) {

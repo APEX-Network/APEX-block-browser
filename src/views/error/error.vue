@@ -48,11 +48,16 @@ export default {
 </script>
 <style lang='less' scoped>
 .error {
-    // background: url("../../assets/images/shared/yunshi.png") 25% 41% no-repeat;
+  width: 100%;
+  height: 100%;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 45px;
 }
 .data-table {
-  height: calc(100vh - 210px);
-  background-color: hsla(0, 0%, 100%, 0.1);
+   background: #000;
+    height: 100%;
+    width: 100%;
   ul {
     height: 100%;
     display: flex;
@@ -74,13 +79,13 @@ export default {
     height: 35px;
     line-height: 35px;
     text-align: center;
-    border: 1px solid #f26522;
+    border: 1px solid #56c4fd;
     font-size: 15px;
     a {
-      color: #f26522;
+      color: #56c4fd;
     }
     a:hover {
-      box-shadow: 2px 2px 8px 2px #f26522;
+      box-shadow: 2px 2px 8px 2px #56c4fd;
     }
   }
   }

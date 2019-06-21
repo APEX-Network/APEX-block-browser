@@ -71,7 +71,7 @@ export default {
 <style scoped lang="less">
 .home {
   width: 100%;
-  height: 100%;
+  height: 102%;
   .emptyWallet {
     width: 100%;
     height: 100%;
@@ -111,7 +111,7 @@ export default {
       }
       .second-li {
         font-family: "Regular";
-        color: #f26522;
+        color: #56c4fd;
         font-size: 14px;
       }
       .flex-btn {
@@ -122,32 +122,39 @@ export default {
           height: 35px;
           line-height: 35px;
           text-align: center;
-          border: 1px solid #f26522;
+          border: 1px solid #56c4fd;
           font-size: 15px;
-          color: #f26522;
+          color: #56c4fd;
           margin: 0 50px;
         }
         a:hover {
-          box-shadow: 2px 2px 8px 2px #f26522;
+          box-shadow: 2px 2px 8px 2px #56c4fd;
         }
       }
     }
   }
-  .bottom-modul,
+  .bottom-modul {
+    height: 50%;
+    padding-left: 1.9%;
+    padding-right: 1.9%;
+    padding-top: 2%;
+  }
   .top-modul {
     height: 49%;
-    margin-bottom: 1.5%;
+    padding-top: 3.2%;
+    padding-left: 1.9%;
+    padding-right: 1.9%;
   }
   .bottom-modul {
     .apex-modul {
       .apex-title {
         span {
           a {
-            color: #f26522;
+            color: #56c4fd;
           }
         }
         span:hover {
-          box-shadow: 2px 2px 8px 2px #f26522;
+          box-shadow: 2px 2px 8px 2px #56c4fd;
         }
       }
     }

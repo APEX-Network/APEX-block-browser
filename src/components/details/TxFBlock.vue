@@ -6,7 +6,6 @@
       </transition>
     </div> -->
     <p class="bheight" @click="setHeightValue(blockHeight)">{{blockHeight}}</p>
-    <apex-back-ground/>
     <div class="data-table">
       <ul class="table-ul">
         <li class="row title">{{title}}</li>
@@ -296,24 +295,34 @@ export default {
 </script>
 <style scoped lang="less">
 .TxFBlock {
-  width: 100%;
-  height: 100%;
+      width: 100%;
+    height: 100%;
+    padding-right: 28px;
+    padding-left: 28px;
+    padding-top: 45px;
   .bheight {
     position: absolute;
     padding-top: 11px;
     padding-left: 180px;
     cursor: pointer;
-    color: #f26522;
+    color: #56c4fd;
   }
   .data-table {
+    padding: 0px;
     height: 100%;
+    background: #000;
     .table-ul {
       .title {
         padding-left: 18px;
         padding-top: 10px;
-        border-bottom: 2px solid #000;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.07);
       }
       & > li {
+        &.row {
+          margin: 0;
+          color: #ebebeb;
+          height: 50px;
+        }
         .index {
           max-width: 82px;
         }
@@ -322,53 +331,54 @@ export default {
           padding-left: 36px;
         }
         .txHash {
-          max-width: 250px;
+          padding-left: 7%;
+          max-width: 500px;
         }
         .ttxHash {
-          max-width: 250px;
+          padding-left: 7%;
+          max-width: 480px;
           cursor: pointer;
-          color: #f26522;
+          color: #56c4fd;
         }
         .from {
           max-width: 250px;
-          padding-left: 62px;
+          padding-left: 7%;
           cursor: pointer;
-          color: #f26522;
+          color: #56c4fd;
         }
         .fromtitle {
           max-width: 250px;
-          padding-left: 62px;
+          padding-left: 5.5%;
         }
         .emptyFrom {
           max-width: 250px;
-          padding-left: 80px;
+          padding-left: 7%;
           color: #ebebeb;
           cursor: default;
         }
         .to {
           max-width: 250px;
-          padding-left: 35px;
+          padding-left: 7%;
           cursor: pointer;
-          color: #f26522;
+          color: #56c4fd;
         }
         .totitle {
           max-width: 250px;
-          padding-left: 35px;
+          padding-left: 5.5%;
         }
         .amount {
-          padding-left: 14px;
-          max-width: 165px;
+          padding-left: 10%;
         }
         & > span {
           a:hover {
-            color: #f26522;
+            color: #56c4fd;
           }
         }
       }
     }
     .apex-pagination {
       position: fixed;
-      bottom: 40px;
+      bottom: 30px;
       width: 91%;
       height: 50px;
       height: 40px;
@@ -401,7 +411,7 @@ export default {
           &.last {
             transition: all 0.3s;
             &:hover {
-              color: #f26522;
+              color: #56c4fd;
             }
           }
         }

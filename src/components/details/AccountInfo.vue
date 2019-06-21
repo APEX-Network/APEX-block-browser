@@ -1,6 +1,5 @@
 <template>
   <div class="AccountInfo">
-    <apex-back-ground/>
     <div class="data-table transactions-details">
       <ul class="table-ul">
         <li class="row title">{{title}}</li>
@@ -417,12 +416,16 @@ export default {
 .AccountInfo {
   width: 100%;
   height: 100%;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 45px;
   .transactions-details {
+    background: #000;
     padding-top: 17px;
     .table-ul {
       .title {
         padding-left: 18px;
-        border-bottom: 2px solid #000;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.07);
       }
       .adressCPX {
         .row {
@@ -436,13 +439,15 @@ export default {
     }
   }
   .apex-box {
+    background: #000;
+    height: calc(~"100% - 215px");
     .apex-title {
       padding-left: 30px;
       padding-top: 25px;
     }
     .data-table {
       width: 100%;
-      padding: 0px 0px 0px 12px;
+      padding: 0px 0px 0px 0px;
       box-sizing: border-box;
       overflow-y: auto;
       .table-ul {
@@ -457,31 +462,29 @@ export default {
             max-width: 335px;
           }
           .tHash {
-            padding-left: 20px;
+            padding-left: 30px;
             max-width: 335px;
           }
           .from {
-            padding-left: 20px;
+            padding-left: 10%;
             max-width: 232px;
-            color: #f26522;
+            color: #56c4fd;
             cursor: pointer;
           }
           .emptyFrom {
-            padding-left: 20px;
+            padding-left: 10%;
             max-width: 232px;
             color: #ebebeb;
             cursor: default;
           }
           .to {
             max-width: 232px;
-            padding-left: 14px;
-            color: #f26522;
+            padding-left: 7%;
+            color: #56c4fd;
             cursor: pointer;
           }
           .amount {
-            max-width: 200px;
-            padding-left: 20px;
-
+            padding-left: 10%;
             a {
               color: #ebebeb;
             }
@@ -501,16 +504,13 @@ export default {
             overflow: hidden;
             white-space: nowrap;
             .bottom {
-              margin-left: 20px;
               box-sizing: border-box;
               font-family: "Regular";
-              background: url(./../../assets/images/shared/icon-fix.png) left
-                5px no-repeat;
               span {
                 overflow: hidden;
                 white-space: nowrap;
                 max-width: 250px;
-                color: #f26522;
+                color: #56c4fd;
                 cursor: pointer;
                 text-overflow: ellipsis;
                 display: inline-block;
@@ -561,7 +561,7 @@ export default {
             &.last {
               transition: all 0.3s;
               &:hover {
-                color: #f26522;
+                color: #56c4fd;
               }
             }
           }

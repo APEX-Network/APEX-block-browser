@@ -134,21 +134,21 @@ export default {
             symbol: "circle", //设定为实心点
             symbolSize: 6,
             itemStyle: {
-              color: "#f26522"
+              color: "#00c3ff"
             },
             lineStyle: {
-              color: "#f26522"
+              color: "#00c3ff"
             },
             areaStyle: {
               opacity: 0.1,
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 {
                   offset: 0,
-                  color: "#ccc"
+                  color: "#00c3ff"
                 },
                 {
                   offset: 1,
-                  color: "#000"
+                  color: "#00c3ff"
                 }
               ])
             }

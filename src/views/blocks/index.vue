@@ -5,7 +5,7 @@
         <loading v-if="isLoading"></loading>
       </transition>
     </div>-->
-    <apex-back-ground/>
+    <!-- <apex-back-ground/> -->
     <div class="data-table">
       <ul class="table-ul">
         <li class="row title">Blocks</li>
@@ -230,22 +230,31 @@ export default {
 .Blocks {
   width: 100%;
   height: 100%;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 45px;
   .data-table {
-    // height: 93%;
+    height: 100%;
+    background: #000;
     .table-ul {
       .title {
         padding-left: 18px;
         padding-top: 10px;
-        border-bottom: 2px solid #000;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.07);
       }
       & > li {
+        &.row {
+          margin: 0;
+          color: #ebebeb;
+          height: 50px;
+        }
         .producer {
           cursor: pointer;
-          color: #f26522;
+          color: #e1e1e1;
         }
         .height {
           cursor: pointer;
-          color: #f26522;
+          color: #56c4fd;
           max-width: 126px;
         }
         .tHeight {
@@ -256,13 +265,13 @@ export default {
         }
         .hash {
           cursor: pointer;
-          color: #f26522;
+          color: #56c4fd;
         }
       }
     }
     .apex-pagination {
       position: fixed;
-      bottom: 55px;
+      bottom: 39px;
       width: 90%;
       height: 40px;
       padding: 0px 35px;
@@ -295,7 +304,7 @@ export default {
           &.last {
             transition: all 0.3s;
             &:hover {
-              color: #f26522;
+              color: #56c4fd;
             }
           }
         }
