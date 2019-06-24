@@ -53,7 +53,7 @@
             {{From}}
             <span class="clol col-lg-8">
               <i @click="setToValue(transactionInfoData.from)">{{transactionInfoData.from}}</i>
-              <img  ref="fromAddress" @click="Copy(1)" src="./../../assets/images/copy.png" alt>
+              <img ref="fromAddress" @click="Copy(1)" src="./../../assets/images/copy.png" alt>
             </span>
           </span>
         </li>
@@ -381,16 +381,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 .TransactionsInfo {
-  // width: 100%;
-  // height: 100%;
-  // .bg {
-  //   height: calc(100% - 72px);
-  // }
-   width: 100%;
-  height: 100%;
-  padding-right: 30px;
-  padding-left: 30px;
-  padding-top: 45px;
+  width: 100%;
+  height: 101%;
+    padding-right: 20px;
+    padding-left: 26px;
+    padding-top: 44px;
   .data-table {
     background: #000;
     height: 100%;
@@ -398,7 +393,8 @@ export default {
     .table-ul {
       .title {
         padding-left: 18px;
-        padding-top: 10px;
+        height: 50px;
+        line-height: 50px;
         border-bottom: 2px solid rgba(255, 255, 255, 0.07);
       }
       li {

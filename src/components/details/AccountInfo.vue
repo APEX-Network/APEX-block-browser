@@ -39,9 +39,9 @@
         <ul class="table-ul">
           <li class="row">
             <span class="col tHash">TX hash</span>
-            <span class="col col-lg-6 from">From</span>
-            <span class="col to">To</span>
-            <span class="col amount">Amount</span>
+            <span class="col col-lg-6 fromTitle">From</span>
+            <span class="col toTitle">To</span>
+            <span class="col amountTitle">Amount</span>
           </li>
           <span class="col noTx" v-if="count == 0">{{noTransactions}}</span>
           <li v-for="(list,index) in transactions" :key="index" class="row" v-show="count !== 0">
@@ -415,10 +415,10 @@ export default {
 <style scoped lang="less">
 .AccountInfo {
   width: 100%;
-  height: 100%;
-  padding-right: 30px;
-  padding-left: 30px;
-  padding-top: 45px;
+  height: 101%;
+  padding-right: 20px;
+  padding-left: 26px;
+  padding-top: 44px;
   .transactions-details {
     background: #000;
     padding-top: 17px;
@@ -444,6 +444,8 @@ export default {
     .apex-title {
       padding-left: 30px;
       padding-top: 25px;
+      height: 50px;
+      line-height: 50px;
     }
     .data-table {
       width: 100%;
@@ -456,35 +458,47 @@ export default {
         border-top: #0000 2px solid;
         & > li {
           .noTx {
-            padding-left: 20px;
+            padding-left: 30px;
           }
           .ttHash {
-            max-width: 335px;
+            max-width: 600px;
           }
           .tHash {
             padding-left: 30px;
-            max-width: 335px;
+            max-width: 600px;
+          }
+          .fromTitle {
+            padding-left: 12%;
+            max-width: 380px;
           }
           .from {
-            padding-left: 10%;
-            max-width: 232px;
+            padding-left: 21.5%;
+            max-width: 600px;
             color: #56c4fd;
             cursor: pointer;
           }
           .emptyFrom {
-            padding-left: 10%;
-            max-width: 232px;
+            padding-left: 7%;
+            max-width: 320px;
             color: #ebebeb;
             cursor: default;
           }
           .to {
-            max-width: 232px;
-            padding-left: 7%;
+            max-width: 340px;
+            padding-left: 7.4%;
             color: #56c4fd;
             cursor: pointer;
           }
-          .amount {
+          .toTitle {
             padding-left: 10%;
+          }
+          .amountTitle {
+            padding-left: 12%;
+            max-width: 300px;
+          }
+          .amount {
+            padding-left: 12%;
+            max-width: 300px;
             a {
               color: #ebebeb;
             }
@@ -514,7 +528,7 @@ export default {
                 cursor: pointer;
                 text-overflow: ellipsis;
                 display: inline-block;
-                padding-left: 37px;
+                padding-left: 28px;
               }
             }
           }

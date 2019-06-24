@@ -28,10 +28,24 @@
 </template>
 <script>
 import Bus from "@/utils/bus";
-const WalletPage = r => require.ensure([], () => r(require("@/views/wallet/wallet/walletPage")), 'Wallet');
-const TransfersList = r => require.ensure([], () => r(require("@/components/list/TransfersList")), 'Wallet');
-const TransactionsList = r => require.ensure([], () => r(require("@/components/list/TransactionsList")), 'Wallet');
-
+const WalletPage = r =>
+  require.ensure(
+    [],
+    () => r(require("@/views/wallet/wallet/walletPage")),
+    "Wallet"
+  );
+const TransfersList = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/list/TransfersList")),
+    "Wallet"
+  );
+const TransactionsList = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/list/TransactionsList")),
+    "Wallet"
+  );
 
 export default {
   name: "wallet",
@@ -75,18 +89,22 @@ export default {
   .emptyWallet {
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.1) !important;
+    padding-top: 44px;
+    padding-left: 24px;
+    padding-right: 20px;
+    padding-bottom: 16px;
     border-radius: 0px 0px 4px 4px;
     .apex-title {
+      background: #000;
       padding-left: 23px;
-      height: 40px;
-      border-bottom: 2px solid #000;
-      padding-top: 10px;
+      height: 50px;
+      line-height: 50px;
+      border-bottom: rgba(255, 255, 255, 0.07) 2px solid;
     }
   }
   .data-table {
+    background: #000;
     height: e("calc(100% - 40px)");
-    border-radius: 4px;
     position: relative;
     padding: 0;
     ul {
@@ -135,19 +153,23 @@ export default {
   }
   .bottom-modul {
     height: 50%;
-    padding-left: 1.9%;
-    padding-right: 1.9%;
-    padding-top: 2%;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    padding-left: 27px;
   }
   .top-modul {
-    height: 49%;
-    padding-top: 3.2%;
-    padding-left: 1.9%;
-    padding-right: 1.9%;
+    height: 50%;
+    padding-top: 45px;
+    padding-right: 20px;
+    padding-bottom: 15px;
+    padding-left: 27px;
   }
   .bottom-modul {
     .apex-modul {
       .apex-title {
+        height: 50px;
+        line-height: 50px;
         span {
           a {
             color: #56c4fd;

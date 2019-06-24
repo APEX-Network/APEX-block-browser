@@ -6,7 +6,7 @@
           <img src="../../assets/images/logo.png" alt>
         </router-link>
       </div>-->
-      <div class="search-box fl clearboth">
+      <div class="search-box fl clearboth" style="border-bottom: 4px solid #004a80;">
         <input
           @click="hiddenAboutUs"
           spellcheck="false"
@@ -22,12 +22,12 @@
       </div>
     </div>
     <div class="nav-bar">
-      <ul class="fl">
-        <li>
+      <ul class="fl" style="border-right: 4px solid #004a80;">
+        <li style="height:50px; border-right: 4px solid #000;">
           <router-link to="/home">
             <img
-              style="padding-left: 16px;
-    padding-top: 9px;"
+              style="padding-left: 15px;
+    padding-top: 12px;"
               src="../../assets/images/apex.png"
               alt
             >
@@ -39,8 +39,14 @@
           :class=" ((item.path === defaultNav) || ( defaultNav === '/' &&  index == 0)) ? 'active' : ''"
         >
           <router-link :to="item.path" ref="bars">
-            <img style="padding-left: 18px;
-    padding-top: 20px;" :src="item.url" alt="home">
+            <img
+              style="padding-left: 18px;
+    width: 40px;
+    padding-top: 23px;"
+              :src="item.url"
+              alt="home"
+            >
+            <!-- <span class="name"  onmouseover="overShow()" onmouseout="outHide()">{{item.name}}</span> -->
           </router-link>
         </li>
         <li class="fl about">
@@ -168,26 +174,31 @@ export default {
         {
           title: this.$t("nav.home"),
           path: "/home",
+          name: "Home",
           url: require("../../assets/images/home.png")
         },
         {
           title: this.$t("nav.wallet"),
           path: "/wallet",
+          name: "Wallet",
           url: require("./../../assets/images/wallet.png")
         },
         {
           title: "",
           path: "/blocks",
+          name: "Blocks",
           url: require("./../../assets/images/blocks.png")
         },
         {
           title: "",
           path: "/transactions",
+          name: "Transactions",
           url: require("./../../assets/images/retweet.png")
         },
         {
           title: "",
           path: "/producer",
+          name: "Producer",
           url: require("./../../assets/images/producer.png")
         }
       ];
@@ -448,7 +459,7 @@ export default {
   .main {
     display: flex;
     width: 100%;
-    padding: 0px 0px 0px 64px;
+    padding: 0px 0px 0px 39px;
   }
   .logo {
     img {
@@ -457,35 +468,30 @@ export default {
   }
 
   .search-box {
-    height: 60px;
+    height: 54px;
     position: relative;
     width: 100%;
+    z-index: 10000;
+    margin-left: 17px;
+    border-bottom: 4px solid rgb(0, 74, 128);
     input {
       width: 100%;
-      height: 100%;
+      height: 50px;
       border: 0px;
-      border-radius: 4px;
       font-size: 14px;
-      padding: 4px 56px 4px 15px;
+      padding: 4px 56px 4px 24px;
       background: #333333;
       color: #fff;
     }
-    input:hover {
-      box-shadow: 2px 2px 8px 2px #333333;
-    }
     .search-btn {
-      position: absolute;
       right: 0;
-      cursor: pointer;
-      width: 50px;
-      height: 30px;
       background: center 6px no-repeat;
       position: absolute;
-      right: 24px;
+      right: 20px;
       cursor: pointer;
       width: 50px;
-      height: 30px;
-      background: url(../../assets/images/shared/search.png) center 13px
+      height: 100%;
+      background: url(../../assets/images/shared/search.png) center 16px
         no-repeat;
     }
   }
@@ -529,19 +535,30 @@ export default {
   .nav-bar {
     z-index: 9999;
     position: fixed;
-    width: 67px;
+    width: 60px;
     height: 100%;
     background: #000000;
     .about {
       bottom: 0px;
       cursor: pointer;
       position: absolute;
-      left: 15px;
+      img {
+        padding-left: 11px;
+        width: 40px;
+      }
     }
     ul {
       li {
-        width: 67px;
-        height: 60px;
+        width: 56px;
+        height: 70px;
+        span {
+          padding-left: 5px;
+          padding-top: 29px;
+          font-size: 14px;
+          color: #999999;
+          position: fixed;
+        }
+        // margin-bottom: 10px;
         a {
           display: block;
           width: 100%;
@@ -556,7 +573,7 @@ export default {
         // &:hover,
         &.active {
           a {
-            background: #56c4fd;
+            background: #004a80;
           }
         }
       }

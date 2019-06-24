@@ -565,9 +565,9 @@ export default {
 .refundVote {
    width: 100%;
   height: 100%;
-  padding-right: 30px;
-  padding-left: 30px;
-  padding-top: 45px;
+  padding-right: 20px;
+  padding-left: 26px;
+  padding-top: 44px;
   .title {
     padding-left: 18px;
     padding-left: 23px;
@@ -579,8 +579,9 @@ export default {
    position: absolute;
     display: flex;
     height: 80%;
+    min-height: 81%;
     background: #000;
-    width: 91.2%;
+    width: 92.9%;
     flex-direction: column;
     justify-content: space-between;
     .from {
@@ -743,7 +744,7 @@ export default {
     .send {
       margin: 5px 0 0 18%;
       color: #ffffff;
-      background: #56c4fd;
+      background: #004a80;
       width: 180px;
       height: 30px;
       margin-right: 18%;
@@ -755,7 +756,7 @@ export default {
       cursor: pointer;
     }
     .send:hover {
-      box-shadow: 2px 2px 8px 2px #56c4fd;
+      box-shadow: 2px 2px 8px 2px #004a80;
     }
   }
   .dialog {

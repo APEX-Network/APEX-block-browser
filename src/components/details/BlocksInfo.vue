@@ -43,7 +43,7 @@
           <span class="col">
             Mined By:
             <span class="clol col-lg-8">
-              <span  @click="setClickValue(minedBy)">{{minedBy}}</span>
+              <span @click="setClickValue(minedBy)">{{minedBy}}</span>
             </span>
           </span>
         </li>
@@ -53,8 +53,18 @@
 </template>
 
 <script>
-const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
-const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
 import util from "@/utils/utils";
 const Base58check = require("base58check");
 
@@ -198,11 +208,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 .BlocksInfo {
-   width: 100%;
-  height: 100%;
-  padding-right: 30px;
-  padding-left: 30px;
-  padding-top: 45px;
+  width: 100%;
+  height: 101%;
+  padding-right: 20px;
+  padding-left: 26px;
+  padding-top: 44px;
   .data-table {
     background: #000;
     height: 100%;
@@ -210,7 +220,8 @@ export default {
     .table-ul {
       .title {
         padding-left: 18px;
-        padding-top: 10px;
+        height: 50px;
+        line-height: 50px;
         border-bottom: 2px solid rgba(255, 255, 255, 0.07);
       }
       li {

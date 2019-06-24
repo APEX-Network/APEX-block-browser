@@ -51,19 +51,21 @@ export default {
 <style lang='less' scoped>
 .openWallet {
   height: 100%;
-  padding-right: 30px;
-  padding-left: 30px;
-  padding-top: 45px;
+  padding-right: 20px;
+  padding-left: 23px;
+  padding-top: 44px;
   .title {
     padding-left: 18px;
     padding-left: 23px;
-    padding-top: 10px;
+    height: 50px;
+    line-height: 50px;
     padding-bottom: 9px;
-border-bottom: 2px solid rgba(255, 255, 255, 0.07);
-    background-color: #000 !important;  }
-  
+    border-bottom: 2px solid rgba(255, 255, 255, 0.07);
+    background-color: #000 !important;
+  }
+
   .flex-container {
-    height: 95%;
+    height: 93%;
     background: #000;
     display: flex;
     width: 100%;
@@ -105,7 +107,7 @@ border-bottom: 2px solid rgba(255, 255, 255, 0.07);
       color: #56c4fd;
       border: 1px solid #56c4fd;
       margin-top: 30px;
-      margin-bottom: 180px;
+      margin-bottom: 256px;
       text-align: center;
       height: 30px;
       width: 160px;

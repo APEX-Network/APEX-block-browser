@@ -18,17 +18,25 @@
         <div>Save Your Keystore File</div>
       </div>
       <div class="create1" @click="downloadKeyStore">DOWNLOAD ENCRYPTED KEY</div>
-      <div class="create2" @click="getAddress">
-        CONTINUE
-      </div>
+      <div class="create2" @click="getAddress" ref="changeClass" v-bind:class="create2">CONTINUE</div>
     </div>
   </div>
 </template>
 
 <script>
 import Bus from "@/utils/bus";
-const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
-const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
 export default {
   name: "CreatedKeystore",
   props: [""],
@@ -38,7 +46,8 @@ export default {
       address: null,
       apAddress: null,
       privKey: null,
-      keyStore: null
+      keyStore: null,
+      create2Change: null
     };
   },
 
@@ -47,6 +56,7 @@ export default {
     ApexTitle
   },
   mounted() {
+    this.create2Change = this.$refs.changeClass;
     this.getKeyStoreAndlastAddress();
   },
 
@@ -80,6 +90,7 @@ export default {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      this.create2Change.className = "createContinue";
     },
     offListener() {
       Bus.$off("apAddress");
@@ -94,11 +105,11 @@ export default {
 </script>
 <style lang='less' scoped>
 .createdKeystore {
- width: 100%;
+  width: 100%;
   height: 100%;
-  padding-right: 30px;
-  padding-left: 30px;
-  padding-top: 45px;
+  padding-right: 20px;
+  padding-left: 23px;
+  padding-top: 44px;
   .title {
     padding-left: 18px;
     padding-left: 23px;
@@ -147,12 +158,24 @@ export default {
       width: 220px;
       line-height: 30px;
       z-index: 1;
-      cursor: pointer;    
+      cursor: pointer;
     }
     .create1:hover {
-        box-shadow: 2px 2px 8px 2px #56c4fd;
-      }
+      box-shadow: 2px 2px 8px 2px #56c4fd;
+    }
     .create2 {
+      color: #999999;
+      border: 1px solid #999999;
+      margin-top: 30px;
+      margin-bottom: 180px;
+      text-align: center;
+      height: 30px;
+      width: 220px;
+      line-height: 30px;
+      z-index: 1;
+      cursor: pointer;
+    }
+    .createContinue {
       color: #56c4fd;
       border: 1px solid #56c4fd;
       margin-top: 30px;
@@ -164,9 +187,12 @@ export default {
       z-index: 1;
       cursor: pointer;
     }
+    .createContinue:hover {
+      box-shadow: 2px 2px 8px 2px #56c4fd;
+    }
     .create2:hover {
-        box-shadow: 2px 2px 8px 2px #56c4fd;
-      }
+      box-shadow: 2px 2px 8px 2px #999999;
+    }
   }
 }
 </style>

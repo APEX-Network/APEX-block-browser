@@ -11,11 +11,14 @@
   </div>
 </template>
 <script>
-
-const LiveTps = r => require.ensure([], () => r(require("@/views/home/LiveTps")), 'Home');
-const OverView = r => require.ensure([], () => r(require("@/views/home/OverView")), 'Home');
-const BlocksList = r => require.ensure([], () => r(require("@/components/list/BlocksList")), 'Home');
-const HomeTransactionsList = r => require.ensure([], () => r(require("./HomeTransactionsList")), 'Home');
+const LiveTps = r =>
+  require.ensure([], () => r(require("@/views/home/LiveTps")), "Home");
+const OverView = r =>
+  require.ensure([], () => r(require("@/views/home/OverView")), "Home");
+const BlocksList = r =>
+  require.ensure([], () => r(require("@/components/list/BlocksList")), "Home");
+const HomeTransactionsList = r =>
+  require.ensure([], () => r(require("./HomeTransactionsList")), "Home");
 
 export default {
   name: "home",
@@ -39,10 +42,16 @@ export default {
   height: 100%;
   .bottom-modul,
   .top-modul {
-    padding: 45px 30px 15px;
+    padding-top: 45px;
+    padding-right: 20px;
+    padding-bottom: 15px;
+    padding-left: 27px;
   }
-  .bottom-modul{
-    padding: 10px 30px 10px;
+  .bottom-modul {
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    padding-left: 27px;
   }
 }
 </style>

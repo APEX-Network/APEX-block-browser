@@ -31,7 +31,7 @@ export default {
     postWeekTxs() {
       this.$axios
         .post(this.blockTips_url, this.params)
-        .then(response => {
+        .then(response => {          
           this.data = [];
           this.alldata = [];
           let resData = response.data.data;
@@ -56,7 +56,9 @@ export default {
           this.time = time;
           this.tooltps = tooltps;
           this.data = data;
-          this.drawCharts();
+          if (this.data.length !== 0 && resData !== "NotFound") {
+            this.drawCharts();
+          }
         })
         .catch(function(response) {
           console.log(response);
@@ -174,8 +176,8 @@ export default {
   margin-bottom: 2%;
   .apex-modul {
     .apex-title {
-      height: 43px;
-      span:hover {
+height: 50px;
+        line-height: 50px;      span:hover {
         box-shadow: 2px 2px 8px 2px #f26522;
       }
     }

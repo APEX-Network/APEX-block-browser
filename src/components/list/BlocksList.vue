@@ -127,8 +127,8 @@ export default {
     }
   }
   .apex-title {
-    height: 43px;
-    a {
+height: 50px;
+        line-height: 50px;    a {
       display: inline;
       span {
         color: #56c4fd;

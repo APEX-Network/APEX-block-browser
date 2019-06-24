@@ -40,7 +40,7 @@ input:-ms-input-placeholder {
 }
 .fl {
   float: left;
-  width: 67px;
+  width: 60px;
   height: 100%;
 }
 .fr {
@@ -157,12 +157,12 @@ body .select2-container--open .select2-dropdown .select2-results .select2-result
   min-width: 1260px;
 }
 #app .main-box {
-  padding-top: 45px;
-  margin-left: 66px;
   min-width: 1110px;
   min-height: 680px;
-  height: calc(100% - 33px);
-  width: calc(100% - 67px);
+  height: calc(100% - 29px);
+  width: 100%;
+  padding-top: 30px;
+  padding-left: 54px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   z-index: 1000;
@@ -189,7 +189,7 @@ body .select2-container--open .select2-dropdown .select2-results .select2-result
 }
 .apex-modul {
   position: relative;
-  width: calc(50% - 12px);
+  width: calc(50% - 10px);
   height: 100%;
   background-color: #000000;
   border-radius: 0px 0px 4px 4px;
@@ -213,7 +213,7 @@ body .select2-container--open .select2-dropdown .select2-results .select2-result
   line-height: 12px;
   height: 24px;
   padding: 5px 10px;
-  margin-top: 8px;
+  margin-top: 12px;
   box-sizing: border-box;
   color: #56c4fd;
   cursor: pointer;
@@ -241,7 +241,7 @@ body .select2-container--open .select2-dropdown .select2-results .select2-result
   padding: 0 10px 0 5px;
   margin-right: 10px;
   line-height: 23px;
-  background: #56c4fd;
+  background: #004a80;
 }
 .apex-modul .apex-list li .bottom {
   overflow: hidden;

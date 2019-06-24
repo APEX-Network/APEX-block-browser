@@ -4,7 +4,7 @@
       <transition name="fade">
         <loading v-if="isLoading"></loading>
       </transition>
-    </div> -->
+    </div>-->
     <p class="bheight" @click="setHeightValue(blockHeight)">{{blockHeight}}</p>
     <div class="data-table">
       <ul class="table-ul">
@@ -295,11 +295,11 @@ export default {
 </script>
 <style scoped lang="less">
 .TxFBlock {
-      width: 100%;
-    height: 100%;
-    padding-right: 28px;
-    padding-left: 28px;
-    padding-top: 45px;
+  width: 100%;
+  height: 101%;
+  padding-right: 20px;
+  padding-left: 26px;
+  padding-top: 44px;
   .bheight {
     position: absolute;
     padding-top: 11px;

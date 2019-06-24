@@ -72,7 +72,8 @@ export default {
     margin-bottom: 2%;
     .apex-modul {
       .apex-title {
-        height: 43px;
+        height: 50px;
+        line-height: 50px;
         span:hover {
           box-shadow: 2px 2px 8px 2px #f26522;
         }

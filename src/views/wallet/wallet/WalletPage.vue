@@ -210,7 +210,8 @@ export default {
   .wallet-modul {
   width: 100%;
   .apex-title {
-    height: 43px;
+    height: 50px;
+    line-height: 50px;
   }
 }
 

@@ -271,7 +271,7 @@ export default {
   height: 94%;
 }
 .useProtocol {
-  height: e("calc(100% - 100px)");
+  height: e("calc(100% - 110px)");
   padding: 30px 20px 10px 30px;
   overflow-y: auto;
   .disclaimer-box {

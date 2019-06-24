@@ -33,16 +33,24 @@
         </div>
         <div ref="checkKeyStore" class="checkKeyStore">Import failed</div>
       </div>
-      <div class="create" @click="keyStoreWallet">
-        CONTNUE
-      </div>
+      <div class="create" @click="keyStoreWallet">CONTNUE</div>
     </div>
   </div>
 </template>
 
 <script>
-const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
-const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
 import util from "@/utils/utils";
 import Bus from "@/utils/bus";
 import db from "@/utils/myDatabase";
@@ -66,7 +74,7 @@ export default {
     ApexBackGround,
     ApexTitle
   },
-  
+
   mounted() {
     this.hiddenpwd = this.$refs.hiddenPwd;
     this.checkKeyStore = this.$refs.checkKeyStore;
@@ -119,21 +127,22 @@ export default {
 </script>
 <style lang='less' scoped>
 .keyStore {
-   width: 100%;
+  width: 100%;
   height: 100%;
-  padding-right: 30px;
-  padding-left: 30px;
-  padding-top: 45px;
+  padding-right: 20px;
+  padding-left: 23px;
+  padding-top: 44px;
   .title {
     padding-left: 18px;
     padding-left: 23px;
-    padding-top: 10px;
+    height: 50px;
+    line-height: 50px;
     padding-bottom: 9px;
-     border-bottom: 2px solid rgba(255, 255, 255, 0.07);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.07);
     background-color: #000 !important;
   }
   .flex-container {
-    height: 95%;
+    height: 93%;
     background: #000;
     display: flex;
     width: 100%;
@@ -183,11 +192,11 @@ export default {
       }
     }
     .checkKeyStore {
-       color: #56c4fd;
-        position: relative;
-        top: 20px;
-        left: 30px;
-        visibility: hidden;
+      color: #56c4fd;
+      position: relative;
+      top: 20px;
+      left: 30px;
+      visibility: hidden;
     }
     .create {
       cursor: pointer;

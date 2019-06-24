@@ -1,6 +1,5 @@
 <template>
   <div class="producer">
-    <!-- <apex-back-ground /> -->
     <div class="data-table">
       <ul class="table-ul">
         <li class="row title">Producer</li>
@@ -12,9 +11,7 @@
         </li>
         <li v-for="(item,index) in producer" :key="index" class="row">
           <span class="col">{{item.Rank}}</span>
-          <span class="col col-lg-8 addr"  @click="setClickValue(item.addr)">
-          {{item.addr}}
-          </span>
+          <span class="col col-lg-8 addr" @click="setClickValue(item.addr)">{{item.addr}}</span>
           <span class="col">{{item.votes}}</span>
           <span class="col">{{item.blockCount}}</span>
         </li>
@@ -45,10 +42,30 @@
 </template>
 
 <script>
-const PublicNav = r => require.ensure([], () => r(require("@/components/publicnav/index")), 'Producer');
-const PublicFooter = r => require.ensure([], () => r(require("@/components/publicfooter/index")), 'Producer');
-const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
-const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
+const PublicNav = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/publicnav/index")),
+    "Producer"
+  );
+const PublicFooter = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/publicfooter/index")),
+    "Producer"
+  );
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
 
 export default {
   name: "Producer",
@@ -92,7 +109,7 @@ export default {
       clearInterval(timer);
     }, 60000);
     this.$once("hook:beforeDestroy", () => {
-      clearInterval(timer,timer2);
+      clearInterval(timer, timer2);
     });
   },
   methods: {
@@ -115,7 +132,8 @@ export default {
           if (this.count < 10) {
             this.point = this.count.toString().indexOf(".");
             if (this.point > -1) {
-              this.totalPage = parseInt(this.count.toString().split(".")[0]) + 1;
+              this.totalPage =
+                parseInt(this.count.toString().split(".")[0]) + 1;
             }
             if (this.point == -1) {
               this.totalPage = this.count;
@@ -277,25 +295,25 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 .producer {
-  padding-right: 30px;
-  padding-left: 30px;
-  padding-top: 45px;
-  height: 100%;
+  height: 101%;
+  padding-right: 20px;
+  padding-left: 26px;
+  padding-top: 44px;
   width: 100%;
   .data-table {
     background: #000;
     height: 100%;
     .table-ul {
-      
       .title {
         padding-left: 18px;
-        padding-top: 10px;
+        height: 50px;
+        line-height: 50px;
         border-bottom: 2px solid rgba(255, 255, 255, 0.07);
       }
       li {
-          margin: 0;
-          color: #ebebeb;
-          height: 50px;
+        margin: 0;
+        color: #ebebeb;
+        height: 50px;
         .addr {
           cursor: pointer;
           color: #56c4fd;
@@ -336,7 +354,7 @@ export default {
           &.last {
             transition: all 0.3s;
             &:hover {
-              color: #f26522;
+              color: #56c4fd;
             }
           }
         }

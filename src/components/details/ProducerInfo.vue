@@ -37,9 +37,7 @@
         <li class="row" v-if="producerInfo.Website !== ''">
           <span class="col">
             {{Website}}
-            <span class="clo col-lg-8 goHome" @click="gotHome" >
-             {{producerInfo.Website}}
-            </span>
+            <span class="clo col-lg-8 goHome" @click="gotHome">{{producerInfo.Website}}</span>
           </span>
         </li>
         <li class="row" v-if="producerInfo.Description !== ''">
@@ -60,8 +58,18 @@
 </template>
 
 <script>
-const ApexTitle = r => require.ensure([], () => r(require("@/components/public/ApexTitle")), 'titleAndBackground');
-const ApexBackGround = r => require.ensure([], () => r(require("@/components/public/ApexBackGround")), 'titleAndBackground');
+const ApexTitle = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexTitle")),
+    "titleAndBackground"
+  );
+const ApexBackGround = r =>
+  require.ensure(
+    [],
+    () => r(require("@/components/public/ApexBackGround")),
+    "titleAndBackground"
+  );
 
 export default {
   name: "ProducerInfo",
@@ -147,11 +155,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 .ProducerInfo {
- width: 100%;
-  height: 100%;
-  padding-right: 30px;
-  padding-left: 30px;
-  padding-top: 45px;
+  width: 100%;
+  height: 101%;
+  padding-right: 20px;
+  padding-left: 26px;
+  padding-top: 44px;
   .data-table {
     background: #000;
     background: #000;
@@ -167,7 +175,7 @@ export default {
         span {
           .goHome {
             cursor: pointer;
-            color: #f26522
+            color: #f26522;
           }
           span {
             float: right;
