@@ -143,7 +143,7 @@ export default {
           key: this.pwd,
           iv: null
         };
-        this.walletAddress = util.utilMethods.privKeyWallet(userPrivKey, key);
+        this.walletAddress = util.utilMethods.produce_address(userPrivKey, key);
         this.privKeyStore = util.utilMethods.produce_KeyStore(keyStoreParams);
         db.APKStore.put({
           APAddress: this.walletAddress,

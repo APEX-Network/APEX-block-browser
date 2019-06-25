@@ -6,7 +6,11 @@ const script_signature = require("bitcoinjs-lib/src/script_signature");
 const CryptoJS = require('./../../node_modules/crypto-js/crypto-js.js');
 const BigInteger = require('bigi');
 const bigdecimal = require("bigdecimal");
-// import _ from 'lodash';
+
+const {
+  randomBytes
+} = require('crypto')
+const secp256r1 = require('secp256r1')
 
 const utilMethods = {
   sum(arr) {
@@ -206,12 +210,18 @@ const utilMethods = {
     }
   },
   producePrivKey() {
-    return ECPair.makeRandom().privateKey.toString("hex")
+    let privKey
+    do {
+      privKey = randomBytes(32)
+    } while (!secp256r1.privateKeyVerify(privKey))
+    return privKey
   },
-  produce_address(privKey, ap) {
+  produce_address(privKey) {
+    let ap = "0548";
     let privKeyToBuffer = Buffer.from(privKey, "hex");
-    let privKeyToPub = ECPair.fromPrivateKey(privKeyToBuffer).publicKey;
-    let pubHash = Crypto.ripemd160(Crypto.sha256(privKeyToPub)).toString(
+    let privKeyToPub = secp256r1.publicKeyCreate(privKeyToBuffer);
+    let pubToBuffer = Buffer.from("21" + privKeyToPub.toString("hex") + "ac", "hex");
+    let pubHash = Crypto.hash160(pubToBuffer).toString(
       "hex"
     );
     let pubAddress = Base58check.encode(pubHash, ap);
@@ -221,7 +231,7 @@ const utilMethods = {
     let messageToBuffer = Buffer.from(signParams.message, "hex");
     let hash = Bitcoin.crypto.sha256(messageToBuffer);
     let keyToBuffer = Buffer.from(signParams.privKey, "hex");
-    let signature = ECPair.fromPrivateKey(keyToBuffer).sign(hash);
+    let signature = secp256r1.sign(hash, keyToBuffer).signature;
     let signature_encode = script_signature.encode(signature, 0x01);
     let signature_toHex = signature_encode.toString("hex");
     let signature_result = signature_toHex.substring(0, signature_toHex.length - 2);
@@ -338,11 +348,12 @@ const utilMethods = {
     let byteArraypwd = CryptoJS.enc.Utf8.parse(pwdToBuffer);
     let key = CryptoJS.SHA256(byteArraypwd).toString();
     let iv = key.substring(0, 16);
-    let keyStore = CryptoJS.AES.encrypt(data, key, iv);
+    let keyStore = CryptoJS.AES.encrypt(data.toString("hex"), key, iv);
     let downKeyStore = keyStore.toString();
     return downKeyStore
   },
   keyStoreWallet(downKeyStore, key) {
+    let ap = "0548";
     let bigArraypwd = BigInteger(key).toByteArray();
     let pwdToBuffer = Buffer.from(bigArraypwd, "hex");
     let byteArraypwd = CryptoJS.enc.Utf8.parse(pwdToBuffer);
@@ -351,21 +362,11 @@ const utilMethods = {
     let DeckeyStore = CryptoJS.AES.decrypt(downKeyStore, keyStorekey, iv);
     let privKey = DeckeyStore.toString(CryptoJS.enc.Utf8);
     let privKeyToBuffer = Buffer.from(privKey, "hex");
-    let privKeyToPub = ECPair.fromPrivateKey(privKeyToBuffer).publicKey;
-    let pubHash = Crypto.ripemd160(Crypto.sha256(privKeyToPub)).toString(
+    let privKeyToPub = secp256r1.publicKeyCreate(privKeyToBuffer);
+    let pubToBuffer = Buffer.from("21" + privKeyToPub.toString("hex") + "ac", "hex");
+    let pubHash = Crypto.hash160(pubToBuffer).toString(
       "hex"
     );
-    let ap = "0548";
-    let pubAddress = Base58check.encode(pubHash, ap);
-    return pubAddress
-  },
-  privKeyWallet(userPrivKey, key) {
-    let privKeyToBuffer = Buffer.from(userPrivKey, "hex");
-    let privKeyToPub = ECPair.fromPrivateKey(privKeyToBuffer).publicKey;
-    let pubHash = Crypto.ripemd160(Crypto.sha256(privKeyToPub)).toString(
-      "hex"
-    );
-    let ap = "0548";
     let pubAddress = Base58check.encode(pubHash, ap);
     return pubAddress
   },
@@ -379,29 +380,6 @@ const utilMethods = {
     let privKey = DeckeyStore.toString(CryptoJS.enc.Utf8);
     return privKey
   },
-
-  // fullScreen(isOpen, target) {
-  //   let dom = target || void 0
-  //   let open_list = ['requestFullscreen', 'mozRequestFullScreen', 'webkitRequestFullScreen', 'msRequestFullscreen']
-  //   let cancel_list = ['exitFullscreen', 'mozCancelFullScreen', 'webkitCancelFullScreen']
-  //   let fn = void 0
-  //   if (isOpen) {
-  //     fn = _.find(open_list, (n) => {
-  //       return Boolean(dom[n])
-  //     })
-  //     fn && dom[fn]()
-  //   } else {
-  //     fn = _.find(cancel_list, (n) => {
-  //       return Boolean(document[n])
-  //     })
-  //     fn && document[fn]()
-  //   }
-  // },
-
-  // isFullScreen() {
-  //   console.log("adafasadsa");
-  //   return document.isFullScreen || document.mozIsFullScreen || document.webkitIsFullScreen
-  // },
   decodeTransactionsData(data) {
     let ap = "0548"
     let add = data.slice(0, 40);

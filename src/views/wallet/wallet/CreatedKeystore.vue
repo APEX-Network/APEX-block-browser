@@ -18,7 +18,7 @@
         <div>Save Your Keystore File</div>
       </div>
       <div class="create1" @click="downloadKeyStore">DOWNLOAD ENCRYPTED KEY</div>
-      <div class="create2" @click="getAddress" ref="changeClass" v-bind:class="create2">CONTINUE</div>
+      <div class="create2" @click="getAddress" ref="changeClass">CONTINUE</div>
     </div>
   </div>
 </template>

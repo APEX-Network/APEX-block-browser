@@ -468,17 +468,17 @@ export default {
             max-width: 600px;
           }
           .fromTitle {
-            padding-left: 12%;
+            padding-left: 14%;
             max-width: 380px;
           }
           .from {
-            padding-left: 21.5%;
-            max-width: 600px;
+            padding-left: 12.5%;
+            max-width: 400px;
             color: #56c4fd;
             cursor: pointer;
           }
           .emptyFrom {
-            padding-left: 7%;
+            padding-left: 6.5%;
             max-width: 320px;
             color: #ebebeb;
             cursor: default;

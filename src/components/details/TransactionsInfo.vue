@@ -246,7 +246,6 @@ export default {
               res.refBlockTime,
               serverTime
             );
-            // this.transactionInfoData.from = res.from;
             this.transactionInfoData.to = res.to;
             this.transactionInfoData.gasLimit = res.gasLimit;
             this.transactionInfoData.gasPrice = res.gasPrice;

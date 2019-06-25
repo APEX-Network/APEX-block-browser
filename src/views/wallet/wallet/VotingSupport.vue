@@ -530,7 +530,7 @@ export default {
           this.copyTxId = this.txId;
           let x = this.txId.slice(0, 6);
           let y = this.txId.slice(-6);
-          this.txId = x + "......" + y;
+          this.txId = x + "..." + y;
         })
         .catch(function(err) {
           if (err.response) {

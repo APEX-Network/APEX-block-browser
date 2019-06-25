@@ -15,9 +15,12 @@ const PrivateKey = () => import('@/views/wallet/wallet/PrivateKey');
 const KeyStore = () => import('@/views/wallet/wallet/KeyStore')
 const CreatedKeystore = () => import('@/views/wallet/wallet/CreatedKeystore');
 const SavePrivKey = () => import('@/views/wallet/wallet/SavePrivKey');
-const Transfer = () => import('@/views/wallet/wallet/Transfer');
-const VotingSupport = () => import('@/views/wallet/wallet/VotingSupport');
-const RefundVote = () => import('@/views/wallet/wallet/RefundVote');
+// const Transfer = () => import('@/views/wallet/wallet/Transfer');
+// const VotingSupport = () => import('@/views/wallet/wallet/VotingSupport');
+// const RefundVote = () => import('@/views/wallet/wallet/RefundVote');
+import Transfer from '@/views/wallet/wallet/Transfer';
+import VotingSupport from '@/views/wallet/wallet/VotingSupport';
+import RefundVote from '@/views/wallet/wallet/RefundVote';
 const error = () => import('@/views/error/error');
 const useProtocol = () => import('@/views/useProtocol/useProtocol');
 const TxFBlock = () => import('@/components/details/TxFBlock');

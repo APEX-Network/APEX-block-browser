@@ -148,13 +148,11 @@ export default {
           return;
         } else {
           this.diffPwd.style.visibility = "hidden";
-          let ap = "0548";
           let signParams = {
             privKey: util.utilMethods.producePrivKey()
           };
           this.apAddress = util.utilMethods.produce_address(
             signParams.privKey,
-            ap
           );
           let keyStoreParams = {
             data: signParams.privKey,

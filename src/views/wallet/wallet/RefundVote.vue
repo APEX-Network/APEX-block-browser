@@ -475,10 +475,7 @@ export default {
       ) {
         this.checkAddress();
         let bigEightPow = new bigdecimal.BigDecimal(String(Math.pow(10, 18)));
-        let tNTwelve = new bigdecimal.BigDecimal(String(Math.pow(3, 17)));
-        let handlFee = new bigdecimal.BigDecimal(
-          String(Math.pow(10, 12) * String(this.inputGasePrice) * 30000)
-        );
+        let tNTwelve = new bigdecimal.BigDecimal(String(Math.pow(10, 12)));
         let serializParams = {
           version: "00000001",
           txType: "03",
@@ -548,7 +545,7 @@ export default {
           this.copyTxId = this.txId;
           let x = this.txId.slice(0, 6);
           let y = this.txId.slice(-6);
-          this.txId = x + "......" + y;
+          this.txId = x + "..." + y;
         })
         .catch(function(err) {
           if (err.response) {
