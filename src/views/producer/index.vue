@@ -295,14 +295,15 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 .producer {
-  height: 101%;
+  height: 100.6%;
   padding-right: 20px;
-  padding-left: 26px;
+  padding-left: 25px;
   padding-top: 44px;
   width: 100%;
   .data-table {
     background: #000;
     height: 100%;
+    border-radius: 4px 4px 4px 4px;
     .table-ul {
       .title {
         padding-left: 18px;
@@ -322,7 +323,7 @@ export default {
     }
     .apex-pagination {
       position: fixed;
-      bottom: 55px;
+      bottom: 39px;
       width: 90%;
       height: 40px;
       padding: 10px 35px;

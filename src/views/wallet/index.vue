@@ -153,17 +153,17 @@ export default {
   }
   .bottom-modul {
     height: 50%;
-    padding-top: 10px;
+    padding-top: 5px;
     padding-right: 20px;
     padding-bottom: 10px;
-    padding-left: 27px;
+    padding-left: 25px;
   }
   .top-modul {
     height: 50%;
-    padding-top: 45px;
+    padding-top: 44px;
     padding-right: 20px;
     padding-bottom: 15px;
-    padding-left: 27px;
+    padding-left: 25px;
   }
   .bottom-modul {
     .apex-modul {

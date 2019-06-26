@@ -42,16 +42,16 @@ export default {
   height: 100%;
   .bottom-modul,
   .top-modul {
-    padding-top: 45px;
+    padding-top: 44px;
     padding-right: 20px;
     padding-bottom: 15px;
-    padding-left: 27px;
+    padding-left: 25px;
   }
   .bottom-modul {
-    padding-top: 10px;
+    padding-top: 5px;
     padding-right: 20px;
     padding-bottom: 10px;
-    padding-left: 27px;
+    padding-left: 25px;
   }
 }
 </style>

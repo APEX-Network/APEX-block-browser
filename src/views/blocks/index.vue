@@ -229,13 +229,14 @@ export default {
 <style scoped lang="less">
 .Blocks {
   width: 100%;
-  height: 101%;
+  height: 100.6%;
   padding-right: 20px;
-  padding-left: 26px;
+  padding-left: 25px;
   padding-top: 44px;
   .data-table {
     height: 100%;
     background: #000;
+    border-radius: 4px 4px 4px 4px;
     .table-ul {
       .title {
         padding-left: 18px;

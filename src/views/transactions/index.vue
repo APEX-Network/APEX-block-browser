@@ -184,11 +184,12 @@ export default {
 <style scoped lang="less">
 .transactions {
   width: 100%;
-  height: 101%;
+  height: 100.6%;
   padding-right: 20px;
-  padding-left: 26px;
+  padding-left: 25px;
   padding-top: 44px;
   .data-table {
+    border-radius: 4px 4px 4px 4px;
     background: #000;
     height: 100%;
     width: 100%;
@@ -197,7 +198,6 @@ export default {
     overflow-y: auto;
     .table-ul {
       width: 100%;
-
       max-width: 100%;
       .title {
         height: 50px;
@@ -238,7 +238,7 @@ export default {
       bottom: 39px;
       width: 90%;
       height: 50px;
-      padding: 20px 35px 0 35px;
+      padding: 22px 35px 0 35px;
       box-sizing: border-box;
       text-align: right;
       font-size: 12px;

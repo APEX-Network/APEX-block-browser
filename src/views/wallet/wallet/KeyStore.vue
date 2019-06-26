@@ -140,8 +140,10 @@ export default {
     padding-bottom: 9px;
     border-bottom: 2px solid rgba(255, 255, 255, 0.07);
     background-color: #000 !important;
+    border-radius: 4px 4px 0 0;
   }
   .flex-container {
+    border-radius: 0 0 4px 4px;
     height: 93%;
     background: #000;
     display: flex;

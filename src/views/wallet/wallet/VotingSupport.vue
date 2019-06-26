@@ -471,11 +471,14 @@ export default {
           votingRefundType: "00"
         };
         if (this.inputAmout == this.allamount) {
+          console.log(this.inputAmout);
+          console.log(this.allamount);
           serializParams.amount = new bigdecimal.BigDecimal(
             String(this.inputAmout)
           )
             .multiply(bigEightPow)
             .subtract(handlFee);
+          console.log(serializParams.amount);
         }
 
         this.message = util.utilMethods.produce_message(serializParams);
@@ -548,21 +551,22 @@ export default {
   width: 100%;
   height: 100%;
   padding-right: 20px;
-  padding-left: 26px;
+  padding-left: 25px;
   padding-top: 44px;
   .title {
-    padding-left: 18px;
     padding-left: 23px;
     padding-top: 10px;
     padding-bottom: 9px;
-border-bottom: 2px solid rgba(255, 255, 255, 0.07);
-    background-color: #000 !important;  }
+    border-bottom: 2px solid rgba(255, 255, 255, 0.07);
+    background-color: #000 !important;
+    border-radius: 4px 4px 0px 0px;
+  }
   .flex-container {
-    position: absolute;
+    border-radius: 0 0 4px 4px;
     display: flex;
-    min-height: 81%;
+    height: 94%;
     background: #000;
-    width: 92.9%;
+    width: 100%;
     flex-direction: column;
     justify-content: space-between;
     .from {

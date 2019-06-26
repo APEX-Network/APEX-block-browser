@@ -163,18 +163,19 @@ export default {
 .privateKey {
   height: 100%;
   padding-right: 20px;
-  padding-left: 23px;
+  padding-left: 25px;
   padding-top: 44px;
   .title {
-    padding-left: 18px;
-    padding-left: 23px;
+    padding-left: 25px;
     height: 50px;
     line-height: 50px;
     padding-bottom: 9px;
     border-bottom: 2px solid rgba(255, 255, 255, 0.07);
     background-color: #000 !important;
+    border-radius: 4px 4px 0px 0px;
   }
   .flex-container {
+    border-radius: 0 0 4px 4px;
     height: 93%;
     background: #000;
     display: flex;

@@ -156,15 +156,16 @@ export default {
 <style scoped lang="less">
 .ProducerInfo {
   width: 100%;
-  height: 101%;
+  height: 100.6%;
   padding-right: 20px;
-  padding-left: 26px;
+  padding-left: 25px;
   padding-top: 44px;
   .data-table {
     background: #000;
     background: #000;
     height: 100%;
     width: 100%;
+    border-radius: 4px !important;
     .table-ul {
       .title {
         padding-left: 18px;
@@ -175,7 +176,7 @@ export default {
         span {
           .goHome {
             cursor: pointer;
-            color: #f26522;
+            color: #56c4fd;
           }
           span {
             float: right;

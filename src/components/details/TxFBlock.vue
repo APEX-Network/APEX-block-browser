@@ -296,9 +296,9 @@ export default {
 <style scoped lang="less">
 .TxFBlock {
   width: 100%;
-  height: 101%;
+  height: 100.6%;
   padding-right: 20px;
-  padding-left: 26px;
+  padding-left: 25px;
   padding-top: 44px;
   .bheight {
     position: absolute;
@@ -311,6 +311,7 @@ export default {
     padding: 0px;
     height: 100%;
     background: #000;
+    border-radius: 4px;
     .table-ul {
       .title {
         padding-left: 18px;
@@ -341,7 +342,7 @@ export default {
           color: #56c4fd;
         }
         .from {
-          max-width: 250px;
+          max-width: 279px;
           padding-left: 7%;
           cursor: pointer;
           color: #56c4fd;
@@ -358,16 +359,17 @@ export default {
         }
         .to {
           max-width: 250px;
-          padding-left: 7%;
+          padding-left: 6%;
           cursor: pointer;
           color: #56c4fd;
         }
         .totitle {
           max-width: 250px;
-          padding-left: 5.5%;
+          padding-left: 6.5%;
         }
         .amount {
-          padding-left: 10%;
+          padding-left: 7%;
+          max-width: 200px;
         }
         & > span {
           a:hover {

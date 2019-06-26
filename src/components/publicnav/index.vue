@@ -397,7 +397,7 @@ export default {
         margin: 0 auto;
         font-size: 24px;
         color: #666666;
-        padding: 50px 0 50px 80px;
+        padding: 50px 0 50px 90px;
         line-height: 30px;
         text-align: center;
         font-family: "Semibold";
@@ -407,7 +407,7 @@ export default {
         display: inline-block;
         list-style: none;
         margin: 0;
-        padding: 0;
+        padding-left: 45px;
         display: flex;
         flex-direction: row;
         justify-content: center;

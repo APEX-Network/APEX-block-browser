@@ -415,13 +415,14 @@ export default {
 <style scoped lang="less">
 .AccountInfo {
   width: 100%;
-  height: 101%;
+  height: 100.6%;
   padding-right: 20px;
-  padding-left: 26px;
+  padding-left: 25px;
   padding-top: 44px;
   .transactions-details {
     background: #000;
     padding-top: 17px;
+    border-radius: 4px 4px 0 0;
     .table-ul {
       .title {
         padding-left: 18px;
@@ -440,7 +441,8 @@ export default {
   }
   .apex-box {
     background: #000;
-    height: calc(~"100% - 215px");
+    height: calc(~"100% - 219px");
+    border-radius: 0px 0px 4px 4px;
     .apex-title {
       padding-left: 30px;
       padding-top: 25px;
@@ -519,7 +521,7 @@ export default {
             white-space: nowrap;
             .bottom {
               box-sizing: border-box;
-              font-family: "Regular";
+              // font-family: "Regular";
               span {
                 overflow: hidden;
                 white-space: nowrap;

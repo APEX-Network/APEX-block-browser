@@ -560,10 +560,10 @@ export default {
 </script>
 <style lang='less' scoped>
 .refundVote {
-   width: 100%;
+  width: 100%;
   height: 100%;
   padding-right: 20px;
-  padding-left: 26px;
+  padding-left: 25px;
   padding-top: 44px;
   .title {
     padding-left: 18px;
@@ -571,14 +571,15 @@ export default {
     padding-top: 10px;
     padding-bottom: 9px;
     border-bottom: 2px solid rgba(255, 255, 255, 0.07);
-    background-color: #000 !important;  }
+    background-color: #000 !important;
+    border-radius: 4px 4px 0px 0px;
+  }
   .flex-container {
-   position: absolute;
+    border-radius: 0 0 4px 4px;
     display: flex;
-    height: 80%;
-    min-height: 81%;
+    height: 94%;
     background: #000;
-    width: 92.9%;
+    width: 100%;
     flex-direction: column;
     justify-content: space-between;
     .from {

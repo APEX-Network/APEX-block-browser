@@ -123,6 +123,7 @@ export default {
   padding-left: 23px;
   padding-top: 44px;
   .title {
+    border-radius: 4px 4px 0 0;
     padding-left: 18px;
     padding-left: 23px;
     height: 50px;
@@ -132,6 +133,7 @@ export default {
     background-color: #000 !important;
   }
   .flex-container {
+    border-radius: 0 0 4px 4px;
     height: 93%;
     background: #000;
     display: flex;
