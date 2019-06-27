@@ -743,13 +743,16 @@ export default {
   }
   .dialog {
     display: none;
-    position: relative;
     width: 100%;
     height: 100%;
     background: rgba(255, 255, 255, 0);
     justify-content: center;
     align-items: center;
     z-index: 2;
+    bottom: 0;
+    left: 15px;
+    right: 0;
+    position: fixed;
     .confirm {
       margin: auto;
       width: 310px;
