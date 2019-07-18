@@ -46,7 +46,6 @@
               :src="item.url"
               alt="home"
             >
-            <!-- <span class="name"  onmouseover="overShow()" onmouseout="outHide()">{{item.name}}</span> -->
           </router-link>
         </li>
         <li class="fl about">
@@ -146,7 +145,6 @@ export default {
       about: null,
       wrapDiv: null,
       clickValue: 0,
-      barName: ["Home", "Wallet", "Blocks", "Transactions", "Producer"],
       url: {
         blockHash_url: "/api/v1.0/blocks/blockHash/",
         blockHeight_url: "/api/v1.0/blocks/blockHeight/",
@@ -174,31 +172,26 @@ export default {
         {
           title: this.$t("nav.home"),
           path: "/home",
-          name: "Home",
           url: require("../../assets/images/home.png")
         },
         {
           title: this.$t("nav.wallet"),
           path: "/wallet",
-          name: "Wallet",
           url: require("./../../assets/images/wallet.png")
         },
         {
           title: "",
           path: "/blocks",
-          name: "Blocks",
           url: require("./../../assets/images/blocks.png")
         },
         {
           title: "",
           path: "/transactions",
-          name: "Transactions",
           url: require("./../../assets/images/retweet.png")
         },
         {
           title: "",
           path: "/producer",
-          name: "Producer",
           url: require("./../../assets/images/producer.png")
         }
       ];
@@ -558,19 +551,13 @@ export default {
           color: #999999;
           position: fixed;
         }
-        // margin-bottom: 10px;
         a {
           display: block;
           width: 100%;
           height: 100%;
           color: #999999;
-          // font-family: Proxima Nova;
           font-size: 16px;
         }
-        a:hover {
-          // background: #56c4fd;
-        }
-        // &:hover,
         &.active {
           a {
             background: #004a80;

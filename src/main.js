@@ -21,6 +21,8 @@ import base58 from 'base58'
 import Select2 from 'v-select2-component';
 import Vtip from 'vtip'
 import 'vtip/lib/index.min.css'
+import moment from "moment";
+
 Vue.component('Select2', Select2);
 
 Vue.prototype.$axios = axios;
@@ -29,6 +31,7 @@ Vue.prototype.$Base58check = base58check;
 Vue.prototype.$Base58 = base58;
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$tip = Vtip.tip;
+Vue.prototype.$moment = moment;
 
 VueClipboard.config.autoSetContainer = true;
 Vue.use(VueClipboard)

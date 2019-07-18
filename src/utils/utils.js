@@ -6,6 +6,7 @@ const script_signature = require("bitcoinjs-lib/src/script_signature");
 const CryptoJS = require('./../../node_modules/crypto-js/crypto-js.js');
 const BigInteger = require('bigi');
 const bigdecimal = require("bigdecimal");
+const moment = require("moment");
 
 const {
   randomBytes
@@ -66,7 +67,7 @@ const utilMethods = {
         let diffDay;
         diffDay = Math.abs(serDay - timeDay);
         if (diffDay !== 0) {
-          return diffDay + "  day ago";
+          return moment(timespan).startOf('day').fromNow();
         }
       };
     }
@@ -91,7 +92,7 @@ const utilMethods = {
         let diffDay;
         diffDay = Math.abs(serDay - timeDay);
         if (diffDay !== 0) {
-          return diffDay + "  day ago";
+          return moment(timespan).startOf('day').fromNow();
         }
       };
     }
@@ -132,7 +133,7 @@ const utilMethods = {
       if (date >= 86400) {
         let diffDay = Math.abs(serverDay - timeStampDay);
         if (diffDay !== 0) {
-          return diffDay + "   day" + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "AM    +UTC" + ")";
+          return moment(timespan).startOf('day').fromNow()  + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "AM    +UTC" + ")";
         }
       };
     }
@@ -155,7 +156,7 @@ const utilMethods = {
       if (date >= 86400) {
         let diffDay = Math.abs(serverDay - timeStampDay);
         if (diffDay !== 0) {
-          return diffDay + "   day" + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "PM    +UTC" + ")";
+          return moment(timespan).startOf('day').fromNow()  + "  " + formatterTime.getUTCHours() + "   hour" + " " + formatterTime.getUTCMinutes() + " min" + " " + formatterTime.getUTCSeconds() + " sec ago" + "   " + "(" + utctime + "PM    +UTC" + ")";
         }
       };
 
