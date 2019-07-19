@@ -26,6 +26,7 @@ const publicfooter = r =>
     "App"
   );
 import db from "@/utils/myDatabase";
+import util from "@/utils/utils";
 
 export default {
   name: "App",

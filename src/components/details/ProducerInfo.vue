@@ -130,6 +130,7 @@ export default {
             this.producerInfo.Description = res.describe;
             for (let i = 0; i < this.producer.length; i++) {
               let item = this.producer[i];
+              console.log(item);
               if (item.addr == this.minerBy) {
                 this.producerInfo.CurrentRank = item.Rank;
               }

@@ -18,23 +18,23 @@
       </ul>
       <div class="apex-pagination">
         <div class="pagination-content">
-          <a class="first" @click="isClick && getFirst()">First</a>
+          <a class="first" @click="getFirst()">First</a>
           <img
             ref="left"
             class="prev"
-            @click="isClick && getPrevious()"
+            @click="isPrevious && getPrevious()"
             src="../../assets/images/shared/leftWhiteArrow.png"
             alt
-          >
+          />
           <span class="list-number">{{pageNumber}}</span>
           <img
             ref="right"
             class="next"
-            @click="isClick && getNext()"
+            @click="isNext && getNext()"
             src="../../assets/images/shared/rightArrow.png"
             alt
-          >
-          <a class="last" @click="isClick && getLast()">Last</a>
+          />
+          <a class="last" @click="getLast()">Last</a>
         </div>
       </div>
     </div>
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import util from "@/utils/utils";
 const PublicNav = r =>
   require.ensure(
     [],
@@ -87,30 +88,31 @@ export default {
         start: "0",
         pageSize: "10"
       },
-      start: 0,
+      start: 1,
       pageNumber: null,
       arrow: {
         leftArrow: null,
         rightArrow: null
       },
-      isClick: true,
+      isNext: true,
+      isPrevious: false,
       totalPage: null,
       point: null,
-      count: null
+      count: []
     };
   },
   mounted() {
     this.getInstance();
     this.getProducerList();
-    const timer = setInterval(() => {
-      this.getProducerList();
-    }, 1500);
-    const timer2 = setInterval(() => {
-      clearInterval(timer);
-    }, 60000);
-    this.$once("hook:beforeDestroy", () => {
-      clearInterval(timer, timer2);
-    });
+    // const timer = setInterval(() => {
+    //   this.getProducerList();
+    // }, 1500);
+    // const timer2 = setInterval(() => {
+    //   clearInterval(timer);
+    // }, 60000);
+    // this.$once("hook:beforeDestroy", () => {
+    //   clearInterval(timer, timer2);
+    // });
   },
   methods: {
     getInstance() {
@@ -121,33 +123,14 @@ export default {
       this.$axios
         .post(this.minerBy_url, this.params)
         .then(response => {
+          this.count = [];
           this.producer = [];
           this.Rank = 1;
-          this.producer = response.data.data;
-          this.count = this.producer.length / this.params.pageSize;
-          if (this.count >= 10) {
-            this.totalPage = 10;
-            this.pageNumber = "1-" + this.totalPage;
-          }
-          if (this.count < 10) {
-            this.point = this.count.toString().indexOf(".");
-            if (this.point > -1) {
-              this.totalPage =
-                parseInt(this.count.toString().split(".")[0]) + 1;
-            }
-            if (this.point == -1) {
-              this.totalPage = this.count;
-            }
-            this.pageNumber = "1-" + this.totalPage;
-            if (this.totalPage == 1) {
-              this.isClick = false;
-              this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
-            }
-          }
-          for (let i = 0; i < this.producer.length; i++) {
-            const element = this.producer[i];
-            this.producer[i]["Rank"] = this.Rank++;
-            let amount = this.producer[i].votes;
+          let res = response.data.data;
+          for (let i = 0; i < res.length; i++) {
+            const element = res[i];
+            res[i]["Rank"] = this.Rank++;
+            let amount = res[i].votes;
             let result = amount.toString().indexOf(".");
             if (result > -1) {
               let pointLength = amount.toString().split(".")[1].length;
@@ -168,7 +151,20 @@ export default {
               element["votes"] = amount;
             }
           }
-          localStorage.setItem("producer", JSON.stringify(this.producer));
+          this.count = util.utilMethods.cutArray(res, 10);
+          localStorage.setItem("producer", JSON.stringify(res));
+          this.producer = this.count[0];
+          if (this.count.length >= 10) {
+            this.totalPage = 10;
+            this.pageNumber = "1-" + this.totalPage;
+          }
+          if (this.count.length < 10) {
+            this.pageNumber = "1-" + this.count.length;
+            if (this.totalPage == 1) {
+              this.isNext = false;
+              this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+            }
+          }
         })
         .catch(function(err) {
           if (err.response) {
@@ -177,108 +173,61 @@ export default {
         });
     },
     getNext() {
-      this.Rank = 1;
-      if (this.start < 10) {
+      if (this.start < 10 && this.isClick == true && this.count.length > 1) {
+        this.isPrevious = true;
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start++;
-        this.pageNumber = this.start + 1 + "-" + this.totalPage;
-        this.params.start = this.start;
-        this.$axios
-          .post(this.minerBy_url, this.params)
-          .then(response => {
-            this.producer = response.data.data;
-            for (let i = 0; i < this.producer.length; i++) {
-              this.producer[i]["Rank"] = this.Rank++;
-            }
-          })
-          .catch(function(err) {
-            if (err.response) {
-              console.log(err.response);
-            }
-          });
-        if (this.start == 10) {
-          this.pageNumber = this.start + "-" + this.totalPage;
+        this.pageNumber = this.start + "-" + this.count.length;
+        this.producer = this.count[this.start - 1];
+        if (this.start == this.count.length) {
+          this.pageNumber = this.start + "-" + this.count.length;
           this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
-          this.isClick = false;
+          this.isNext = false;
           return;
         }
       }
     },
     getPrevious() {
-      this.Rank = 1;
-      this.isClick = true;
       if (this.start > 0) {
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start--;
-        this.pageNumber = this.start + "-" + this.totalPage;
-        this.params.start = this.start;
-        this.$axios
-          .post(this.minerBy_url, this.params)
-          .then(response => {
-            this.producer = response.data.data;
-            for (let i = 0; i < this.producer.length; i++) {
-              this.producer[i]["Rank"] = this.Rank++;
-            }
-          })
-          .catch(function(err) {
-            if (err.response) {
-              console.log(err.response);
-            }
-          });
-        if (this.start == 0) {
+        this.pageNumber = this.start + "-" + this.count.length;
+        this.producer = this.count[this.start - 1];
+        if (this.start == 1) {
           this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
-          this.pageNumber = "1-" + this.totalPage;
+          this.pageNumber = "1-" + this.count.length;
+          this.isPrevious = false;
+          this.isNext = true;
           return;
         }
       }
     },
     getFirst() {
-      this.Rank = 1;
-      this.isClick = true;
-      this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
-      this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
-      this.start = 0;
-      this.pageNumber = "1-" + this.totalPage;
-      this.params.start = this.start;
-      this.$axios
-        .post(this.minerBy_url, this.params)
-        .then(response => {
-          this.producer = response.data.data;
-          for (let i = 0; i < this.producer.length; i++) {
-            this.producer[i]["Rank"] = this.Rank++;
-          }
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
-      return;
+      if (this.count.length > 1) {
+        this.isNext = true;
+        this.arrow.leftArrow.src = require("../../assets/images/shared/leftWhiteArrow.png");
+        this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
+        this.start = 1;
+        this.pageNumber = this.start + "-" + this.count.length;
+        this.producer = this.count[this.start - 1];
+      } else {
+        return;
+      }
     },
     getLast() {
-      this.isClick = true;
-      this.Rank = 1;
-      this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
-      this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
-      this.start = this.totalPage - 1;
-      this.pageNumber = this.totalPage + "-" + this.totalPage;
-      this.params.start = this.start;
-      this.$axios
-        .post(this.minerBy_url, this.params)
-        .then(response => {
-          this.producer = response.data.data;
-          for (let i = 0; i < this.producer.length; i++) {
-            this.producer[i]["Rank"] = this.Rank++;
-          }
-        })
-        .catch(function(err) {
-          if (err.response) {
-            console.log(err.response);
-          }
-        });
-      return;
+      if (this.count.length > 1) {
+        this.isNext = true;
+        this.isPrevious = true;
+        this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
+        this.arrow.rightArrow.src = require("../../assets/images/shared/rightWhiteArrow.png");
+        this.start = this.count.length;
+        this.pageNumber = this.start + "-" + this.count.length;
+        this.producer = this.count[this.start - 1];
+      } else {
+        return;
+      }
     },
     setClickValue(data) {
       this.$router.push({
