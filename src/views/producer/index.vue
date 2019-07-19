@@ -173,7 +173,7 @@ export default {
         });
     },
     getNext() {
-      if (this.start < 10 && this.isClick == true && this.count.length > 1) {
+      if (this.start < 10 && this.isNext == true && this.count.length > 1) {
         this.isPrevious = true;
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
