@@ -189,7 +189,7 @@ export default {
       }
     },
     getPrevious() {
-      if (this.start > 0) {
+      if (this.start > 1) {
         this.arrow.leftArrow.src = require("../../assets/images/shared/leftArrow.png");
         this.arrow.rightArrow.src = require("../../assets/images/shared/rightArrow.png");
         this.start--;
